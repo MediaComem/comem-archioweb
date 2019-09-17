@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>COMEM+ Web Development</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400i,700i);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400i);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+
+      h1, h2, h3, h4 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+
+      li ul {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+<h1 id="comem-web-oriented-architecture-course">COMEM+ Web-Oriented Architecture Course</h1>
+<p>The goal of this course is to conceive and implement a REST API with a real-time
+component. You will:</p>
+<ul>
+<li>Learn the <strong>core principles</strong> of the REST architectural style.</li>
+<li>Learn how to <strong>implement</strong> a REST API in JavaScript with Node.js.</li>
+<li><strong>Deploy</strong> your REST API on a cloud application platform.</li>
+<li>Add a <strong>real-time</strong> component to your REST API with WebSockets.</li>
+</ul>
+<p>This course is a <a href="http://www.heig-vd.ch/comem">COMEM+</a> <a href="https://github.com/MediaComem/comem-webdev">web development course</a> taught at <a href="http://www.heig-vd.ch">HEIG-VD</a>.</p>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<ul>
+<li><a href="#plan">Plan</a></li>
+<li><a href="#what-you-will-need">What you will need</a></li>
+<li><a href="#useful-links">Useful links</a></li>
+<li><a href="#evaluation">Evaluation</a><ul>
+<li><a href="#delivery">Delivery</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h2 id="plan">Plan</h2>
+<ul>
+<li><p><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/webserv-course?home=MediaComem%2Fcomem-webserv%23readme">Introduction</a></p>
+</li>
+<li><p>Basics</p>
+<ul>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/js?home=MediaComem%2Fcomem-webserv%23readme">JavaScript</a></li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/node?home=MediaComem%2Fcomem-webserv%23readme">Node.js</a> JavaScript runtime</li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/npm?home=MediaComem%2Fcomem-webserv%23readme">npm</a> Node.js package manager</li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/rest?home=MediaComem%2Fcomem-webserv%23readme">REST &amp; HTTP</a></li>
+</ul>
+</li>
+<li><p>Creating a web service</p>
+<ul>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express?home=MediaComem%2Fcomem-webserv%23readme">Express</a> web framework</li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/mongodb?home=MediaComem%2Fcomem-webserv%23readme">MongoDB</a> document-oriented database</li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/mongoose?home=MediaComem%2Fcomem-webserv%23readme">Mongoose</a> Object-Document Mapper</li>
+</ul>
+</li>
+<li><p>Deploying your web service</p>
+<ul>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/heroku?home=MediaComem%2Fcomem-webserv%23readme">Heroku</a> cloud application platform</li>
+</ul>
+</li>
+<li><p>Creating a REST API</p>
+<ul>
+<li>REST in depth</li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express-best-practices?home=MediaComem%2Fcomem-webserv%23readme">Express best practices</a></li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express-mongoose?home=MediaComem%2Fcomem-webserv%23readme">Utilizing Mongoose</a> in Express (filtering, pagination, aggregation)</li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express-auth?home=MediaComem%2Fcomem-webserv%23readme">Express Authentication</a></li>
+<li><a href="https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/apidoc?home=MediaComem%2Fcomem-webserv%23readme">REST API documentation</a> with apiDoc</li>
+</ul>
+</li>
+<li><p>Real-time communication</p>
+<ul>
+<li>WebSockets</li>
+<li>Web Application Messaging Protocol (WAMP)</li>
+</ul>
+</li>
+</ul>
+<h2 id="what-you-will-need">What you will need</h2>
+<ul>
+<li>A Unix CLI (Git Bash is included with Git on Windows)</li>
+<li><a href="https://git-scm.com/downloads">Git</a></li>
+<li>A free <a href="https://github.com">GitHub</a> account</li>
+<li><a href="https://www.google.com/chrome/">Google Chrome</a> (recommended, any browser with developer tools will do)</li>
+<li><a href="https://nodejs.org/">Node.js</a> 12+</li>
+<li><a href="https://www.getpostman.com">Postman</a> (recommended, any tool that makes raw HTTP requests will do)</li>
+<li><a href="https://www.mongodb.com">MongoDB</a></li>
+<li>A free <a href="https://www.heroku.com/home">Heroku</a> account</li>
+<li>The <a href="https://devcenter.heroku.com/articles/heroku-cli">Heroku CLI</a></li>
+</ul>
+<h2 id="useful-links">Useful links</h2>
+<ul>
+<li><a href="diagrams.pdf">Architecture &amp; source code management diagrams</a></li>
+<li><a href="https://github.com/MediaComem/comem-webdev-express-rest-demo">Demonstration REST API implemented with Express</a> (<a href="https://mediacomem.github.io/comem-webdev-express-rest-demo/">documentation</a>)</li>
+<li><a href="https://github.com/MediaComem/comem-webdev/blob/master/CLI-CHEATSHEET.md">Command line cheatsheet</a></li>
+<li><a href="https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md">Git cheatsheet</a></li>
+<li><a href="PROJECTS.md">Project suggestions</a></li>
+</ul>
+<h2 id="evaluation">Evaluation</h2>
+<p><strong>API</strong></p>
+<p>Your REST API must be developed with the Express framework and use a MongoDB database.
+It must provide (at least):</p>
+<ul>
+<li>The API must provide <strong>user management</strong>:<ul>
+<li>New users must be able to <strong>register</strong>.</li>
+<li>Existing users must be able to <strong>authenticate</strong> (to allow users to log in).</li>
+</ul>
+</li>
+<li>The API must provide at least <strong>2 other types</strong> of resources:<ul>
+<li>Both types must be linked together (e.g. aggregation or composition).</li>
+<li>At least one of the types must be linked to users.</li>
+<li>The API must provide minimal CRUD operations to manage and use those types in a mobile application.</li>
+</ul>
+</li>
+<li>The API must use the knowledge learned during the course:<ul>
+<li>At least one resource must be a <strong>paginated list</strong>.</li>
+<li>At least one resource must be a <strong>list with optional filters</strong>.</li>
+<li>At least one resource must provide <strong>aggregated data</strong> from other resources using a <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">MongoDB aggregation pipeline</a>
+(e.g. the number of items created by a user).</li>
+<li>The API must be developed as a backend to a mobile application
+using at least 2 <a href="https://cordova.apache.org/docs/en/latest/#plugin-apis"><strong>mobile hardware features</strong></a>, for example:<ul>
+<li>At least one resource must be <strong>geolocated</strong>.</li>
+<li>At least one resource must have one or multiple <strong>pictures</strong>
+(it is sufficient to store a picture URL or URLs in the database).</li>
+</ul>
+</li>
+<li>Sensitive operations must be protected by requiring valid <strong>authentication</strong>.<ul>
+<li>Authentication must be provided in the form of a <a href="https://jwt.io/">JWT token</a> or an equivalent mechanism.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The API must have a real-time pub-sub component:<ul>
+<li><em>At least one</em> of the following must be provided:<ul>
+<li>A <code>ws://</code> or <code>wss://</code> endpoint to which a plain WebSockets client can connect to receive real-time messages.</li>
+<li>A WAMP pub-sub topic to which a Subscriber can subscribe to receive real-time messages.</li>
+</ul>
+</li>
+<li>The WebSockets endpoint or WAMP topic must send real-time messages containing relevant data for the application.
+(For example, a chat application may notify its clients in real-time of the number of channels, messages, etc, to display activity on the home page.)</li>
+<li>The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing authentication or authorization is mandatory).</li>
+</ul>
+</li>
+</ul>
+<p><strong>Infrastructure</strong></p>
+<ul>
+<li>The source code of your REST API must be in a repository on GitHub.</li>
+<li>Your REST API must be deployed on Heroku.</li>
+</ul>
+<p><strong>Documentation</strong></p>
+<ul>
+<li>Your REST API must be documented.</li>
+<li>The real-time component of your API must be documented (not necessarily in the same way).</li>
+</ul>
+<p><strong>Quality of the implementation</strong></p>
+<ul>
+<li>You must follow REST best practices:<ul>
+<li>Your REST resources must use appropriate HTTP methods, headers and status codes.</li>
+<li>Your REST resources must have a consistent URL hierarchy and/or naming structure.</li>
+</ul>
+</li>
+<li>Your asynchronous code must be correct.</li>
+<li>Your Express routes must handle asynchronous operation errors.</li>
+<li>You must avoid excessive code duplication (e.g. using Express middleware).</li>
+<li>Your API must have basic validations on user input (e.g. using Mongoose validations).</li>
+<li>Your API must validate the existence of linked resources (e.g. when creating an item linked to a user).</li>
+</ul>
+<h3 id="delivery">Delivery</h3>
+<p>Send an e-mail <em>no later than <strong>November 25th 2019</strong></em> to Simon Oulevay with:</p>
+<ul>
+<li>The list of group members.</li>
+<li>The link to your source code repository on GitHub.</li>
+<li>The link to your deployed REST API on Heroku.</li>
+</ul>
+
+    </div>
+    
+  </body>
+</html>

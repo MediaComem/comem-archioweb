@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
+    <meta charset='utf-8'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/04c162216eb6626d73d9b6e999c88cac46f08143/subjects/express-best-practices/README.md&quot;}'>
+  </head>
+  <body>
+    <textarea id='source'>
+# Express Best Practices
+
+Learn best development practices for [Express][express] web applications.
+
+**You will need**
+
+* A working [Express][express] application
+
+**Recommended reading**
+
+* [Express](../express/)
+* [Mongoose](../mongoose/)
+
+
+
+
+
+---
+## Use routers
+
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
+
+**Do NOT** define all your routes in `app.js`; it will get **too large and hard to maintain**.
+Group your API routes **by feature** and create a router for each group in the `routes` directory,
+then `require()` them in `app.js`:
+
+```js
+const express = require('express');
+
+const `peopleApiRouter` = require('./routes/people');
+const `moviesApiRouter` = require('./routes/movies');
+
+const app = express();
+
+// Basic middlewares configuration here (e.g. bodyParser, static)...
+
+app.use('/api/people', `peopleApiRouter`);
+app.use('/api/movies', `moviesApiRouter`);
+```
+
+
+
+---
+## Avoiding repetition with middleware
+
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
+
+You often end up with **code duplication in routes**:
+
+
+```js
+router.get('/:id', function(req, res, next) {
+* Person.findById(req.params.id).exec(function(err, person) {
+*   if (err) { return next(err); }
+*   else if (!person) { return res.sendStatus(404); }
+    // Send person here...
+* });
+});
+
+router.patch('/:id', function(req, res, next) {
+* Person.findById(req.params.id).exec(function(err, person) {
+*   if (err) { return next(err); }
+*   else if (!person) { return res.sendStatus(404); }
+    // Update & send person here...
+* });
+});
+
+router.delete('/:id', function(req, res, next) {
+* Person.findById(req.params.id).exec(function(err, person) {
+*   if (err) { return next(err); }
+*   else if (!person) { return res.sendStatus(404); }
+    // Delete person here...
+* });
+});
+```
+
+
+
+---
+### Writing middleware functions for common tasks
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#3">Avoiding repetition with middleware</a>]
+
+You can write a **middleware function** that performs only this task and **attaches the Person document to the `req` object**:
+
+```js
+function loadPersonFromParams(req, res, next) {
+  Person.findById(req.params.id).exec(function(err, person) {
+    if (err) {
+      return next(err);
+    } else if (!person) {
+      return res.status(404).send('No person found with ID ' + req.params.id);
+    }
+
+*   req.person = person;
+*   next();
+  });
+}
+```
+
+
+
+---
+### Plugging your middleware function into routes
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#3">Avoiding repetition with middleware</a>]
+
+You can plug this function into the routes that need it.
+Your handler functions can then simply use `req.person`, as it will have been **loaded before they are executed**:
+
+```js
+router.get('/:id', `loadPersonFromParams`, function(req, res, next) {
+ res.send(`req.person`);
+});
+
+router.patch('/:id', `loadPersonFromParams`, function(req, res, next) {
+  // Update req.person here...
+  `req.person`.save(function(err, updatedPerson) {
+    if (err) { return next(err); }
+    res.send(updatedPerson);
+  });
+});
+
+router.delete('/:id', `loadPersonFromParams`, function(req, res, next) {
+  `req.person`.remove(function(err) {
+    if (err) { return next(err); }
+    res.sendStatus(204);
+  });
+});
+```
+
+
+
+---
+## TODO
+
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
+
+* Express conventions: use environment variables for configuration
+* Express conventions: debug with prefix
+
+
+
+[express]: https://expressjs.com
+[mongoose]: http://mongoosejs.com
+
+    </textarea>
+    <script src='https://embed.runkit.com'></script>
+    <script src='../../subject-6febf8e6a6534a4429e8.js'></script>
+  </body>
+</html>
