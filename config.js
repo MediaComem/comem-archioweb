@@ -16,7 +16,7 @@ const config = {
   publish: {
     gitUrl: 'git@github.com:MediaComem/comem-archioweb.git',
     baseUrl: 'https://mediacomem.github.io/comem-archioweb',
-    branch: 'docs',
+    branch: 'gh-pages',
     version: '2019-2020'
   }
 };
