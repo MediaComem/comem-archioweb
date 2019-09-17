@@ -1,0 +1,39 @@
+{
+  "name": "comem-archioweb",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Materials for the COMEM+ web-oriented architecture course",
+  "scripts": {
+    "build": "courses-md build",
+    "deploy": "courses-md publish",
+    "doctoc": "gulp doctoc",
+    "start": "courses-md",
+    "watch": "courses-md watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MediaComem/comem-archioweb.git"
+  },
+  "author": "COMEM+",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MediaComem/comem-archioweb/issues"
+  },
+  "homepage": "https://github.com/MediaComem/comem-archioweb#readme",
+  "dependencies": {
+    "courses-md": "~0.5.0",
+    "doctoc": "^1.3.0",
+    "font-awesome": "^4.7.0",
+    "git-memoir": "~0.3.0",
+    "gulp": "^3.9.1",
+    "gulp-chain": "^2.0.1",
+    "gulp-doctoc": "^0.1.4",
+    "gulp-util": "^3.0.8",
+    "html-pdf": "^2.2.0",
+    "lodash": "^4.17.4",
+    "micromodal": "^0.3.0",
+    "through2": "^2.0.3",
+    "tippy.js": "^1.4.1"
+  },
+  "devDependencies": {}
+}

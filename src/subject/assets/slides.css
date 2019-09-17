@@ -1,0 +1,137 @@
+body {
+  font-family: 'Droid Serif';
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Yanone Kaffeesatz';
+  font-weight: normal;
+}
+
+h4 {
+  font-size: 30px;
+  margin: 1em 0;
+}
+
+h5 {
+  font-size: 24px;
+  margin: 1em 0;
+}
+
+h1 strong, h2 strong, h3 strong, h4 strong, h5 strong, h6 strong {
+  text-decoration: underline;
+}
+
+.image-header h2, .image-header h3, .image-header h4, .image-header h5 .image-header h6 {
+  display: none;
+}
+
+img.header {
+  margin-top: 1em;
+}
+
+strong em {
+  text-decoration: underline;
+}
+
+center {
+  margin: 1em 0;
+}
+
+.remark-code, .remark-inline-code {
+  font-family: 'Ubuntu Mono';
+}
+
+.remark-inline-code {
+  padding: 0 2px;
+  background-color: #eee;
+  color: indianred;
+  border-radius: 3px;
+  border: thin solid #dddddd;
+}
+
+.remark-slide-content img {
+  max-width: 100%;
+}
+
+.remark-slide-content p:first-child, .remark-slide-content ul:first-child {
+  margin-top: 0;
+}
+
+.container {
+  clear: both;
+}
+
+ul li {
+  margin-top: 0.4em;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, td {
+  padding: 0.2em 0.4em;
+}
+
+table tbody th, td {
+  border-top: 1px solid #c0c0c0;
+}
+
+pre:first-child, blockquote:first-child {
+  margin-top: 0;
+}
+
+blockquote {
+  font-style: italic;
+  border-left: 5px solid khaki;
+  margin-left: 0;
+  padding-left: 35px;
+}
+
+.center blockquote {
+  margin-right: 0;
+  padding-right: 35px;
+  border-right: 5px solid khaki;
+}
+
+.center.middle .breadcrumbs {
+  display: none;
+}
+
+.w5 { width: 5%; }
+.w10 { width: 10%; }
+.w15 { width: 15%; }
+.w20 { width: 20%; }
+.w30 { width: 30%; }
+.w35 { width: 35%; }
+.w40 { width: 40%; }
+.w45 { width: 45%; }
+.w50 { width: 50%; }
+.w55 { width: 55%; }
+.w60 { width: 60%; }
+.w65 { width: 65%; }
+.w70 { width: 70%; }
+.w75 { width: 75%; }
+.w80 { width: 80%; }
+.w85 { width: 85%; }
+.w90 { width: 90%; }
+.w95 { width: 95%; }
+.w100 { width: 100%; }
+
+.x2 { font-size: 2em; }
+.x3 { font-size: 3em; }
+.x4 { font-size: 4em; }
+
+.compact-table table td {
+  font-size: 0.9em;
+}
+
+.shadow {
+  box-shadow: lightgrey 0 0 3px;
+}
+p.shadow { width: 100%; }
+
+.commands-table table td code:only-child {
+  white-space: nowrap;
+}

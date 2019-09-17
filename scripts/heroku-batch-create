@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+set -e
+
+TEAMS=
+PREFIX=
+
+YELLOW=33
+
+function help {
+  echo "Create one or multiple apps on Heroku"
+  echo
+  echo "Usage:"
+  echo "  ./scripts/heroku-batch-create [OPTIONS]..."
+  echo
+  echo "Options:"
+  echo "  -p, --prefix=PREFIX  Heroku app name prefix (common to all teams)"
+  echo "  -t, --team=TEAM      Heroku team name (can be repeated to create multiple apps)"
+  echo
+  echo "Example:"
+  echo "  ./scripts/heroku-batch-create --prefix \"foo-\" --team a --team b      Deploy two instances at https://foo-a.herokuapp.com and https://foo-b.herokuapp.com"
+  echo
+  echo "At least one team is required. The prefix is optional."
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      help
+      exit 0
+    ;;
+    -p|--prefix)
+      shift
+      PREFIX="$1"
+    ;;
+    -t|--team)
+      shift
+      TEAMS="${TEAMS} $1"
+    ;;
+    *)
+    # unknown option
+    ;;
+  esac
+  shift # past argument or value
+done
+
+if [ -n "$TEAMS" ]; then
+  TEAMS=$(echo "$TEAMS"|sed -e "s/^ *//g")
+fi
+
+if [ -z "$TEAMS" ]; then
+  help
+  exit 0
+fi
+
+function color {
+  COLOR="$1"
+  shift
+  echo -en "\033[${COLOR}m$@\033[0m"
+}
+
+export -f color
+
+function create_app {
+  PREFIX="$1"
+  TEAM="$2"
+  APP_NAME="${PREFIX}${TEAM}"
+  APP_URL="https://${APP_NAME}.herokuapp.com"
+
+  echo
+  echo -e "\033[1m${APP_NAME}\033[0m"
+  echo
+
+  set +e
+  heroku git:remote -a "${APP_NAME}"
+  APP_EXISTS=$?
+  set -e
+
+  if [ $APP_EXISTS -ne 0 ]; then
+    echo
+    echo $(color $YELLOW "App does not exist, creating it...")
+    heroku create "${APP_NAME}"
+    heroku git:remote -a "${APP_NAME}"
+  fi
+
+  echo
+  echo $(color $YELLOW "Checking whether the mLab addon is provisioned...")
+  set +e
+  heroku addons:info mongolab 2>/dev/null
+  DB_EXISTS=$?
+  set -e
+
+  if [ $DB_EXISTS -ne 0 ]; then
+    echo
+    echo $(color $YELLOW "mLab addon not provisioned, adding it...")
+    heroku addons:create -a "${APP_NAME}" mongolab:sandbox
+  fi
+
+  CURRENT_BASE_URL="$(heroku config:get BASE_URL)"
+  if [ "$CURRENT_BASE_URL" != "$APP_URL" ]; then
+    echo
+    echo $(color $YELLOW "Setting the BASE_URL...")
+    heroku config:set "BASE_URL=${APP_URL}"
+  fi
+
+  CURRENT_NODE_ENV="$(heroku config:get NODE_ENV)"
+  if [ "$CURRENT_NODE_ENV" != "production" ]; then
+    echo
+    echo $(color $YELLOW "Setting NODE_ENV to production...")
+    heroku config:set "NODE_ENV=production"
+  fi
+
+  echo
+}
+
+if [ -n "$TEAMS" ]; then
+  for TEAM in $(echo "$TEAMS"|xargs); do
+    create_app "$PREFIX" "${TEAM}"
+  done
+
+  echo
+  echo $(color $YELLOW "Printing URL list...")
+  for TEAM in $(echo "$TEAMS"|xargs); do
+    echo "https://${PREFIX}${TEAM}.herokuapp.com/api"
+  done
+fi
+
+echo
