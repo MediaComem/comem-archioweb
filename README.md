@@ -1,118 +1,167 @@
-# COMEM+ Web Development
+# COMEM+ Web-Oriented Architecture Course
 
-Materials for the COMEM+ web development courses.
+The goal of this course is to conceive and implement a REST API with a real-time
+component. You will:
+
+* Learn the **core principles** of the REST architectural style.
+* Learn how to **implement** a REST API in JavaScript with Node.js.
+* **Deploy** your REST API on a cloud application platform.
+* Add a **real-time** component to your REST API with WebSockets.
+
+This course is a [COMEM+][comem] [web development course][comem-webdev] taught at [HEIG-VD][heig].
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Courses](#courses)
-- [Subjects](#subjects)
-- [Outdated](#outdated)
-- [Contributing](#contributing)
+- [Plan](#plan)
+- [What you will need](#what-you-will-need)
+- [Useful links](#useful-links)
+- [Evaluation](#evaluation)
+  - [Delivery](#delivery)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
-## Courses
+## Plan
 
-* [Advanced Frontend Development (MAS-RAD)](https://github.com/MediaComem/comem-masrad-dfa)
-* [Architecture & Deployment (COMEM+)](https://github.com/MediaComem/comem-archidep)
-* [Mobile Applications (COMEM+)](https://github.com/MediaComem/comem-appmob)
-* [Web Services (COMEM+)](https://github.com/MediaComem/comem-webserv)
+* [Introduction](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/webserv-course?home=MediaComem%2Fcomem-webserv%23readme)
 
+* Basics
+  * [JavaScript](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/js?home=MediaComem%2Fcomem-webserv%23readme)
+  * [Node.js](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/node?home=MediaComem%2Fcomem-webserv%23readme) JavaScript runtime
+  * [npm](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/npm?home=MediaComem%2Fcomem-webserv%23readme) Node.js package manager
+  * [REST & HTTP](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/rest?home=MediaComem%2Fcomem-webserv%23readme)
 
+* Creating a web service
+  * [Express](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express?home=MediaComem%2Fcomem-webserv%23readme) web framework
+  * [MongoDB](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/mongodb?home=MediaComem%2Fcomem-webserv%23readme) document-oriented database
+  * [Mongoose](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/mongoose?home=MediaComem%2Fcomem-webserv%23readme) Object-Document Mapper
 
-## Subjects
+* Deploying your web service
+  * [Heroku](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/heroku?home=MediaComem%2Fcomem-webserv%23readme) cloud application platform
 
-**Tooling**
+* Creating a REST API
+  * REST in depth
+  * [Express best practices](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express-best-practices?home=MediaComem%2Fcomem-webserv%23readme)
+  * [Utilizing Mongoose](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express-mongoose?home=MediaComem%2Fcomem-webserv%23readme) in Express (filtering, pagination, aggregation)
+  * [Express Authentication](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/express-auth?home=MediaComem%2Fcomem-webserv%23readme)
+  * [REST API documentation](https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/apidoc?home=MediaComem%2Fcomem-webserv%23readme) with apiDoc
 
-* [Command Line](subjects/cli/)
-* [Git](subjects/git/)
-  * [Git Branching](subjects/git-branching/)
-  * [Collaborating with Git on GitHub](subjects/git-collaborating/)
-  * [Git Hooks](subjects/git-hooks/)
-* [SSH](subjects/ssh/)
-* [Linux](subjects/linux/)
-  * [Unix Administration](subjects/unix-admin/)
-  * [Unix Processes](subjects/unix-processes/)
-  * [Unix Networking](subjects/unix-networking/)
-  * [Unix Environment Variables](subjects/unix-env-vars/)
-  * [APT](subjects/apt/)
-  * [Linux Process Management](subjects/linux-process-management/)
-  * [Shell Scripting](subjects/shell-scripting/)
-
-**Languages & Frameworks**
-
-* [JavaScript](subjects/js/)
-  * [JavaScript Asynchronous Browser/Server Interaction (AJAX)](subjects/js-ajax/)
-  * [JavaScript Classes](subjects/js-classes/)
-  * [JavaScript Closures](subjects/js-closures/)
-  * [JavaScript Modules](subjects/js-modules/)
-  * [JavaScript DOM API](subjects/js-dom/)
-  * [JavaScript Promises](subjects/js-promises/)
-  * [JavaScript Prototypes](subjects/js-prototypes/)
-* [TypeScript](subjects/ts/)
-* [jQuery DOM Manipulation](subjects/jquery-dom)
-* [Angular](subjects/angular/)
-* [Node.js](subjects/node/)
-  * [npm (Package Manager)](subjects/npm/)
-  * [Express (Node.js Web Framework)](subjects/express/)
-    * [Express Authentication](subjects/express-auth/)
-    * [Express Best Practices](subjects/express-best-practices/)
-    * [Using Mongoose with Express](subjects/express-mongoose/)
-* [Ionic](subjects/ionic/)
-  * [Angular in Ionic](subjects/ionic-angular/)
-  * [Ionic Extras](subjects/ionic-extras/) (geolocation, maps, camera)
-
-**Cloud & Web Services**
-
-* [Cloud Computing](subjects/cloud/)
-  * [Heroku](subjects/heroku/)
-* [RESTful APIs](subjects/rest/)
-  * [RESTful API Conventions](subjects/rest-conventions/)
-  * [apiDoc](subjects/apidoc/)
-* [DNS](subjects/dns/)
-* [Reverse Proxying](subjects/reverse-proxy/)
-* [SSL](subjects/ssl/)
-* [Continuous Software Development](subjects/continuous/)
-  * [Automated Testing](subjects/automated-testing/)
-* [WebSockets](subjects/ws/)
-* [Web Application Messaging Protocol (WAMP)](subjects/wamp/)
-
-**Databases**
-
-* [MongoDB](subjects/mongodb/) ([installation instructions](subjects/mongodb/install/))
-  * [Mongoose (Node.js Client)](subjects/mongoose/)
-
-**Course Introductions and Exercices**
-
-* [Web Services](subjects/webserv-course/)
-* [Advanced Frontend Development](subjects/masrad-intro)
-  * [Project Setup](subjects/masrad-project-setup)
-  * [Bootstrap Practice](subjects/masrad-bootstrap-practice)
+* Real-time communication
+  * WebSockets
+  * Web Application Messaging Protocol (WAMP)
 
 
 
-## Outdated
+## What you will need
 
-* Angular 1
-  * [Angular 1 Auth Starter](subjects/angular-auth-starter/)
-  * [Angular 1 Geolocation](subjects/angular-geolocation)
-  * [Angular 1 Leaflet](subjects/angular-leaflet)
-  * [Angular 1 Promises](subjects/angular-promises/)
-  * [Angular 1 UI Bootstrap](subjects/angular-ui-bootstrap/)
-  * [Angular 1 UI Router](subjects/angular-ui-router/)
-* [Bootstrap 3](subjects/bootstrap)
-  * [Bootstrap 3 Layout management](subjects/bootstrap-layout-management)
-
-
-
-## Contributing
-
-See [CONTRIBUTING.md][contributing].
+* A Unix CLI (Git Bash is included with Git on Windows)
+* [Git][git-downloads]
+* A free [GitHub][github] account
+* [Google Chrome][chrome] (recommended, any browser with developer tools will do)
+* [Node.js][node] 12+
+* [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
+* [MongoDB][mongodb]
+* A free [Heroku][heroku] account
+* The [Heroku CLI][heroku-cli]
 
 
 
-[contributing]: CONTRIBUTING.md
+## Useful links
+
+* [Architecture & source code management diagrams][diagrams]
+* [Demonstration REST API implemented with Express][demo-api] ([documentation][demo-api-doc])
+* [Command line cheatsheet][cli-cheatsheet]
+* [Git cheatsheet][git-cheatsheet]
+* [Project suggestions](PROJECTS.md)
+
+
+
+## Evaluation
+
+**API**
+
+Your REST API must be developed with the Express framework and use a MongoDB database.
+It must provide (at least):
+
+* The API must provide **user management**:
+  * New users must be able to **register**.
+  * Existing users must be able to **authenticate** (to allow users to log in).
+* The API must provide at least **2 other types** of resources:
+  * Both types must be linked together (e.g. aggregation or composition).
+  * At least one of the types must be linked to users.
+  * The API must provide minimal CRUD operations to manage and use those types in a mobile application.
+* The API must use the knowledge learned during the course:
+  * At least one resource must be a **paginated list**.
+  * At least one resource must be a **list with optional filters**.
+  * At least one resource must provide **aggregated data** from other resources using a [MongoDB aggregation pipeline][mongodb-aggregation]
+    (e.g. the number of items created by a user).
+  * The API must be developed as a backend to a mobile application
+    using at least 2 [**mobile hardware features**][cordova-plugins], for example:
+    * At least one resource must be **geolocated**.
+    * At least one resource must have one or multiple **pictures**
+      (it is sufficient to store a picture URL or URLs in the database).
+  * Sensitive operations must be protected by requiring valid **authentication**.
+    * Authentication must be provided in the form of a [JWT token][jwt] or an equivalent mechanism.
+* The API must have a real-time pub-sub component:
+  * *At least one* of the following must be provided:
+    * A `ws://` or `wss://` endpoint to which a plain WebSockets client can connect to receive real-time messages.
+    * A WAMP pub-sub topic to which a Subscriber can subscribe to receive real-time messages.
+  * The WebSockets endpoint or WAMP topic must send real-time messages containing relevant data for the application.
+    (For example, a chat application may notify its clients in real-time of the number of channels, messages, etc, to display activity on the home page.)
+  * The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing authentication or authorization is mandatory).
+
+**Infrastructure**
+
+* The source code of your REST API must be in a repository on GitHub.
+* Your REST API must be deployed on Heroku.
+
+**Documentation**
+
+* Your REST API must be documented.
+* The real-time component of your API must be documented (not necessarily in the same way).
+
+**Quality of the implementation**
+
+* You must follow REST best practices:
+  * Your REST resources must use appropriate HTTP methods, headers and status codes.
+  * Your REST resources must have a consistent URL hierarchy and/or naming structure.
+* Your asynchronous code must be correct.
+* Your Express routes must handle asynchronous operation errors.
+* You must avoid excessive code duplication (e.g. using Express middleware).
+* Your API must have basic validations on user input (e.g. using Mongoose validations).
+* Your API must validate the existence of linked resources (e.g. when creating an item linked to a user).
+
+
+
+### Delivery
+
+Send an e-mail *no later than __November 25th 2019__* to Simon Oulevay with:
+
+* The list of group members.
+* The link to your source code repository on GitHub.
+* The link to your deployed REST API on Heroku.
+
+
+
+[chrome]: https://www.google.com/chrome/
+[cli-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/CLI-CHEATSHEET.md
+[comem]: http://www.heig-vd.ch/comem
+[comem-webdev]: https://github.com/MediaComem/comem-webdev
+[cordova-plugins]: https://cordova.apache.org/docs/en/latest/#plugin-apis
+[demo-api]: https://github.com/MediaComem/comem-webdev-express-rest-demo
+[demo-api-doc]: https://mediacomem.github.io/comem-webdev-express-rest-demo/
+[diagrams]: diagrams.pdf
+[git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md
+[git-downloads]: https://git-scm.com/downloads
+[github]: https://github.com
+[heroku]: https://www.heroku.com/home
+[heroku-cli]: https://devcenter.heroku.com/articles/heroku-cli
+[heig]: http://www.heig-vd.ch
+[jwt]: https://jwt.io/
+[mongodb]: https://www.mongodb.com
+[mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
+[node]: https://nodejs.org/
+[postman]: https://www.getpostman.com
