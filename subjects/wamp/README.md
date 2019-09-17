@@ -14,8 +14,16 @@ ordered, reliable, bi-directional, and message-oriented communications.
 
 * [WebSockets](../ws/)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Routed protocol](#routed-protocol)
+- [Two messaging patterns](#two-messaging-patterns)
+- [Roles](#roles)
+- [TODO](#todo)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 

@@ -10,6 +10,7 @@ You will find detailed installation instructions for all platforms [in the docum
 - [MongoDB on macOS](#mongodb-on-macos)
   - [Create the MongoDB data directory on macOS](#create-the-mongodb-data-directory-on-macos)
   - [Run the MongoDB server on macOS](#run-the-mongodb-server-on-macos)
+    - [What you should see](#what-you-should-see)
   - [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos)
 - [MongoDB on Windows](#mongodb-on-windows)
   - [Run the MongoDB server on Windows](#run-the-mongodb-server-on-windows)

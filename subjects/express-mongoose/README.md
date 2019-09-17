@@ -32,8 +32,12 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
   - [Using a JSON envelope (solution 3)](#using-a-json-envelope-solution-3)
 - [Aggregation](#aggregation)
   - [Aggregation example](#aggregation-example)
+    - [No join in MongoDB](#no-join-in-mongodb)
   - [Aggregation pipeline](#aggregation-pipeline)
   - [Aggregation pipeline example](#aggregation-pipeline-example)
+    - [How does it work?](#how-does-it-work)
+    - [Adding the aggregation results to the response](#adding-the-aggregation-results-to-the-response)
+    - [Combining the results](#combining-the-results)
   - [Aggregation pipeline operators](#aggregation-pipeline-operators)
 - [Resources](#resources)
 

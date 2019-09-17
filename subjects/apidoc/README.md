@@ -24,6 +24,7 @@ Learn to generate HTML documentation for your RESTful API from annotations in yo
   - [Structural annotations](#structural-annotations)
   - [Descriptive annotations](#descriptive-annotations)
   - [Documenting request parameters](#documenting-request-parameters)
+    - [Request parameter constraints](#request-parameter-constraints)
   - [Reusing annotations](#reusing-annotations)
 - [Resources](#resources)
 

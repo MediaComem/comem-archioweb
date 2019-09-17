@@ -6,7 +6,7 @@
   "scripts": {
     "build": "courses-md build",
     "deploy": "courses-md publish",
-    "doctoc": "gulp doctoc",
+    "doctoc": "doctoc --notitle --github README.md CONTRIBUTING.md subjects/*/*.md",
     "start": "courses-md",
     "watch": "courses-md watch"
   },
@@ -27,7 +27,6 @@
     "git-memoir": "~0.3.0",
     "gulp": "^3.9.1",
     "gulp-chain": "^2.0.1",
-    "gulp-doctoc": "^0.1.4",
     "gulp-util": "^3.0.8",
     "html-pdf": "^2.2.0",
     "lodash": "^4.17.4",

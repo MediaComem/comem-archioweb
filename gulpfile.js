@@ -1,31 +1,14 @@
 const chain = require('gulp-chain');
 const gulp = require('gulp');
-const doctoc = require('gulp-doctoc');
 const path = require('path');
 const through = require('through2');
 const util = require('gulp-util');
 
 const generatePdfFromSlides = require('./pdf');
 
-const src = {
-  doctoc: [ 'README.md', 'CONTRIBUTING.md', 'subjects/**/*.md', '!subjects/**/node_modules/**/*.md' ],
-  pdfSource: 'build/subjects/*/**/index.html'
-};
-
-gulp.task('doctoc', function() {
-  return gulp
-    .src(src.doctoc, { base: '.' })
-    .pipe(doctoc({
-      depth: 3,
-      notitle: true,
-      mode: 'github.com'
-    }))
-    .pipe(gulp.dest('.'));
-});
-
 gulp.task('pdf', function() {
   return gulp
-    .src(src.pdfSource)
+    .src('build/subjects/*/**/index.html')
     .pipe(generatePdf());
 });
 

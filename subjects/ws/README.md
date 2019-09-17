@@ -11,8 +11,22 @@ remote host.
 
 * [Command Line Introduction](../cli/)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Real-time HTTP](#real-time-http)
+  - [Request-response, half-duplex](#request-response-half-duplex)
+- [What is WebSockets?](#what-is-websockets)
+- [Compatible with HTTP](#compatible-with-http)
+  - [Full Duplex](#full-duplex)
+  - [Protocol handshake](#protocol-handshake)
+  - [Message-based](#message-based)
+  - [Security](#security)
+  - [Framing](#framing)
+  - [TODO](#todo)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 

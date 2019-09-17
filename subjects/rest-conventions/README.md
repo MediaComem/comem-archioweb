@@ -25,9 +25,14 @@ Learn common ways to structure RESTful API operations.
 - [Pagination](#pagination)
   - [Huge collections](#huge-collections)
   - [What you need for pagination](#what-you-need-for-pagination)
+    - [Telling the client how to get more](#telling-the-client-how-to-get-more)
   - [The `Link` header (solution 1)](#the-link-header-solution-1)
+    - [What's in the header?](#whats-in-the-header)
+    - [What's the link format?](#whats-the-link-format)
   - [Custom headers (solution 2)](#custom-headers-solution-2)
+    - [Custom headers in the response](#custom-headers-in-the-response)
   - [JSON envelope (solution 3)](#json-envelope-solution-3)
+    - [Links in the JSON envelope](#links-in-the-json-envelope)
 - [Resources](#resources)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

@@ -11,8 +11,42 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
 * [Express](../express/)
 * [Mongoose](../mongoose/)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Security concepts](#security-concepts)
+- [Storing passwords securely](#storing-passwords-securely)
+  - [What is a hash function?](#what-is-a-hash-function)
+  - [Encryption vs. hashing](#encryption-vs-hashing)
+  - [Cryptographic hash functions](#cryptographic-hash-functions)
+- [bcrypt](#bcrypt)
+  - [Using bcrypt to hash a password](#using-bcrypt-to-hash-a-password)
+    - [Using bcrypt with Express and Mongoose](#using-bcrypt-with-express-and-mongoose)
+    - [Hiding the password hash from API responses](#hiding-the-password-hash-from-api-responses)
+  - [Using bcrypt to verify a password](#using-bcrypt-to-verify-a-password)
+    - [Verifying a password with Express and Mongoose](#verifying-a-password-with-express-and-mongoose)
+- [Authentication tokens](#authentication-tokens)
+  - [What is an authentication token?](#what-is-an-authentication-token)
+  - [JSON Web Token (JWT)](#json-web-token-jwt)
+    - [What's in a JWT?](#whats-in-a-jwt)
+    - [JWT claims](#jwt-claims)
+    - [JWT best practices](#jwt-best-practices)
+  - [The `jsonwebtoken` package](#the-jsonwebtoken-package)
+- [Authentication flow](#authentication-flow)
+    - [Unauthorized client](#unauthorized-client)
+    - [Login](#login)
+    - [Authenticated request](#authenticated-request)
+    - [Full flow](#full-flow)
+- [Sample code](#sample-code)
+  - [Sample login route](#sample-login-route)
+  - [Sample Express JWT authentication middleware](#sample-express-jwt-authentication-middleware)
+    - [Using the authentication middleware](#using-the-authentication-middleware)
+    - [Performing authorization](#performing-authorization)
+- [References](#references)
+- [TODO](#todo)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
