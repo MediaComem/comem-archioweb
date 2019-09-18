@@ -1,7 +1,8 @@
 # COMEM+ Web-Oriented Architecture Course
 
-The goal of this course is to conceive and implement a REST API with a real-time
-component. You will:
+The goal of this course is to learn about the generic concept of **web
+service**, focusing on **REST**ful APIs as one way to expose such a service. You
+will:
 
 * Learn the **core principles** of the REST architectural style.
 * Learn how to **implement** a REST API in JavaScript with Node.js.
@@ -83,8 +84,8 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 
 **API**
 
-Your REST API must be developed with the Express framework and use a MongoDB database.
-It must provide (at least):
+Your REST API must be developed with the [Express][express] framework and use a
+[MongoDB][mongodb] database. It must provide (at least):
 
 * The API must provide **user management**:
   * New users must be able to **register**.
@@ -154,6 +155,7 @@ Send an e-mail *no later than __November 25th 2019__* to Simon Oulevay with:
 [demo-api]: https://github.com/MediaComem/comem-webdev-express-rest-demo
 [demo-api-doc]: https://mediacomem.github.io/comem-webdev-express-rest-demo/
 [diagrams]: diagrams.pdf
+[express]: https://expressjs.com
 [git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md
 [git-downloads]: https://git-scm.com/downloads
 [github]: https://github.com

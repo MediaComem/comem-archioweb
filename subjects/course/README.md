@@ -1,13 +1,13 @@
-# COMEM+ Web Services Course
+# COMEM+ Web-Oriented Architecture Course
 
-The goal of this course is to teach the generic concept of **web service**,
-focusing on **REST**ful APIs as one way to expose such a service.
-You will:
+The goal of this course is to learn about the generic concept of **web
+service**, focusing on **REST**ful APIs as one way to expose such a service. You
+will:
 
 * Learn the **core principles** of the REST architectural style.
-* Learn how to **implement** a RESTful API in JavaScript.
-* Learn how to **manage** your source code on a collaborative platform.
-* Learn how to **deploy** your RESTful API on a cloud application platform.
+* Learn how to **implement** a RESTful API in JavaScript with Node.js.
+* **Danage** your REST API on a cloud application platform.
+* Add a **real-time** component to your REST API with WebSockets.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -32,7 +32,7 @@ You will:
 You can design and implement your own web service idea,
 as long as it meets the [evaluation criteria][eval].
 
-Or you can choose the default project that will be suggested.
+Or you can choose one of the default projects that will be suggested.
 
 <!-- slide-column 40 -->
 
