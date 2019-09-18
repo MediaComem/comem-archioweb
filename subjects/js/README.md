@@ -79,22 +79,52 @@ It has been standardized in the [ECMAScript][es] language specification.
 <img src='images/timeline.png' width='100%' />
 
 * [**ECMAScript 2015** (also known as ECMAScript 6 or ES6)][es6] added iterators and for/of loops, Python-style [generators][js-generators] and generator expressions, [arrow functions][js-arrow-functions], binary data, typed arrays, collections (maps, sets and weak maps), [promises][js-promise], number and math enhancements, reflection, and [proxies][js-proxy].
-* [**ECMAScript 2017** (ES8)][es8] added [async/await functions][js-async] and [shared memory and atomics][js-shared-memory].
-* [**ECMAScript 2018** (ES9)][es9] added [asynchronous iteration][js-async-iteration] and more.
-* [**ECMAScript 2019**][es2019] is still being drafted.
+* [**ECMAScript 2017** (ES8)][es2017] added [async/await functions][js-async] and [shared memory and atomics][js-shared-memory].
+* [**ECMAScript 2018** (ES9)][es2018] added [asynchronous iteration][js-async-iteration] and more.
+* [**ECMAScript 2019** (ES10)][es2019] added various utility methods.
+
+#### [ECMAScript standard moves to yearly releases][es-yearly-releases]
+
+<p class='center'><img src='images/new-timeline.png' class='w95' /></p>
 
 
 
-### JavaScript ES6+ support
+### TC39
 
-There are features from ES6 that are **not yet fully supported** on all browsers.
+<!-- slide-column 70 -->
 
-In client-side code running in the **browser**,
-you should stick with **ES5** or use a JavaScript compiler like [Babel][babel] or a module bundler like [Webpack][webpack]
-to turn your ES6+ code into compatible ES5 code before releasing it.
+ECMA International's [TC39][tc39] is a group of JavaScript developers,
+implementers, academics, and more, collaborating with the community to maintain
+and evolve the definition of JavaScript.
 
-In server-side code running with the latest **Node.js** versions,
-all **ES6+** features are supported except for [imports][js-imports].
+Changes to the language are developed by way of a [process][tc39-process] which
+provides guidelines for evolving an addition from an idea to a fully specified
+feature, complete with acceptance tests and multiple implementations. There are
+five stages: a strawperson stage, and 4 "maturity" stages. The TC39 committee
+must approve acceptance for each stage.
+
+The [current proposals][tc39-proposals] in the various stages are available on
+GitHub.
+
+<!-- slide-column -->
+
+<img src='images/tc39.png' class='w100' />
+
+
+
+### ECMAScript 2015/ES6+ support
+
+There are features from JavaScript ES6 (or later versions) that may **not yet
+fully supported** on all browsers.
+
+Where backwards-compatilibity is important in client-side code running in the
+**browser**, you should stick with **ES5** or use a JavaScript compiler like
+[Babel][babel], a module bundler like [Webpack][webpack], or a language that
+compiles to JavaScript like [TypeScript][ts], to turn your ES6+ code into
+compatible ES5 code before releasing it.
+
+In server-side code running with the latest **Node.js** versions, all **ES6+**
+features are supported except for [imports][js-imports].
 
 
 
@@ -1120,9 +1150,10 @@ console.log(crew);
 [babel]: http://babeljs.io
 [chrome]: https://www.google.com/chrome/
 [es]: https://en.wikipedia.org/wiki/ECMAScript
+[es-yearly-releases]: https://thenewstack.io/whats-new-es2016/
 [es6]: http://es6-features.org/
-[es8]: http://2ality.com/2016/02/ecmascript-2017.html
-[es9]: http://2ality.com/2017/02/ecmascript-2018.html
+[es2017]: http://2ality.com/2016/02/ecmascript-2017.html
+[es2018]: http://2ality.com/2017/02/ecmascript-2018.html
 [es2019]: http://2ality.com/2018/02/ecmascript-2019.html
 [ex-function-as-argument]: http://codepen.io/AlphaHydrae/pen/dNBpPv?editors=0010
 [first-class-functions]: https://en.wikipedia.org/wiki/First-class_function
@@ -1148,4 +1179,8 @@ console.log(crew);
 [push-doc]: https://www.w3schools.com/jsref/jsref_push.asp
 [slice-doc]: https://www.w3schools.com/jsref/jsref_slice_array.asp
 [reverse-doc]: https://www.w3schools.com/jsref/jsref_reverse.asp
+[tc39]: https://tc39.es
+[tc39-process]: https://tc39.es/process-document
+[tc39-proposals]: https://github.com/tc39/proposals#readme
+[ts]: https://www.typescriptlang.org
 [webpack]: https://webpack.js.org/
