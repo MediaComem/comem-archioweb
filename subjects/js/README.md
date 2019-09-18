@@ -132,6 +132,8 @@ features are supported except for [imports][js-imports].
 
 <!-- slide-front-matter class: center, middle -->
 
+`boolean`, `null`, `number`, `string`, `symbol`, `undefined`
+
 
 
 ### JavaScript has 6 primitive data types
@@ -341,7 +343,7 @@ let hello = function(name) {
 };
 
 // The hello variable now holds a function
-console.log(typeof(hello)); // "function"
+console.log(typeof hello); // "function"
 
 // You can call it
 hello('World'); // "Hello World!"
@@ -354,7 +356,7 @@ let anObject = {
 };
 
 // That property now holds a function as its value
-console.log(typeof(anObject.aProperty)); // "function"
+console.log(typeof anObject.aProperty); // "function"
 
 let value = anObject.aProperty();
 console.log(value); // 42
@@ -363,6 +365,8 @@ console.log(value); // 42
 
 
 ### Returning functions from a function
+
+<runkit except='1'></runkit>
 
 ```js
 // Let's define a function that returns a function
@@ -374,13 +378,11 @@ function makeSquareFunction() {
 
 // By calling it, we get a function
 let square = makeSquareFunction();
-console.log(typeof(square)); // "function"
+console.log(typeof square); // "function"
 
 let result = square(5);
 console.log(result); // 25
 ```
-
-<runkit except='1'></runkit>
 
 Note that functions can be **anonymous** (i.e. they have no name),
 like the function returned from `makeSquareFunction`:
@@ -422,8 +424,8 @@ function multiply(a, b) {
 
 // Define a function that takes two numbers
 // and a function to apply to those numbers
-function compute() {
-  // Give me some arguments and implement me!
+function compute(/* TODO: give me some arguments! */) {
+  // TODO: implement me!
 }
 
 // Call compute with "add"
@@ -488,7 +490,7 @@ let divideFunc = function(nb1, nb2) {
 
 #### Arrow function arguments
 
-<runkit except='0,1'></runkit>
+<runkit except='0'></runkit>
 
 Let's see how an arrow function is written:
 
@@ -502,6 +504,7 @@ If your function has **only one** argument, you can **omit** the parentheses:
 
 ```js
 let squareroot = `number` => Math.sqrt(number);
+console.log(squareroot(4)); // 2
 ```
 
 But if your function has **no arguments**, you **MUST** add **empty parentheses**:
@@ -578,7 +581,7 @@ function Starship(name, designation) {
 let discovery = new Starship("Discovery", "NCC-1031");
 console.log(discovery);
 // Starship {name: "Discovery", designation: "NCC-1031"}
-``` 
+```
 
 > It's possible to implement class-like structures with **constructor functions** and **prototypes**.
 > JavaScript **ES6** also adds **actual classes** (based on **prototypes**).
