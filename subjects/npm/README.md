@@ -104,9 +104,11 @@ For operating systems:
 
 ### The npm registry
 
-> "The [npm registry][npm] hosts over a quarter million packages of reusable code — the largest code registry in the world."
+The [npm registry][npm] hosts over a million packages of reusable code — the largest code registry in the world.
 
 <img src='images/popular-packages.png' width='100%' />
+
+It contains [more than double the next most populated package registry][modulecounts] (the Apache Maven repository).
 
 
 
@@ -773,6 +775,7 @@ In these cases, you can set the `private` property of the `package.json` file:
 
 
 [express]: https://expressjs.com
+[modulecounts]: http://www.modulecounts.com
 [node]: https://nodejs.org
 [npm]: https://www.npmjs.com
 [npm-cli]: https://docs.npmjs.com/cli/npm
