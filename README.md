@@ -27,28 +27,28 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 
 ## Plan
 
-* [Introduction](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/webserv-course?home=MediaComem%2Fcomem-webserv%23readme)
+* [Introduction](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Basics
-  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/js?home=MediaComem%2Fcomem-webserv%23readme)
-  * [Node.js](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/node?home=MediaComem%2Fcomem-webserv%23readme) JavaScript runtime
-  * [npm](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/npm?home=MediaComem%2Fcomem-webserv%23readme) Node.js package manager
-  * [REST & HTTP](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest?home=MediaComem%2Fcomem-webserv%23readme)
+  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Node.js](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
+  * [npm](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
+  * [REST & HTTP](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Creating a web service
-  * [Express](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express?home=MediaComem%2Fcomem-webserv%23readme) web framework
-  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/mongodb?home=MediaComem%2Fcomem-webserv%23readme) document-oriented database
-  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/mongoose?home=MediaComem%2Fcomem-webserv%23readme) Object-Document Mapper
+  * [Express](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
+  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
+  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
 
 * Deploying your web service
-  * [Heroku](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/heroku?home=MediaComem%2Fcomem-webserv%23readme) cloud application platform
+  * [Heroku](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/heroku?home=MediaComem%2Fcomem-archioweb%23readme) cloud application platform
 
 * Creating a REST API
   * REST in depth
-  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-best-practices?home=MediaComem%2Fcomem-webserv%23readme)
-  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-mongoose?home=MediaComem%2Fcomem-webserv%23readme) in Express (filtering, pagination, aggregation)
-  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-auth?home=MediaComem%2Fcomem-webserv%23readme)
-  * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/apidoc?home=MediaComem%2Fcomem-webserv%23readme) with apiDoc
+  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
+  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
 
 * Real-time communication
   * WebSockets
