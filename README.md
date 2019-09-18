@@ -107,7 +107,7 @@ Your REST API must be developed with the [Express][express] framework and use a
   * Sensitive operations must be protected by requiring valid **authentication**.
     * Authentication must be provided in the form of a [JWT token][jwt] or an equivalent mechanism.
 * The API must have a real-time pub-sub component:
-  * *At least one* of the following must be provided:
+  * *One or the other* of the following must be provided:
     * A `ws://` or `wss://` endpoint to which a plain WebSockets client can connect to receive real-time messages.
     * A WAMP pub-sub topic to which a Subscriber can subscribe to receive real-time messages.
   * The WebSockets endpoint or WAMP topic must send real-time messages containing relevant data for the application.
