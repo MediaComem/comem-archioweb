@@ -1,6 +1,7 @@
-# REST APIs Introduction
+# REST Introduction & HTTP
 
-Learn the core architectural principles of RESTful APIs are and how they compare to big web services.
+Learn the core architectural principles of REST and how they can be applied to
+make RESTful web APIs with HTTP and URLs.
 
 **You will need**
 
@@ -16,9 +17,10 @@ Learn the core architectural principles of RESTful APIs are and how they compare
   - [Remote procedure call (RPC) or remote method invocation (RMI)](#remote-procedure-call-rpc-or-remote-method-invocation-rmi)
   - [Web services standards](#web-services-standards)
   - [Pros & cons](#pros--cons)
-- [RESTful web services](#restful-web-services)
-  - [What is a REST API?](#what-is-a-rest-api)
-  - [Principles of a REST architecture](#principles-of-a-rest-architecture)
+- [REST](#rest)
+  - [What is REST?](#what-is-rest)
+    - [REST architectural constraints](#rest-architectural-constraints)
+    - [So... what is REST?](#so-what-is-rest)
   - [What is a web resource?](#what-is-a-web-resource)
   - [[Uniform Resource Locator (URL)][url]](#uniform-resource-locator-urlurl)
   - [Resource vs. representation](#resource-vs-representation)
@@ -128,39 +130,65 @@ Many standards:
 
 
 
-## RESTful web services
+## REST
 
 <!-- slide-front-matter class: center, middle -->
 
+<img src='images/cat-resting.jpg' class='w70' />
 
-
-### What is a REST API?
-
-* API means [Application Programming Interface][api]
-
-  > A clearly defined method of communication to interact with your program/service.
-
-* REST means [REpresentational State Transfer][rest]
-
-  > An architectural style for building distributed computer systems on the Internet (i.e. it's a type of [Web Service][web-service]).
-
-  > The World Wide Web is one example that exhibits the characteristics of a REST architecture.
-
-<!-- slide-notes -->
-
-REST has been introduced in Roy Fielding’s Ph.D. thesis (Roy Fielding has been a contributor to the HTTP specification, to the apache server, to the apache community).
+*A cat RESTing...*
 
 
 
-### Principles of a REST architecture
+### What is REST?
+
+REST means [REpresentational State Transfer][rest]. It is an architectural style
+for building distributed [web services][web-service] on the Internet. The World
+Wide Web is one example that exhibits the characteristics of a REST
+architecture.
+
+> REST has been introduced in [Roy Fielding’s Ph.D. thesis][roy-fielding-thesis]
+> (Roy Fielding has been a contributor to the HTTP specification, and to the
+> Apache server and community).
+
+An API or web service that follows REST's architectural constraints is said to
+be a *RESTful API* or *RESTful web service*.
+
+#### REST architectural constraints
+
+A system is considered to follow the REST architecture if it follows [these
+constraints][rest-constraints]:
+
+* **Client-server architecture:** the separation of concerns between the user
+  interface (client) and data storage (server) improves portability across
+  platforms, and allows components to evolve independently.
+* **Statelessness:** each request from any client contains all the information
+  necessary to service the request, and the session state is held in the client.
+* **Cacheability:** clients and intermediaries can cache responses indicated as
+  cacheable by the server, improving scalability and performance.
+* **Layered system:** a client cannot ordinarily tell whether it is connected
+  directly to the end server, or to an intermediary along the way. This improves
+  scalability by enabling load balancing and shared caches.
+* **Uniform interface:** a uniform interface simplifies and decouples the
+  architecture, which enables each part to evolve independently.
+
+#### So... what is REST?
+
+These are the basic principles of REST when applied to HTTP web services:
 
 * The state of the application is captured in a set of **resources**
   * Users, photos, comments, tags, albums, etc.
-* Resources are identified with a standard format (e.g. **URLs**)
-* Every resource can have several **representations**
-* There is one unique interface for interacting with resources: **HTTP**
+* There is a **uniform interface** (**HTTP**) to manipulate those resources:
+  * Resources are identified with a standard format (**URLs**).
+  * Every resource can have several **representations** (e.g. HTML or JSON).
+  * The client progresses through the application by applying operations (**HTTP
+    methods:** GET, POST, etc) to resources and exchanging their representations
+    with the server (**state transfer**).
+  * The client can follow server-provided **hyperlinks** to discover available
+    actions and resources ([HATEOAS][hateoas]).
 
-<p class='center'><img src='images/rest.jpg' width='70%' /></p>
+> Note that REST does not mandate the use of HTTP and URLs, but it is the
+> simplest and most popular way of implementing a RESTful web service.
 
 
 
@@ -170,10 +198,10 @@ Something that can be uniquely identified on the web:
 
 <!-- slide-column 50 -->
 
-**Static files**
+**Static content**
 
 * An article published in the "24 heures" newspaper
-* A person's resume
+* A person's birth certificate
 
 <!-- slide-column 50 -->
 
@@ -216,7 +244,7 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
 
 ### Resource vs. representation
 
-* In REST, we use the HTTP protocol to support the exchange of data between a **client** and a **server**
+* In a REST API, we use the HTTP protocol to support the exchange of data (or **state transfer**) between a **client** and a **server**
 * What is exchanged is not the actual resource: it is a **representation** of the resource
 * The **same resource** could have:
   * An HTML representation
@@ -979,8 +1007,9 @@ Collection errors                                                               
 [auth0-tokens]: https://auth0.com/blog/ten-things-you-should-know-about-tokens-and-cookies/
 [chrome]: https://www.google.com/chrome/
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
-[http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+[hateoas]: https://en.wikipedia.org/wiki/HATEOAS
 [headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
+[http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 [http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 [http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
@@ -1000,7 +1029,9 @@ Collection errors                                                               
 [postman]: https://www.getpostman.com
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [rest-cheat-sheet]: http://51elliot.blogspot.ch/2014/03/rest-api-best-practices-rest-cheat-sheet.html
+[rest-constraints]: https://en.wikipedia.org/wiki/Representational_state_transfer#Architectural_constraints
 [rest-intro]: https://www.infoq.com/articles/rest-introduction
 [rest-pragmatic]: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+[roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
 [url]: https://en.wikipedia.org/wiki/Uniform_Resource_Locator
 [web-service]: https://en.wikipedia.org/wiki/Web_service
