@@ -33,7 +33,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
   * [JavaScript](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Node.js](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
   * [npm](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
-  * [REST & HTTP](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [REST introduction & HTTP](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
