@@ -15,7 +15,9 @@ and one of the three core technologies of the web.
 
 - [What is JavaScript?](#what-is-javascript)
   - [JavaScript is still evolving](#javascript-is-still-evolving)
-  - [JavaScript ES6+ support](#javascript-es6-support)
+    - [Yearly release schedule](#yearly-release-schedule)
+  - [TC39](#tc39)
+  - [ECMAScript 2015/ES6+ support](#ecmascript-2015es6-support)
 - [JavaScript types](#javascript-types)
   - [JavaScript has 6 primitive data types](#javascript-has-6-primitive-data-types)
   - [JavaScript has **dynamic** objects](#javascript-has-dynamic-objects)
@@ -83,9 +85,11 @@ It has been standardized in the [ECMAScript][es] language specification.
 * [**ECMAScript 2018** (ES9)][es2018] added [asynchronous iteration][js-async-iteration] and more.
 * [**ECMAScript 2019** (ES10)][es2019] added various utility methods.
 
-#### [ECMAScript standard moves to yearly releases][es-yearly-releases]
+#### Yearly release schedule
 
-<p class='center'><img src='images/new-timeline.png' class='w95' /></p>
+ECMAScript standard moves to [yearly releases][es-yearly-releases]:
+
+<p class='center'><img src='images/new-timeline.png' class='w90' /></p>
 
 
 
