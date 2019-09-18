@@ -3,7 +3,7 @@
   <head>
     <title>Node.js Introduction (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/04c162216eb6626d73d9b6e999c88cac46f08143/subjects/node/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2c206d7d38ba18a0dbda8a283ef2a57768d64e8c/subjects/node/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -60,11 +60,9 @@ class: center, middle, image-header
 <p class='center'><img src='images/lts-schedule.png' width='80%' /></p>
 
 * Odd-numbered versions (e.g. v5, v7, v9) are **unstable** releases with the latest features, and will **no longer be supported after 6-9 months**.
-* Even-numbered versions (e.g. v4, v6, v8, v10) have **long term support (LTS)**.
-  They are actively developed for 6 months.
-  They are supported for 18 months after that.
-  They are still maintained (e.g. security fixes) for 12 months after that.
-  So they are **supported for 36 months**.
+* Even-numbered versions (e.g. v4, v6, v8, v10, v12) have [**long term support (LTS)**][node-lts].
+  They are actively developed for 6 months, but maintained for a total of 30 months (e.g. security fixes).
+  Production applications should use LTS releases.
 
 
 
@@ -73,20 +71,25 @@ class: center, middle, image-header
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-Download and install Node.js now.
-
-If the installation was successfull, you should be able to access Node.js in your CLI:
+Download and install Node.js now. Once the installation is done, you should be
+able to display the version in your CLI:
 
 ```bash
 $> node --version
-v10.11.0
+v12.10.0
+```
 
+By simply running the `node` command without any arguments, you can also open an
+interactive Node.js [REPL][repl] (note the prompt change indicating that you are
+in the Node.js console):
+
+```bash
 $> node
 > 1 + 2
 3
 ```
 
-Type `Ctrl-C` or `.exit` to exit.
+Type `.exit` or press `Ctrl-C` twice to exit.
 
 
 
@@ -124,69 +127,25 @@ but here you are running JavaScript code **locally with Node.js**, like you woul
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-Node.js code is organized in **modules**.
-These are the core modules available to you out of the box:
+Node.js code is organized in **modules**. These are the core modules available
+to you out of the box (with those that you are likely to use in most
+applications highlighted):
 
-.grid-30[
+Assertion Testing, Async Hooks, Buffer, C++ Addons, C/C++ Addons - N-API, **Child Processes**, Cluster, Command Line Options, Console, **Crypto**, Debugger, Deprecated APIs, DNS, Domain, ECMAScript Modules, Errors, **Events**, **File System**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector, Internationalization, Modules, Net, OS, **Path**, Performance Hooks, Policies, **Process**, Punycode, **Query Strings**, Readline, REPL, Report, **Stream**, String Decoder, Timers, **TLS/SSL**, Trace Events, TTY, UDP/Datagram, **URL**, Utilities, V8, VM, Worker Threads, Zlib.
 
-* Assertion Testing
-* Buffer
-* C/C++ Addons
-* **Child Processes**
-* Cluster
-* Command Line Options
-* Console
-* **Crypto**
-* Debugger
-* DNS
-* Domain
-* Errors
-
-
-]
-.grid-30[
-
-* **Events**
-* **File System**
-* Globals
-* **HTTP**
-* **HTTPS**
-* Modules
-* Net
-* OS
-* **Path**
-* **Process**
-* Punycode
-* Query Strings
-
-
-]
-.grid-30[
-
-* Readline
-* REPL
-* Stream
-* String Decoder
-* Timers
-* TLS/SSL
-* TTY
-* UDP/Datagram
-* URL
-* Utilities
-* V8
-* VM
-* ZLIB
+> Refer to the [documentation][node-12-api] for more information.
 
 
 
-
-]
 ---
-### Using modules
+### Requiring core modules
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-You can use modules in your code with `require()`:
+You can get a hold of Node.js's modules in your code by calling `require()` with
+the name of the module. The following example requires the [`os`
+module][node-module-os], which provides operating system-related utility
+methods:
 
 ```js
 // Require the operating system core module
@@ -243,8 +202,9 @@ Code that uses `require()` on that file will receive the `exports` object.
 
 <runkit disabled></runkit>
 
-You also use `require()` for your own module, but instead of just a name you have to provide a **relative file path**.
-Modify `script.js` as follows:
+You also use `require()` for your own module, but instead of just a name you
+have to provide a **file path** (relative or absolute). Modify `script.js` as
+follows:
 
 ```js
 // Require the utils.js file in the current directory
@@ -831,7 +791,6 @@ If you save the script to `bug1.js` and execute it this is what will happen:
 ```bash
 $> node bug1.js
 undefined
-Could not read file because: ENOENT: no such file or directory, open 'hello.txt'
 ```
 
 ---
@@ -1121,7 +1080,7 @@ server.on('request', function(message) {
 
 **Documentation**
 
-* [Core modules (10.x)][node-10-api]
+* [Core modules (12.x)][node-12-api]
 
 **Further reading**
 
@@ -1140,9 +1099,12 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-10-api]: https://nodejs.org/dist/latest-v10.x/docs/api/
+[node-12-api]: https://nodejs.org/dist/latest-v12.x/docs/api/
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
+[node-lts]: https://nodejs.org/en/about/releases
+[node-module-os]: https://nodejs.org/dist/latest-v12.x/docs/api/os.html#os_os
+[repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
 [twisted]: http://twistedmatrix.com/trac/
 

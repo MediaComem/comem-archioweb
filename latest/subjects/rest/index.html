@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>REST APIs Introduction (Media Engineering Web-Oriented Architecture)</title>
+    <title>REST Introduction &amp; HTTP (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/04c162216eb6626d73d9b6e999c88cac46f08143/subjects/rest/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2c206d7d38ba18a0dbda8a283ef2a57768d64e8c/subjects/rest/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
-# REST APIs Introduction
+# REST Introduction & HTTP
 
-Learn the core architectural principles of RESTful APIs are and how they compare to big web services.
+Learn the core architectural principles of REST and how they can be applied to
+make RESTful web APIs with HTTP and URLs.
 
 **You will need**
 
@@ -23,7 +24,7 @@ Learn the core architectural principles of RESTful APIs are and how they compare
 ---
 ## What is a Web Service?
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 <p class='center'><img src='images/network.jpg' width='70%' /></p>
 
@@ -36,7 +37,7 @@ How can they find each other, know what logic can be invoked, and talk to each o
 class: center, middle
 ## Big web services
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 
 
@@ -45,7 +46,7 @@ class: center, middle
 ---
 ### Remote procedure call (RPC) or remote method invocation (RMI)
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#3">Big web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#3">Big web services</a>]
 
 <p class='center'><img src='images/rmi.png' width='80%' /></p>
 
@@ -54,7 +55,7 @@ class: center, middle
 ---
 ### Web services standards
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#3">Big web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#3">Big web services</a>]
 
 <p class='center'><img src='images/web-services-standards-overview.gif' width='90%' /></p>
 
@@ -63,7 +64,7 @@ class: center, middle
 ---
 ### Pros & cons
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#3">Big web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#3">Big web services</a>]
 
 Many standards:
 
@@ -97,63 +98,92 @@ Many standards:
 ]
 ---
 class: center, middle
-## RESTful web services
+## REST
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
-
-
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 
 
----
-### What is a REST API?
+<img src='images/cat-resting.jpg' class='w70' />
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#7">RESTful web services</a>]
-
-* API means [Application Programming Interface][api]
-
-  > A clearly defined method of communication to interact with your program/service.
-
-* REST means [REpresentational State Transfer][rest]
-
-  > An architectural style for building distributed computer systems on the Internet (i.e. it's a type of [Web Service][web-service]).
-
-  > The World Wide Web is one example that exhibits the characteristics of a REST architecture.
-
-???
-
-REST has been introduced in Roy Fielding’s Ph.D. thesis (Roy Fielding has been a contributor to the HTTP specification, to the apache server, to the apache community).
+*A cat RESTing...*
 
 
 
 ---
-### Principles of a REST architecture
+### What is REST?
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#7">RESTful web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#7">REST</a>]
+
+REST means [REpresentational State Transfer][rest]. It is an architectural style
+for building distributed [web services][web-service] on the Internet. The World
+Wide Web is one example that exhibits the characteristics of a REST
+architecture.
+
+> REST has been introduced in [Roy Fielding’s Ph.D. thesis][roy-fielding-thesis]
+> (Roy Fielding has been a contributor to the HTTP specification, and to the
+> Apache server and community).
+
+An API or web service that follows REST's architectural constraints is said to
+be a *RESTful API* or *RESTful web service*.
+
+---
+#### REST architectural constraints
+
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#7">REST</a> > <a href="#8">What is REST?</a>]
+
+A system is considered to follow the REST architecture if it follows [these
+constraints][rest-constraints]:
+
+* **Client-server architecture:** the separation of concerns between the user
+  interface (client) and data storage (server) improves portability across
+  platforms, and allows components to evolve independently.
+* **Statelessness:** each request from any client contains all the information
+  necessary to service the request, and the session state is held in the client.
+* **Cacheability:** clients and intermediaries can cache responses indicated as
+  cacheable by the server, improving scalability and performance.
+* **Layered system:** a client cannot ordinarily tell whether it is connected
+  directly to the end server, or to an intermediary along the way. This improves
+  scalability by enabling load balancing and shared caches.
+* **Uniform interface:** a uniform interface simplifies and decouples the
+  architecture, which enables each part to evolve independently.
+
+---
+#### So... what is REST?
+
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#7">REST</a> > <a href="#8">What is REST?</a>]
+
+These are the basic principles of REST when applied to HTTP web services:
 
 * The state of the application is captured in a set of **resources**
   * Users, photos, comments, tags, albums, etc.
-* Resources are identified with a standard format (e.g. **URLs**)
-* Every resource can have several **representations**
-* There is one unique interface for interacting with resources: **HTTP**
+* There is a **uniform interface** (**HTTP**) to manipulate those resources:
+  * Resources are identified with a standard format (**URLs**).
+  * Every resource can have several **representations** (e.g. HTML or JSON).
+  * The client progresses through the application by applying operations (**HTTP
+    methods:** GET, POST, etc) to resources and exchanging their representations
+    with the server (**state transfer**).
+  * The client can follow server-provided **hyperlinks** to discover available
+    actions and resources ([HATEOAS][hateoas]).
 
-<p class='center'><img src='images/rest.jpg' width='70%' /></p>
+> Note that REST does not mandate the use of HTTP and URLs, but it is the
+> simplest and most popular way of implementing a RESTful web service.
 
 
 
 ---
 ### What is a web resource?
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#7">RESTful web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#7">REST</a>]
 
 Something that can be uniquely identified on the web:
 
 .grid-50[
 
-**Static files**
+**Static content**
 
 * An article published in the "24 heures" newspaper
-* A person's resume
+* A person's birth certificate
 
 
 ]
@@ -191,7 +221,7 @@ Something that can be uniquely identified on the web:
 ---
 ### [Uniform Resource Locator (URL)][url]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#7">RESTful web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#7">REST</a>]
 
 > "A reference to a **web resource** that specifies its **location** on a computer network and a **mechanism** for retrieving it."
 
@@ -210,9 +240,9 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
 ---
 ### Resource vs. representation
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#7">RESTful web services</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#7">REST</a>]
 
-* In REST, we use the HTTP protocol to support the exchange of data between a **client** and a **server**
+* In a REST API, we use the HTTP protocol to support the exchange of data (or **state transfer**) between a **client** and a **server**
 * What is exchanged is not the actual resource: it is a **representation** of the resource
 * The **same resource** could have:
   * An HTML representation
@@ -226,7 +256,7 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
 class: center, middle
 ## [HyperText Transfer Protocol (HTTP)][http]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 
 
@@ -239,7 +269,7 @@ class: center, middle
 ---
 ### HTTP is a request-response protocol
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a>]
 
 When you visit the following page:
 
@@ -277,7 +307,7 @@ Content-Type: text/html; charset=UTF-8
 ---
 ### Anatomy of an HTTP request
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a>]
 
 Get the third page of a movies list:
 
@@ -303,7 +333,7 @@ Host: www.example.com
 ---
 #### Request method
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#15">Anatomy of an HTTP request</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#16">Anatomy of an HTTP request</a>]
 
 The first line of an HTTP request is the **request line**:
 
@@ -326,7 +356,7 @@ There are [more methods][http-methods].
 ---
 #### Resource path
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#15">Anatomy of an HTTP request</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#16">Anatomy of an HTTP request</a>]
 
 The second part of the request line is the **resource path**:
 
@@ -339,7 +369,7 @@ It tells the server where to find the resource to perform the action on.
 ---
 #### Query string
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#15">Anatomy of an HTTP request</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#16">Anatomy of an HTTP request</a>]
 
 The **query string** is the third part of the request line:
 
@@ -357,7 +387,7 @@ In this case:
 ---
 #### Headers
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#15">Anatomy of an HTTP request</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#16">Anatomy of an HTTP request</a>]
 
 After the request line, an HTTP request has one or more **headers**:
 
@@ -377,7 +407,7 @@ There are many [headers][headers] that can be used in requests.
 ---
 #### Request body
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#15">Anatomy of an HTTP request</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#16">Anatomy of an HTTP request</a>]
 
 The **body** is data that the client can ask the server to do something with:
 
@@ -403,7 +433,7 @@ In this case:
 ---
 ### Anatomy of an HTTP response
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a>]
 
 An HTML page:
 
@@ -437,7 +467,7 @@ Content-Type: application/json
 ---
 #### Status code and reason phrase
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#21">Anatomy of an HTTP response</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#22">Anatomy of an HTTP response</a>]
 
 The first line of an HTTP response is the **status line**:
 
@@ -459,7 +489,7 @@ There are many [status codes][http-status-codes] a server can use to help the cl
 ---
 #### Headers
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#21">Anatomy of an HTTP response</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#22">Anatomy of an HTTP response</a>]
 
 Like requests, an HTTP response has one or more **headers** after the status line:
 
@@ -487,7 +517,7 @@ There are many [headers][headers] that can be used in responses.
 ---
 #### Response body
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#21">Anatomy of an HTTP response</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a> > <a href="#22">Anatomy of an HTTP response</a>]
 
 The response body is the (optional) data sent by the server.
 Its nature depends on what the request was and what the response status code indicates.
@@ -522,7 +552,7 @@ Content-Type: application/json
 ---
 ### HTTP provides the [content negotiation][http-content-negotiation] mechanisms
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#13">[HyperText Transfer Protocol (HTTP)][http]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#14">[HyperText Transfer Protocol (HTTP)][http]</a>]
 
 Different **representations** of a resource can be exchanged at the **same URL**:
 
@@ -585,7 +615,7 @@ HTTP/1.1 200 OK
 class: center, middle
 ## But can't I just use GET and POST?
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 
 
@@ -596,7 +626,7 @@ I'm lazy that way.
 ---
 ### Standards
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 A lot of smart people have encountered **the same problems you have** over the years.
 They have come together and defined **standard solutions** to deal with some of those problems.
@@ -610,7 +640,7 @@ It's up to you to decide whether you want to **reinvent the wheel**, or **stand 
 ---
 ### Common [methods][http-methods]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 | Method    | Purpose                                                       |
 | :---      | :---                                                          |
@@ -628,7 +658,7 @@ It's up to you to decide whether you want to **reinvent the wheel**, or **stand 
 class: compact-table
 ### Common request [headers][http-request-headers]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 
 
@@ -649,7 +679,7 @@ Example                              | What the client is asking
 class: compact-table
 ### Common response [headers][http-response-headers]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 
 
@@ -669,7 +699,7 @@ Example                                  | What the server is telling you
 class: compact-table
 ### Common successful response [status codes][http-status-codes]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 
 
@@ -689,7 +719,7 @@ Code                    | What the server is telling you
 class: compact-table
 ### Common client error response [status codes][http-status-codes]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 
 
@@ -715,7 +745,7 @@ Code                         | What the server is telling you
 class: compact-table
 ### Common server error response [status codes][http-status-codes]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 
 
@@ -735,7 +765,7 @@ Code                        | What the server is telling you
 ---
 ### Conditional update example
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a>]
 
 If **two users** save a form on a website at the same time,
 there is a possible *race condition* where one user's changes can be **silently overwritten** by the other's:
@@ -747,7 +777,7 @@ there is a possible *race condition* where one user's changes can be **silently 
 ---
 #### Conditional update solution
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#26">But can't I just use GET and POST?</a> > <a href="#34">Conditional update example</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#27">But can't I just use GET and POST?</a> > <a href="#35">Conditional update example</a>]
 
 The `If-Match` and `If-Unmodified-Since` headers allow the client to **conditionally update** a resource.
 If the resource **has changed** compared to the specified identifier or since the specified date,
@@ -760,7 +790,7 @@ the server should **refuse** the request and respond with `412 Precondition Fail
 ---
 ## [Create, read, update, delete (CRUD)][crud]
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 Since REST deals primarily with **resources**, in a REST API you will (mostly):
 
@@ -778,7 +808,7 @@ https://evening-meadow-25867.herokuapp.com
 ---
 ### Postman
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a>]
 
 To make requests to the API, we will use [Postman][postman], an HTTP client with a GUI.
 **Download and launch** the application now.
@@ -790,7 +820,7 @@ You don't have to sign up when it prompts you to, you can skip it:
 ---
 #### Postman interface
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#37">Postman</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#38">Postman</a>]
 
 Postman allows you to make any HTTP **request/response** (e.g. `POST`, `PUT`, custom headers, etc).
 It also remembers your **previous requests**..
@@ -802,7 +832,7 @@ It also remembers your **previous requests**..
 ---
 ### Create
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a>]
 
 The API allows us to **create a person** by making a `POST` request with a **JSON representation** of the person.
 This is the request we want to make:
@@ -823,7 +853,7 @@ Let's make that request with Postman:
 ---
 #### Create request headers
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#39">Create</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#40">Create</a>]
 
 You can see and modify the request headers in the **Headers** tab:
 
@@ -836,7 +866,7 @@ Press the **Send** button to send the request.
 ---
 #### Create response
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#39">Create</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#40">Create</a>]
 
 You should see the response below the request configuration:
 
@@ -851,7 +881,7 @@ In other words: the server tells us that **a new person has been created** by re
 ---
 #### Create response headers
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#39">Create</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#40">Create</a>]
 
 You can also see the response headers in the **Headers** tab:
 
@@ -866,7 +896,7 @@ The server tells us where to find the new resource in the **Location** header.
 ---
 ### Read
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a>]
 
 Let's make a request to **read** (or **retrieve**) the person we created.
 This time we need a simple `GET` request to the path given to us in the **Location** header of the previous response:
@@ -882,7 +912,7 @@ Configure that request in Postman:
 ---
 #### Read response
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#43">Read</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#44">Read</a>]
 
 Press **Send** and you should retrieve the person in the response:
 
@@ -896,7 +926,7 @@ The `200 OK` status code indicates that the request was **successful**.
 ---
 #### Read a resource that does not exist
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#43">Read</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#44">Read</a>]
 
 Configure the same request but change the last character of the URL path:
 
@@ -911,7 +941,7 @@ By sending a response with the `404 Not Found` status code, the server tells us 
 ---
 #### Read a collection
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#43">Read</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#44">Read</a>]
 
 The API also has a resource that represents the **collection of people** that have been created.
 Let's make a `GET` request to **read** that.
@@ -928,7 +958,7 @@ Configure that request in Postman:
 ---
 #### Read collection response
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#43">Read</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#44">Read</a>]
 
 Press **Send** and you should receive a response with several people in it:
 
@@ -942,7 +972,7 @@ Since that represents multiple people, we receive a **JSON array**, where each e
 ---
 ### Update
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a>]
 
 The API also allows us to **update** a person by making a `PUT` request to the person's resource with a **JSON representation** of the updated person.
 Let's make a request to add your birthdate:
@@ -961,7 +991,7 @@ Configure that request with Postman:
 ---
 #### Update response
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#48">Update</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#49">Update</a>]
 
 Press **Send** and you should receive the updated person in the response:
 
@@ -977,7 +1007,7 @@ Since no new resource was created, the server simply responds with `200 OK`.
 ---
 #### Partial update with PUT
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#48">Update</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#49">Update</a>]
 
 Now, configure the same request but **without the gender**, and press **Send**:
 
@@ -986,7 +1016,7 @@ Now, configure the same request but **without the gender**, and press **Send**:
 ---
 #### Partial update response with PUT
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#48">Update</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#49">Update</a>]
 
 The server is responding with the status code `422 Unprocessable Entity`, meaning that the request was refused because the person representation you sent is invalid (it is missing the gender property):
 
@@ -998,7 +1028,7 @@ which it cannot do in this case because it is **invalid**. API operations using 
 ---
 #### Partial updates with PATCH
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#48">Update</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#49">Update</a>]
 
 The `PATCH` method was later added to the HTTP specification to support **partial updates**.
 The API also supports it, so let's make a PATCH request to update your birthdate:
@@ -1017,7 +1047,7 @@ Configure that request with Postman:
 ---
 #### Partial update response with PATCH
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#48">Update</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#49">Update</a>]
 
 This time the request was accepted:
 
@@ -1035,7 +1065,7 @@ Like with `PUT`, no new resource was created, so the server responds with `200 O
 ---
 ### Delete
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a>]
 
 Finally, let's **delete** the person.
 We simply need to make a `DELETE` request with no request body:
@@ -1051,7 +1081,7 @@ Configure that request with Postman:
 ---
 #### Delete response
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#54">Delete</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#55">Delete</a>]
 
 Press **Send** and you should get a response from the server with no response body:
 
@@ -1072,7 +1102,7 @@ but `204 No Content` was chosen for this API implementation.
 class: compact-table
 ### CRUD summary
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a>]
 
 
 
@@ -1088,7 +1118,7 @@ Collection (`people` - plural name)                                             
 class: compact-table
 #### CRUD errors summary
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a> > <a href="#36">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#56">CRUD summary</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#37">[Create, read, update, delete (CRUD)][crud]</a> > <a href="#57">CRUD summary</a>]
 
 
 
@@ -1105,7 +1135,7 @@ Collection errors                                                               
 ---
 ## Resources
 
-.breadcrumbs[<a href="#1">REST APIs Introduction</a>]
+.breadcrumbs[<a href="#1">REST Introduction & HTTP</a>]
 
 **Documentation**
 
@@ -1126,8 +1156,9 @@ Collection errors                                                               
 [auth0-tokens]: https://auth0.com/blog/ten-things-you-should-know-about-tokens-and-cookies/
 [chrome]: https://www.google.com/chrome/
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
-[http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+[hateoas]: https://en.wikipedia.org/wiki/HATEOAS
 [headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
+[http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
 [http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 [http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
@@ -1147,8 +1178,10 @@ Collection errors                                                               
 [postman]: https://www.getpostman.com
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [rest-cheat-sheet]: http://51elliot.blogspot.ch/2014/03/rest-api-best-practices-rest-cheat-sheet.html
+[rest-constraints]: https://en.wikipedia.org/wiki/Representational_state_transfer#Architectural_constraints
 [rest-intro]: https://www.infoq.com/articles/rest-introduction
 [rest-pragmatic]: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+[roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
 [url]: https://en.wikipedia.org/wiki/Uniform_Resource_Locator
 [web-service]: https://en.wikipedia.org/wiki/Web_service
 
