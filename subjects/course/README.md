@@ -48,7 +48,7 @@ In this course, you will *develop* and *deploy* a **REST web service backend**:
 
 ### Next course
 
-In the **next Mobile Applications course**,
+In the **next Mobile Development course**,
 you will develop a **hybrid mobile application frontend** to use your web service
 (or to use the web service that will be provided as a default).
 
