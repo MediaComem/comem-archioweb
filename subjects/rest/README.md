@@ -964,7 +964,7 @@ but `204 No Content` was chosen for this API implementation.
 
 <!-- slide-front-matter class: compact-table -->
 
-Collection (`people` - plural name)                                                                                                  | Single resource (`/people/:id` - one person in the collection)
+Collection (`/people` - plural name)                                                                                                 | Single resource (`/people/:id` - one person in the collection)
 :---                                                                                                                                 | :---
 `POST /api/people`<br/>**Create a new resource** in the collection, `201 Created` and `Location` header (and optional response body) | -
 `GET /api/people`<br/>**Read a list of resources** (with optional pagination, sorting and filtering), `200 OK`                       | `GET /api/people/:id`<br/>**Read one resource**, `200 OK`
