@@ -326,26 +326,26 @@ Mongoose schemas have built-in validations:
 const personSchema = new Schema({
   name: {
     type: String, // Type validation
-    required: true, // Mandatory
-    minlength: [ 3, 'Name is too short' ], // Minimum length
-    maxlength: 20 // Maximum length
+    `required: true`, // Mandatory
+    `minlength: [ 3, 'Name is too short' ]`, // Minimum length
+    `maxlength: 20` // Maximum length
   },
   address: {
     city: {
       type: String,
-      required: true
+      `required: true`
     }
   },
   honorific: {
     type: String,
-    enum: [ 'Mr', 'Mrs', 'Ms', 'Dr' ] // Limit valid values
+    `enum: [ 'Mr', 'Mrs', 'Ms', 'Dr' ]` // Limit valid values
   },
   age: {
     type: Number,
-    min: 0, // Minimum value
-    max: 122 // Maximum value
+    `min: 0`, // Minimum value
+    `max: 122` // Maximum value
   },
-  interests: [{ type: String, maxlength: 10 }]
+  interests: [{ type: String, `maxlength: 10` }]
 });
 ```
 
@@ -414,7 +414,7 @@ const personSchema = new Schema({
     required: true,
     minlength: [ 3, 'Name is too short' ],
     maxlength: 20,
-    `unique`: true
+    `unique: true`
   },
   // ...
 });
@@ -486,7 +486,7 @@ Person
   .where('address.city').equals('Los Angeles')
   .where('age').gt(17).lt(80)
   .where('interests').in(['shooting', 'talking'])
-  .count(function(err, total) {
+  `.count`(function(err, total) {
     if (err) {
       return console.warn('Could not count people because: ' + err.message);
     }
