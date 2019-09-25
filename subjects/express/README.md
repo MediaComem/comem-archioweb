@@ -180,11 +180,10 @@ As instructed, let's install the dependencies:
 ```bash
 $> cd my-app
 $> npm install
-├─┬ body-parser@1.15.2
-├─┬ cookie-parser@1.4.3
-├─┬ debug@2.2.0
-├─┬ express@4.14.1
-│ ├─┬ ...
+...
+npm notice created a lockfile as package-lock.json. You should commit this file.
+added 99 packages from 139 contributors and audited 194 packages in 2.705s
+...
 ```
 
 And run it:
@@ -219,6 +218,10 @@ GET /stylesheets/style.css 200 2.457 ms - -
 ## Application structure
 
 <!-- slide-front-matter class: center, middle -->
+
+<img src='images/structure.jpg' class='w70' />
+
+What goes where
 
 
 
@@ -279,15 +282,15 @@ Let's take a look at the generated `package.json`:
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.16.0",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.0",
-    "express": "~4.14.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2"
+    "morgan": "~1.9.1"
   }
 }
+
 ```
 
 * There is a **start script** configured to launch the app with `npm start`
@@ -428,16 +431,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 ```
 
 Middleware functions are **plugged into your application** by passing them to `app.use()`.
@@ -544,11 +545,12 @@ Now there's an error... Why?
   my-app:server Listening on port 3000 +0ms
 Hello World!
 GET / 304 - ms - -
-Error: Can't set headers after they are sent.
-    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:356:11)
-    at ServerResponse.header (.../express/lib/response.js:719:10)
-    at ServerResponse.contentType (.../express/lib/response.js:552:15)
-    at ServerResponse.send (.../express/lib/response.js:139:14)
+Error [ERR_HTTP_HEADERS_SENT]:
+  Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (_http_outgoing.js:455:11)
+    at ServerResponse.header (.../express/lib/response.js:767:10)
+    at ServerResponse.contentType (.../express/lib/response.js:595:15)
+    at ServerResponse.send (.../express/lib/response.js:145:14)
     ...
 ```
 
@@ -628,7 +630,7 @@ app.use(function(req, res, next) {
 ```
 
 Many middlewares use this pattern to **provide data to the next middlewares**.
-For example, the `bodyParser.json()` middleware parses the body of HTTP requests with the `application/json` content type,
+For example, the `express.json()` middleware parses the body of HTTP requests with the `application/json` content type,
 and attaches it to the `req.body` property.
 
 
@@ -831,7 +833,7 @@ Finally, let's get the request body:
 }
 ```
 
-As long as you have the `bodyParser.json()` middleware in your chain, it's as simple as this:
+As long as you have the `express.json()` middleware in your chain, it's as simple as this:
 
 ```js
 app.all('/test/:param1/:param2', function(req, res, next) {
