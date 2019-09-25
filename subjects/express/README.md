@@ -78,6 +78,8 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 <!-- slide-front-matter class: center, middle -->
 
+<img src='images/express.png' class='w70' />
+
 A fast, unopinionated, **minimalist** web framework for Node.js
 
 
