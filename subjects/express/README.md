@@ -27,6 +27,10 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
   - [The server component](#the-server-component)
   - [The client component](#the-client-component)
   - [The package.json file](#the-packagejson-file)
+- [Live reload](#live-reload)
+  - [Not having to restart manually](#not-having-to-restart-manually)
+  - [Adding nodemon as a development dependency](#adding-nodemon-as-a-development-dependency)
+  - [Making nodemon faster](#making-nodemon-faster)
 - [Express middleware](#express-middleware)
   - [What is middleware?](#what-is-middleware)
   - [Middleware function signature](#middleware-function-signature)
@@ -64,9 +68,6 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
     - [Plugging in a router](#plugging-in-a-router)
     - [What's it for?](#whats-it-for)
     - [Plugging routers on routers](#plugging-routers-on-routers)
-- [Not having to restart manually](#not-having-to-restart-manually)
-  - [Configuring nodemon properly](#configuring-nodemon-properly)
-  - [Making nodemon faster](#making-nodemon-faster)
 - [Resources](#resources)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -291,6 +292,87 @@ Let's take a look at the generated `package.json`:
 
 * There is a **start script** configured to launch the app with `npm start`
 * A few **dependencies** are pre-installed to provide basic web app functionality
+
+
+
+## Live reload
+
+<!-- slide-front-matter class: center, middle -->
+
+<p class='center'><img src='images/nodemon.png' class='w70' /></p>
+
+### Not having to restart manually
+
+> Unlike PHP with Apache, Node.js source code is not reinterpreted on-the-fly
+> after you make modifications. Once it is loaded into memory, updating the
+> source code has no effect.
+
+[Nodemon][nodemon] is a **monitoring script** that can launch any Node.js app
+for you, and **automatically restart it** when you make changes.
+
+It's an npm package you can install globally:
+
+```bash
+$> npm install -g nodemon
+$> cd /path/to/projects/my-app
+$> DEBUG=my-app:* nodemon
+[nodemon] 1.11.0
+[nodemon] to restart at any time, enter rs
+[nodemon] `watching: *.*`
+[nodemon] `starting node ./bin/www`
+  express-demo:server Listening on port 3000 +0ms
+```
+
+It will execute the `npm start` script defined in your `package.json` by default,
+and restart the app if **any file changes**.
+
+### Adding nodemon as a development dependency
+
+Instead of installing it globally, it's good practice to install nodemon as a **development dependency** so that your whole team can use it without having to re-install it globally on their machine:
+
+```bash
+$> cd /path/to/projects/my-app
+$> npm install --save-dev nodemon
+```
+
+Add an npm run script called `dev` in your `package.json` file:
+
+```json
+{
+  "name": "my-app",
+  "scripts": {
+*   "dev": "nodemon",
+    "start": "node ./bin/www"
+  },
+  ...
+}
+```
+
+If you commit this change, anyone cloning your repository can run nodemon (after running `npm install`):
+
+```bash
+$> npm run dev
+```
+
+### Making nodemon faster
+
+Nodemon watches **all file changes** by default; this consumes extra CPU time
+and memory. You can make it watch **only relevant files** by adding a
+`nodemon.json` configuration file in your project's directory:
+
+```json
+{
+  "watch": [
+    "app.js",
+    "bin/www",
+    "routes/**/*.js"
+  ]
+}
+```
+
+If you add **new directories** containing source code to your project, **do not
+forget** to add them to this configuration file for nodemon to watch them as
+well.
 
 
 
@@ -1161,78 +1243,6 @@ booksRouter.`use('/books/:id/comments', makeCommentsRouter(findBook))`;
 const makeCommentsRouter = require('./comments');
 moviesRouter.`use('/movies/:id/comments', makeCommentsRouter(findMovie)`);
 ```
-
-
-
-## Not having to restart manually
-
-[Nodemon][nodemon] is a **monitoring script** that can launch any Node.js app for you,
-and **automatically restart it** when you make changes.
-
-It's an npm package you can install globally:
-
-```bash
-$> npm install -g nodemon
-$> cd /path/to/projects/my-app
-$> DEBUG=my-app:* nodemon
-[nodemon] 1.11.0
-[nodemon] to restart at any time, enter rs
-[nodemon] `watching: *.*`
-[nodemon] `starting node ./bin/www`
-  express-demo:server Listening on port 3000 +0ms
-```
-
-It will execute the `npm start` script defined in your `package.json` by default,
-and restart the app if **any file changes**.
-
-
-
-### Configuring nodemon properly
-
-Instead of installing it globally, it's good practice to install nodemon as a **development dependency** so that your whole team can use it without having to re-install it globally on their machine:
-
-```bash
-$> cd /path/to/projects/my-app
-$> npm install --save-dev nodemon
-```
-
-Add an npm run script called `dev` in your `package.json` file:
-
-```json
-{
-  "name": "my-app",
-  "scripts": {
-*   "dev": "nodemon",
-    "start": "node ./bin/www"
-  },
-  ...
-}
-```
-
-If you commit this change, anyone cloning your repository can run nodemon (after running `npm install`):
-
-```bash
-$> npm run dev
-```
-
-
-
-### Making nodemon faster
-
-Nodemon watches **all file changes** by default; this consumes extra CPU time and memory.
-You can make it watch only **relevant files** by adding a `nodemon.json` configuration file in your project's directory:
-
-```json
-{
-  "watch": [
-    "app.js",
-    "bin/www",
-    "routes/**/*.js"
-  ]
-}
-```
-
-If you add **new directories** to your project, **do not forget** to add them to this configuration file for nodemon to watch them as well.
 
 
 
