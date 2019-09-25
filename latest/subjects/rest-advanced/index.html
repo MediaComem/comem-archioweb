@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>REST In Depth (Media Engineering Web-Oriented Architecture)</title>
+    <meta charset='utf-8'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/95cae17e0f9fe0feebfd4b650d272ae5e8e3662b/subjects/rest-advanced/README.md&quot;}'>
+  </head>
+  <body>
+    <textarea id='source'>
+# REST In Depth
+
+Learn about more advanced [REST][rest] concepts like [HATEOAS][hateoas], and the
+various ways REST APIs are implemented in the wild, from "practical REST" to
+"true REST".
+
+
+
+
+
+---
+class: center, middle, image-header
+## Richardson Maturity Model
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+
+
+<img src='images/richardson-maturity-model.png' class='w90' />
+
+
+
+---
+### How RESTful is my API?
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a>]
+
+The technologies of the World Wide Web form an amazing technology stack you can
+pick from when developing your REST API. However, not everyone understands all
+of these technologies or how to use them to their fullest potential.
+
+.grid-40[
+
+The [REST maturity model developed by Leonard Richardson][rest-maturity] splits
+the web technologies used to develop REST APIs into a stack with 4 levels.
+
+Web developers tend to pick technologies from the bottom of the stack.
+
+
+]
+.grid-60[
+
+<img src='images/richardson-maturity-model-small.png' class='w100' />
+
+
+
+
+]
+---
+## Resources
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+**Documentation**
+
+* [GitHub REST API version 3][github-api]
+* [Twitter REST API][twitter-api]
+* [Foxy Hypermedia REST API][foxy-api]
+
+**Further reading**
+
+* [Architectural Styles and the Design of Network-based Software Architectures (Roy Fielding)][roy-fielding-thesis]
+* [Justice Will Take Us Millions Of Intricate Moves - Act Three: The Maturity Heuristic (Leonard Richardson)][rest-maturity]
+  * [Richardson Maturity Model (Martin Fowler)][rest-maturity-fowler]
+  * [4 Maturity Levels Of REST API Design (Guy Levin)][rest-maturity-levin]
+* [How to GET a Cup of Coffee][get-coffee]
+* [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
+
+
+
+[foxy-api]: https://api.foxycart.com/docs
+[get-coffee]: https://www.infoq.com/articles/webber-rest-workflow/
+[github-api]: https://developer.github.com/v3/
+[hateoas]: https://en.wikipedia.org/wiki/HATEOAS
+[rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
+[rest-maturity]: https://www.crummy.com/writing/speaking/2008-QCon/act3.html
+[rest-maturity-fowler]: https://martinfowler.com/articles/richardsonMaturityModel.html
+[rest-maturity-levin]: https://blog.restcase.com/4-maturity-levels-of-rest-api-design/
+[rest-standards]: https://standards.rest
+[roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+[twitter-api]: https://developer.twitter.com/en/docs/api-reference-index
+    </textarea>
+    <script src='https://embed.runkit.com'></script>
+    <script src='../../subject-6febf8e6a6534a4429e8.js'></script>
+  </body>
+</html>

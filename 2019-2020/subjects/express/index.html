@@ -3,7 +3,7 @@
   <head>
     <title>Express (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2c206d7d38ba18a0dbda8a283ef2a57768d64e8c/subjects/express/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/95cae17e0f9fe0feebfd4b650d272ae5e8e3662b/subjects/express/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -13,7 +13,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 **You will need**
 
-* [Node.js][node] 8+
+* [Node.js][node] 12+
 * [Google Chrome][chrome] (recommended, any browser with developer tools will do)
 * [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 
@@ -27,12 +27,14 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 
 ---
-class: center, middle
+class: center, middle, image-header
 ## What is Express?
 
 .breadcrumbs[<a href="#1">Express</a>]
 
 
+
+<img src='images/express.png' class='w70' />
 
 A fast, unopinionated, **minimalist** web framework for Node.js
 
@@ -156,11 +158,10 @@ As instructed, let's install the dependencies:
 ```bash
 $> cd my-app
 $> npm install
-├─┬ body-parser@1.15.2
-├─┬ cookie-parser@1.4.3
-├─┬ debug@2.2.0
-├─┬ express@4.14.1
-│ ├─┬ ...
+...
+npm notice created a lockfile as package-lock.json. You should commit this file.
+added 99 packages from 139 contributors and audited 194 packages in 2.705s
+...
 ```
 
 And run it:
@@ -202,6 +203,10 @@ class: center, middle
 .breadcrumbs[<a href="#1">Express</a>]
 
 
+
+<img src='images/structure.jpg' class='w70' />
+
+What goes where
 
 
 
@@ -271,19 +276,113 @@ Let's take a look at the generated `package.json`:
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.16.0",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.0",
-    "express": "~4.14.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2"
+    "morgan": "~1.9.1"
   }
 }
+
 ```
 
 * There is a **start script** configured to launch the app with `npm start`
 * A few **dependencies** are pre-installed to provide basic web app functionality
+
+
+
+---
+class: center, middle
+## Live reload
+
+.breadcrumbs[<a href="#1">Express</a>]
+
+
+
+<p class='center'><img src='images/nodemon.png' class='w70' /></p>
+
+---
+### Not having to restart manually
+
+.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Live reload</a>]
+
+> Unlike PHP with Apache, Node.js source code is not reinterpreted on-the-fly
+> after you make modifications. Once it is loaded into memory, updating the
+> source code has no effect.
+
+[Nodemon][nodemon] is a **monitoring script** that can launch any Node.js app
+for you, and **automatically restart it** when you make changes.
+
+It's an npm package you can install globally:
+
+```bash
+$> npm install -g nodemon
+$> cd /path/to/projects/my-app
+$> DEBUG=my-app:* nodemon
+[nodemon] 1.11.0
+[nodemon] to restart at any time, enter rs
+[nodemon] `watching: *.*`
+[nodemon] `starting node ./bin/www`
+  express-demo:server Listening on port 3000 +0ms
+```
+
+It will execute the `npm start` script defined in your `package.json` by default,
+and restart the app if **any file changes**.
+
+---
+### Adding nodemon as a development dependency
+
+.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Live reload</a>]
+
+Instead of installing it globally, it's good practice to install nodemon as a **development dependency** so that your whole team can use it without having to re-install it globally on their machine:
+
+```bash
+$> cd /path/to/projects/my-app
+$> npm install --save-dev nodemon
+```
+
+Add an npm run script called `dev` in your `package.json` file:
+
+```json
+{
+  "name": "my-app",
+  "scripts": {
+*   "dev": "nodemon",
+    "start": "node ./bin/www"
+  },
+  ...
+}
+```
+
+If you commit this change, anyone cloning your repository can run nodemon (after running `npm install`):
+
+```bash
+$> npm run dev
+```
+
+---
+### Making nodemon faster
+
+.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Live reload</a>]
+
+Nodemon watches **all file changes** by default; this consumes extra CPU time
+and memory. You can make it watch **only relevant files** by adding a
+`nodemon.json` configuration file in your project's directory:
+
+```json
+{
+  "watch": [
+    "app.js",
+    "bin/www",
+    "routes/**/*.js"
+  ]
+}
+```
+
+If you add **new directories** containing source code to your project, **do not
+forget** to add them to this configuration file for nodemon to watch them as
+well.
 
 
 
@@ -302,7 +401,7 @@ Handling requests and responses
 ---
 ### What is middleware?
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 Middlewares are functions that are called **during the application's request-response cycle**.
 They can:
@@ -310,14 +409,14 @@ They can:
 * Execute any code
 * Make changes to the request and the response objects
 * End the request-response cycle
-* Call the next middleware in the stack
+* Call the next middleware in the chain
 
 
 
 ---
 ### Middleware function signature
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 This is an example of a middleware function:
 
@@ -341,7 +440,7 @@ So, middlewares form a **chain** and are executed **in order, one by one**.
 ---
 ### Plug in middleware functions
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 Open `app.js`:
 
@@ -352,16 +451,14 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 ```
 
 Middleware functions are **plugged into your application** by passing them to `app.use()`.
@@ -372,7 +469,7 @@ As you can see, several middlewares are already plugged in.
 ---
 ### Add your own
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 Add your new middleware function just below the creation of the Express application:
 
@@ -401,7 +498,7 @@ GET /stylesheets/style.css 304 2.356 ms - -
 ---
 ### Limiting middleware by HTTP method or URL path
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 You can use a middleware only for HTTP requests on a specific path:
 
@@ -424,9 +521,9 @@ As you can see, you can use `res.send()` to send a response to the client.
 
 
 ---
-### Controlling the middleware stack
+### Controlling the middleware chain
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 Remove the call to `next()` in your first middleware function:
 
@@ -443,9 +540,9 @@ The page is not loading... Why?
 ---
 #### Sending a response
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#18">Controlling the middleware stack</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#22">Controlling the middleware chain</a>]
 
-By not calling `next()`, you have **interrupted the middleware stack**:
+By not calling `next()`, you have **interrupted the middleware chain**:
 the next middleware functions are not being executed, so no response is being sent to the client.
 
 Update your middleware again, this time to send a response to the client:
@@ -465,7 +562,7 @@ But you're still not calling next, so all you see is the Hello World response.
 ---
 #### Calling next again
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#18">Controlling the middleware stack</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#22">Controlling the middleware chain</a>]
 
 Put the call to `next()` back in:
 
@@ -483,18 +580,19 @@ Now there's an error... Why?
   my-app:server Listening on port 3000 +0ms
 Hello World!
 GET / 304 - ms - -
-Error: Can't set headers after they are sent.
-    at ServerResponse.OutgoingMessage.setHeader (_http_outgoing.js:356:11)
-    at ServerResponse.header (.../express/lib/response.js:719:10)
-    at ServerResponse.contentType (.../express/lib/response.js:552:15)
-    at ServerResponse.send (.../express/lib/response.js:139:14)
+Error [ERR_HTTP_HEADERS_SENT]:
+  Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (_http_outgoing.js:455:11)
+    at ServerResponse.header (.../express/lib/response.js:767:10)
+    at ServerResponse.contentType (.../express/lib/response.js:595:15)
+    at ServerResponse.send (.../express/lib/response.js:145:14)
     ...
 ```
 
 ---
 #### Only one response can be sent
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#18">Controlling the middleware stack</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#22">Controlling the middleware chain</a>]
 
 This is what happens:
 
@@ -506,8 +604,8 @@ Your code is trying to send *two responses for the same request*.
 
 Remember that each middleware function can either:
 
-* Modify the request/response and pass them along to the **next middleware** in the stack
-* **OR send the response** to the client and interrupt the stack
+* Modify the request/response and pass them along to the **next middleware** in the chain
+* **OR send the response** to the client and interrupt the chain
 
 This is an application of the [chain of responsibility][design-pattern-cor] design pattern.
 Each middleware decides whether to handle the request and stop the chain, or pass it along.
@@ -515,7 +613,7 @@ Each middleware decides whether to handle the request and stop the chain, or pas
 ---
 #### Serving the index page
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#18">Controlling the middleware stack</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#22">Controlling the middleware chain</a>]
 
 Let's look at a few examples:
 
@@ -529,7 +627,7 @@ Host: localhost:3000
 ---
 #### Serving static files
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#18">Controlling the middleware stack</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#22">Controlling the middleware chain</a>]
 
 ```http
 GET /stylesheets/style.css HTTP/1.1
@@ -541,7 +639,7 @@ Host: localhost:3000
 ---
 #### Creating a user with a JSON payload
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#18">Controlling the middleware stack</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#22">Controlling the middleware chain</a>]
 
 ```http
 POST /users HTTP/1.1
@@ -561,7 +659,7 @@ Host: localhost:3000
 ---
 ### Attaching data to the request in a middleware
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 You can attach data to the request object:
 
@@ -582,7 +680,7 @@ app.use(function(req, res, next) {
 ```
 
 Many middlewares use this pattern to **provide data to the next middlewares**.
-For example, the `bodyParser.json()` middleware parses the body of HTTP requests with the `application/json` content type,
+For example, the `express.json()` middleware parses the body of HTTP requests with the `application/json` content type,
 and attaches it to the `req.body` property.
 
 
@@ -590,7 +688,7 @@ and attaches it to the `req.body` property.
 ---
 ### Asynchronous middleware
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 You don't have to call `next()` right away.
 You can do it after some asynchronous calls:
@@ -608,14 +706,14 @@ app.use(function(req, res, next) {
 });
 ```
 
-The middleware stack will not proceed until you call `next()`.
+The middleware chain will not proceed until you call `next()`.
 
 
 
 ---
 ### How to deal with errors in middlewares
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a>]
 
 Sometimes things go wrong:
 
@@ -640,7 +738,7 @@ app.use(function(req, res, next) {
 ---
 #### Error-handling middleware
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#27">How to deal with errors in middlewares</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#31">How to deal with errors in middlewares</a>]
 
 When you pass an error to `next()`, the following "normal" middleware functions are **not called**.
 Only special **error-handling middleware functions** are called.
@@ -658,7 +756,7 @@ Simply declaring the function with these 4 arguments tells Express that this is 
 ---
 #### Error-handling example
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#27">How to deal with errors in middlewares</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#31">How to deal with errors in middlewares</a>]
 
 As you can see in this example, when an error occurs in the first middleware,
 other normal middlewares are **bypassed** until an **error-handling middleware** is found.
@@ -679,7 +777,7 @@ Host: localhost:3000
 ---
 #### Error-handling middleware in the generated application
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#12">Express middleware</a> > <a href="#27">How to deal with errors in middlewares</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#31">How to deal with errors in middlewares</a>]
 
 Take a look at `app.js`.
 One error-handling middleware has already been plugged in for you:
@@ -716,7 +814,7 @@ Using the `req` object
 ---
 ### Request example
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#31">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
 
 How can we extract all the data from this request?
 
@@ -740,7 +838,7 @@ Authorization: Basic Zm9vOmJhcgo=
 ---
 ### Getting the HTTP method, URL path and query parameters
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#31">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
 
 Let's start with the request line:
 
@@ -765,7 +863,7 @@ app.all('/test/:param1/:param2', function(req, res, next) {
 ---
 ### Getting HTTP headers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#31">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
 
 Now let's get the headers:
 
@@ -802,7 +900,7 @@ app.all('/test/:param1/:param2', function(req, res, next) {
 ---
 ### Getting the HTTP request body
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#31">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
 
 Finally, let's get the request body:
 
@@ -816,7 +914,7 @@ Finally, let's get the request body:
 }
 ```
 
-As long as you have the `bodyParser.json()` middleware in your stack, it's as simple as this:
+As long as you have the `express.json()` middleware in your chain, it's as simple as this:
 
 ```js
 app.all('/test/:param1/:param2', function(req, res, next) {
@@ -848,7 +946,7 @@ Using the `res` object
 ---
 ### Sending the response
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#36">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
 
 Use `res.send()` for most use cases.
 It will automatically determine the type of content your are sending and set the appropriate `Content-Type` header:
@@ -904,7 +1002,7 @@ Content-Type: application/json
 ---
 ### Setting the HTTP status code
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#36">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
 
 Use `res.status()` to set the status code:
 
@@ -958,7 +1056,7 @@ HTTP/1.1 204 No Content
 ---
 ### Sending HTTP response headers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#36">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
 
 Use `res.set()` to set headers:
 
@@ -1032,7 +1130,7 @@ Some text
 ---
 ### Chain response methods
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#36">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
 
 You can also chain all the previous methods together:
 
@@ -1082,7 +1180,7 @@ Mapping HTTP methods and URLs to handler functions
 ---
 ### Basic routing
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a>]
 
 As we've seen, basic routing can be applied to middleware by using `.get`, `.post`, etc and passing a path:
 
@@ -1111,7 +1209,7 @@ Getting book 33 by 24
 ---
 ### Routing middlewares
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a>]
 
 A route can also contain **its own chain of successive middlewares**:
 
@@ -1138,7 +1236,7 @@ These middleware functions are **only executed for that route** (`GET /hello` in
 ---
 ### Routers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a>]
 
 An Express [router][router] is an **isolated instance of middleware and routes**.
 It's basically a **mini-app**.
@@ -1179,7 +1277,7 @@ that way you don't have one monolithic file with all your code in it.
 ---
 #### Creating a router
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a> > <a href="#44">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
 
 ```js
 var express = require('express');
@@ -1209,7 +1307,7 @@ Note that we don't use `/books` and `/books/:id` as paths but `/` and `/:id`.
 ---
 #### Plugging in a router
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a> > <a href="#44">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
 
 A router behaves like a middleware function, so you can simply plug it into your application with `app.use()`:
 
@@ -1236,7 +1334,7 @@ It will handle HTTP requests to `/books/42`, for example.
 ---
 #### What's it for?
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a> > <a href="#44">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
 
 Imagine a more complex API where **comments** can be attached to **multiple other resources**:
 
@@ -1289,7 +1387,7 @@ moviesRouter.`delete('/:id/comments/:cid'`, /*...*/);
 ---
 #### Plugging routers on routers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#41">Routing</a> > <a href="#44">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
 
 With a router, you could **define these sub-paths once**:
 
@@ -1317,87 +1415,6 @@ booksRouter.`use('/books/:id/comments', makeCommentsRouter(findBook))`;
 const makeCommentsRouter = require('./comments');
 moviesRouter.`use('/movies/:id/comments', makeCommentsRouter(findMovie)`);
 ```
-
-
-
----
-## Not having to restart manually
-
-.breadcrumbs[<a href="#1">Express</a>]
-
-[Nodemon][nodemon] is a **monitoring script** that can launch any Node.js app for you,
-and **automatically restart it** when you make changes.
-
-It's an npm package you can install globally:
-
-```bash
-$> npm install -g nodemon
-$> cd /path/to/projects/my-app
-$> DEBUG=my-app:* nodemon
-[nodemon] 1.11.0
-[nodemon] to restart at any time, enter rs
-[nodemon] `watching: *.*`
-[nodemon] `starting node ./bin/www`
-  express-demo:server Listening on port 3000 +0ms
-```
-
-It will execute the `npm start` script defined in your `package.json` by default,
-and restart the app if **any file changes**.
-
-
-
----
-### Configuring nodemon properly
-
-.breadcrumbs[<a href="#1">Express</a> > <a href="#49">Not having to restart manually</a>]
-
-Instead of installing it globally, it's good practice to install nodemon as a **development dependency** so that your whole team can use it without having to re-install it globally on their machine:
-
-```bash
-$> cd /path/to/projects/my-app
-$> npm install --save-dev nodemon
-```
-
-Add an npm run script called `dev` in your `package.json` file:
-
-```json
-{
-  "name": "my-app",
-  "scripts": {
-*   "dev": "nodemon",
-    "start": "node ./bin/www"
-  },
-  ...
-}
-```
-
-If you commit this change, anyone cloning your repository can run nodemon (after running `npm install`):
-
-```bash
-$> npm run dev
-```
-
-
-
----
-### Making nodemon faster
-
-.breadcrumbs[<a href="#1">Express</a> > <a href="#49">Not having to restart manually</a>]
-
-Nodemon watches **all file changes** by default; this consumes extra CPU time and memory.
-You can make it watch only **relevant files** by adding a `nodemon.json` configuration file in your project's directory:
-
-```json
-{
-  "watch": [
-    "app.js",
-    "bin/www",
-    "routes/**/*.js"
-  ]
-}
-```
-
-If you add **new directories** to your project, **do not forget** to add them to this configuration file for nodemon to watch them as well.
 
 
 

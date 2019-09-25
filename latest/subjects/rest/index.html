@@ -3,7 +3,7 @@
   <head>
     <title>REST Introduction &amp; HTTP (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2c206d7d38ba18a0dbda8a283ef2a57768d64e8c/subjects/rest/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/95cae17e0f9fe0feebfd4b650d272ae5e8e3662b/subjects/rest/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -1106,7 +1106,7 @@ class: compact-table
 
 
 
-Collection (`people` - plural name)                                                                                                  | Single resource (`/people/:id` - one person in the collection)
+Collection (`/people` - plural name)                                                                                                 | Single resource (`/people/:id` - one person in the collection)
 :---                                                                                                                                 | :---
 `POST /api/people`<br/>**Create a new resource** in the collection, `201 Created` and `Location` header (and optional response body) | -
 `GET /api/people`<br/>**Read a list of resources** (with optional pagination, sorting and filtering), `200 OK`                       | `GET /api/people/:id`<br/>**Read one resource**, `200 OK`
@@ -1145,6 +1145,7 @@ Collection errors                                                               
 
 **Further reading**
 
+* [Architectural Styles and the Design of Network-based Software Architectures (Roy Fielding)][roy-fielding-thesis]
 * [A brief introduction to REST][rest-intro]
 * [REST Cheat Sheet][rest-cheat-sheet]
 * [Using HTTP Methods for RESTful Services][http-methods-rest]

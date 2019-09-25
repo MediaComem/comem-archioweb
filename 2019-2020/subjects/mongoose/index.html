@@ -3,7 +3,7 @@
   <head>
     <title>Mongoose (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2c206d7d38ba18a0dbda8a283ef2a57768d64e8c/subjects/mongoose/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/95cae17e0f9fe0feebfd4b650d272ae5e8e3662b/subjects/mongoose/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -341,32 +341,32 @@ knows that it exists and should be **updated** instead.
 
 .breadcrumbs[<a href="#1">Mongoose</a> > <a href="#7">What is Mongoose?</a>]
 
-Mongoose schemas have build-in validations:
+Mongoose schemas have built-in validations:
 
 ```js
 const personSchema = new Schema({
   name: {
     type: String, // Type validation
-    required: true, // Mandatory
-    minlength: [ 3, 'Name is too short' ], // Minimum length
-    maxlength: 20 // Maximum length
+    `required: true`, // Mandatory
+    `minlength: [ 3, 'Name is too short' ]`, // Minimum length
+    `maxlength: 20` // Maximum length
   },
   address: {
     city: {
       type: String,
-      required: true
+      `required: true`
     }
   },
   honorific: {
     type: String,
-    enum: [ 'Mr', 'Mrs', 'Ms', 'Dr' ] // Limit valid values
+    `enum: [ 'Mr', 'Mrs', 'Ms', 'Dr' ]` // Limit valid values
   },
   age: {
     type: Number,
-    min: 0, // Minimum value
-    max: 122 // Maximum value
+    `min: 0`, // Minimum value
+    `max: 122` // Maximum value
   },
-  interests: [{ type: String, maxlength: 10 }]
+  interests: [{ type: String, `maxlength: 10` }]
 });
 ```
 
@@ -444,7 +444,7 @@ const personSchema = new Schema({
     required: true,
     minlength: [ 3, 'Name is too short' ],
     maxlength: 20,
-    `unique`: true
+    `unique: true`
   },
   // ...
 });
@@ -525,7 +525,7 @@ Person
   .where('address.city').equals('Los Angeles')
   .where('age').gt(17).lt(80)
   .where('interests').in(['shooting', 'talking'])
-  .count(function(err, total) {
+  `.count`(function(err, total) {
     if (err) {
       return console.warn('Could not count people because: ' + err.message);
     }
