@@ -76,7 +76,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 ## What is Express?
 
-<!-- slide-front-matter class: center, middle -->
+<!-- slide-front-matter class: center, middle, image-header -->
 
 <img src='images/express.png' class='w70' />
 
