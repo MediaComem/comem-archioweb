@@ -325,5 +325,5 @@ So you can **ignore** this warning **as long as you're only running MongoDB for 
 
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
-[mongodb-download]: https://www.mongodb.com/download-center#community
+[mongodb-download]: https://www.mongodb.com/download-center/community
 [installation-instructions]: https://docs.mongodb.com/manual/installation/
