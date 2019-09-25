@@ -92,7 +92,7 @@ There are **three ways** you can run MongoDB, assuming you have it at `~/mongodb
    $> mongod
    ```
 
-   (Re-read [The `PATH` variable](..//cli/#30) if you need to refresh your memory.)
+   (Re-read [The `PATH` variable](https://mediacomem.github.io/comem-archidep/2019-2020/subjects/cli/#43) if you need to refresh your memory.)
 
 #### What you should see
 
