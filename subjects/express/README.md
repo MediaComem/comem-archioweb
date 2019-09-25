@@ -37,7 +37,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
   - [Plug in middleware functions](#plug-in-middleware-functions)
   - [Add your own](#add-your-own)
   - [Limiting middleware by HTTP method or URL path](#limiting-middleware-by-http-method-or-url-path)
-  - [Controlling the middleware stack](#controlling-the-middleware-stack)
+  - [Controlling the middleware chain](#controlling-the-middleware-chain)
     - [Sending a response](#sending-a-response)
     - [Calling next again](#calling-next-again)
     - [Only one response can be sent](#only-one-response-can-be-sent)
@@ -392,7 +392,7 @@ They can:
 * Execute any code
 * Make changes to the request and the response objects
 * End the request-response cycle
-* Call the next middleware in the stack
+* Call the next middleware in the chain
 
 
 
@@ -493,7 +493,7 @@ As you can see, you can use `res.send()` to send a response to the client.
 
 
 
-### Controlling the middleware stack
+### Controlling the middleware chain
 
 Remove the call to `next()` in your first middleware function:
 
@@ -509,7 +509,7 @@ The page is not loading... Why?
 
 #### Sending a response
 
-By not calling `next()`, you have **interrupted the middleware stack**:
+By not calling `next()`, you have **interrupted the middleware chain**:
 the next middleware functions are not being executed, so no response is being sent to the client.
 
 Update your middleware again, this time to send a response to the client:
@@ -564,8 +564,8 @@ Your code is trying to send *two responses for the same request*.
 
 Remember that each middleware function can either:
 
-* Modify the request/response and pass them along to the **next middleware** in the stack
-* **OR send the response** to the client and interrupt the stack
+* Modify the request/response and pass them along to the **next middleware** in the chain
+* **OR send the response** to the client and interrupt the chain
 
 This is an application of the [chain of responsibility][design-pattern-cor] design pattern.
 Each middleware decides whether to handle the request and stop the chain, or pass it along.
@@ -651,7 +651,7 @@ app.use(function(req, res, next) {
 });
 ```
 
-The middleware stack will not proceed until you call `next()`.
+The middleware chain will not proceed until you call `next()`.
 
 
 
@@ -831,7 +831,7 @@ Finally, let's get the request body:
 }
 ```
 
-As long as you have the `bodyParser.json()` middleware in your stack, it's as simple as this:
+As long as you have the `bodyParser.json()` middleware in your chain, it's as simple as this:
 
 ```js
 app.all('/test/:param1/:param2', function(req, res, next) {
