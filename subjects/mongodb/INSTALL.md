@@ -213,10 +213,13 @@ Make sure it works by trying a few commands:
 ```bash
 > use test
 connecting to: test
+
 > db.things.insert({ "fruit": "apple" })
 WriteResult({ "nInserted" : 1 })
+
 > db.things.insert({ "name": "John Doe", "age": 24 })
 WriteResult({ "nInserted" : 1 })
+
 > db.things.find()
 { "_id" : ObjectId("56ca09b5d536b4526d219ba8"), "fruit" : "apple" }
 { "_id" : ObjectId("56ca095ed536b4526d219ba7"), "name" : "John Doe", "age" : 24 }
