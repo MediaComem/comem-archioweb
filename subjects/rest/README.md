@@ -996,6 +996,7 @@ Collection errors                                                               
 
 **Further reading**
 
+* [Architectural Styles and the Design of Network-based Software Architectures (Roy Fielding)][roy-fielding-thesis]
 * [A brief introduction to REST][rest-intro]
 * [REST Cheat Sheet][rest-cheat-sheet]
 * [Using HTTP Methods for RESTful Services][http-methods-rest]
