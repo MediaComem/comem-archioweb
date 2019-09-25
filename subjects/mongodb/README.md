@@ -145,9 +145,9 @@ Connect to the MongoDB shell from your CLI and you should have a **new prompt**,
 
 ```bash
 $> mongo
-MongoDB shell version v3.4.1
+MongoDB shell version v4.2.0
 connecting to: mongodb://127.0.0.1:27017
-MongoDB server version: 3.4.1
+MongoDB server version: 4.2.0
 *>
 ```
 

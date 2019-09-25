@@ -35,20 +35,20 @@ Use another path if that is not the case.)
 ```bash
 $> cd ~/Downloads
 
-$> curl -O https://fastdl.mongodb.org/osx/mongodb-osx-ssl-x86_64-3.6.2.tgz
+$> curl -O https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-4.2.0.tgz
 
-$> tar -zxvf mongodb-osx-ssl-x86_64-3.6.2.tgz
+$> tar -zxvf mongodb-macos-x86_64-4.2.0.tgz
 
-$> ls mongodb-osx-ssl-x86_64-3.6.2
-GNU-AGPL-3.0   MPL-2   README   THIRD-PARTY-NOTICES   bin
+$> ls mongodb-macos-x86_64-4.2.0
+LICENSE-Community.txt  MPL-2  README  THIRD-PARTY-NOTICES  ...
 ```
 
-Move and/or rename the `mongodb-osx-ssl-x86_64-3.6.2` directory where you want it (you can do that in the CLI or manually in your Finder/Desktop).
+Move and/or rename the `mongodb-macos-x86_64-4.2.0` directory where you want it (you can do that in the CLI or manually in your Finder/Desktop).
 
 For example, you could move it to your home directory (**_only if_ your username doesn't have any spaces/accents**, otherwise move it somewhere else):
 
 ```bash
-$> mv mongodb-osx-ssl-x86_64-3.6.2 ~/mongodb
+$> mv mongodb-macos-x86_64-4.2.0 ~/mongodb
 ```
 
 
@@ -100,19 +100,17 @@ When you run `mongod`, it should take over the CLI and show you the MongoDB serv
 
 ```bash
 $> mongod
-2017-02-27T10:02 I CONTROL  [init...] MongoDB starting :
-2017-02-27T10:02 I CONTROL  [init...]   pid=3039 port=27017 dbpath=/data/db ...
-2017-02-27T10:02 I CONTROL  [init...] db version v3.4.2
-2017-02-27T10:02 I CONTROL  [init...] ...
-2017-02-27T10:02 I CONTROL  [init...]
-2017-02-27T10:02 I CONTROL  [init...] ** WARNING: Access control is not enabled
-2017-02-27T10:02 I CONTROL  [init...] **          for the database. Read and
-2017-02-27T10:02 I CONTROL  [init...] **          write access to data and
-2017-02-27T10:02 I CONTROL  [init...] **          configuration is unrestricted.
-2017-02-27T10:02 I CONTROL  [init...]
-2017-02-27T10:02 I CONTROL  [init...] ...
-2017-02-27T10:02 I CONTROL  [init...]
-2017-02-27T10:02 I NETWORK  [thread1] `waiting for connections on port 27017`
+2019-09-25T... [initandlisten] MongoDB starting ...
+2019-09-25T... [initandlisten] db version v4.2.0
+2019-09-25T... [initandlisten] ...
+2019-09-25T... [initandlisten] ** WARNING: Access control is not enabled
+2019-09-25T... [initandlisten] **          for the database. Read and write
+2019-09-25T... [initandlisten] **          access to data and configuration
+2019-09-25T... [initandlisten] **          is unrestricted.
+2019-09-25T... [initandlisten] ...
+2019-09-25T... [initandlisten] Listening on 127.0.0.1
+2019-09-25T... [initandlisten] `waiting for connections on port 27017`
+2019-09-25T... [initandlisten] ...
 ```
 
 You will know it's working if it says that it's **waiting for connections on port 27017** (the default port for MongoDB).
@@ -130,9 +128,10 @@ Use the same **three ways** of launching it as for `mongod`, but type `mongo` in
 
 ```bash
 $> mongo
-MongoDB shell version: 3.4.1
-connecting to: mongodb://127.0.0.1:27017
-MongoDB server version: 3.4.2
+MongoDB shell version v4.2.0
+connecting to: mongodb://127.0.0.1:27018...
+MongoDB server version: 4.2.0
+...
 *>
 ```
 
@@ -166,11 +165,11 @@ To run the MongoDB server, you will need to launch the `mongod` executable.
 You need to type the **double-quoted, absolute path** to `mongod.exe` (adapt the path if your MongoDB installation is elsewhere):
 
 ```bash
-$> "C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe"
+$> "C:\Program Files\MongoDB\Server\4.2\bin\mongod.exe"
 
 2016-02-22T07:25 I CONTROL  [init...] MongoDB starting :
 2016-02-22T07:25 I CONTROL  [init...]   pid=203 port=27017 dbpath=\data\db ...
-2016-02-22T07:25 I CONTROL  [init...] db version v3.4.2
+2016-02-22T07:25 I CONTROL  [init...] db version v4.2.0
 2016-02-22T07:25 I CONTROL  [init...] ...
 2016-02-22T07:25 I NETWORK  [init...] `waiting for connections on port 27017`
 ```
@@ -189,10 +188,11 @@ You run the MongoDB shell by launching the `mongo.exe` executable.
 Again, you must use the **double-quoted, absolute path**:
 
 ```bash
-$> "C:\Program Files\MongoDB\Server\3.4\bin\mongo.exe"
-MongoDB shell version: 3.4.2
+$> "C:\Program Files\MongoDB\Server\4.2\bin\mongo.exe"
+MongoDB shell version: 4.2.0
 connecting to: mongodb://127.0.0.1:27017
-MongoDB server version: 3.4.2
+MongoDB server version: 4.2.0
+...
 *>
 ```
 
