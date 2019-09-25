@@ -165,7 +165,7 @@ It is **automatically created** as you first access it.
 
 ### Inserting documents
 
-Insert a couple of documents into a collection named **people** (again, it is automtically created if it doesn't exist):
+Insert a couple of documents into a collection named **people** (again, it is automatically created if it doesn't exist):
 
 ```bash
 db.people.insert({

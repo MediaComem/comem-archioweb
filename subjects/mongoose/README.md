@@ -320,7 +320,7 @@ knows that it exists and should be **updated** instead.
 
 ### Mongoose validations
 
-Mongoose schemas have build-in validations:
+Mongoose schemas have built-in validations:
 
 ```js
 const personSchema = new Schema({
