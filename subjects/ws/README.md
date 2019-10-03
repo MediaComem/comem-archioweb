@@ -61,6 +61,8 @@ sent each time).
 
 Here are a few techniques: [Comet][comet], [Server-Sent Events (SSE)][sse].
 
+### HTTP/2
+
 ### Request-response, half-duplex
 
 * HTTP polling
@@ -173,7 +175,16 @@ https://en.wikipedia.org/wiki/WebSocket#Protocol_handshake
 * https://tools.ietf.org/html/rfc6455#section-5.2
 * https://tools.ietf.org/html/rfc6455#section-5.5
 
-### TODO
+
+
+## Resources
+
+* https://developers.google.com/web/fundamentals/performance/http2/
+* https://building.lang.ai/our-journey-from-websockets-to-http-2-4d069c54effd
+
+
+
+## TODO
 
 * Efficient for small messages
 * URI schemes (`ws`/`wss`), no fragments
