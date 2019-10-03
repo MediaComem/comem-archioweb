@@ -285,41 +285,6 @@ API (HAL+JSON)][foxy-api].
 
 
 
-## Resources vs. actions
-
-Fundamental to the REST architectural style is the idea that you are performing
-actions on resources. In the context of the web this usually means:
-
-* The **HTTP method** is the **action**: `GET`, `POST`, `PUT`, etc.
-* The **URL** identifies the **resource**, i.e. the thing being manipulated.
-
-Which ones of these HTTP requests do you think are RESTful?
-
-* `GET /api/comments`
-* `POST /api/users`
-* `PUT /api/users/:id`
-* `POST /api/users/:id/enable`
-* `POST /api/users/:id/disable`
-* `POST /api/comments/:id/star`
-* `POST /api/comments/:id/unstar`
-
-### Modeling actions with REST
-
-The last 4 requests are technically not RESTful, for example:
-
-* `POST /api/users/:id/enable`
-
-**The URL ends with a verb instead of a noun**, therefore:
-
-* The URL represents an action (verb) instead of a resource (noun).
-* There are 2 actions: the HTTP method, `POST`, and the one in the URL,
-  `enable`.
-
-This is therefore not RESTful. In theory, the only action should be the HTTP
-method, and the URL should always represent a "thing", not an action.
-
-
-
 ## URL structure
 
 Resources often have relationships:
@@ -401,6 +366,154 @@ It's also possible to define **multiple collections** for the same resource at *
 
 These two collections both produce a list of resources of the same type (courses), but **they are different collections**.
 Their contents will vary over time, and most of the time the two collections will not produce the same result (there are courses taught by other professors).
+
+
+
+## Resources vs. actions
+
+Fundamental to the REST architectural style is the idea that you are performing
+actions on resources. In the context of the web this usually means:
+
+* The **HTTP method** is the **action**: `GET`, `POST`, `PUT`, etc.
+* The **URL** identifies the **resource**, i.e. the thing being manipulated.
+
+Which ones of these HTTP requests do you think are RESTful?
+
+* `GET /api/comments`
+* `POST /api/users`
+* `PUT /api/users/:id`
+* `POST /api/users/:id/enable`
+* `POST /api/users/:id/disable`
+* `POST /api/users/:id/follow`
+* `POST /api/comments/:id/star`
+* `POST /api/comments/:id/unstar`
+
+### Modeling actions with REST
+
+The last 5 requests are technically **not RESTful**, for example:
+
+* `POST /api/users/:id/enable`
+
+The URL ends with **a verb instead of a noun**, therefore:
+
+* The URL represents an action (verb) instead of a resource (noun).
+* There are 2 actions: the HTTP method, `POST`, and the one in the URL,
+  `enable`.
+
+In theory, the only action should be the HTTP method, and the URL should always
+represent the "thing" being acted upon, not an action.
+
+### REST actions as properties
+
+Take the following non-RESTful actions:
+
+* `POST /api/users/:id/enable`
+* `POST /api/users/:id/disable`
+
+They could be modeled as a user property instead:
+
+```json
+{
+  "username": "jdoe",
+* "enabled": true
+}
+```
+
+You could then update that property with `PUT` or `PATCH`. The following call
+could be made to disable the user:
+
+```http
+PATCH /api/users/jdoe HTTP/1.1
+Content-Type: application/json
+
+{ "enabled": false }
+```
+
+### REST actions that should really be resources
+
+Take the following non-RESTful action:
+
+* `POST /api/users/:id/follow`
+
+It's very likely that at some point you'll be needing the list of a user's
+followers. This should really be a collection resource that you can add
+followers to:
+
+* `POST /api/users/:id/followers`
+
+That way, you can simply implement this call in the future to list a user's
+followers:
+
+* `GET /api/users/:id/followers`
+
+### REST actions as a sub-resource
+
+Take the following non-RESTful action:
+
+* `POST /api/comments/:id/star`
+* `POST /api/comments/:id/unstar`
+
+If you assume that you can only only star/unstar a comment (i.e. there is only
+one star, not a range from 1 to 5), you can model it as a single sub-resource of
+each comment:
+
+* `PUT /api/comments/:id/star`
+* `DELETE /api/comments/:id/star`
+
+> The first version uses the **verb** "star", while the second version uses the
+> **noun** "star", with the HTTP method indicating the action. Also note that
+> "star" is used in the singular, since there is only one.
+
+### REST actions as a collection
+
+Take the following non-RESTful actions:
+
+* `POST /api/users/:id/enable`
+* `POST /api/users/:id/disable`
+
+We already described one way of modeling these as a property.
+
+However in some cases, you might need to remember all actions that were taken on
+a resource for **auditing** or **security** purposes. For example: GitHub has a
+page that lists all security-related actions on your user account, so that you
+might see if someone else obtained access to your account and did something bad.
+
+In that case, you might want to have a collection resource that represents the
+actions taken on a given user:
+
+* `POST /api/users/:id/actions`
+* `GET /api/users/:id/actions`
+
+#### Using a collection of actions
+
+With such a collection, you would `POST` to create actions:
+
+```http
+POST /api/users/jdoe/actions HTTP/1.1
+Content-Type: application/json
+Location: https://example.com/api/users/jdoe/actions/321
+
+*{ "type": "disable", "reason": "He looks suspicious." }
+```
+
+> The JSON property `"type"` is used in this example to determine what action to
+> take. Other properties would depend on the type of action.
+
+Then later you could `GET /api/users/jdoe/actions` to retrieve the list of
+actions that were performed:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+  { "type": "disable", "reason": "He looks suspicious.", "date": "2010-01-01" },
+  { "type": "changePassword", "date": "2008-03-01" },
+  { "type": "confirmEmail", "date": "2008-01-01" }
+]
+```
+
+Now you have all the data you need for that audit/security page.
 
 
 
