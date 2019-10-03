@@ -167,12 +167,38 @@ Content-Type: application/json
 Using this header, the server can tell the client where to find related
 resources, without the client having to know how to build these URLs.
 
-Each link has a **relation** (like `prev` for the first link above), indicating
-what the link represents in relation to the current resource.
+#### Format of the `Link` header
 
-[Common link relations][iana-link-relations] are standardized and managed by
-[IANA][iana]. For example, the relations `first`, `prev`, `next` and `last` are
-reserved for pagination in collections.
+Multiple links in the header are comma-separated.
+Each link looks like this:
+
+```
+  <https://example.com/api/movies?page=1&pageSize=50>; `rel="first prev"`
+```
+
+It contains:
+
+* The **target URL** between `<>`
+* One or more **parameters** preceded by `;`:
+
+The `rel` (or "relation") parameter is mandatory, as it indicates **what kind of
+link it is**. There is a [registry of official relation
+types][iana-link-relations] (such as `first`, `prev`, `next` and `last` for
+collections).
+
+You can use your own custom relation types but instead of single words, they
+should be URIs:
+
+```
+  <http://example.com/manual>; `rel="http://example.com/my-rels/rtfm"`
+```
+
+You don't have to build this format by hand. You can probably find a package
+that does it for you. For example, a quick [search for "link
+header"][npm-search-link-header] in the npm registry suggests several packages:
+[format-link-header][npm-format-link-header],
+[parse-link-header][npm-parse-link-header],
+[http-link-header][npm-http-link-header], and more.
 
 #### The OPTIONS method in HTTP
 
@@ -335,7 +361,7 @@ Or it could be **flat**:
 In this case, the **flat** version probably makes more sense because:
 
 * The existence of the course **does not depend** on the existence of the professor
-  (if Arnold is murdered, someone else will take over the course)
+  (if you murder Arnold, someone else will take over the course)
 * You'll probably want to be able to **list all courses** on a page somewhere
 
 ### Nested vs. flat URLs
@@ -547,9 +573,10 @@ The director can be **embedded** into the movie's data:
 }
 ```
 
-* *Advantage:* it **reduces chattiness**:
-  fewer requests have to be made to the server to retrieve both the movie's and the director's data
-* *Disadvantage:* **more data** is exchanged between client and server **that the client might not always need**
+* *Advantage:* it **reduces chattiness**: fewer requests have to be made to the
+  server to retrieve both the movie's and the director's data.
+* *Disadvantage:* **more data** is exchanged between client and server **that
+  the client might not always need**.
 
 ### Resource reference via ID
 
@@ -564,45 +591,49 @@ To save bandwidth, only a unique identifier for the director could be included:
 ```
 
 * *Advantages:*
-  * **Smaller JSON payloads**
+  * **Smaller JSON payloads**.
 * *Disadvantages:*
-  * It **increases chattiness**: the client has to make two requests to retrieve both the movie's and the director's data
+  * It **increases chattiness**: the client has to make two requests to retrieve
+    both the movie's and the director's data.
   * The client **must know how to build the URL** to the director resource,
-    which is not always obvious (e.g. you could think it's `/directors/la09sld` but it could be `/people/la09sld`)
+    which is not always obvious (e.g. you could think it's `/directors/la09sld`
+    but it could be `/people/la09sld`).
 
-### Resource reference via URL or hyperlink
+    > This would be considered to be at REST maturity level 2 because it is not
+    > hypermedia.
 
-Instead of just the ID, you could include a hyperlink or URL pointing to the director's resource:
+### Resource reference via hyperlink
 
-```json
-{
-  "title": "The Two Towers",
-  "rating": 7.1,
-* "directorHref": "/api/people/la09sld",
-}
-```
+Instead of just the ID, you could include a hyperlink to the director's resource:
 
 ```json
 {
+* "_links": {
+*   "http://example.com/links/director": {
+*     "href": "http://example.com/api/people/la09sld"
+*   }
+* }
   "title": "The Two Towers",
-  "rating": 7.1,
-* "directorUrl": "http://example.com/api/people/la09sld"
+  "rating": 7.1
 }
 ```
 
 * *Advantage:* **decouples** the client from your API through **hypermedia**:
-  the client can perform many operations without knowing how to build your URLs
-  (this is a REST principle called [HATEOAS][hateoas])
-* *Disadvantages:* it not only **increases chattiness**,
-  but also means somewhat **more data** exchanged between client and server compared to IDs,
-  especially if using full URLs and you have multiple links
+  the client can browse the API without knowing your URLs in advance
+  ([HATEOAS][hateoas]).
+* *Disadvantages:* it **increases chattiness**. It also requires **more work
+  from the client** as it must follow link relations instead of accessing URLs
+  directly.
+
+> This would be REST maturity level 3. If you use this solution, you should use an appropriate media type instead of
+> plain JSON. The above example uses [HAL][hal] but there are others, or you can
+> define your own.
 
 ### Optional resource embedding
 
-Again, there's no *right or wrong* answer: it depends on your use case.
-
-By spending a little more time on your server's implementation,
-it's also possible to **combine** some of these patterns:
+Again, there's no *right or wrong* answer: it depends on your use case. By
+spending a little more time on your server's implementation, it's also possible
+to **combine** some of these patterns:
 
 <!-- slide-column -->
 
@@ -617,7 +648,7 @@ Content-Type: application/json
 {
   "title": "The Two Towers",
   "rating": 7.1,
-  "directorHref": "/api/people/la0"
+  "directorId": "la0"
 }
 ```
 
@@ -634,7 +665,7 @@ Content-Type: application/json
 {
   "title": "The Two Towers",
   "rating": 7.1,
-  "directorHref": "/api/people/la0",
+  "directorId": "la0",
 * "director": {
 *   "id": "la09sld",
 *   "name": "Peter Jackson",
@@ -697,9 +728,7 @@ but embedding a company's employees is probably a really bad idea.
 
 ### Multiple resource references
 
-You can also use identifiers, hyperlinks or URLs for links to multiple resources:
-
-<!-- slide-column -->
+You can also use identifiers or hypermedia for links to multiple resources:
 
 ```json
 {
@@ -708,15 +737,19 @@ You can also use identifiers, hyperlinks or URLs for links to multiple resources
 }
 ```
 
-<!-- slide-column 55 -->
-
 ```json
 {
   "title": "Die Hard With a Vengance",
-  "actorHrefs" : [
-    "/api/people/0a9duvx",
-    "/api/people/acsl9w2",
-    "/api/people/7dis92k"
+  "_embedded" : [
+    {
+      "_links": { "href": "https://example.com/api/people/0a9duvx" }
+    },
+    {
+      "_links": { "href": "https://example.com/api/people/acsl9w2" }
+    },
+    {
+      "_links": { "href": "https://example.com/api/people/7dis92k" }
+    }
   ]
 }
 ```
@@ -768,10 +801,10 @@ Here are a few:
 ### The `Link` header (solution 1)
 
 There have been many ways developers have implemented pagination over the years.
-It's only recently that a [standard header][link-header-rfc] has been defined and started becoming popular.
 
-The `Link` header allows the server to **tell the client where to find other pages** of the collection,
-**without the client having to build new URLs** (also part of [HATEOAS][hateoas]).
+The relatively recent [`Link` header][web-linking] allows the server to **tell
+the client where to find other pages** of the collection, **without the client
+having to build new URLs** ([HATEOAS][hateoas]).
 
 The server can indicate where to find:
 
@@ -781,16 +814,18 @@ The server can indicate where to find:
 * The last page
 * *(Other variants if necessary)*
 
-#### What's in the header?
+#### Pagination with the `Link` header
 
-Consider the following request where the client requests the second page of 50 elements in a collection:
+Consider the following request where the client requests the second page of 50
+elements in a collection:
 
 ```http
 GET /api/movies?`page=2`&`pageSize=50` HTTP/1.1
 ```
 
-In the response, in addition to the 50 movies on that page,
-the server can send a `Link` header with references to **the URLs of other pages** of the collection:
+In the response, in addition to the 50 movies on that page, the server can send
+a `Link` header with references to **the URLs of other pages** of the
+collection:
 
 ```http
 HTTP/1.1 200 OK
@@ -804,50 +839,21 @@ Link: <https://example.com/api/movies?`page=1`&pageSize=50>; rel="`first prev`",
 ]
 ```
 
-*(**Note**: the `Link` header is shown on 3 lines here for readability, but it would be on 1 line in the actual HTTP response.)*
-
-#### What's the link format?
-
-Multiple links in the header are comma-separated.
-Each link looks like this:
-
-```
-  <https://example.com/api/movies?page=1&pageSize=50>; rel="first prev"
-```
-
-It contains:
-
-* The **target URL** between `<>`
-* One or more **parameters** preceded by `;`:
-
-The `rel` (or "relation") parameter is mandatory, as it indicates **what kind of link it is**.
-There is a [registry of official relation types][link-header-rels] (such as `first`, `prev`, `next` and `last`).
-
-You can use your own custom relation types but instead of single words, they should be URIs:
-
-```
-  <http://example.com/manual>; rel="http://example.com/my-rels/rtfm"
-```
-
-You don't have to build this format by hand.
-You can probably find a package that does it for you.
-For example, a quick [search for "link header"][npm-search-link-header] in the npm registry suggests several packages:
-[format-link-header][npm-format-link-header], [parse-link-header][npm-parse-link-header], [http-link-header][npm-http-link-header], and more.
-
 ### Custom headers (solution 2)
 
-The `Link` header has the advantage of being a standard,
-but it's hard to build a **pager** from it:
+The `Link` header has the advantage of being a standard, but it's harder to
+build a **pager** from it:
 
 <p class='center'><img src='images/pagination.png' /></p>
 
-The server would need to send pre-built **links for each page**, which is not very flexible and consumes bandwidth.
+The server would need to send pre-built **links for each page**, and there are
+no standard link relations for that.
 
 HTTP does not forbid you from using non-standard headers,
-so you could decide to use these **custom headers** (for example) to send the client the additional information it needs:
+so you could decide to use these **custom headers** to send the client the additional information it needs:
 
 * A `Pagination-Page` header to tell the client which page is being served
-* A `Pagination-PageSize` header to tell the client what is the current page size
+* A `Pagination-Page-Size` header to tell the client what is the current page size
 * A `Pagination-Total` header to tell the client how many elements there are in the collection
 
 #### Custom headers in the response
@@ -864,7 +870,7 @@ In the response, in addition to the 50 movies on that page, the server can send 
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 *Pagination-Page: 2
-*Pagination-PageSize: 50
+*Pagination-Page-Size: 50
 *Pagination-Total: 231
 
 [
@@ -894,9 +900,10 @@ Content-Type: application/json; charset=utf-8
 }
 ```
 
-#### Links in the JSON envelope
+### Hypermedia pagination (solution 4)
 
-You can also use **link relations** in a JSON envelope (like with the `Link` header) if you prefer that solution:
+Most hypermedia formats, like [HAL][hal], also allow you to include the
+pagination information in the response with standard link relations:
 
 ```http
 HTTP/1.1 200 OK
@@ -906,11 +913,19 @@ Content-Type: application/json; charset=utf-8
   `"data": [`
     ...
   `]`,
-* "links": {
-*   "first": "https://example.com/api/movies?page=1&pageSize=50",
-*   "prev": "https://example.com/api/movies?page=1&pageSize=50",
-*   "next": "https://example.com/api/movies?page=3&pageSize=50",
-*   "last": "https://example.com/api/movies?page=5&pageSize=50"
+* "_links": {
+*   "first": {
+*     "href": "https://example.com/api/movies?page=1&pageSize=50"
+*   },
+*   "prev": {
+*     "href": "https://example.com/api/movies?page=1&pageSize=50"
+*   },
+*   "next": {
+*     "href": "https://example.com/api/movies?page=3&pageSize=50"
+*   },
+*   "last": {
+*     "href": "https://example.com/api/movies?page=5&pageSize=50"
+*   },
 * }
 }
 ```
@@ -994,6 +1009,10 @@ constraints. REST might not always be the best fit for all use cases.
 [kafka]: https://kafka.apache.org
 [media-type]: https://en.wikipedia.org/wiki/Media_type
 [microservices-messaging]: https://blog.codeship.com/microservices-messaging-rest-isnt-always-best-choice/
+[npm-http-link-header]: https://www.npmjs.com/package/http-link-header
+[npm-format-link-header]: https://www.npmjs.com/package/format-link-header
+[npm-parse-link-header]: https://www.npmjs.com/package/parse-link-header
+[npm-search-link-header]: https://www.npmjs.com/search?q=link+header
 [pragmatic-rest]: https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
 [rabbitmq]: https://www.rabbitmq.com
 [rdf]: https://en.wikipedia.org/wiki/Resource_Description_Framework
