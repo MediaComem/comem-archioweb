@@ -30,16 +30,36 @@ remote host.
 
 
 
+## What is WebSockets?
+
+<!-- slide-front-matter class: center, middle, image-header -->
+
+<img src='images/ws.png' class='w70' />
+
+
+
 ## Real-time HTTP
 
-Lorem ipsum.
+<!-- slide-column -->
 
-> Historically, creating web applications that need bidirectional communication
-> between a client and a server (e.g., instant messaging and gaming
-> applications) has required an abuse of HTTP to poll the server for updates
-> while sending upstream notifications as distinct HTTP calls
->
-> https://tools.ietf.org/html/rfc6455#section-1.1
+> "[Historically][ws-background], creating web applications that need
+> bidirectional communication between a client and a server (e.g., instant
+> messaging and gaming applications) has required an abuse of HTTP to poll the
+> server for updates while sending upstream notifications as distinct HTTP
+> calls."
+
+<!-- slide-column 40 -->
+
+<img src='images/real-time.gif' class='w100' />
+
+<!-- slide-container -->
+
+HTTP is a **request-response** protocol which was not designed for real-time,
+bidirectional communication. Achieving it requires **multiple TCP connections**
+with **high overhead** (handshakes are made for each connection and headers are
+sent each time).
+
+Here are a few techniques: [Comet][comet], [Server-Sent Events (SSE)][sse].
 
 ### Request-response, half-duplex
 
@@ -166,3 +186,9 @@ https://en.wikipedia.org/wiki/WebSocket#Protocol_handshake
 * Masking (https://stackoverflow.com/questions/14174184/what-is-the-mask-in-a-websocket-frame)
 * Fragmentation (https://tools.ietf.org/html/rfc6455#section-5.4)
 * TCP guarantees order, so WebSockets does also (for one connection)
+
+
+
+[comet]: https://en.wikipedia.org/wiki/Comet_(programming)
+[sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+[ws-background]: https://tools.ietf.org/html/rfc6455#section-1.1
