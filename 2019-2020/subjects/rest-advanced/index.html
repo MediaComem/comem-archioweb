@@ -3,7 +3,7 @@
   <head>
     <title>REST In Depth (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/95cae17e0f9fe0feebfd4b650d272ae5e8e3662b/subjects/rest-advanced/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/bb50e5fdb8690379d6e3566ef839cae490af2eab/subjects/rest-advanced/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -12,6 +12,10 @@
 Learn about more advanced [REST][rest] concepts like [HATEOAS][hateoas], and the
 various ways REST APIs are implemented in the wild, from "practical REST" to
 "true REST".
+
+**Recommended reading**
+
+* [REST introduction & HTTP](../rest/)
 
 
 
@@ -27,23 +31,16 @@ class: center, middle, image-header
 
 <img src='images/richardson-maturity-model.png' class='w90' />
 
-
-
 ---
 ### How RESTful is my API?
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a>]
 
-The technologies of the World Wide Web form an amazing technology stack you can
-pick from when developing your REST API. However, not everyone understands all
-of these technologies or how to use them to their fullest potential.
-
 .grid-40[
 
-The [REST maturity model developed by Leonard Richardson][rest-maturity] splits
-the web technologies used to develop REST APIs into a stack with 4 levels.
-
-Web developers tend to pick technologies from the bottom of the stack.
+The technologies of the World Wide Web form an amazing **technology stack** you
+can pick from when developing your REST API. However, not everyone understands
+all of these technologies or how to use them to their fullest potential.
 
 
 ]
@@ -52,9 +49,1051 @@ Web developers tend to pick technologies from the bottom of the stack.
 <img src='images/richardson-maturity-model-small.png' class='w100' />
 
 
+]
+.container[
+
+The [REST maturity model developed by Leonard Richardson][rest-maturity] splits
+the web technologies used to develop REST APIs into a stack with 4 levels.
 
 
 ]
+---
+### REST maturity level
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a>]
+
+Web developers tend to pick technologies from the bottom of the stack:
+
+<p class='center'><img src='images/richardson-maturity-model-no-title.png' class='w85' /></p>
+
+If you use none of these technologies, you are at level 0 and your API cannot be
+called REST. The more web technologies you use, the greater your "REST maturity
+level".
+
+---
+### "Not really REST" APIs - Levels 0 & 1
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a>]
+
+.grid-50[
+
+**Level 0**
+
+One URI, one HTTP method. For example: XML-RPC and most SOAP services.
+
+This looks more like a library of functions than a web service. It's a huge
+**black box** with a single web-based peephole.
+
+Definitely not REST: the whole service consists of one overly complex resource.
+
+Examples: XML-RPC or SOAP big web services.
+
+
+]
+.grid-50[
+
+**Level 1**
+
+Many URIs, one HTTP method.
+
+The web service has been **split into separate components** that each get their
+own URI, which makes it much easier to understand.
+
+It's a bit more RESTful, but not really there yet. This web service deals more
+with **actions rather than resources**.
+
+Real-world example: [Flickr API][flickr-api].
+
+
+]
+---
+### "Practical REST" APIs - Level 2
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a>]
+
+HTTP introduces [standardized methods][http-methods] (or verbs):
+
+Method   | Description
+:------- | :-------------------------------------------
+`GET`    | Retrieve a resource at an URL.
+`POST`   | Create a new resource subordinate to an URL.
+`PUT`    | Replace (modify) the resource at an URL.
+`PATCH`  | Partially modify a resource at an URL.
+`DELETE` | Delete the resource identified by an URL.
+
+You do not have to reinvent the wheel for the most common operations on
+resources: creating, reading, updating and deleting ([CRUD][crud]).
+
+For example, `GET` has a [specific meaning][http-get]: it retrieves information,
+it must be [safe][http-safe] and [idempotent][http-idempotence], etc. **Where
+there are constraints there are optimizations**: [caching][http-cache],
+[conditional requests][http-conditional], [partial requests][http-partial] etc.
+
+Real-world examples: [AWS Simple Storage Service (S3)
+API][s3-api], [Twitter API][twitter-api].
+
+---
+### "True REST" hypermedia APIs - Level 3
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a>]
+
+An API is not fully REST in the strictest sense if it does not use [**Hypermedia
+as the Engine of Application State (HATEOAS)**][hateoas]. This is what
+distinguishes REST from other architectures and what makes a "true REST" API.
+
+The basic principle of HATEOAS is that **the client interacts with the server
+dynamically through [hypermedia][hypermedia]**. Since the World Wide Web
+exhibits properties of the REST architecture, let's take a look at HTML:
+
+```html
+<html><body>
+  <h1>My Awesome Website</h1>
+  <p>Welcome, visitor!</p>
+  <ul>
+    <li><a href='/about'>Learn more about me</a></li>
+    <li><a href='https://amazon.com?affiliate=me'>Buy some stuff</a></li>
+  </ul>
+  <form action='/login' method='POST'>
+    <input name='username' type='text' / >
+  </form>
+&lt;/body&gt;</html>
+```
+
+HTML is hypermedia. **Why?** Think about the following question: what drives the
+user's interaction through the various pages of a website? How does he or she
+navigate?
+
+---
+#### Hypermedia
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+An HTML page provided by a server, such as a web page, contains 2 kinds of
+hypermedia: [hyperlinks][hyperlink] and [forms][html-form]:
+
+* **Hyperlinks** tell the client **where other resources are**.
+* **Forms** tell the client **what it can do to the resources**.
+
+To use a website, the client (i.e. the browser) only needs to:
+
+* Know the entry point (e.g. `http://example.com`).
+* Understand the HTML format (the `text/html` [media type][media-type]): not
+  only how to display it, but also that it contains `<a>` tags that can be
+  followed, and `<form>` tags that describe how to modify data.
+
+**The client does not need to (and should not) know the entire structure of your
+website** (i.e. all your URLs) in advance.
+
+When a server sends you HTML, it is not only sending you data to display, it is
+also sending you hypermedia: the relations between the current resource and
+other resources. Those **relations are as important as the data itself** to the
+functioning of the website.
+
+---
+#### Hyperlinks in HTTP
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+[RFC 8288 (Web Linking)][web-linking] defines a new `Link` HTTP header which can
+be included in non-HTML responses to provide links to other resources:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+*Link: <http://example.com/TheBook/chapter2>; rel="prev"; title="previous chapter",
+*     <http://example.com/TheBook/chapter4>; rel="next"; title="next chapter"
+
+{ "title": "Once Upon A Time", "contents": "Lorem ipsum..." }
+```
+
+Using this header, the server can tell the client where to find related
+resources, without the client having to know how to build these URLs.
+
+---
+#### Format of the `Link` header
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+Multiple links in the header are comma-separated.
+Each link looks like this:
+
+```
+  <https://example.com/api/movies?page=1&pageSize=50>; `rel="first prev"`
+```
+
+It contains:
+
+* The **target URL** between `<>`
+* One or more **parameters** preceded by `;`:
+
+The `rel` (or "relation") parameter is mandatory, as it indicates **what kind of
+link it is**. There is a [registry of official relation
+types][iana-link-relations] (such as `first`, `prev`, `next` and `last` for
+collections).
+
+You can use your own custom relation types but instead of single words, they
+should be URIs:
+
+```
+  <http://example.com/manual>; `rel="http://example.com/my-rels/rtfm"`
+```
+
+You don't have to build this format by hand. You can probably find a package
+that does it for you. For example, a quick [search for "link
+header"][npm-search-link-header] in the npm registry suggests several packages:
+[format-link-header][npm-format-link-header],
+[parse-link-header][npm-parse-link-header],
+[http-link-header][npm-http-link-header], and more.
+
+---
+#### The OPTIONS method in HTTP
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+The [`OPTIONS` method][http-options] is another method like `GET` or `POST`. It
+can be used by the client to ask the server what are the communication options
+of a given resource:
+
+```http
+OPTIONS /api/people/123 HTTP/1.1
+```
+
+This could be a response to that request:
+
+```http
+HTTP/1.1 204 No Content
+Allow: OPTIONS, GET, HEAD, PUT
+```
+
+Using the [`Allow` header][http-allow], the server is telling the client: you
+can also use the methods `GET`, `HEAD` and `PUT` on this resource. Since those
+methods have a standard meaning the client can deduce, for example, that this
+resource **can be modified** (because you can use the `PUT` method).
+
+> This is an example of the server telling the client how a resource can be
+> modified, similarly to forms in HTML.
+
+---
+#### Hyperlinks in REST APIs
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+There are hypermedia formats similar to HTML but meant for APIs:
+
+* [Collection+JSON][collection-json]
+* [Hypertext Application Language (HAL)][hal] - [(Draft RFC)][hal-rfc]
+* [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec] - based on the [Resource Description Framework (RDF)][rdf]
+* [JSON Hyper-Schema (RFC Draft)][json-hyper-schema]
+* [Siren][siren]
+
+For example, HAL+JSON defines a standard way of representing hyperlinks in JSON
+(it also uses the standard IANA link relations):
+
+```json
+{
+* "_links": {
+*   "self": {
+*     "href": "http://example.com/api/book/hal-cookbook"
+*   }
+* },
+  "id": "hal-cookbook",
+  "name": "HAL Cookbook"
+}
+```
+
+---
+#### Custom Hypermedia Type
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+You may also define your own custom media type, also known as a [vendor-specific
+media type][vnd-media-type].
+
+For example, instead of using raw JSON, you can create a
+`vnd.my-awesome-website+json` media type. The `+json` suffix indicates that your
+media type is an augmentation of the basic JSON media type with additional
+rules.
+
+It's up to you to define what these rules are. For example, you could write the
+following in your documentation:
+
+> All JSON properties ending with `_link` represent a hyperlink to a related
+> resource:
+
+```json
+{
+  "first_name": "John",
+  "last_name": "Doe",
+* "address_link": "https://example.com/api/people/jdoe/address
+}
+```
+
+You could even [officially register your media type at IANA][iana-media-types].
+
+---
+#### To HATEOAS or not to HATEOAS?
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
+
+.grid-50[
+
+**Advantages:**
+
+Clients can follow link relations in your API instead of hardcoding URLs. This
+**reduces the coupling between client and server**. The server may refactor the
+URL structure at will, and influence the client by including/omitting links.
+
+Using a standardized hypermedia format **makes your API browsable** by both
+humans and automated tools (e.g. [HAL browser][hal-browser]). If the format is
+widely used, existing clients may even be able to manipulate your data out of
+the box.
+
+
+]
+.grid-50[
+
+**Disadvantages:**
+
+There is no free lunch. It requires **more work** to implement a level 3 REST
+API. **Clients must follow the hyperlinks** between resources instead of
+accessing hardcoded URLs directly, or all the benefits of hypermedia are lost.
+
+There is **no clear standard** in the industry when it comes to choosing your
+hypermedia format.
+
+Hypermedia is not a silver bullet: clients must still know your domain.
+
+
+]
+.container[
+
+Real-world examples: [GitHub v3 API (custom media type)][github-api], [Foxy REST
+API (HAL+JSON)][foxy-api].
+
+
+
+
+]
+---
+## URL structure
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+Resources often have relationships:
+
+* Blog **posts** have **comments**.
+* **Courses** are taught by **professors**.
+
+How should we define the URLs to retrieve those resources?
+
+---
+### Nested (or hierarchical) URLs
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
+
+Suppose I want to get the comments on post 892 of a blog.
+
+The URL can be **nested** and mirror the **hierarchical structure** between the resources:
+
+```
+  http://blog.example.com`/posts`/892`/comments`
+```
+
+Or it can be **flat** (only one path level) and have *query parameters* like this:
+
+```
+  http://blog.example.com`/comments`?postId=892
+```
+
+In this case, the **nested** or **hierarchical** version probably makes more sense if you assume that:
+
+* A post comment **cannot exist** outside of a post
+* You'll probably **never want to display all comments** across posts,
+  only the comments of a specific post
+
+---
+### Flat URLs
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
+
+Suppose I want to retrieve the courses given by professor Arnold.
+
+Again, the URL could be **nested**:
+
+```
+  http://heig-vd.ch`/professors`/arnold`/courses`
+```
+
+Or it could be **flat**:
+
+```
+  http://heig-vd.ch`/courses`?professor=arnold
+```
+
+In this case, the **flat** version probably makes more sense because:
+
+* The existence of the course **does not depend** on the existence of the professor
+  (if you murder Arnold, someone else will take over the course)
+* You'll probably want to be able to **list all courses** on a page somewhere
+
+---
+### Nested vs. flat URLs
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
+
+There is no *right or wrong* answer.
+You will find both styles in popular REST APIs.
+When defining your API's URLs, you should ask yourself:
+
+> Is there an **ownership** or **composition** relationship between these resources?
+
+In this case, it makes sense to use **nested** or hierarchical URLs.
+
+> Will I need to **display all the resources** of this type on a page somewhere?
+
+In that case, it makes sense to use **flat** URLs.
+
+---
+### Using both nested & flat URLs
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
+
+It's also possible to define **multiple collections** for the same resource at **different paths**:
+
+```
+  GET /courses
+  GET /professors/arnold/courses
+```
+
+* The first collection (`/courses`) can be used to list **all courses**
+* The second collection (`/professors/arnold/courses`) can be used to list **the courses taught by professor arnold**
+
+These two collections both produce a list of resources of the same type (courses), but **they are different collections**.
+Their contents will vary over time, and most of the time the two collections will not produce the same result (there are courses taught by other professors).
+
+
+
+---
+## Resources vs. actions
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+Fundamental to the REST architectural style is the idea that you are performing
+actions on resources. In the context of the web this usually means:
+
+* The **HTTP method** is the **action**: `GET`, `POST`, `PUT`, etc.
+* The **URL** identifies the **resource**, i.e. the thing being manipulated.
+
+Which ones of these HTTP requests do you think are RESTful?
+
+* `GET /api/comments`
+* `POST /api/users`
+* `PUT /api/users/:id`
+* `POST /api/users/:id/enable`
+* `POST /api/users/:id/disable`
+* `POST /api/users/:id/follow`
+* `POST /api/comments/:id/star`
+* `POST /api/comments/:id/unstar`
+
+---
+### Modeling actions with REST
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+
+The last 5 requests are technically **not RESTful**, for example:
+
+* `POST /api/users/:id/enable`
+
+The URL ends with **a verb instead of a noun**, therefore:
+
+* The URL represents an action (verb) instead of a resource (noun).
+* There are 2 actions: the HTTP method, `POST`, and the one in the URL,
+  `enable`.
+
+In theory, the only action should be the HTTP method, and the URL should always
+represent the "thing" being acted upon, not an action.
+
+---
+### REST actions as properties
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+
+Take the following non-RESTful actions:
+
+* `POST /api/users/:id/enable`
+* `POST /api/users/:id/disable`
+
+They could be modeled as a user property instead:
+
+```json
+{
+  "username": "jdoe",
+* "enabled": true
+}
+```
+
+You could then update that property with `PUT` or `PATCH`. The following call
+could be made to disable the user:
+
+```http
+PATCH /api/users/jdoe HTTP/1.1
+Content-Type: application/json
+
+{ "enabled": false }
+```
+
+---
+### REST actions that should really be resources
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+
+Take the following non-RESTful action:
+
+* `POST /api/users/:id/follow`
+
+It's very likely that at some point you'll be needing the list of a user's
+followers. This should really be a collection resource that you can add
+followers to:
+
+* `POST /api/users/:id/followers`
+
+That way, you can simply implement this call in the future to list a user's
+followers:
+
+* `GET /api/users/:id/followers`
+
+---
+### REST actions as a sub-resource
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+
+Take the following non-RESTful action:
+
+* `POST /api/comments/:id/star`
+* `POST /api/comments/:id/unstar`
+
+If you assume that you can only only star/unstar a comment (i.e. there is only
+one star, not a range from 1 to 5), you can model it as a single sub-resource of
+each comment:
+
+* `PUT /api/comments/:id/star`
+* `DELETE /api/comments/:id/star`
+
+> The first version uses the **verb** "star", while the second version uses the
+> **noun** "star", with the HTTP method indicating the action. Also note that
+> "star" is used in the singular, since there is only one.
+
+---
+### REST actions as a collection
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+
+Take the following non-RESTful actions:
+
+* `POST /api/users/:id/enable`
+* `POST /api/users/:id/disable`
+
+We already described one way of modeling these as a property.
+
+However in some cases, you might need to remember all actions that were taken on
+a resource for **auditing** or **security** purposes. For example: GitHub has a
+page that lists all security-related actions on your user account, so that you
+might see if someone else obtained access to your account and did something bad.
+
+In that case, you might want to have a collection resource that represents the
+actions taken on a given user:
+
+* `POST /api/users/:id/actions`
+* `GET /api/users/:id/actions`
+
+---
+#### Using a collection of actions
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a> > <a href="#25">REST actions as a collection</a>]
+
+With such a collection, you would `POST` to create actions:
+
+```http
+POST /api/users/jdoe/actions HTTP/1.1
+Content-Type: application/json
+Location: https://example.com/api/users/jdoe/actions/321
+
+*{ "type": "disable", "reason": "He looks suspicious." }
+```
+
+> The JSON property `"type"` is used in this example to determine what action to
+> take. Other properties would depend on the type of action.
+
+Then later you could `GET /api/users/jdoe/actions` to retrieve the list of
+actions that were performed:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+  { "type": "disable", "reason": "He looks suspicious.", "date": "2010-01-01" },
+  { "type": "changePassword", "date": "2008-03-01" },
+  { "type": "confirmEmail", "date": "2008-01-01" }
+]
+```
+
+Now you have all the data you need for that audit/security page.
+
+
+
+---
+## Linked resources
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+This section will discuss different ways to represent links between resources as well as their pros and cons.
+
+Suppose that your RESTful API handles **movies** and **directors** where one movie has **one** director,
+and that it provides the following operation:
+
+```
+  GET /movies/:id
+```
+
+You will retrieve the movie's data, of course, but what do you expect to see concerning the movie's **director**?
+
+---
+### Embedded resource
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+
+The director can be **embedded** into the movie's data:
+
+```json
+{
+  "id": "oa9ufne",
+  "title": "The Fellowship of the Ring",
+  "rating": 8.9,
+* "director": {
+*   "id": "la09sld",
+*   "name": "Peter Jackson",
+*   "gender": "male"
+* }
+}
+```
+
+* *Advantage:* it **reduces chattiness**: fewer requests have to be made to the
+  server to retrieve both the movie's and the director's data.
+* *Disadvantage:* **more data** is exchanged between client and server **that
+  the client might not always need**.
+
+---
+### Resource reference via ID
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+
+To save bandwidth, only a unique identifier for the director could be included:
+
+```json
+{
+  "title": "The Fellowship of the Ring",
+  "rating": 8.9,
+* "directorId": "la09sld"
+}
+```
+
+* *Advantages:*
+  * **Smaller JSON payloads**.
+* *Disadvantages:*
+  * It **increases chattiness**: the client has to make two requests to retrieve
+    both the movie's and the director's data.
+  * The client **must know how to build the URL** to the director resource,
+    which is not always obvious (e.g. you could think it's `/directors/la09sld`
+    but it could be `/people/la09sld`).
+
+    > This would be considered to be at REST maturity level 2 because it is not
+    > hypermedia.
+
+---
+### Resource reference via hyperlink
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+
+Instead of just the ID, you could include a hyperlink to the director's resource:
+
+```json
+{
+* "_links": {
+*   "http://example.com/links/director": {
+*     "href": "http://example.com/api/people/la09sld"
+*   }
+* }
+  "title": "The Two Towers",
+  "rating": 7.1
+}
+```
+
+* *Advantage:* **decouples** the client from your API through **hypermedia**:
+  the client can browse the API without knowing your URLs in advance
+  ([HATEOAS][hateoas]).
+* *Disadvantages:* it **increases chattiness**. It also requires **more work
+  from the client** as it must follow link relations instead of accessing URLs
+  directly.
+
+> This would be REST maturity level 3. If you use this solution, you should use an appropriate media type instead of
+> plain JSON. The above example uses [HAL][hal] but there are others, or you can
+> define your own.
+
+---
+### Optional resource embedding
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+
+Again, there's no *right or wrong* answer: it depends on your use case. By
+spending a little more time on your server's implementation, it's also possible
+to **combine** some of these patterns:
+
+.grid-50[
+
+```http
+GET /api/movies/312
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "title": "The Two Towers",
+  "rating": 7.1,
+  "directorId": "la0"
+}
+```
+
+
+]
+.grid-50[
+
+```http
+GET /api/movies/312?`include=director`
+```
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "title": "The Two Towers",
+  "rating": 7.1,
+  "directorId": "la0",
+* "director": {
+*   "id": "la09sld",
+*   "name": "Peter Jackson",
+*   "gender": "male"
+* }
+}
+```
+
+
+]
+.container[
+
+This **lets the client decide** what's most appropriate **for each request** (depending on the view it is rendering).
+
+
+]
+---
+### Embedding a collection
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+
+You can ask yourself the same questions for **one-to-many** or **many-to-many** relationships:
+
+.grid-55[
+
+```json
+{
+  "name": "John Doe",
+  "addresses" : [
+    {
+      "street" : "8785 Windfall St.",
+      "city" : "Whitehall, PA 18052"
+    },
+    {
+      "street" : "1 N. Cactus Ave.",
+      "city" : "Green Bay, WI 54302"
+    }
+  ]
+}
+```
+
+
+]
+.grid-45[
+
+```json
+{
+  "name": "Apple",
+  "employees" : [
+    {
+      "firstName" : "Tim",
+      "lastName" : "Cook",
+      "title" : "CEO"
+    },
+    {
+      "firstName" : "Jony",
+      "lastName" : "Ive",
+      "title" : "CDO"
+    }
+  ]
+}
+```
+
+
+]
+.container[
+
+When embedding collections, be mindful of the **amount of data**.
+Embedding a person's addresses is probably reasonable, as few people will have many different addresses,
+but embedding a company's employees is probably a really bad idea.
+
+
+]
+---
+### Multiple resource references
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+
+You can also use identifiers or hypermedia for links to multiple resources:
+
+```json
+{
+  "name": "John Doe",
+  "addresses" : [ 412, 633 ]
+}
+```
+
+```json
+{
+  "title": "Die Hard With a Vengance",
+  "_embedded" : [
+    {
+      "_links": { "href": "https://example.com/api/people/0a9duvx" }
+    },
+    {
+      "_links": { "href": "https://example.com/api/people/acsl9w2" }
+    },
+    {
+      "_links": { "href": "https://example.com/api/people/7dis92k" }
+    }
+  ]
+}
+```
+
+
+
+---
+## Pagination
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+What's the problem with this HTTP request?
+
+```http
+GET /phone-numbers?city=Tokyo HTTP/1.1
+Host: world-phonebook.com
+```
+
+---
+### Huge collections
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+
+Some collections can grow to a point where it is not possible to get all of its elements in a single HTTP request:
+
+* It would be **too slow**
+* In some cases, the server might not even have enough CPU or memory **capacity** to retrieve the data
+
+You want to be able to **successively retrieve pages** of the collection:
+
+<p class='center'><img src='images/google-pagination.png' /></p>
+
+---
+### What you need for pagination
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+
+There are two main requirements to be able to implement pagination:
+
+* The client must be able to tell the server **which elements** of the collection it wants
+* The server must give the client enough information to be able to **access the other elements**
+
+The most common way for clients to ask for a page is to add **URL query parameters** which the server can use to select only part of the collection:
+
+```http
+  GET /api/movies?`page=2`&`pageSize=50`
+```
+
+---
+#### Telling the client how to get more
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a> > <a href="#36">What you need for pagination</a>]
+
+There are many different ways popular APIs tell the client how to get more elements.
+Here are a few:
+
+* The `Link` header
+* Custom headers
+* Using a JSON *envelope* or *wrapper*
+
+---
+### The `Link` header (solution 1)
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+
+There have been many ways developers have implemented pagination over the years.
+
+The relatively recent [`Link` header][web-linking] allows the server to **tell
+the client where to find other pages** of the collection, **without the client
+having to build new URLs** ([HATEOAS][hateoas]).
+
+The server can indicate where to find:
+
+* The first page
+* The previous page
+* The next page
+* The last page
+* *(Other variants if necessary)*
+
+---
+#### Pagination with the `Link` header
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a> > <a href="#38">The `Link` header (solution 1)</a>]
+
+Consider the following request where the client requests the second page of 50
+elements in a collection:
+
+```http
+GET /api/movies?`page=2`&`pageSize=50` HTTP/1.1
+```
+
+In the response, in addition to the 50 movies on that page, the server can send
+a `Link` header with references to **the URLs of other pages** of the
+collection:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+Link: <https://example.com/api/movies?`page=1`&pageSize=50>; rel="`first prev`",
+      <https://example.com/api/movies?`page=3`&pageSize=50>; rel="`next`",
+      <https://example.com/api/movies?`page=5`&pageSize=50>; rel="`last`"
+
+[
+  ...
+]
+```
+
+---
+### Custom headers (solution 2)
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+
+The `Link` header has the advantage of being a standard, but it's harder to
+build a **pager** from it:
+
+<p class='center'><img src='images/pagination.png' /></p>
+
+The server would need to send pre-built **links for each page**, and there are
+no standard link relations for that.
+
+HTTP does not forbid you from using non-standard headers,
+so you could decide to use these **custom headers** to send the client the additional information it needs:
+
+* A `Pagination-Page` header to tell the client which page is being served
+* A `Pagination-Page-Size` header to tell the client what is the current page size
+* A `Pagination-Total` header to tell the client how many elements there are in the collection
+
+---
+#### Custom headers in the response
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a> > <a href="#40">Custom headers (solution 2)</a>]
+
+Consider the following request where the client requests the second page of 50 elements in a collection:
+
+```http
+GET /api/movies?`page=2`&`pageSize=50` HTTP/1.1
+```
+
+In the response, in addition to the 50 movies on that page, the server can send the custom pagination headers:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+*Pagination-Page: 2
+*Pagination-Page-Size: 50
+*Pagination-Total: 231
+
+[
+  ...
+]
+```
+
+---
+### JSON envelope (solution 3)
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+
+In some rare circumstances, there is a proxy between client and server that **strips some headers** from requests.
+In this case, you would have to send the pagination information in the **response body** instead of headers.
+
+Instead of using a **JSON array** as the response body,
+you can use a **JSON object** that contains additional metadata as well as the array of elements:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  `"page": 2`,
+  `"pageSize": 50`,
+  `"total": 231`,
+  `"data": [`
+    ...
+  `]`
+}
+```
+
+---
+### Hypermedia pagination (solution 4)
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+
+Most hypermedia formats, like [HAL][hal], also allow you to include the
+pagination information in the response with standard link relations:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  `"data": [`
+    ...
+  `]`,
+* "_links": {
+*   "first": {
+*     "href": "https://example.com/api/movies?page=1&pageSize=50"
+*   },
+*   "prev": {
+*     "href": "https://example.com/api/movies?page=1&pageSize=50"
+*   },
+*   "next": {
+*     "href": "https://example.com/api/movies?page=3&pageSize=50"
+*   },
+*   "last": {
+*     "href": "https://example.com/api/movies?page=5&pageSize=50"
+*   },
+* }
+}
+```
+
+
+
 ---
 ## Resources
 
@@ -62,32 +1101,103 @@ Web developers tend to pick technologies from the bottom of the stack.
 
 **Documentation**
 
-* [GitHub REST API version 3][github-api]
-* [Twitter REST API][twitter-api]
-* [Foxy Hypermedia REST API][foxy-api]
+* [HTTP methods][http-methods], [Web Linking][web-linking]
+* APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Foxy][foxy-api] (L3)
+* [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
+* [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
 
 **Further reading**
 
 * [Architectural Styles and the Design of Network-based Software Architectures (Roy Fielding)][roy-fielding-thesis]
-* [Justice Will Take Us Millions Of Intricate Moves - Act Three: The Maturity Heuristic (Leonard Richardson)][rest-maturity]
-  * [Richardson Maturity Model (Martin Fowler)][rest-maturity-fowler]
-  * [4 Maturity Levels Of REST API Design (Guy Levin)][rest-maturity-levin]
+* [The Maturity Heuristic (Leonard Richardson)][rest-maturity] - [Richardson Maturity Model (Martin Fowler)][rest-maturity-fowler] - [4 Maturity Levels Of REST API Design (Guy Levin)][rest-maturity-levin]
 * [How to GET a Cup of Coffee][get-coffee]
-* [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
+* [Best Practices for Designing a Pragmatic RESTful API][pragmatic-rest]
+* [REST with Hypermedia - Hot or Not?][rest-with-hypermedia]
+* [Haters Gonna HATEOAS][haters-gonna-hateoas]
 
 
 
+---
+## Alternatives to REST
+
+.breadcrumbs[<a href="#1">REST In Depth</a>]
+
+[REST][rest] is a well-defined architectural style and industry standard that
+confers useful properties to your API if followed: performance, scalability, a
+uniform interface, portability, evolvability, etc. However, it also come with
+constraints. REST might not always be the best fit for all use cases.
+
+> "If all you have is a hammer, everything starts to look like a nail."
+
+**Alternatives**
+
+* Plain old RPC: [gRPC][grpc]
+* Newcomer: [GraphQL][graphql] (see the [Facebook API][facebook-api])
+* Microservices messaging for complex distributed applications: [Apache Kafka][kafka], [RabbitMQ][rabbitmq], [WAMP][wamp]
+
+**Further reading**
+
+* [Is REST still a relevant API style?][rest-still-relevant]
+* [Microservices messaging: why REST isn't always the best choice][microservices-messaging]
+
+
+
+[collection-json]: https://github.com/collection-json/spec
+[crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+[facebook-api]: https://developers.facebook.com/docs/graph-api/
+[flickr-api]: https://www.flickr.com/services/api/
 [foxy-api]: https://api.foxycart.com/docs
 [get-coffee]: https://www.infoq.com/articles/webber-rest-workflow/
 [github-api]: https://developer.github.com/v3/
+[graphql]: https://graphql.org
+[grpc]: https://grpc.io
+[hal]: https://en.wikipedia.org/wiki/Hypertext_Application_Language
+[hal-browser]: https://github.com/mikekelly/hal-browser
+[hal-rfc]: https://tools.ietf.org/html/draft-kelly-json-hal-08
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
+[haters-gonna-hateoas]: http://timelessrepo.com/haters-gonna-hateoas
+[html-form]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form
+[http-allow]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Allow
+[http-cache]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
+[http-conditional]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
+[http-get]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET
+[http-idempotence]: https://developer.mozilla.org/en-US/docs/Glossary/Idempotent
+[http-methods]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+[http-options]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS
+[http-partial]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
+[http-safe]: https://developer.mozilla.org/en-US/docs/Glossary/Safe
+[hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
+[hyperlink]: https://en.wikipedia.org/wiki/Hyperlink
+[iana]: https://www.iana.org
+[iana-link-relations]: https://www.iana.org/assignments/link-relations/link-relations.xhtml
+[iana-media-types]: https://www.iana.org/assignments/media-types/media-types.xhtml
+[json-hyper-schema]: https://json-schema.org/latest/json-schema-hypermedia.html
+[json-ld]: https://json-ld.org
+[json-ld-spec]: https://www.w3.org/2018/jsonld-cg-reports/json-ld/
+[kafka]: https://kafka.apache.org
+[media-type]: https://en.wikipedia.org/wiki/Media_type
+[microservices-messaging]: https://blog.codeship.com/microservices-messaging-rest-isnt-always-best-choice/
+[npm-http-link-header]: https://www.npmjs.com/package/http-link-header
+[npm-format-link-header]: https://www.npmjs.com/package/format-link-header
+[npm-parse-link-header]: https://www.npmjs.com/package/parse-link-header
+[npm-search-link-header]: https://www.npmjs.com/search?q=link+header
+[pragmatic-rest]: https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+[rabbitmq]: https://www.rabbitmq.com
+[rdf]: https://en.wikipedia.org/wiki/Resource_Description_Framework
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [rest-maturity]: https://www.crummy.com/writing/speaking/2008-QCon/act3.html
 [rest-maturity-fowler]: https://martinfowler.com/articles/richardsonMaturityModel.html
 [rest-maturity-levin]: https://blog.restcase.com/4-maturity-levels-of-rest-api-design/
 [rest-standards]: https://standards.rest
+[rest-still-relevant]: https://nordicapis.com/is-rest-still-a-relevant-api-style/
+[rest-with-hypermedia]: https://reflectoring.io/rest-hypermedia/
 [roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+[s3-api]: https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
+[siren]: https://github.com/kevinswiber/siren
 [twitter-api]: https://developer.twitter.com/en/docs/api-reference-index
+[vnd-media-type]: https://en.wikipedia.org/wiki/Media_type#Vendor_tree
+[wamp]: https://wamp-proto.org
+[web-linking]: https://tools.ietf.org/html/rfc8288
     </textarea>
     <script src='https://embed.runkit.com'></script>
     <script src='../../subject-6febf8e6a6534a4429e8.js'></script>
