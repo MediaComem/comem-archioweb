@@ -44,7 +44,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
   * [Heroku](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/heroku?home=MediaComem%2Fcomem-archioweb%23readme) cloud application platform
 
 * Creating a REST API
-  * REST in depth
+  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Express best practices](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
