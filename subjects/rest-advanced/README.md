@@ -10,6 +10,53 @@ various ways REST APIs are implemented in the wild, from "practical REST" to
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Richardson Maturity Model](#richardson-maturity-model)
+  - [How RESTful is my API?](#how-restful-is-my-api)
+  - [REST maturity level](#rest-maturity-level)
+  - ["Not really REST" APIs - Levels 0 & 1](#not-really-rest-apis---levels-0--1)
+  - ["Practical REST" APIs - Level 2](#practical-rest-apis---level-2)
+  - ["True REST" hypermedia APIs - Level 3](#true-rest-hypermedia-apis---level-3)
+    - [Hypermedia](#hypermedia)
+    - [Hyperlinks in HTTP](#hyperlinks-in-http)
+    - [Format of the `Link` header](#format-of-the-link-header)
+    - [The OPTIONS method in HTTP](#the-options-method-in-http)
+    - [Hyperlinks in REST APIs](#hyperlinks-in-rest-apis)
+    - [Custom Hypermedia Type](#custom-hypermedia-type)
+    - [To HATEOAS or not to HATEOAS?](#to-hateoas-or-not-to-hateoas)
+- [URL structure](#url-structure)
+  - [Nested (or hierarchical) URLs](#nested-or-hierarchical-urls)
+  - [Flat URLs](#flat-urls)
+  - [Nested vs. flat URLs](#nested-vs-flat-urls)
+  - [Using both nested & flat URLs](#using-both-nested--flat-urls)
+- [Resources vs. actions](#resources-vs-actions)
+  - [Modeling actions with REST](#modeling-actions-with-rest)
+  - [REST actions as properties](#rest-actions-as-properties)
+  - [REST actions that should really be resources](#rest-actions-that-should-really-be-resources)
+  - [REST actions as a sub-resource](#rest-actions-as-a-sub-resource)
+  - [REST actions as a collection](#rest-actions-as-a-collection)
+    - [Using a collection of actions](#using-a-collection-of-actions)
+- [Linked resources](#linked-resources)
+  - [Embedded resource](#embedded-resource)
+  - [Resource reference via ID](#resource-reference-via-id)
+  - [Resource reference via hyperlink](#resource-reference-via-hyperlink)
+  - [Optional resource embedding](#optional-resource-embedding)
+  - [Embedding a collection](#embedding-a-collection)
+  - [Multiple resource references](#multiple-resource-references)
+- [Pagination](#pagination)
+  - [Huge collections](#huge-collections)
+  - [What you need for pagination](#what-you-need-for-pagination)
+    - [Telling the client how to get more](#telling-the-client-how-to-get-more)
+  - [The `Link` header (solution 1)](#the-link-header-solution-1)
+    - [Pagination with the `Link` header](#pagination-with-the-link-header)
+  - [Custom headers (solution 2)](#custom-headers-solution-2)
+    - [Custom headers in the response](#custom-headers-in-the-response)
+  - [JSON envelope (solution 3)](#json-envelope-solution-3)
+  - [Hypermedia pagination (solution 4)](#hypermedia-pagination-solution-4)
+- [Resources](#resources)
+- [Alternatives to REST](#alternatives-to-rest)
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
