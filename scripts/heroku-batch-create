@@ -98,15 +98,22 @@ function create_app {
   CURRENT_BASE_URL="$(heroku config:get BASE_URL)"
   if [ "$CURRENT_BASE_URL" != "$APP_URL" ]; then
     echo
-    echo $(color $YELLOW "Setting the BASE_URL...")
+    echo $(color $YELLOW "Setting \$BASE_URL...")
     heroku config:set "BASE_URL=${APP_URL}"
   fi
 
   CURRENT_NODE_ENV="$(heroku config:get NODE_ENV)"
   if [ "$CURRENT_NODE_ENV" != "production" ]; then
     echo
-    echo $(color $YELLOW "Setting NODE_ENV to production...")
+    echo $(color $YELLOW "Setting \$NODE_ENV to production...")
     heroku config:set "NODE_ENV=production"
+  fi
+
+  CURRENT_NPM_CONFIG_PRODUCTION="$(heroku config:get NPM_CONFIG_PRODUCTION)"
+  if [ "$CURRENT_NPM_CONFIG_PRODUCTION" != "true" ]; then
+    echo
+    echo $(color $YELLOW "Setting \$NPM_CONFIG_PRODUCTION to true...")
+    heroku config:set "NPM_CONFIG_PRODUCTION=true"
   fi
 
   echo
