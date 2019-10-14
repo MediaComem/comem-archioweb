@@ -25,6 +25,166 @@ Learn best development practices for [Express][express] web applications.
 
 
 
+## Use environment variables for configuration
+
+Never hardcode configuration into your application, as it makes it difficult to
+deploy in different environments. You may also uninentionally expose sensitive
+data such as secret keys.
+
+[Environment variables][node-process-env] are a suitable alternative. There is
+already an example in a freshly generated Express application in the `bin/www`
+file:
+
+```js
+const port = process.env.PORT || 3000;
+```
+
+That line is equivalent to the following code:
+
+```js
+let port;
+if (process.env.PORT) {
+  port = process.env.PORT;
+} else {
+  port = 3000;
+}
+```
+
+### Running your application with environment variables
+
+Assuming this is the command to run your application:
+
+```bash
+$> npm start
+```
+
+In a Bash shell, you can prefix it with any environment variable(s) you may want
+to set:
+
+```bash
+$> PORT=4000 FOO=bar npm start
+```
+
+You can also set them with `export` for the remainder of your Bash session,
+before running your application:
+
+```bash
+$> export PORT=4000
+$> export FOO=bar
+$> npm start
+```
+
+> On a server or in a cloud environment, you want to edit the process manager's
+> or cloud platform's configuration for your application. For example, on
+> [Heroku][heroku], you can configure environment variables with the `heroku
+> config` subcommand, or in your application's settings web page.
+
+### Create a configuration file if you have many variables
+
+If you use many environment variables for configuration, you may want to
+centralize your configuration code in a single file, for example `config.js`:
+
+```js
+// File: config.js
+exports.port = process.env.PORT || 3000;
+exports.secretKey = process.env.MY_APP_SECRET_KEY || 'changeme';
+```
+
+This avoids repetition if you use the same variable in different places, and
+serves as a sort of documentation of all your configuration parameters and their
+default values. You can simply require this file and use its variables where
+needed:
+
+```js
+// File: some other file
+const config = require('../path/to/config`);
+server.listen(config.port);
+```
+
+### Validate complex configuration variables
+
+You always get a string value (or undefined) when you retrieve an environment
+variable. No check is performed for you. Some of your configuration parameters
+may be mandatory. Some probably need to be a specific kind of value like a
+positive integer or an URL.
+
+If you have a centralized configuration file like suggested earlier, you can
+simply add some **validation** code and throw errors in case the values are not
+as expected:
+
+```js
+// Validate that port is a positive integer.
+if (process.env.PORT) {
+  const parsedPort = parseInt(process.env.PORT, 10);
+  if (!Number.isInteger(parsedPort)) {
+    throw new Error('Environment variable $PORT must be an integer');
+  } else if (parsedPort < 1 || parsedPort > 65535) {
+    throw new Error('Environment variable $PORT must be a valid port number');
+  }
+}
+
+// Validate that some environment variable is set.
+if (!process.env.MY_APP_FOO) {
+  throw new Error('Environment variable $MY_APP_FOO must be set');
+}
+```
+
+### The `dotenv` package
+
+If you use many environment variables for configuration, it can be a pain to set
+them all when starting your application for local development.
+[`dotenv`][dotenv] is a popular npm package that can **auto-fill your project's
+environment variables from a configuration file** named `.env` with the
+following format:
+
+```
+PORT=4000
+MY_APP_SECRET=letmein
+```
+
+To use it, the first thing you should do it **ignore this `.env` file**, as you
+don't want to unintentionally commit sensitive information into your repository:
+
+```bash
+$> echo .env > .gitignore
+$> git add .env
+$> git commit -m "Ignore .env file"
+```
+
+> You can share this `.env` file among your team members, and everyone can adapt
+> it to their local environment if necessary. But never commit it.
+
+#### Installing and using `dotenv`
+
+Install `dotenv` as a development dependency:
+
+```bash
+npm install --save-dev dotenv
+```
+
+Then add the following code to the top of your configuration file (or wherever
+you retrieve configuration from environment variables):
+
+```js
+// Load environment variables from the .env file.
+*try {
+* require('dotenv').config();
+*} catch (err) {
+* console.log('No .env file loaded');
+*}
+
+// Retrieve configuration from environment variables.
+const port = process.env.PORT || 3000;
+// ...
+```
+
+> Make sure that you execute the `require('dotenv').config()` line **before
+> accessing any environment variable in `process.env`**, otherwise it will be
+> too late. You'll be fine if you use a centralized configuration file and put
+> that code at the top.
+
+
+
 ## Use routers
 
 **Do NOT** define all your routes in `app.js`; it will get **too large and hard to maintain**.
@@ -47,7 +207,7 @@ app.use('/api/movies', `moviesApiRouter`);
 
 
 
-## Avoiding repetition with middleware
+## Avoid repetition with middleware
 
 You often end up with **code duplication in routes**:
 
@@ -78,8 +238,6 @@ router.delete('/:id', function(req, res, next) {
 });
 ```
 
-
-
 ### Writing middleware functions for common tasks
 
 You can write a **middleware function** that performs only this task and **attaches the Person document to the `req` object**:
@@ -98,8 +256,6 @@ function loadPersonFromParams(req, res, next) {
   });
 }
 ```
-
-
 
 ### Plugging your middleware function into routes
 
@@ -131,10 +287,13 @@ router.delete('/:id', `loadPersonFromParams`, function(req, res, next) {
 
 ## TODO
 
-* Express conventions: use environment variables for configuration
-* Express conventions: debug with prefix
+* Express conventions: debug with prefix, log4js
+* Express conventions: separate routes & controllers
 
 
 
+[dotenv]: https://www.npmjs.com/package/dotenv
 [express]: https://expressjs.com
+[heroku]: https://heroku.com
 [mongoose]: http://mongoosejs.com
+[node-process-env]: https://nodejs.org/docs/latest-v12.x/api/process.html#process_process_env
