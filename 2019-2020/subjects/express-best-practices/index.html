@@ -3,7 +3,7 @@
   <head>
     <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/bb50e5fdb8690379d6e3566ef839cae490af2eab/subjects/express-best-practices/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/eb9799ad88ec0cb2b18a2393224cff9d5e6752f8/subjects/express-best-practices/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -21,6 +21,251 @@ Learn best development practices for [Express][express] web applications.
 * [Mongoose](../mongoose/)
 
 
+
+
+
+---
+## Use environment variables for configuration
+
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
+
+Never hardcode configuration into your application, as it makes it difficult to
+deploy in different environments. You may also uninentionally expose sensitive
+data such as secret keys.
+
+[Environment variables][node-process-env] are a suitable alternative. There is
+already an example in a freshly generated Express application in the `bin/www`
+file:
+
+```js
+const port = process.env.PORT || 3000;
+```
+
+That line is equivalent to the following code:
+
+```js
+let port;
+if (process.env.PORT) {
+  port = process.env.PORT;
+} else {
+  port = 3000;
+}
+```
+
+---
+### Running your application with environment variables
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#2">Use environment variables for configuration</a>]
+
+Assuming this is the command to run your application:
+
+```bash
+$> npm start
+```
+
+In a Bash shell, you can prefix it with any environment variable(s) you may want
+to set:
+
+```bash
+$> PORT=4000 FOO=bar npm start
+```
+
+You can also set them with `export` for the remainder of your Bash session,
+before running your application:
+
+```bash
+$> export PORT=4000
+$> export FOO=bar
+$> npm start
+```
+
+> On a server or in a cloud environment, you want to edit the process manager's
+> or cloud platform's configuration for your application. For example, on
+> [Heroku][heroku], you can configure environment variables with the `heroku
+> config` subcommand, or in your application's settings web page.
+
+---
+### Create a configuration file if you have many variables
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#2">Use environment variables for configuration</a>]
+
+If you use many environment variables for configuration, you may want to
+centralize your configuration code in a single file, for example `config.js`:
+
+```js
+// File: config.js
+exports.port = process.env.PORT || 3000;
+exports.secretKey = process.env.MY_APP_SECRET_KEY || 'changeme';
+```
+
+This avoids repetition if you use the same variable in different places, and
+serves as a sort of documentation of all your configuration parameters and their
+default values. You can simply require this file and use its variables where
+needed:
+
+```js
+// File: some other file
+const config = require('../path/to/config`);
+server.listen(config.port);
+```
+
+---
+### Validate complex configuration variables
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#2">Use environment variables for configuration</a>]
+
+You always get a string value (or undefined) when you retrieve an environment
+variable. No check is performed for you. Some of your configuration parameters
+may be mandatory. Some probably need to be a specific kind of value like a
+positive integer or an URL.
+
+If you have a centralized configuration file like suggested earlier, you can
+simply add some **validation** code and throw errors in case the values are not
+as expected:
+
+```js
+// Validate that port is a positive integer.
+if (process.env.PORT) {
+  const parsedPort = parseInt(process.env.PORT, 10);
+  if (!Number.isInteger(parsedPort)) {
+    throw new Error('Environment variable $PORT must be an integer');
+  } else if (parsedPort < 1 || parsedPort > 65535) {
+    throw new Error('Environment variable $PORT must be a valid port number');
+  }
+}
+
+// Validate that some environment variable is set.
+if (!process.env.MY_APP_FOO) {
+  throw new Error('Environment variable $MY_APP_FOO must be set');
+}
+```
+
+---
+### The `dotenv` package
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#2">Use environment variables for configuration</a>]
+
+If you use many environment variables for configuration, it can be a pain to set
+them all when starting your application for local development.
+[`dotenv`][dotenv] is a popular npm package that can **auto-fill your project's
+environment variables from a configuration file** named `.env` with the
+following format:
+
+```
+PORT=4000
+MY_APP_SECRET=letmein
+```
+
+To use it, the first thing you should do it **ignore this `.env` file**, as you
+don't want to unintentionally commit sensitive information into your repository:
+
+```bash
+$> echo .env >> .gitignore
+$> git add .env
+$> git commit -m "Ignore .env file"
+```
+
+> You can share this `.env` file among your team members, and everyone can adapt
+> it to their local environment if necessary. But never commit it.
+
+---
+#### Installing and using `dotenv`
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#2">Use environment variables for configuration</a> > <a href="#6">The `dotenv` package</a>]
+
+Install `dotenv` as a development dependency:
+
+```bash
+npm install --save-dev dotenv
+```
+
+Then add the following code to the top of your configuration file (or wherever
+you retrieve configuration from environment variables):
+
+```js
+// Load environment variables from the .env file.
+*try {
+* require('dotenv').config();
+*} catch (err) {
+* console.log('No .env file loaded');
+*}
+
+// Retrieve configuration from environment variables.
+const port = process.env.PORT || 3000;
+// ...
+```
+
+> Make sure that you execute the `require('dotenv').config()` line **before
+> accessing any environment variable in `process.env`**, otherwise it will be
+> too late. You'll be fine if you use a centralized configuration file and put
+> that code at the top.
+
+
+
+---
+## The `debug` package
+
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
+
+The [`debug` package][debug] is a popular tool for debugging in Node.js
+applications, which you may use instead of `console.log`. It is included in most
+generated Express applications by default.
+
+The idea is that you create a named debug logger which you can then use to log
+debug messages as things happen in your application:
+
+```js
+const debug = require('debug');
+const log = debug('app:movies');
+
+log('Creating movie');
+log('Successfully created movie');
+log('Something happened');
+```
+
+These are **debug logs**, meaning that they **are not displayed by default**.
+They are meant to be enabled when you want to debug the behavior of your
+application in more details.
+
+---
+### Enabling debug logs
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#8">The `debug` package</a>]
+
+The `debug` package decides whether to actually display message depending on the
+value of the `$DEBUG` environment variable.
+
+You can enable all debug logs by setting it to `*`:
+
+```bash
+$> DEBUG=* npm start
+```
+
+Keep in mind that `debug` is a popular package and is not specific to Express.
+Other packages in your dependency tree might be using it (e.g. Express does).
+
+To only display a subset of the logs, you can specify a prefix:
+
+```bash
+$> DEBUG=app:* npm start
+```
+
+> This would display the logs from all debug loggers that have a name starting
+> with `app:`. You may use this to differentiate logs within your application,
+> e.g. `app:database`, `app:http`, `app:api`, etc.
+
+---
+### More powerful logging
+
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#8">The `debug` package</a>]
+
+The `debug` package is a minimalistic logging solution. For more features, use a
+more advanced library such as:
+
+* [bunyan]
+* [log4js]
+* [nightingale]
+* [winston]
 
 
 
@@ -50,7 +295,7 @@ app.use('/api/movies', `moviesApiRouter`);
 
 
 ---
-## Avoiding repetition with middleware
+## Avoid repetition with middleware
 
 .breadcrumbs[<a href="#1">Express Best Practices</a>]
 
@@ -83,12 +328,10 @@ router.delete('/:id', function(req, res, next) {
 });
 ```
 
-
-
 ---
 ### Writing middleware functions for common tasks
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#3">Avoiding repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
 
 You can write a **middleware function** that performs only this task and **attaches the Person document to the `req` object**:
 
@@ -107,12 +350,10 @@ function loadPersonFromParams(req, res, next) {
 }
 ```
 
-
-
 ---
 ### Plugging your middleware function into routes
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#3">Avoiding repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
 
 You can plug this function into the routes that need it.
 Your handler functions can then simply use `req.person`, as it will have been **loaded before they are executed**:
@@ -145,13 +386,20 @@ router.delete('/:id', `loadPersonFromParams`, function(req, res, next) {
 
 .breadcrumbs[<a href="#1">Express Best Practices</a>]
 
-* Express conventions: use environment variables for configuration
-* Express conventions: debug with prefix
+* Express conventions: separate routes & controllers
 
 
 
+[bunyan]: https://github.com/trentm/node-bunyan
+[debug]: https://www.npmjs.com/package/debug
+[dotenv]: https://www.npmjs.com/package/dotenv
 [express]: https://expressjs.com
+[heroku]: https://heroku.com
+[log4js]: https://www.npmjs.com/package/log4js
 [mongoose]: http://mongoosejs.com
+[nightingale]: https://www.npmjs.com/package/nightingale
+[node-process-env]: https://nodejs.org/docs/latest-v12.x/api/process.html#process_process_env
+[winston]: https://www.npmjs.com/package/winston
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
