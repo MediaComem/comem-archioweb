@@ -185,6 +185,64 @@ const port = process.env.PORT || 3000;
 
 
 
+## The `debug` package
+
+The [`debug` package][debug] is a popular tool for debugging in Node.js
+applications, which you may use instead of `console.log`. It is included in most
+generated Express applications by default.
+
+The idea is that you create a named debug logger which you can then use to log
+debug messages as things happen in your application:
+
+```js
+const debug = require('debug');
+const log = debug('app:movies');
+
+log('Creating movie');
+log('Successfully created movie');
+log('Something happened');
+```
+
+These are **debug logs**, meaning that they **are not displayed by default**.
+They are meant to be enabled when you want to debug the behavior of your
+application in more details.
+
+### Enabling debug logs
+
+The `debug` package decides whether to actually display message depending on the
+value of the `$DEBUG` environment variable.
+
+You can enable all debug logs by setting it to `*`:
+
+```bash
+$> DEBUG=* npm start
+```
+
+Keep in mind that `debug` is a popular package and is not specific to Express.
+Other packages in your dependency tree might be using it (e.g. Express does).
+
+To only display a subset of the logs, you can specify a prefix:
+
+```bash
+$> DEBUG=app:* npm start
+```
+
+> This would display the logs from all debug loggers that have a name starting
+> with `app:`. You may use this to differentiate logs within your application,
+> e.g. `app:database`, `app:http`, `app:api`, etc.
+
+### More powerful logging
+
+The `debug` package is a minimalistic logging solution. For more features, use a
+more advanced library such as:
+
+* [bunyan]
+* [log4js]
+* [nightingale]
+* [winston]
+
+
+
 ## Use routers
 
 **Do NOT** define all your routes in `app.js`; it will get **too large and hard to maintain**.
@@ -287,13 +345,17 @@ router.delete('/:id', `loadPersonFromParams`, function(req, res, next) {
 
 ## TODO
 
-* Express conventions: debug with prefix, log4js
 * Express conventions: separate routes & controllers
 
 
 
+[bunyan]: https://github.com/trentm/node-bunyan
+[debug]: https://www.npmjs.com/package/debug
 [dotenv]: https://www.npmjs.com/package/dotenv
 [express]: https://expressjs.com
 [heroku]: https://heroku.com
+[log4js]: https://www.npmjs.com/package/log4js
 [mongoose]: http://mongoosejs.com
+[nightingale]: https://www.npmjs.com/package/nightingale
 [node-process-env]: https://nodejs.org/docs/latest-v12.x/api/process.html#process_process_env
+[winston]: https://www.npmjs.com/package/winston
