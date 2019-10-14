@@ -54,6 +54,9 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
   * WebSockets
   * Web Application Messaging Protocol (WAMP)
 
+* Automated testing
+  * Writing API tests
+
 
 
 ## What you will need
