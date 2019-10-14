@@ -146,7 +146,7 @@ To use it, the first thing you should do it **ignore this `.env` file**, as you
 don't want to unintentionally commit sensitive information into your repository:
 
 ```bash
-$> echo .env > .gitignore
+$> echo .env >> .gitignore
 $> git add .env
 $> git commit -m "Ignore .env file"
 ```
