@@ -9,8 +9,8 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
 
 **Recommended reading**
 
-* [RESTful APIs](../rest/)
-* [RESTful API Conventions](../rest-conventions/)
+* [REST introduction & HTTP](../rest/)
+* [REST in depth](../rest-advanced/)
 * [Express](../express/)
 * [Mongoose](../mongoose/)
 
@@ -150,10 +150,12 @@ How do I get a reasonable amount of stuff?
 ### Paginating collections
 
 Some collections are just **too large to send** to the client in their entirety.
-The following examples will demonstrate two ways implement **pagination**
-to retrieve only one "page" of a collection at a time.
+The following examples will demonstrate two ways implement **pagination** to
+retrieve only one "page" of a collection at a time.
 
-The following examples assume that you have read [RESTful API Conventions](../rest-conventions/) which explains different ways to expose pagination in a RESTful API.
+The following examples assume that you have read [REST in
+Depth](../rest-advanced/) which explains different ways to expose pagination in
+a RESTful API.
 
 
 
@@ -324,22 +326,21 @@ In SQL, assuming People and Movies are in **different tables**, you would use a 
 ```sql
 SELECT people.*, SUM(movies.id) AS directed_movies_count
   FROM `people INNER JOIN movies` ON (people.id = movies.director_id)
-  `GROUP BY` people.id;
+  `GROUP BY people.id`;
 ```
 
-#### No join in MongoDB
+#### MongoDB aggregations
 
-However, there is **no JOIN** in MongoDB.
-
-If your related documents (People and Movies) are stored in two **separate collections** (as is the case in the demonstration RESTful API),
-there is **no way to retrieve that information in ONE query**.
+If your related documents are stored in two **separate collections** (as is the
+case for People and Movies in the demonstration RESTful API), you have to
+**aggregate** information from both collections.
 
 <p class='center'><img src='images/domain-model.png' class='w70' /></p>
 
-But what you can do is:
+Originally, there was no equivalent to the `JOIN` operator in MongoDB. However,
+the [`$lookup` aggregation operator][mongodb-lookup] was added in version 3.2.
 
-* Find the People you need (using `Person.find()`)
-* Count how many movies they have directed in one query using [MongoDB aggregations][mongodb-aggregation]
+To use it, you have to use [MongoDB aggregations][mongodb-aggregation].
 
 
 
@@ -364,88 +365,162 @@ Each **stage** is an object with an [aggregation pipeline operator][mongodb-aggr
 }
 ```
 
-### Aggregation pipeline example
+#### Aggregation pipeline example (part 1/3)
 
-Let's say you have retrieved a list of Person documents from the database,
-and you want to know how many Movies they have directed:
+Let's say you have retrieved a list of Person documents from the database, and
+you want to know how many Movies they have directed. The [`$lookup`
+operator][mongodb-lookup] retrieves each Person's directed Movies through the
+`directorId` property:
 
 ```js
-const people = [ /* List of Person documents from the database */ ];
-
-// Get the documents' IDs
-const personIds = people.map(person => person._id);
-
-Movie.`aggregate`([
-  {
-    `$match`: { // Select movies directed by the people we are interested in
-      director: { $in: personIds }
-    }
-  },
-  {
-    `$group`: { // Group the documents by director ID
-      _id: '$director',
-      moviesCount: { // Count the number of movies for that ID
-        $sum: 1
-      }
-    }
+{
+  $lookup: {
+    from: 'movies',
+    localField: '_id',
+    foreignField: 'directorId',
+    as: 'directedMovies'
   }
-], function(err, results) {
-  // Use the results...
-});
+}
+```
+
+Applying this operator adds the new `directedMovies` property to each Person:
+
+<!-- slide-column -->
+
+```js
+{
+  name: 'Peter Jackson'
+}
+```
+
+<!-- slide-column -->
+
+```js
+{
+  name: 'Peter Jackson',
+  `directedMovies`: [
+    { title: 'a' },
+    { title: 'b' }
+  ]
+}
+```
+
+#### Aggregation pipeline example (part 2/3)
+
+This would be sufficient to count the number of directed movies, but it also
+means you would fetch all the Movies' information from the database when you
+don't really need it. You can avoid this by adding 2 more steps to the pipeline.
+
+The [`$unwind` operator][mongodb-unwind] duplicates Person documents for each
+directed movie:
+
+```js
+{ $unwind: '$directedMovies' }
+```
+
+For example, if there is 1 Person with 2 Movies in the aggregation pipeline so
+far, it is duplicated into 2 People (with the same Person-related information)
+with 1 Movie each:
+
+<!-- slide-column -->
+
+```js
+{
+  name: 'Peter Jackson',
+  directedMovies: `[`
+    { title: 'a' },
+    { title: 'b' }
+  `]`
+}
+```
+
+<!-- slide-column -->
+
+```js
+{
+  name: 'Peter Jackson',
+  directedMovies: `{` title: 'a' `}`
+}
+{
+  name: 'Peter Jackson',
+  directedMovies: `{` title: 'b' `}`
+}
+```
+
+
+
+#### Aggregation pipeline example (part 3/3)
+
+Now that you have one document per Person per directed movie in the aggregation
+pipeline, you can use the [`$group` operator][mongodb-group] to merge these
+documents by ID (the Person's ID) to obtain one document per Person:
+
+```js
+{
+  $group: {
+    _id: '$_id',
+    name: { $first: '$name' },
+    directedMovies: { $sum: 1 }
+  }
+}
+```
+
+The `$first` operator takes the Person information from the first Person
+document with each ID, while the `$sum` operator takes care of counting the
+directed movies, transforming `directedMovies` into a number:
+
+<!-- slide-column -->
+
+```js
+{
+  name: 'Peter Jackson',
+  directedMovies: { title: 'a' }
+}
+{
+  name: 'Peter Jackson',
+  directedMovies: { title: 'b' }
+}
+```
+
+<!-- slide-column -->
+
+```js
+{
+  name: 'Peter Jackson',
+  `directedMovies: 2`
+}
 ```
 
 #### How does it work?
 
-<p class='center'><img src='images/aggregation-pipeline.png' class='w90' /></p>
+<p class='center'><img src='images/aggregation-pipeline.png' class='w100' /></p>
 
-#### Adding the aggregation results to the response
+### Using the aggregation pipeline with Mongoose
 
-That's all well and good, but you still have two separate sets of data:
-
-* The People you have retrieved with the **first query**
-* The aggregated number of Movies you have retrieved with the **aggregation query**
-
-If you just do `res.send(people)`, you will get this:
-
-```json
-[
-  { "name": "Renny Harlin" },
-  { "name": "Peter Jackson" }
-]
-```
-
-What you want is this:
-
-```json
-[
-  { "name": "Renny Harlin", "moviesCount": 1 },
-  { "name": "Peter Jackson", "moviesCount": 3 }
-]
-```
-
-#### Combining the results
-
-Here's how you can **combine** the array of People documents and the array of aggregated Movie counts:
+You can use MongoDB aggregations with Mongoose quite easily by simply calling
+the [`aggregate` method][mongoose-aggregate] on models:
 
 ```js
-const people = [ /* List of Person documents from the database */ ];
-const results = [ /* Aggregation results */ ];
+const Person = require('../models/person');
 
-// Convert the Person documents to JSON
-const peopleJson = people.map(person => person.toJSON());
-
-// For each result...
-results.forEach(function(result) {
-  // Get the director ID (that was used to $group)...
-  const resultId = result._id.toString();
-  // Find the corresponding person...
-  const correspondingPerson = peopleJson.find(person => person.id == resultId);
-  // And attach the new property
-  correspondingPerson.directedMoviesCount = result.moviesCount;
+Person.aggregate([
+  { stage1... },
+  { stage2... }
+], function(err, results) {
+  // TODO: handle error or process results...
 });
+```
 
-// Send the enriched response
-res.send(peopleJson);
+Note that the `results` array returned by Mongoose contains **plain objects, NOT
+Mongoose documents**. This is because a pipeline can easily transform documents
+so that they no longer match the original schema.
+
+If necessary, you can transform them back into Mongoose documents yourself by
+using your model:
+
+```js
+// Create documents from aggregated results.
+const aggregatedDocuments = results.map(result => new Person(result));
 ```
 
 ### Aggregation pipeline operators
@@ -455,13 +530,13 @@ They are all described in [the documentation][mongodb-aggregation-pipeline-opera
 Here are some of the most useful:
 
 Operator   | Description
-:---       | :---
+:--------- | :---------------------------------------------------------------------------------------------------------------------------
 `$group`   | Groups documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group
 `$limit`   | Passes the first *n* documents unmodified to the pipeline
-`$match`   | Filters documents to allow only matching documents to pass unmodified into the next pipeline stage
+`$match`   | **Filters** documents to allow only matching documents to pass unmodified into the next pipeline stage
 `$project` | Reshapes each document, such as by adding new fields or removing existing fields
-`$skip`    | Skips the first *n* documents
-`$sort`    | Reorders the documents by a specified sort key
+`$skip`    | Skips the first *n* documents (e.g. for **pagination**)
+`$sort`    | Reorders the documents by a specified sort key (e.g. for **pagination**)
 
 
 
@@ -485,4 +560,8 @@ Operator   | Description
 [mongodb-aggregation]: https://docs.mongodb.com/manual/aggregation/
 [mongodb-aggregation-pipeline]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
 [mongodb-aggregation-pipeline-operators]: https://docs.mongodb.com/manual/reference/operator/aggregation/
+[mongodb-group]: https://docs.mongodb.com/manual/reference/operator/aggregation/group/
+[mongodb-lookup]: https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/
+[mongodb-unwind]: https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
 [mongoose]: http://mongoosejs.com
+[mongoose-aggregate]: https://mongoosejs.com/docs/api/aggregate.html
