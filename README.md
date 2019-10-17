@@ -142,7 +142,7 @@ Your REST API must be developed with the [Express][express] framework and use a
 
 ### Delivery
 
-Send an e-mail *no later than __November 25th 2019__* to Simon Oulevay with:
+Send an e-mail *no later than __November 18th 2019__* to Simon Oulevay with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
