@@ -5,11 +5,11 @@ client and a remote host.
 
 **You will need**
 
-* Something
+* [Google Chrome][chrome] (recommended, any browser with developer tools will do)
 
 **Recommended reading**
 
-* [Command Line Introduction](../cli/)
+* [REST Introduction & HTTP](../rest/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -46,16 +46,16 @@ client and a remote host.
 
 HTTP has a lot of **communication overhead**:
 
-* TCP handshakes are made frequently (in HTTP/1).
+* TCP handshakes are made frequently (especially in HTTP/1).
 * TLS handshakes are optionally made for HTTPS.
 * Headers are sent in each request *and* response.
 
 <p class='center'><img src='images/tcp-tls-handshake.png' class='w80' /></p>
 
-### Real-time request-response workarounds
+### Real-time request/response workarounds
 
-HTTP is a **request-response** protocol not meant for bidirectional
-communication. It is possible to obtain real-time-like behavior with HTTP/1 with
+HTTP is a **request/response** protocol not meant for bidirectional
+communication. It is possible to obtain real-time-like behavior with HTTP with
 tricks such as [Comet][comet] or techniques like [Server-Sent Events
 (SSE)][sse].
 
@@ -70,12 +70,10 @@ tricks such as [Comet][comet] or techniques like [Server-Sent Events
 <!-- slide-column -->
 
 [HTTP/2][http2] changes things a little by introducing [server push][http2-push]
-and multiplexing.
+and [multiplexing][http2-multiplexing].
 
 However, the protocol is still not designed for real-time communication, as it
 is still based on requests and responses with the overhead of headers.
-
-[HTTP/2 will also support WebSockets][http2-websockets].
 
 
 
@@ -96,26 +94,27 @@ WebSocket introduces 2 new URL schemes similar to `http://` and `https://`:
 * `ws://host:port/path?query` (port 80 by default)
 * `wss://host:port/path?query` (port 443 by default, secured by TLS)
 
-For example, `wss://example.com` represents a secure WebSocket endpoint on the
-`example.com` server.
+For example, `wss://example.com/realtime` represents a secure WebSocket endpoint
+on the `example.com` server.
 
 ### Compatible with HTTP
 
-The WebSocket protocol is designed to work over HTTP ports 80 and 443 to support
-existing infrastructure (e.g. proxies, filtering, authentication).
+The WebSocket protocol is **designed to work over HTTP ports 80 and 443** to
+support existing infrastructure (e.g. proxies, filtering, authentication).
 
 <!-- slide-column -->
 
-To open a WebSocket connection, the client must make an [**opening
-handshake**][ws-handshake] using the [HTTP `Upgrade` header][http-upgrade]:
+To open a WebSocket connection with an HTTP/1.1 server, the client must make an
+[**opening handshake**][ws-handshake] using the [HTTP `Upgrade`
+header][http-upgrade]:
 
 ```http
 GET /ws HTTP/1.1
 Host: ws.example.com
 Connection: Upgrade
-Upgrade: websocket
-Sec-WebSocket-Key: dGhl...HNhb==
-Sec-WebSocket-Version: 13
+*Upgrade: websocket
+*Sec-WebSocket-Key: dGhl...HNhb==
+*Sec-WebSocket-Version: 13
 ```
 
 <!-- slide-column -->
@@ -127,7 +126,7 @@ switching protocols from HTTP to WebSocket:
 HTTP/1.1 101 Switching Protocols
 Connection: Upgrade
 Upgrade: websocket
-Sec-WebSocket-Accept: s3pP...LBio=
+*Sec-WebSocket-Accept: s3pP...LBio=
 ```
 
 <!-- slide-container -->
@@ -162,8 +161,9 @@ client in the HTTP `Sec-WebSocket-Accept` header:
 Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 ```
 
-> This mechanism simply exists to make sure that the server does not accept a
-> random HTTP request that may look like a WebSocket handshake.
+> **Demo:** use the [WebSocket Echo Test][ws-echo] with your browser's developer
+> tools to see a real handshake. [QuickHash][quickhash] will help you compute
+> the base64-encoded SHA-1 hash.
 
 ### WebSocket is full duplex
 
@@ -176,13 +176,14 @@ Once the handshake is done, a single TCP connection remains open and allows for
 
 <!-- slide-column -->
 
-While HTTP is a request-response protocol, WebSocket is a lower-level **message
-protocol**.
+While HTTP is a high-level request/response protocol, WebSocket is a lower-level
+**message protocol**.
 
-Both client and server may send each other messages at any time:
+Both client and server may send each other messages at any time. Unlike HTTP:
 
-* The server is not obligated to send a message back in response to a client
-  message, and vice-versa.
+* The server does not have to send a message back in response to a client
+  message, and vice-versa. In fact, there is no mechanism to acknowledge
+  messages at all. It is the responsibility of the application layer.
 * Once the connection is established, the server may send unsollicited messages
   to the client (e.g. for notifications).
 
@@ -194,15 +195,18 @@ Both client and server may send each other messages at any time:
 
 The WebSocket protocol uses the same techniques as HTTP for security:
 
-* The **origin model** can be used to restrict which web pages can contact a
-  WebSocket server.
 * Since the opening handshake is an HTTP request, the server may use HTTP
   security mechanisms to grant or deny access. For example:
 
-  * **Session cookies**
-  * **Basic or token-based authentication**
+  * The [**origin model**][cors] can be used to restrict which web pages can
+    contact a WebSocket server.
+  * **Session cookies** (or any other cookies) can be sent.
+  * **Basic or token-based authentication** can be performed with the
+    `Authorization` header.
+* Since the underlying connection is a TCP connection, **TLS** can be used to
+  encrypt the traffic (when using the `wss://` scheme).
 
-More precise authentication or authorization is the responsibility of the
+More granular authentication or authorization is the responsibility of the
 application layer (just like HTTP).
 
 
@@ -219,31 +223,34 @@ application layer (just like HTTP).
 
 The WebSocket Protocol is designed on the principle that there should be minimal
 framing. It is intended to be as close to exposing raw TCP as possible given the
-constraints of the web.
+constraints of the web:
 
-* The `FIN` bit indicates whether a frame is the final frame of a message. It is
-  used to split a large message into several smaller frames to avoid network
-  congestion.
-* The 4-bit `opcode` determines the type of frame. There are a few **control
-  frames** defined by the protocol, and there are **data frames** to send text
-  or binary data.
-* The `MASK` bit indicates whether the client data is [masked][ws-rfc-masking]
-  with the `Masking-key`, a security measure to prevent [specific web
-  infrastructure attacks][ws-rfc-masking-attack].
-* The 7-bit `Payload len` indicates the length of the `Payload Data`. Depending
-  on the value of those 7 bits, an extra 16 or 64 bits may be used.
+* The `FIN` bit indicates whether a frame is the **final frame** of a message.
+  It is used to split a large message into several smaller frames to avoid
+  network congestion. 0 indicates a message fragment, 1 indicates the final
+  fragment. There is no limit on the number of frames a message may be split
+  into.
+* The 4-bit `opcode` determines the **type of frame**. The protocol defines a
+  few **control frames** to manage the connection, and a few **data frames** to
+  send data. See the next *Opcodes* section.
+* The `MASK` bit indicates whether the client data is
+  [**masked**][ws-rfc-masking] with the `Masking-key`, a security measure to
+  prevent [specific web infrastructure attacks][ws-rfc-masking-attack].
+* The 7-bit `Payload len` indicates the **length of the payload data**.
+  Depending on the value of those 7 bits, an extra 16 or 64 bits may be used.
+  The maximum payload data length is 2<sup>63</sup> - 1 (about 9'223 petabytes).
 * The `Payload Data` contains the text or binary data of the message.
 
 ### Opcodes
 
-The protocol defines 2 **data frame** opcodes:
+The protocol defines 2 [**data frame**][ws-rfc-data-frames] opcodes to send data:
 
 Opcode | Hex   | Description
 :----- | :---- | :----------
 `0001` | `0x1` | Indicates that the payload data is text data encoded as UTF-8.
 `0010` | `0x2` | Indicates that the payload data is binary data to be interpreted by the application layer.
 
-And 3 **control frame** opcodes:
+And 3 [**control frame**][ws-rfc-control-frames] opcodes to manage the connection:
 
 Opcode | Hex   | Description
 :----- | :---- | :----------
@@ -261,32 +268,32 @@ Text bytes | Extra protocol bytes (`FIN`, `opcode`, etc) | Total bytes
 126-65535  | 8                                           | 134-65543
 65536+     | 14                                          | 65550+
 
-In constrast, this is a minimal HTTP request to send the character `A` (1 byte
-of text data) from a client to a server:
+In constrast, this is a minimal well-formed HTTP request to send the character
+`A` (1 byte of text data) from a client to a server:
 
 ```http
-GET / HTTP/1.1
+POST / HTTP/1.1
 Host: example.com
 Content-Type: text/plain
 
 A
 ```
 
-> This HTTP request is 60 bytes long (with 59 of those bytes being extra bytes
-> from the HTTP protocol), and 3 round trips would probably have to be made
-> before sending it (to establish a new TCP connection secured with TLS). The
-> equivalent WebSocket message would be only 7 bytes long and require no
-> previous round trip.
+> This HTTP request is 61 bytes long (with 60 of those bytes being extra bytes
+> from the HTTP protocol), and 3 round trips may be required before sending any
+> of it (to establish a new TCP connection secured with TLS). The equivalent
+> WebSocket message would be only 7 bytes long and require no previous round
+> trip on an existing connection.
 
 
 
-## To WebSocket or not to WebSocket?
+## WebSocket vs. HTTP
 
 <!-- slide-column 40 -->
 
 **Advantages**
 
-* Full duplex communication.
+* Full duplex real-time communication.
 * Much more efficient for small and/or frequent messages (since there is less
   connection establishment and protocol overhead).
 
@@ -295,10 +302,11 @@ A
 **Disadvantages**
 
 * No high-level semantics like request/response or publish/subscribe.
-* Open TCP connections consume resources. Serving many WebSocket clients has
-  [performance implications][tcp-connections-limit] for the server.
-* No caching (unlike HTTP).
-* No support in old clients (e.g. old versions of Internet Explorer).
+* Keeping open TCP connections consumes resources. Serving many WebSocket
+  clients has [performance implications][tcp-connections-limit] for the server.
+* No caching ([unlike HTTP][http-caching]).
+* No [support in legacy clients][ws-support] (e.g. older versions of Internet
+  Explorer).
 
 
 
@@ -327,19 +335,28 @@ A
 
 
 [base64]: https://en.wikipedia.org/wiki/Base64
+[chrome]: https://www.google.com/chrome/
 [comet]: https://en.wikipedia.org/wiki/Comet_(programming)
+[cors]: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+[http-caching]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
 [http-upgrade]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism
 [http2]: https://developers.google.com/web/fundamentals/performance/http2
+[http2-multiplexing]: https://developers.google.com/web/fundamentals/performance/http2#request_and_response_multiplexing
 [http2-push]: https://www.smashingmagazine.com/2017/04/guide-http2-server-push/
 [http2-websockets]: https://medium.com/@pgjones/http-2-websockets-81ae3aab36dd
+[quickhash]: https://quickhash.com
 [sha1]: https://en.wikipedia.org/wiki/SHA-1
 [sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
 [tcp-connections-limit]: https://stackoverflow.com/questions/2332741/what-is-the-theoretical-maximum-number-of-open-tcp-connections-that-a-modern-lin
 [ws]: https://en.wikipedia.org/wiki/WebSocket
 [ws-background]: https://tools.ietf.org/html/rfc6455#section-1.1
+[ws-echo]: https://www.websocket.org/echo.html
 [ws-handshake]: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#The_WebSocket_handshake
 [ws-mdn]: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers
 [ws-rfc]: https://tools.ietf.org/html/rfc6455
+[ws-rfc-control-frames]: https://tools.ietf.org/html/rfc6455#section-5.5
+[ws-rfc-data-frames]: https://tools.ietf.org/html/rfc6455#section-5.6
 [ws-rfc-framing]: https://tools.ietf.org/html/rfc6455#section-5.2
 [ws-rfc-masking]: https://tools.ietf.org/html/rfc6455#section-5.3
 [ws-rfc-masking-attack]: https://tools.ietf.org/html/rfc6455#section-10.3
+[ws-support]: https://caniuse.com/#feat=websockets
