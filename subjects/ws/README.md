@@ -16,15 +16,23 @@ client and a remote host.
 
 
 - [Real-time HTTP](#real-time-http)
-  - [Request-response, half-duplex](#request-response-half-duplex)
-- [What is WebSockets?](#what-is-websockets)
-- [Compatible with HTTP](#compatible-with-http)
-  - [Full Duplex](#full-duplex)
-  - [Protocol handshake](#protocol-handshake)
-  - [Message-based](#message-based)
+  - [HTTP is not optimized for small messages](#http-is-not-optimized-for-small-messages)
+  - [Real-time request/response workarounds](#real-time-requestresponse-workarounds)
+  - [HTTP/2 multiplexing](#http2-multiplexing)
+- [What are WebSockets?](#what-are-websockets)
+  - [WebSocket URL scheme](#websocket-url-scheme)
+  - [Compatible with HTTP](#compatible-with-http)
+    - [Avoiding confusion between HTTP and WebSocket](#avoiding-confusion-between-http-and-websocket)
+  - [WebSocket is full duplex](#websocket-is-full-duplex)
+  - [WebSocket is message-based](#websocket-is-message-based)
   - [Security](#security)
-  - [Framing](#framing)
-  - [TODO](#todo)
+- [WebSocket message framing](#websocket-message-framing)
+  - [Anatomy of a frame](#anatomy-of-a-frame)
+  - [Opcodes](#opcodes)
+  - [Frame size](#frame-size)
+- [WebSocket vs. HTTP](#websocket-vs-http)
+- [Resources](#resources)
+- [TODO](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

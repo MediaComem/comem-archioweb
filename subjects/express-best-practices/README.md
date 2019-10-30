@@ -15,8 +15,17 @@ Learn best development practices for [Express][express] web applications.
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Use environment variables for configuration](#use-environment-variables-for-configuration)
+  - [Running your application with environment variables](#running-your-application-with-environment-variables)
+  - [Create a configuration file if you have many variables](#create-a-configuration-file-if-you-have-many-variables)
+  - [Validate complex configuration variables](#validate-complex-configuration-variables)
+  - [The `dotenv` package](#the-dotenv-package)
+    - [Installing and using `dotenv`](#installing-and-using-dotenv)
+- [The `debug` package](#the-debug-package)
+  - [Enabling debug logs](#enabling-debug-logs)
+  - [More powerful logging](#more-powerful-logging)
 - [Use routers](#use-routers)
-- [Avoiding repetition with middleware](#avoiding-repetition-with-middleware)
+- [Avoid repetition with middleware](#avoid-repetition-with-middleware)
   - [Writing middleware functions for common tasks](#writing-middleware-functions-for-common-tasks)
   - [Plugging your middleware function into routes](#plugging-your-middleware-function-into-routes)
 - [TODO](#todo)
