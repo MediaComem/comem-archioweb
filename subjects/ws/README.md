@@ -1,7 +1,7 @@
 # WebSockets
 
-The WebSocket Protocol enables full-duplex two-way communication between a
-client and a remote host.
+[The WebSocket Protocol][ws-rfc] enables full-duplex two-way communication
+between a client and a remote host.
 
 **You will need**
 
@@ -25,6 +25,7 @@ client and a remote host.
     - [Avoiding confusion between HTTP and WebSocket](#avoiding-confusion-between-http-and-websocket)
   - [WebSocket is full duplex](#websocket-is-full-duplex)
   - [WebSocket is message-based](#websocket-is-message-based)
+  - [WebSocket is ordered](#websocket-is-ordered)
   - [Security](#security)
 - [WebSocket message framing](#websocket-message-framing)
   - [Anatomy of a frame](#anatomy-of-a-frame)
@@ -176,7 +177,7 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 ### WebSocket is full duplex
 
 Once the handshake is done, a single TCP connection remains open and allows for
-**full-duplex bidirectional communication**.
+**[full-duplex][full-duplex] bidirectional communication**.
 
 <p class='center'><img src='images/ws-diagram.png' class='w65' /></p>
 
@@ -198,6 +199,17 @@ Both client and server may send each other messages at any time. Unlike HTTP:
 <!-- slide-column 50 -->
 
 <img src='images/ws-message-based.png' class='w100' />
+
+### WebSocket is ordered
+
+The Transmission Control Protocol (TCP) guarantees [reliable, ordered
+transmission][tcp-order] using a sliding window technique:
+
+<p class='center'><img src='images/tcp-order.jpg' class='w80' /></p>
+
+Since the WebSocket protocol operates over a TCP connection, it also
+**guarantees that messages will arrive in the order they were sent** (on one
+connection).
 
 ### Security
 
@@ -329,6 +341,7 @@ A
   * [Server-Sent Events (SSE)][sse]
   * [Introduction to HTTP/2][http2]
   * [HTTP/2 server push][http2-push]
+* [TCP Presentation][tcp]
 
 
 
@@ -338,7 +351,6 @@ A
   * https://tools.ietf.org/html/rfc6455#section-1.9
   * https://www.iana.org/assignments/websocket/websocket.xml#subprotocol-name
   * https://www.iana.org/assignments/websocket/websocket.xhtml#extension-name
-* TCP guarantees order, so WebSockets does also (for one connection)
 
 
 
@@ -346,6 +358,7 @@ A
 [chrome]: https://www.google.com/chrome/
 [comet]: https://en.wikipedia.org/wiki/Comet_(programming)
 [cors]: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
+[full-duplex]: https://en.wikipedia.org/wiki/Duplex_(telecommunications)#Full_duplex
 [http-caching]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
 [http-upgrade]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism
 [http2]: https://developers.google.com/web/fundamentals/performance/http2
@@ -355,7 +368,9 @@ A
 [quickhash]: https://quickhash.com
 [sha1]: https://en.wikipedia.org/wiki/SHA-1
 [sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+[tcp]: https://www.slideserve.com/johana/tcp
 [tcp-connections-limit]: https://stackoverflow.com/questions/2332741/what-is-the-theoretical-maximum-number-of-open-tcp-connections-that-a-modern-lin
+[tcp-order]: https://en.wikipedia.org/wiki/Transmission_Control_Protocol#Reliable_transmission
 [ws]: https://en.wikipedia.org/wiki/WebSocket
 [ws-background]: https://tools.ietf.org/html/rfc6455#section-1.1
 [ws-echo]: https://www.websocket.org/echo.html
