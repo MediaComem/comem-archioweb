@@ -227,6 +227,17 @@ feature][crossbar-shared-registrations].
 
 <img src='images/security.png' class='w30' />
 
+### Transport-level security
+
+The WAMP protocol itself does not encrypt messages.
+
+When using WAMP with WebSockets, you should use [**Transport Layer Security**
+(TLS)][tls] with a `wss://` URL. The router should present a valid TLS
+certificate to authenticate itself to the client. There is no other mechanism to
+authenticate the router.
+
+The router is **trusted** and can read all messages.
+
 ### WAMP realms and sessions
 
 When a WAMP Client (a Caller, Callee, Subscriber or Publisher) connects to a
@@ -238,18 +249,92 @@ A **Realm** is a WAMP routing and administrative domain, **optionally protected
 by authentication and authorization**. WAMP messages are only routed within a
 Realm.
 
-### TODO
+### Authentication
 
-* Authentication
-* https://crossbar.io/docs/Authorization/
+WAMP's advanced profile defines [WAMP-level authentication][wamp-auth] to
+control client access to the router. There are several [authentication
+methods][crossbar-auth]. Here are just a few:
+
+* [Ticket authentication][crossbar-auth-ticket] with a ticket or token.
+* [Challenge-response authentication][crossbar-auth-ticket] uses a shared secret
+  which never travels over the wire.
+* [Cryptosign authentication][crossbar-auth-ticket] uses Curve25519-based
+  asymmetric public key cryptography.
+
+> Some methods like ticket authentication should only be used over TLS,
+> otherwise the secret could be intercepted.
+
+### Authorization
+
+WAMP authentication determines whether a client is allowed to connect and which
+identity it is assigned. [WAMP authorization][crossbar-authorization] determines
+**which permissions the client is granted** based on its identity.
+
+Authorization is URI-based and separate for the four main interactions:
+
+* `call`
+* `register`
+* `publish`
+* `subscribe`
+
+For example, a client may be allowed to call procedure `com.example.proc1`,
+subscribe topic `com.example.topic1`, but not publish to that topic.
+
+Permissions can also be granted based on patterns like `com.example.*`.
+
+### Static or dynamic authentication
+
+With the official [Crossbar.io router][crossbar], authentication can either be
+[static or dynamic][crossbar-auth-static-dynamic]; it is the same [with
+authorization][crossbar-authorization-dynamic]:
+
+* When using **static** mode, you configure authentication and authorization in
+  the router's JSON configuration file.
+* When using **dynamic** mode:
+  * You can register a WAMP procedure (e.g. `com.example.authenticate`) to
+    implement your own [dynamic authentication
+    mechanism][crossbar-auth-dynamic]. You can use custom code to determine whether
+    the client is allowed to connect and what its role is, with access to all client
+    information such as the HTTP headers sent during the WebSocket handshake.
+  * You can register a WAMP procedure (e.g. `com.example.authorize`) to implement your own [dynamic
+    authorization logic][crossbar-authorization-dynamic]. You can use custom code to
+    determine whether a client with a particular role is authorized to perform a
+    specific action (e.g. `call` or `register`) on a specific URI.
 
 
 
-## Advanced features
+## Other advanced features
 
-* JSON/MessagePack https://wamp-proto.org/_static/gen/wamp_latest.html#messagepack
-* Progressive calls https://wamp-proto.org/_static/gen/wamp_latest.html#progressive-call-results
-* Event history https://wamp-proto.org/_static/gen/wamp_latest.html#event-history
+<!-- slide-front-matter class: center, middle -->
+
+<img src='images/advanced-features.jpg' class='w70' />
+
+### MessagePack
+
+Unlike WebSockets, WAMP does not support sending raw binary data to a procedure
+or topic, at least for now. However, it does support [MessagePack][messagepack]
+if you want to send the smallest possible structured data:
+
+<p class='center'><img src='images/message-pack.png' class='w70' /></p>
+
+> "MessagePack is an efficient binary serialization format. It lets you exchange
+> data among multiple languages like JSON. But it's faster and smaller. Small
+> integers are encoded into a single byte, and typical short strings require
+> only one extra byte in addition to the strings themselves."
+
+### Progressive call results
+
+<!-- slide-column 40 -->
+
+<img src='images/progressive-call-results.png' class='w100' />
+
+<!-- slide-column -->
+
+WAMP support procedures returning [progressive
+results][wamp-progressive-call-results] as they become available.
+
+This can be used to return partial results for long-running operations, or to
+chunk the transmission of larger result sets.
 
 
 
@@ -315,11 +400,16 @@ libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
 **Documentation**
 
 * [The Web Application Messaging Protocol][wamp]
-* [WAMP Specification][wamp-spec]
-* [What is Crossbar.io?][crossbar-about]
+  * [WAMP Specification][wamp-spec]
+* [Crossbar.io][crossbar]
+  * [What is Crossbar.io?][crossbar-about]
+  * [Authentication][crossbar-auth]
+  * [Authentication][crossbar-authorization]
 
 **Further reading**
 
+* [Free Your Code - Backends in the Browser][free-your-code]
+* [Security in the IoT][iot-security]
 * [Scaling microservices with Crossbar.io][scaling-microservices]
 * [Microservices implementation - Netflix stack](https://medium.com/@tharanganilupul/microservices-implementation-netflix-stack-ba4f4a57a79f)
 * [Why Netflix, Amazon and Apple Care About Microservices](https://blog.leanix.net/en/why-netflix-amazon-and-apple-care-about-microservices)
@@ -333,16 +423,28 @@ libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
 [autobahn-python]: https://github.com/crossbario/autobahn-python
 [crossbar]: https://crossbar.io
 [crossbar-about]: https://crossbar.io/about/
+[crossbar-auth]: https://crossbar.io/docs/Authentication/
+[crossbar-auth-cra]: https://crossbar.io/docs/Challenge-Response-Authentication/
+[crossbar-auth-cryptosign]: https://crossbar.io/docs/Cryptosign-Authentication/
+[crossbar-auth-dynamic]: https://crossbar.io/docs/Dynamic-Authenticators/
+[crossbar-auth-static-dynamic]: https://crossbar.io/docs/Authentication/#static-dynamic-and-database-authentication
+[crossbar-auth-ticket]: https://crossbar.io/docs/Ticket-Authentication/
+[crossbar-authorization]: https://crossbar.io/docs/Authorization/
+[crossbar-authorization-dynamic]: https://crossbar.io/docs/Authorization/#static-authorization
 [crossbar-shared-registrations]: https://crossbar.io/docs/Shared-Registrations/
 [coupling]: https://en.wikipedia.org/wiki/Coupling_(computer_programming)
 [free-your-code]: https://crossbario.com/blog/Free-Your-Code-Backends-in-the-Browser/
 [iot-security]: https://crossbario.com/static/presentations/iot-security/index.html#/
+[messagepack]: https://msgpack.org
 [microservices]: https://en.wikipedia.org/wiki/Microservices
 [pubsub]: https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
 [rpc]: https://en.wikipedia.org/wiki/Remote_procedure_call
 [scaling-microservices]: https://crossbario.com/static/presentations/microservices/index.html#/
+[tls]: https://en.wikipedia.org/wiki/Transport_Layer_Security
 [wamp]: https://wamp-proto.org
+[wamp-auth]: https://wamp-proto.org/_static/gen/wamp_latest.html#authentication
 [wamp-compared]: https://wamp-proto.org/comparison.html
 [wamp-implementations]: https://wamp-proto.org/implementations.html
+[wamp-progressive-call-results]: https://wamp-proto.org/_static/gen/wamp_latest.html#progressive-call-results
 [wamp-spec]: https://wamp-proto.org/_static/gen/wamp_latest.html
 [ws-subprotocol]: https://tools.ietf.org/html/rfc6455#section-1.9
