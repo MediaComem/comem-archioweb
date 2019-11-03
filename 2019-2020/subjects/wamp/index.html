@@ -3,7 +3,7 @@
   <head>
     <title>Web Application Messaging Protocol (WAMP) (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/babf73d65dc3b0bc1f1f8cea3f76ece46e1f03ba/subjects/wamp/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/da291a10f55c4c9df1af89f6e0048dd6d5ab7f5a/subjects/wamp/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -253,10 +253,6 @@ or path between them, since all messages are routed by WAMP.
 * Since no ports on edge devices need to be opened for WAMP to work (in both
   directions), **the remote [attack surface][attack-surface] of these devices is
   completely closed** ([Security in the IoT][iot-security]).
-* Finally, since the Caller is not aware where, or even who is processing the
-  call (and it should not care!), it is easy to make **highly available
-  components** (using hot standby components) or **scale horizontally**
-  ([Scaling microservices with Crossbar.io][scaling-microservices]).
 
 ---
 ### Microservices architecture
@@ -272,27 +268,21 @@ are independently developed and deployed:
 > The WAMP router would function as the API gateway in this example.
 
 ---
-### TODO
+### Scaling microservices
 
 .breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#6">Unified application routing</a>]
 
-* Shared registration
-* Horizontal scaling
+Since the Caller is not aware where, or even who is processing the call (*and it
+should not care!*), it is easy to:
 
+* Make **highly available components** using hot standby components.
+* [**Scale horizontally**][scaling-microservices] by load balancing between
+  components.
 
+Both can be accomplished using the router's [shared registration
+feature][crossbar-shared-registrations].
 
----
-## Implementations
-
-.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a>]
-
----
-### TODO
-
-.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#17">Implementations</a>]
-
-* Crossbar.io
-* Official & other clients
+<p class='center'><img src='images/wamp-shared-registrations.png' class='w80' /></p>
 
 
 
@@ -307,9 +297,23 @@ class: center, middle
 <img src='images/security.png' class='w30' />
 
 ---
+### Transport-level security
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#17">Security</a>]
+
+The WAMP protocol itself does not encrypt messages.
+
+When using WAMP with WebSockets, you should use [**Transport Layer Security**
+(TLS)][tls] with a `wss://` URL. The router should present a valid TLS
+certificate to authenticate itself to the client. There is no other mechanism to
+authenticate the router.
+
+The router is **trusted** and can read all messages.
+
+---
 ### WAMP realms and sessions
 
-.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#19">Security</a>]
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#17">Security</a>]
 
 When a WAMP Client (a Caller, Callee, Subscriber or Publisher) connects to a
 WAMP Router, it must establish a session in a particular **Realm**.
@@ -321,12 +325,149 @@ by authentication and authorization**. WAMP messages are only routed within a
 Realm.
 
 ---
-### TODO
+### Authentication
 
-.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#19">Security</a>]
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#17">Security</a>]
 
-* Authentication
-* https://crossbar.io/docs/Authorization/
+WAMP's advanced profile defines [WAMP-level authentication][wamp-auth] to
+control client access to the router. There are several [authentication
+methods][crossbar-auth]. Here are just a few:
+
+* [Ticket authentication][crossbar-auth-ticket] with a ticket or token.
+* [Challenge-response authentication][crossbar-auth-ticket] uses a shared secret
+  which never travels over the wire.
+* [Cryptosign authentication][crossbar-auth-ticket] uses Curve25519-based
+  asymmetric public key cryptography.
+
+> Some methods like ticket authentication should only be used over TLS,
+> otherwise the secret could be intercepted.
+
+---
+### Authorization
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#17">Security</a>]
+
+WAMP authentication determines whether a client is allowed to connect and which
+identity it is assigned. [WAMP authorization][crossbar-authorization] determines
+**which permissions the client is granted** based on its identity.
+
+Authorization is URI-based and separate for the four main interactions:
+
+* `call`
+* `register`
+* `publish`
+* `subscribe`
+
+For example, a client may be allowed to call procedure `com.example.proc1`,
+subscribe topic `com.example.topic1`, but not publish to that topic.
+
+Permissions can also be granted based on patterns like `com.example.*`.
+
+---
+### Static or dynamic authentication
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#17">Security</a>]
+
+With the official [Crossbar.io router][crossbar], authentication can either be
+[static or dynamic][crossbar-auth-static-dynamic]; it is the same [with
+authorization][crossbar-authorization-dynamic]:
+
+* When using **static** mode, you configure authentication and authorization in
+  the router's JSON configuration file.
+* When using **dynamic** mode:
+  * You can register a WAMP procedure (e.g. `com.example.authenticate`) to
+    implement your own [dynamic authentication
+    mechanism][crossbar-auth-dynamic]. You can use custom code to determine whether
+    the client is allowed to connect and what its role is, with access to all client
+    information such as the HTTP headers sent during the WebSocket handshake.
+  * You can register a WAMP procedure (e.g. `com.example.authorize`) to implement your own [dynamic
+    authorization logic][crossbar-authorization-dynamic]. You can use custom code to
+    determine whether a client with a particular role is authorized to perform a
+    specific action (e.g. `call` or `register`) on a specific URI.
+
+
+
+---
+class: center, middle
+## Other advanced features
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a>]
+
+
+
+<img src='images/advanced-features.jpg' class='w70' />
+
+---
+### MessagePack
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#23">Other advanced features</a>]
+
+Unlike WebSockets, WAMP does not support sending raw binary data to a procedure
+or topic, at least for now. However, it does support [MessagePack][messagepack]
+if you want to send the smallest possible structured data:
+
+<p class='center'><img src='images/message-pack.png' class='w70' /></p>
+
+> "MessagePack is an efficient binary serialization format. It lets you exchange
+> data among multiple languages like JSON. But it's faster and smaller. Small
+> integers are encoded into a single byte, and typical short strings require
+> only one extra byte in addition to the strings themselves."
+
+---
+### Progressive call results
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#23">Other advanced features</a>]
+
+.grid-40[
+
+<img src='images/progressive-call-results.png' class='w100' />
+
+
+]
+.grid-60[
+
+WAMP support procedures returning [progressive
+results][wamp-progressive-call-results] as they become available.
+
+This can be used to return partial results for long-running operations, or to
+chunk the transmission of larger result sets.
+
+
+
+
+]
+---
+class: center, middle
+## Implementations
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a>]
+
+
+
+<img src='images/implementations.jpg' class='w40' />
+
+> WAMP is a **protocol**. To use it, you need an **actual router
+> implementation** that follows the specification and **client libraries that
+> can connect to it**.
+
+---
+### Get me some WAMP
+
+.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a> > <a href="#26">Implementations</a>]
+
+The following implementations are developed by the authors of the specification
+and are (generally) the most full-featured:
+
+* [Crossbar.io][crossbar], a WAMP router.
+* Autobahn (WAMP client library), available in:
+  * [C++][autobahn-cpp]
+  * [Java][autobahn-java]
+  * [JavaScript][autobahn-js]
+  * [Python][autobahn-python]
+
+The specification also contains a list of other [available
+implementations][wamp-implementations], both for the router and client
+libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
 
 
 
@@ -337,7 +478,7 @@ Realm.
 
 [WAMP compared][wamp-compared] to other technologies.
 
-.grid-50[
+.grid-45[
 
 **Advantages**
 
@@ -349,27 +490,23 @@ Realm.
 
 
 ]
-.grid-50[
+.grid-55[
 
 **Disadvantages**
 
 * **Not (yet) an official standard**. No higher level software architectural
   styles like REST (for now).
-* Requires you to **deploy an additional component**: the WAMP router.
+* Requires you to **deploy an additional component**: the WAMP router. This
+  additional component also increases the time it takes to exchange messages
+  between components compared to a direct WebSocket connection, since all
+  messages have to go through the router.
 * Decoupled microservices are **more complex** than classic client-server
   architectures.
 
 
+
+
 ]
----
-## Roles
-
-.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a>]
-
-* Session: established over a Connection, joined to a Realm on a Router
-
-
-
 ---
 ## References
 
@@ -378,36 +515,52 @@ Realm.
 **Documentation**
 
 * [The Web Application Messaging Protocol][wamp]
-* [WAMP Specification][wamp-spec]
-* [What is Crossbar.io?][crossbar]
+  * [WAMP Specification][wamp-spec]
+* [Crossbar.io][crossbar]
+  * [What is Crossbar.io?][crossbar-about]
+  * [Authentication][crossbar-auth]
+  * [Authentication][crossbar-authorization]
 
 **Further reading**
 
+* [Free Your Code - Backends in the Browser][free-your-code]
+* [Security in the IoT][iot-security]
+* [Scaling microservices with Crossbar.io][scaling-microservices]
 * [Microservices implementation - Netflix stack](https://medium.com/@tharanganilupul/microservices-implementation-netflix-stack-ba4f4a57a79f)
 * [Why Netflix, Amazon and Apple Care About Microservices](https://blog.leanix.net/en/why-netflix-amazon-and-apple-care-about-microservices)
 
 
 
----
-## TODO
-
-.breadcrumbs[<a href="#1">Web Application Messaging Protocol (WAMP)</a>]
-
-* JSON / MessagePack
-
-
-
 [attack-surface]: https://en.wikipedia.org/wiki/Attack_surface
-[crossbar]: https://crossbar.io/about/
+[autobahn-cpp]: https://github.com/crossbario/autobahn-cpp
+[autobahn-java]: https://github.com/crossbario/autobahn-java
+[autobahn-js]: https://github.com/crossbario/autobahn-js
+[autobahn-python]: https://github.com/crossbario/autobahn-python
+[crossbar]: https://crossbar.io
+[crossbar-about]: https://crossbar.io/about/
+[crossbar-auth]: https://crossbar.io/docs/Authentication/
+[crossbar-auth-cra]: https://crossbar.io/docs/Challenge-Response-Authentication/
+[crossbar-auth-cryptosign]: https://crossbar.io/docs/Cryptosign-Authentication/
+[crossbar-auth-dynamic]: https://crossbar.io/docs/Dynamic-Authenticators/
+[crossbar-auth-static-dynamic]: https://crossbar.io/docs/Authentication/#static-dynamic-and-database-authentication
+[crossbar-auth-ticket]: https://crossbar.io/docs/Ticket-Authentication/
+[crossbar-authorization]: https://crossbar.io/docs/Authorization/
+[crossbar-authorization-dynamic]: https://crossbar.io/docs/Authorization/#static-authorization
+[crossbar-shared-registrations]: https://crossbar.io/docs/Shared-Registrations/
 [coupling]: https://en.wikipedia.org/wiki/Coupling_(computer_programming)
 [free-your-code]: https://crossbario.com/blog/Free-Your-Code-Backends-in-the-Browser/
 [iot-security]: https://crossbario.com/static/presentations/iot-security/index.html#/
+[messagepack]: https://msgpack.org
 [microservices]: https://en.wikipedia.org/wiki/Microservices
 [pubsub]: https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern
 [rpc]: https://en.wikipedia.org/wiki/Remote_procedure_call
 [scaling-microservices]: https://crossbario.com/static/presentations/microservices/index.html#/
+[tls]: https://en.wikipedia.org/wiki/Transport_Layer_Security
 [wamp]: https://wamp-proto.org
+[wamp-auth]: https://wamp-proto.org/_static/gen/wamp_latest.html#authentication
 [wamp-compared]: https://wamp-proto.org/comparison.html
+[wamp-implementations]: https://wamp-proto.org/implementations.html
+[wamp-progressive-call-results]: https://wamp-proto.org/_static/gen/wamp_latest.html#progressive-call-results
 [wamp-spec]: https://wamp-proto.org/_static/gen/wamp_latest.html
 [ws-subprotocol]: https://tools.ietf.org/html/rfc6455#section-1.9
     </textarea>
