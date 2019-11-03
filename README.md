@@ -51,8 +51,8 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
 
 * Real-time communication
-  * WebSockets
-  * Web Application Messaging Protocol (WAMP)
+  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Automated testing
   * Writing API tests
