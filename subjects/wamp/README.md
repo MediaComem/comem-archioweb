@@ -4,10 +4,6 @@
 & Subscribe][pubsub] and routed [Remote Procedure Calls][rpc]. It is intended to
 connect application components in distributed applications.
 
-**You will need**
-
-* Something
-
 **Recommended reading**
 
 * [WebSockets](../ws/)
