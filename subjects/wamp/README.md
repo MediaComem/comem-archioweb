@@ -194,10 +194,6 @@ or path between them, since all messages are routed by WAMP.
 * Since no ports on edge devices need to be opened for WAMP to work (in both
   directions), **the remote [attack surface][attack-surface] of these devices is
   completely closed** ([Security in the IoT][iot-security]).
-* Finally, since the Caller is not aware where, or even who is processing the
-  call (and it should not care!), it is easy to make **highly available
-  components** (using hot standby components) or **scale horizontally**
-  ([Scaling microservices with Crossbar.io][scaling-microservices]).
 
 ### Microservices architecture
 
@@ -209,19 +205,19 @@ are independently developed and deployed:
 
 > The WAMP router would function as the API gateway in this example.
 
-### TODO
+### Scaling microservices
 
-* Shared registration
-* Horizontal scaling
+Since the Caller is not aware where, or even who is processing the call (*and it
+should not care!*), it is easy to:
 
+* Make **highly available components** using hot standby components.
+* [**Scale horizontally**][scaling-microservices] by load balancing between
+  components.
 
+Both can be accomplished using the router's [shared registration
+feature][crossbar-shared-registrations].
 
-## Implementations
-
-### TODO
-
-* Crossbar.io
-* Official & other clients
+<p class='center'><img src='images/wamp-shared-registrations.png' class='w80' /></p>
 
 
 
@@ -249,11 +245,47 @@ Realm.
 
 
 
+## Advanced features
+
+* JSON/MessagePack https://wamp-proto.org/_static/gen/wamp_latest.html#messagepack
+* Progressive calls https://wamp-proto.org/_static/gen/wamp_latest.html#progressive-call-results
+* Event history https://wamp-proto.org/_static/gen/wamp_latest.html#event-history
+
+
+
+## Implementations
+
+<!-- slide-front-matter class: center, middle -->
+
+<img src='images/implementations.jpg' class='w40' />
+
+> WAMP is a **protocol**. To use it, you need an **actual router
+> implementation** that follows the specification and **client libraries that
+> can connect to it**.
+
+### Get me some WAMP
+
+The following implementations are developed by the authors of the specification
+and are (generally) the most full-featured:
+
+* [Crossbar.io][crossbar], a WAMP router.
+* Autobahn (WAMP client library), available in:
+  * [C++][autobahn-cpp]
+  * [Java][autobahn-java]
+  * [JavaScript][autobahn-js]
+  * [Python][autobahn-python]
+
+The specification also contains a list of other [available
+implementations][wamp-implementations], both for the router and client
+libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
+
+
+
 ## To WAMP or not to WAMP?
 
 [WAMP compared][wamp-compared] to other technologies.
 
-<!-- slide-column -->
+<!-- slide-column 45 -->
 
 **Advantages**
 
@@ -269,13 +301,12 @@ Realm.
 
 * **Not (yet) an official standard**. No higher level software architectural
   styles like REST (for now).
-* Requires you to **deploy an additional component**: the WAMP router.
+* Requires you to **deploy an additional component**: the WAMP router. This
+  additional component also increases the time it takes to exchange messages
+  between components compared to a direct WebSocket connection, since all
+  messages have to go through the router.
 * Decoupled microservices are **more complex** than classic client-server
   architectures.
-
-## Roles
-
-* Session: established over a Connection, joined to a Realm on a Router
 
 
 
@@ -285,23 +316,24 @@ Realm.
 
 * [The Web Application Messaging Protocol][wamp]
 * [WAMP Specification][wamp-spec]
-* [What is Crossbar.io?][crossbar]
+* [What is Crossbar.io?][crossbar-about]
 
 **Further reading**
 
+* [Scaling microservices with Crossbar.io][scaling-microservices]
 * [Microservices implementation - Netflix stack](https://medium.com/@tharanganilupul/microservices-implementation-netflix-stack-ba4f4a57a79f)
 * [Why Netflix, Amazon and Apple Care About Microservices](https://blog.leanix.net/en/why-netflix-amazon-and-apple-care-about-microservices)
 
 
 
-## TODO
-
-* JSON / MessagePack
-
-
-
 [attack-surface]: https://en.wikipedia.org/wiki/Attack_surface
-[crossbar]: https://crossbar.io/about/
+[autobahn-cpp]: https://github.com/crossbario/autobahn-cpp
+[autobahn-java]: https://github.com/crossbario/autobahn-java
+[autobahn-js]: https://github.com/crossbario/autobahn-js
+[autobahn-python]: https://github.com/crossbario/autobahn-python
+[crossbar]: https://crossbar.io
+[crossbar-about]: https://crossbar.io/about/
+[crossbar-shared-registrations]: https://crossbar.io/docs/Shared-Registrations/
 [coupling]: https://en.wikipedia.org/wiki/Coupling_(computer_programming)
 [free-your-code]: https://crossbario.com/blog/Free-Your-Code-Backends-in-the-Browser/
 [iot-security]: https://crossbario.com/static/presentations/iot-security/index.html#/
@@ -311,5 +343,6 @@ Realm.
 [scaling-microservices]: https://crossbario.com/static/presentations/microservices/index.html#/
 [wamp]: https://wamp-proto.org
 [wamp-compared]: https://wamp-proto.org/comparison.html
+[wamp-implementations]: https://wamp-proto.org/implementations.html
 [wamp-spec]: https://wamp-proto.org/_static/gen/wamp_latest.html
 [ws-subprotocol]: https://tools.ietf.org/html/rfc6455#section-1.9
