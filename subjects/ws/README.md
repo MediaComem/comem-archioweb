@@ -307,6 +307,64 @@ A
 
 
 
+## Show me some code
+
+<!-- slide-front-matter class: center, middle -->
+
+<img src='images/code.jpg' class='w80' />
+
+### Creating a WebSocket server
+
+This is a simple Node.js WebSocket server that will accept connections from
+clients, send them a message, and listen for client messages:
+
+```js
+const WebSocket = require('ws');
+
+// Create a WebSocket server that will accept connections on port 3000.
+const `wss` = new WebSocket.Server({
+  port: 3000
+});
+
+// Listen for client connections.
+`wss`.on('connection', function connection(`ws`) {
+
+  // Listen for messages from the client once it has connected.
+  `ws`.on('message', function incoming(message) {
+    console.log('received: %s', message);
+  });
+
+  // Send something to the client.
+  `ws`.send('something');
+});
+```
+
+> This server is implemented with the [`ws` npm package][ws-npm].
+
+### Connecting with the WebSocket Web API
+
+Modern browsers include the [WebSocket Web API][ws-api]. Opening a WebSocket
+connection is as simple as instantiating a `WebSocket` object:
+
+```js
+// Open a WebSocket connection to the server running on localhost port 3000.
+const `ws` = new WebSocket('ws://localhost:3000');
+
+// Wait for the connection to open.
+`ws`.addEventListener('open', function(event) {
+
+  // Send something to the server.
+  `ws`.send('Hello Server!');
+});
+
+// Listen for message from the server.
+`ws`.addEventListener('message', function(event) {
+  console.log('Message from server ', event.data);
+});
+```
+
+
+
 ## WebSocket vs. HTTP
 
 <!-- slide-column 40 -->
@@ -372,10 +430,12 @@ A
 [tcp-connections-limit]: https://stackoverflow.com/questions/2332741/what-is-the-theoretical-maximum-number-of-open-tcp-connections-that-a-modern-lin
 [tcp-order]: https://en.wikipedia.org/wiki/Transmission_Control_Protocol#Reliable_transmission
 [ws]: https://en.wikipedia.org/wiki/WebSocket
+[ws-api]: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
 [ws-background]: https://tools.ietf.org/html/rfc6455#section-1.1
 [ws-echo]: https://www.websocket.org/echo.html
 [ws-handshake]: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#The_WebSocket_handshake
 [ws-mdn]: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers
+[ws-npm]: https://www.npmjs.com/package/ws
 [ws-rfc]: https://tools.ietf.org/html/rfc6455
 [ws-rfc-control-frames]: https://tools.ietf.org/html/rfc6455#section-5.5
 [ws-rfc-data-frames]: https://tools.ietf.org/html/rfc6455#section-5.6

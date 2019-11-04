@@ -360,6 +360,81 @@ The specification also contains a list of other [available
 implementations][wamp-implementations], both for the router and client
 libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
 
+### Running a WAMP router
+
+Here is an example of how to run a [Crossbar.io][crossbar] WAMP router on your
+local machine's 8080 port with [Docker][docker]:
+
+```js
+$> docker run -it --name=crossbar -p 8080:8080 --rm crossbario/crossbar
+```
+
+This router would be available at `ws://localhost:8080`. It use a default
+configuration which allows any WAMP client to connect on a realm named `realm1`
+without authentication. Clients are allowed to call and/or register any
+procedure, and to publish/subscribe to any topic.
+
+> See the [installation documentation][crossbar-docker] for more information and
+> the [administration manual][crossbar-admin] for configuration.
+
+### Connecting to a WAMP router with a client library
+
+Here is an example of how to connect to a WAMP router from Node.js code using
+the [Autobahn JavaScript library][autobahn-js]:
+
+```js
+const autobahn = require('autobahn');
+const connection = new autobahn.Connection({
+  url: 'ws://127.0.0.1:9000',
+  realm: 'realm1'
+});
+
+// Open the connection.
+connection.open();
+
+// Wait until the connection is open before interacting with the router.
+connection.onopen = function(session) {
+
+  // Publish an event on a topic.
+  `session.publish`('com.myapp.hello', [ 'Hello, world!' ]);
+
+  // Register a procedure.
+  `session.register`('com.myapp.add2', function(args) {
+    return args[0] + args[1];
+  });
+};
+```
+
+### Calling procedures and subscribing to events
+
+Another client could connect to the same router to call that procedure and
+subscribe to those events:
+
+```js
+const autobahn = require('autobahn');
+const connection = new autobahn.Connection({
+  url: 'ws://127.0.0.1:9000',
+  realm: 'realm1'
+});
+
+// Open the connection.
+connection.open();
+
+// Wait until the connection is open before interacting with the router.
+connection.onopen = function(session) {
+
+  // Subscribe to a topic and receive events.
+  `session.subscribe`('com.myapp.hello', function(args) {
+    console.log(\`Event: ${args[0]}`); // Event: "Hello, world!"
+  });
+
+  // Call a procedure and obtain the result.
+  `session.call`('com.myapp.add2', [ 2, 3 ]).then(function (res) {
+    console.log(\`Result: ${res}`); // 5
+  });
+};
+```
+
 
 
 ## To WAMP or not to WAMP?
@@ -419,6 +494,7 @@ libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
 [autobahn-python]: https://github.com/crossbario/autobahn-python
 [crossbar]: https://crossbar.io
 [crossbar-about]: https://crossbar.io/about/
+[crossbar-admin]: https://crossbar.io/docs/Administration/
 [crossbar-auth]: https://crossbar.io/docs/Authentication/
 [crossbar-auth-cra]: https://crossbar.io/docs/Challenge-Response-Authentication/
 [crossbar-auth-cryptosign]: https://crossbar.io/docs/Cryptosign-Authentication/
@@ -427,8 +503,10 @@ libraries, written in languages as varied as Erlang, Go, PHP and Ruby.
 [crossbar-auth-ticket]: https://crossbar.io/docs/Ticket-Authentication/
 [crossbar-authorization]: https://crossbar.io/docs/Authorization/
 [crossbar-authorization-dynamic]: https://crossbar.io/docs/Authorization/#static-authorization
+[crossbar-docker]: https://crossbar.io/docs/Getting-Started/#starting-a-crossbar-io-router
 [crossbar-shared-registrations]: https://crossbar.io/docs/Shared-Registrations/
 [coupling]: https://en.wikipedia.org/wiki/Coupling_(computer_programming)
+[docker]: https://www.docker.com
 [free-your-code]: https://crossbario.com/blog/Free-Your-Code-Backends-in-the-Browser/
 [iot-security]: https://crossbario.com/static/presentations/iot-security/index.html#/
 [messagepack]: https://msgpack.org
