@@ -32,7 +32,7 @@ const geolocatedSchema = new Schema({
       required: true,
       validate: {
         validator: validateGeoJsonCoordinates,
-        message: '{VALUE} is not a valid longitude/latitude coordinate pair'
+        message: '{VALUE} is not a valid longitude/latitude(/altitude) coordinates array'
       }
     }
   }
