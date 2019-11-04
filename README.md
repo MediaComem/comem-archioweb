@@ -78,6 +78,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 * [Architecture & source code management diagrams][diagrams]
 * [Demonstration REST API implemented with Express][demo-api] ([documentation][demo-api-doc])
 * [Tic-Tac-Toe WebSockets & WAMP Exercise][tictactoe]
+* [Storing geospatial data with Mongoose](MONGOOSE-GEOSPATIAL.md)
 * [Command line cheatsheet][cli-cheatsheet]
 * [Git cheatsheet][git-cheatsheet]
 * [Project suggestions](PROJECTS.md)
@@ -106,6 +107,9 @@ Your REST API must be developed with the [Express][express] framework and use a
   * The API must be developed as a backend to a mobile application
     using at least 2 [**mobile hardware features**][cordova-plugins], for example:
     * At least one resource must be **geolocated**.
+
+      > See [Storing geospatial data with Mongoose](MONGOOSE-GEOSPATIAL.md) for
+      > information on how to store this data.
     * At least one resource must have one or multiple **pictures**
       (it is sufficient to store a picture URL or URLs in the database).
   * Sensitive operations must be protected by requiring valid **authentication**.
