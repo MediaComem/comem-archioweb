@@ -77,6 +77,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 
 * [Architecture & source code management diagrams][diagrams]
 * [Demonstration REST API implemented with Express][demo-api] ([documentation][demo-api-doc])
+* [Tic-Tac-Toe WebSockets & WAMP Exercise][tictactoe]
 * [Command line cheatsheet][cli-cheatsheet]
 * [Git cheatsheet][git-cheatsheet]
 * [Project suggestions](PROJECTS.md)
@@ -170,3 +171,4 @@ Send an e-mail *no later than __November 18th 2019__* to Simon Oulevay with:
 [mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
 [node]: https://nodejs.org/
 [postman]: https://www.getpostman.com
+[tictactoe]: https://github.com/MediaComem/comem-archioweb-tictactoe
