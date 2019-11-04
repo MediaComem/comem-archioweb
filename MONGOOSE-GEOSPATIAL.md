@@ -39,7 +39,7 @@ const geolocatedSchema = new Schema({
 });
 
 // Create a geospatial index on the location property.
-issueSchema.index({ location: '2dsphere' });
+geolocatedSchema.index({ location: '2dsphere' });
 
 // Validate a GeoJSON coordinates array (longitude, latitude and optional altitude).
 function validateGeoJsonCoordinates(value) {
