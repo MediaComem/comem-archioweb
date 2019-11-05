@@ -121,6 +121,10 @@ Your REST API must be developed with the [Express][express] framework and use a
   * The WebSockets endpoint or WAMP topic must send real-time messages containing relevant data for the application.
     (For example, a chat application may notify its clients in real-time of the number of channels, messages, etc, to display activity on the home page.)
   * The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing authentication or authorization is mandatory).
+* You must implement **automated tests**:
+  * You must write tests for **at least 4 separate REST operations** in your API (for example: create thing, update thing, list things, delete thing).
+    One test for each operation is enough.
+  * Your tests must be **reproducible** (running `npm test` several times in a row should always produce the same result).
 
 **Infrastructure**
 
@@ -142,6 +146,16 @@ Your REST API must be developed with the [Express][express] framework and use a
 * You must avoid excessive code duplication (e.g. using Express middleware).
 * Your API must have basic validations on user input (e.g. using Mongoose validations).
 * Your API must validate the existence of linked resources (e.g. when creating an item linked to a user).
+
+**Bonus**
+
+Doing more than is required **MAY** earn you some bonus points in the evaluation. Here are some examples:
+
+* Implement authorization, i.e. deny some users the right to perform specific operations even when they are authenticated.
+
+  For example: event when authenticated, user A may not be able to edit resource 1, because it was created by user B, and
+  only the creator can modify it.
+* Implement "full" (close to 100%) test coverage with automated tests.
 
 
 
