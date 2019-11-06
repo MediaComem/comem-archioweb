@@ -529,8 +529,8 @@ expect(res.body.name).to.equal('John Doe');
 expect(res.body).to.have.all.keys('_id', 'name');
 ```
 
-Mocha has [many assertions][mocha-bdd] you can use to verify the shape of
-objects or any other kind of JavaScript value (e.g. arrays).
+Chai has [many assertions][chai-bdd] you can use to verify the shape of objects
+or any other kind of JavaScript value (e.g. arrays).
 
 When testing a particular API route, **you should make assertions on everything
 your route does that is expected to be used by the end user**. You want to make
