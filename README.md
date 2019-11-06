@@ -49,7 +49,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
-  * [Writing API tests][AUTOMATED-TESTING.md]
+  * [Writing API tests](AUTOMATED-TESTING.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
