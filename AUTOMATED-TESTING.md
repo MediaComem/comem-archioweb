@@ -14,7 +14,7 @@ the following tools:
 > JavaScript test frameworks in 2019.
 >
 > Note that the code in this tutorial uses [Promises][promise] and [async
-> functions][async-await]. Read [this guide][ASYNC-JS.md] if your are not
+> functions][async-await]. Read [this guide](ASYNC-JS.md) if your are not
 > familiar with the subject.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
