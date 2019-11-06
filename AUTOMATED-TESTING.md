@@ -1,7 +1,8 @@
 # Setting up automated testing for an Express.js REST API
 
-This tutorial explains how to set up automated tests for an HTTP API implemented
-with [Express.js][express] and [Mongoose][mongoose], using the following tools:
+This tutorial explains how to set up [automated tests][automated-testing] for an
+HTTP API implemented with [Express.js][express] and [Mongoose][mongoose], using
+the following tools:
 
 * [Mocha][mocha] (test framework)
 * [Chai][chai] (assertion library)
@@ -11,9 +12,34 @@ with [Express.js][express] and [Mongoose][mongoose], using the following tools:
 > tools that can do the same. For example, read [this
 > article][top-js-test-frameworks-2019] for a list of the most popular
 > JavaScript test frameworks in 2019.
+>
+> Note that the code in this tutorial uses [Promises][promise] and [async
+> functions][async-await]. Read [this guide][ASYNC-JS.md] if your are not
+> familiar with the subject.
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Requirements](#requirements)
+- [Install the test framework and run your first test](#install-the-test-framework-and-run-your-first-test)
+- [Your domain model & API](#your-domain-model--api)
+- [Set up your test suite](#set-up-your-test-suite)
+  - [Switch databases when running tests](#switch-databases-when-running-tests)
+- [Write your first test](#write-your-first-test)
+  - [Disconnect from the database once the tests are done](#disconnect-from-the-database-once-the-tests-are-done)
+  - [Fix Mongoose `collection.ensureIndex is deprecated` warning](#fix-mongoose-collectionensureindex-is-deprecated-warning)
+  - [Get rid of request logs while testing](#get-rid-of-request-logs-while-testing)
+- [Add a unicity constraint to your model](#add-a-unicity-constraint-to-your-model)
+- [Reproducible tests](#reproducible-tests)
+- [Write more detailed assertions](#write-more-detailed-assertions)
+- [Write a second test](#write-a-second-test)
+- [Optional: check your test coverage](#optional-check-your-test-coverage)
+- [Tips](#tips)
+  - [Chai](#chai)
+- [Documentation](#documentation)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
@@ -103,7 +129,7 @@ const userSchema = new Schema({
 And the following routes:
 
 * `POST /users` creates a user.
-* `GET /users` lists users.
+* `GET /users` lists users by ascending name.
 
 If that is not the case, adapt the tests to your domain model and API.
 
@@ -159,9 +185,7 @@ $> npm test
 > Development][tdd], you could even write your whole test suite before
 > implementing your API!
 
-
-
-## Switch databases when running tests
+### Switch databases when running tests
 
 When working on an existing application, you probably have a development
 database containing some data. You don't want your tests to mess with that data.
@@ -485,6 +509,219 @@ creating the same user with the same name every time.
 
 
 
+## Write more detailed assertions
+
+So far, your test makes a POST request on `/users` and checks that the response
+has the status code 200 OK with a `Content-Type` header indicating that the
+response is JSON.
+
+That's nice, but you are not checking what is in the response body yet. With
+SuperTest, the response object (`res`) has a `body` property which contains the
+parsed JSON body. You can make assertions on it too.
+
+Add the following assertions to your test after the SuperTest call chain:
+
+```js
+// Check that the response body is a JSON object with exactly the properties we expect.
+expect(res.body).to.be.an('object');
+expect(res.body._id).to.be.a('string');
+expect(res.body.name).to.equal('John Doe');
+expect(res.body).to.have.all.keys('_id', 'name');
+```
+
+Mocha has [many assertions][mocha-bdd] you can use to verify the shape of
+objects or any other kind of JavaScript value (e.g. arrays).
+
+When testing a particular API route, **you should make assertions on everything
+your route does that is expected to be used by the end user**. You want to make
+sure that your API works as advertised. For example: check the status code,
+check important headers, check the response body.
+
+> Note the `expect(res.body._id).to.be.a('string')` assertion. You cannot check
+> the exact value of the user's ID because you cannot know it until the user has
+> been created. So you just check that it's a string. If you wanted to go
+> further, you could check the exact format of that ID with
+> `expect(res.body._id).to.match(/^[0-9a-f]{24}$/)` (for MongoDB IDs).
+>
+> Also note the `expect(res.body).to.have.all.keys('_id', 'name')` assertion.
+> You have an assertion to check the ID and another to check the name, but it's
+> also important to check that the body does not contain other properties you
+> were not expecting. That way, when you add more properties to your schema, the
+> test will remind you that you should add new assertions.
+>
+> If you wanted to go further, you could also check that the created user has
+> actually been saved to the database. There could conceivable be a bug where
+> the API gives you the correct answer even though it saved something slightly
+> different to the database (or did not save it at all).
+
+
+
+## Write a second test
+
+Let's test the application's other route. **Modify the `it('should retrieve the
+list of users')` call** to add the test function. It should look like this:
+
+```js
+describe('GET /users', function() {
+  it('should retrieve the list of users', async function() {
+
+  });
+});
+```
+
+Add the following contents inside the `async function`:
+
+```js
+const res = await supertest(app)
+  .get('/users')
+  .expect(200)
+  .expect('Content-Type', /json/);
+```
+
+This is very similar to the previous test. Note that you are not using `.send`
+this time. Since this is a GET request, no request body can be sent.
+
+Make some assertions on the request body:
+
+```js
+expect(res.body).to.be.an('array');
+expect(res.body).to.have.lengthOf(0);
+```
+
+
+
+## Test fixtures
+
+In the case of the `POST /users` test, it was necessary to have an empty
+database to avoid issues with the unicity constraint. But it's a bit of a
+problem for the `GET /users` test: with the database empty, the API will always
+respond with an empty list. That's not a really good test of the list
+functionality.
+
+You need specific data to already be in the database before you run the test, so
+that you will know what the expected result is. This is what's called a [test
+fixture][fixture]: something you use to consistently test a piece of code.
+
+Because each test is different, **each should set up its own fixtures** so that
+the initial state is exactly as expected.
+
+In the case of `GET /users`, you need some users in the database before you
+attempt to retrieve the list. To create them, you will need the `User` model,
+which you can import by adding this to the top of the test file:
+
+```js
+const User = require('../models/user');
+```
+
+You now need to make sure that some users are created **before the test runs**.
+You can use Mocha's `beforeEach` hook. Just make sure to put it in the right
+place. You want these fixtures to be created for the `GET /users` test, but not
+for the `POST /users` test. You can achieve this by putting it inside the
+`describe('GET /users', ...)` block: it will only apply to tests in that block.
+
+Here's how it should look like:
+
+```js
+describe('GET /users', function() {
+  beforeEach(async function() {
+    // Create 2 users before retrieving the list.
+    await Promise.all([
+      User.create({ name: 'John Doe' }),
+      User.create({ name: 'Jane Doe' })
+    ]);
+  });
+
+  it('should retrieve the list of users', async function() {
+    // ...
+  });
+});
+```
+
+If you run `npm test` now, your test will fail because you made an assertion
+that the list should be empty. But thanks to the fixtures you created, it now
+has 2 users:
+
+```bash
+$> npm test
+> my-app@0.0.0 test /path/to/my-app
+> cross-env MONGODB_URI=mongodb://localhost/my-app-test NODE_ENV=test mocha spec/**/*.spec.js
+
+  POST /users
+    ✓ should create a user (104ms)
+
+  GET /users
+    1) should retrieve the list of users
+
+  1 passing (194ms)
+  1 failing
+
+  1) GET /users
+       should retrieve the list of users:
+
+      AssertionError: expected [ Array(2) ] to have a length of 0 but got 2
+      + expected - actual
+
+      -2
+      +0
+```
+
+Update the assertion to fit the new data:
+
+```js
+expect(res.body).to.have.lengthOf(2);
+```
+
+Now add some more assertions to check that the array contains exactly what you
+expect:
+
+```js
+expect(res.body[0]).to.be.an('object');
+expect(res.body[0]._id).to.be.a('string');
+expect(res.body[0].name).to.equal('Jane Doe');
+expect(res.body[0]).to.have.all.keys('_id', 'name');
+
+expect(res.body[1]).to.be.an('object');
+expect(res.body[1]._id).to.be.a('string');
+expect(res.body[1].name).to.equal('John Doe');
+expect(res.body[1]).to.have.all.keys('_id', 'name');
+```
+
+You are mainly testing 2 things here:
+
+* As before, you are checking that the records in the database (the users in
+  this case) have been correctly sent in the response with the expected
+  properties.
+* In addition, you are checking that the list is sorted in the correct order (by
+  ascending name): `Jane Doe` must be first and `John Doe` second.
+
+
+
+## Am I testing every possible scenario?
+
+You now have partial coverage on these two `POST /users` and `GET /users`
+routes. But the two tests you have written only cover the best case scenario:
+what happens when everything goes as planned and everyone is happy.
+
+When writing automated tests, you should attempt to cover all likely scenarios.
+Here's a few examples of some tests you could add to this small project:
+
+* If you have validations, write tests that make sure that you cannot create a
+  user with invalid data. For example:
+  * Attempt to create a user with an empty name, or a name that's too long.
+    Check that it fails.
+  * Attempt to create a user with a name that already exists (by using a test
+    fixture).
+* Keep the early test your wrote that checks what happens when the user list is
+  empty. Once your system goes to production, it may never produce an empty list
+  of users again. But it would be nice to know that your system still works in
+  its initial state, especially if you might need to deploy another instance for
+  another customer in the future.
+* If your list supports various filters, sorts or pagination, you should write
+  tests for these as well.
+
+
+
+
 ## Optional: check your test coverage
 
 Install [nyc][nyc], the command line interface for [Istanbul][istanbul], a test
@@ -520,6 +757,56 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 
 
 
+## Tips
+
+### Chai
+
+* You can make negative assertions with `.not`:
+
+  ```js
+  expect(numberVariable).to.not.be.an.('object');
+  ```
+* Pay attention to the subtle difference between
+  `expect(object).to.equal(anotherObject)` and
+  `expect(object).to.eql(anotherObject)`. The `equal` assertion checks for
+  strict equality, while the `eql` assertion performs a deep comparison. For
+  example, take the following two objects:
+
+  ```js
+  const object = { foo: 'bar' };
+  const anotherObject = { foo: 'bar' };
+  ```
+
+  These are **not the same object**: they are two separate object instances, so
+  an `equal` assertion would not pass. However, **the structure of both objects
+  is the same**, so an `eql` assertion would pass.
+
+
+
+## Documentation
+
+* [Mocha][mocha] (test framework)
+  * [Hooks][mocha-hooks]
+* [Chai][chai] (assertion library)
+  * [Assertions][chai-bdd] ([BDD][bdd] style)
+* [SuperTest][supertest] (HTTP test library)
+* [nyc][nyc] (test coverage analysis)
+* [Express.js][express] (Node.js web framework)
+* [Mongoose][mongoose] (Node.js object-document mapper)
+
+**Further reading**
+
+* [Behavior-Driven Development][bdd]
+* [Test fixtures][fixture]
+* [Test-Driven Development][tdd]
+* [Top JavaScript Testing Frameworks in Demande for 2019][top-js-test-frameworks-2019]
+
+
+
+
+
+[async-await]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+[automated-testing]: https://mediacomem.github.io/comem-archidep/2019-2020/subjects/automated-testing/?home=MediaComem%2Fcomem-archidep%23readme#1
 [bdd]: https://en.wikipedia.org/wiki/Behavior-driven_development
 [chai]: https://www.chaijs.com
 [chai-bdd]: https://www.chaijs.com/api/bdd/
@@ -534,6 +821,7 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 [node]: https://nodejs.org
 [npm]: https://www.npmjs.com
 [nyc]: https://github.com/istanbuljs/nyc
+[promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [supertest]: https://github.com/visionmedia/supertest
 [supertest-examples]: https://github.com/visionmedia/supertest#example
 [tdd]: https://en.wikipedia.org/wiki/Test-driven_development

@@ -49,13 +49,11 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
+  * [Writing API tests][AUTOMATED-TESTING.md]
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
-
-* Automated testing
-  * Writing API tests
 
 
 
@@ -75,13 +73,23 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 
 ## Useful links
 
+**Documentation**
+
 * [Architecture & source code management diagrams][diagrams]
 * [Demonstration REST API implemented with Express][demo-api] ([documentation][demo-api-doc])
+* [Project suggestions](PROJECTS.md)
+
+**Exercises**
+
 * [Tic-Tac-Toe WebSockets & WAMP Exercise][tictactoe]
+
+**Guides**
+
 * [Storing geospatial data with Mongoose](MONGOOSE-GEOSPATIAL.md)
+* [Setting up automated testing for an Express.js REST API](AUTOMATED-TESTING.md)
+* [The many worlds of asynchronous JavaScript](ASYNC-JS.md)
 * [Command line cheatsheet][cli-cheatsheet]
 * [Git cheatsheet][git-cheatsheet]
-* [Project suggestions](PROJECTS.md)
 
 
 
@@ -121,10 +129,6 @@ Your REST API must be developed with the [Express][express] framework and use a
   * The WebSockets endpoint or WAMP topic must send real-time messages containing relevant data for the application.
     (For example, a chat application may notify its clients in real-time of the number of channels, messages, etc, to display activity on the home page.)
   * The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing authentication or authorization is mandatory).
-* You must implement **automated tests**:
-  * You must write tests for **at least 4 separate REST operations** in your API (for example: create thing, update thing, list things, delete thing).
-    One test for each operation is enough.
-  * Your tests must be **reproducible** (running `npm test` several times in a row should always produce the same result).
 
 **Infrastructure**
 
@@ -135,6 +139,15 @@ Your REST API must be developed with the [Express][express] framework and use a
 
 * Your REST API must be documented.
 * The real-time component of your API must be documented (not necessarily in the same way).
+
+**Automated testing**
+
+* You must implement **automated tests** to test your REST API:
+  * You must write tests for **at least 4 separate REST operations** in your API
+    (for example: create thing, update thing, list things, delete thing). One
+    test for each operation is enough.
+  * Your tests must be **reproducible** (running `npm test` several times in a
+    row should always produce the same result).
 
 **Quality of the implementation**
 
@@ -149,13 +162,15 @@ Your REST API must be developed with the [Express][express] framework and use a
 
 **Bonus**
 
-Doing more than is required **MAY** earn you some bonus points in the evaluation. Here are some examples:
+Doing more than is required **MAY** earn you some bonus points in the
+evaluation. Here are some examples:
 
-* Implement authorization, i.e. deny some users the right to perform specific operations even when they are authenticated.
+* Implement authorization, i.e. deny some users the right to perform specific
+  operations even when they are authenticated.
 
-  For example: event when authenticated, user A may not be able to edit resource 1, because it was created by user B, and
-  only the creator can modify it.
-* Implement "full" (close to 100%) test coverage with automated tests.
+  For example: event when authenticated, user A may not be able to edit resource
+  1, because it was created by user B, and only the creator can modify it.
+* Implement "full" (90-100%) test coverage with automated tests.
 
 
 
