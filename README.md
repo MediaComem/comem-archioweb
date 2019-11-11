@@ -68,6 +68,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 * [MongoDB][mongodb]
 * A free [Heroku][heroku] account
 * The [Heroku CLI][heroku-cli]
+* [WebSocket & Web Application Messaging Protocol (WAMP) web client][msg-central]
 
 
 
@@ -202,6 +203,7 @@ Send an e-mail *no later than __November 18th 2019__* to Simon Oulevay with:
 [jwt]: https://jwt.io/
 [mongodb]: https://www.mongodb.com
 [mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
+[msg-central]: https://msg-central.herokuapp.com
 [node]: https://nodejs.org/
 [postman]: https://www.getpostman.com
 [tictactoe]: https://github.com/MediaComem/comem-archioweb-tictactoe
