@@ -218,14 +218,17 @@ like this:
 
 ```json
 "scripts": {
-  "test": "cross-env MONGODB_URI=mongodb://localhost/my-app-test mocha spec/**/*.spec.js"
+  "test": "cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test mocha spec/**/*.spec.js"
 }
 ```
 
 This switches the `$MONGODB_URI` variable to another value before running your
-tests. In this example, it connects to the `my-app-test` database on `localhost`
-instead of the `my-app` database. That way, your tests will modify a separate
-database without touching your development data.
+tests. In this example, it connects to the `my-app-test` database on
+`127.0.0.1` (localhost) instead of the `my-app` database. That way, your tests
+will modify a separate database without touching your development data.
+
+> You could normally use `mongodb://localhost/my-app-test` for the database
+> URL, but it does not seem to work on Windows for some reason.
 
 
 
@@ -411,7 +414,7 @@ To avoid setting this variable every time, you can use `cross-env` again.
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env MONGODB_URI=mongodb://localhost/my-app-test NODE_ENV=test mocha spec/**/*.spec.js"
+  "test": "cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js"
 }
 ```
 
@@ -644,7 +647,7 @@ has 2 users:
 ```bash
 $> npm test
 > my-app@0.0.0 test /path/to/my-app
-> cross-env MONGODB_URI=mongodb://localhost/my-app-test NODE_ENV=test mocha spec/**/*.spec.js
+> cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js
 
   POST /users
     ✓ should create a user (104ms)
@@ -737,7 +740,7 @@ right before the `mocha` command:
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env MONGODB_URI=mongodb://localhost/my-app-test NODE_ENV=test nyc --reporter=html mocha spec/**/*.spec.js"
+  "test": "cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test NODE_ENV=test nyc --reporter=html mocha spec/**/*.spec.js"
 }
 ```
 
