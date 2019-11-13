@@ -147,6 +147,9 @@ Your REST API must be developed with the [Express][express] framework and use a
   * You must write tests for **at least 4 separate REST operations** in your API
     (for example: create thing, update thing, list things, delete thing). One
     test for each operation is enough.
+
+    > A test for a `GET` request that retrieves an empty list does not count in
+    > the minimal number of tests you must write.
   * Your tests must be **reproducible** (running `npm test` several times in a
     row should always produce the same result).
 
