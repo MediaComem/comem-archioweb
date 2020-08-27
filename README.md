@@ -180,7 +180,7 @@ evaluation. Here are some examples:
 
 ### Delivery
 
-Send an e-mail *no later than __November 18th 2019__* to Simon Oulevay with:
+Send an e-mail *no later than __November 9th 2020__* to Simon Oulevay with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
