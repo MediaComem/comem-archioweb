@@ -20,6 +20,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 - [Useful links](#useful-links)
 - [Evaluation](#evaluation)
   - [Delivery](#delivery)
+- [References](#references)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -185,6 +186,38 @@ Send an e-mail *no later than __November 9th 2020__* to Simon Oulevay with:
 * The list of group members.
 * The link to your source code repository on GitHub.
 * The link to your deployed REST API on Heroku.
+
+
+
+## References
+
+These are the main references used throughout this course. More detailed and
+additional links to various online articles and documentation can be found at
+the end of each subject.
+
+* [Mozilla Developer Network](https://developer.mozilla.org)
+  * [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+    * [A Re-Introduction to JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
+    * [Inheritance and the Prototype Chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)
+    * [Introducing JavaScript Objects](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects)
+* [Learn Node](https://nodejs.dev/learn)
+* [npm CLI Documentation](https://docs.npmjs.com/cli-documentation/)
+* [Architectural Styles and the Design of Network-based Software Architectures - Roy Thomas Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
+* [Internet Engineering Task Force](https://www.ietf.org)
+  * [RFC 2616 - Hypertext Transfer Protocol - HTTP/1.1](https://tools.ietf.org/html/rfc2616)
+  * [RFC 5789 - PATCH Method for HTTP](https://tools.ietf.org/html/rfc5789)
+  * [RFC 8288 - Web Linking](https://tools.ietf.org/html/rfc8288)
+* [HTTP Status Codes](https://httpstatuses.com)
+* [Express Documentation](http://expressjs.com)
+* [Functional Design Patterns for Express.js - Jonathan Lee Martin](https://pragprog.com/titles/d-jmexpress/functional-design-patterns-for-express-js/)
+* [Standards.REST](https://standards.rest)
+* [Richardson Maturity Model - Leonard Richardson, Martin Fowler](https://martinfowler.com/articles/richardsonMaturityModel.html)
+* [MongoDB Documentation](https://docs.mongodb.com)
+* [Mongoose Documentation](https://mongoosejs.com/docs/index.html)
+* [Auth0](https://auth0.com)
+  * [Introduction to JSON Web Tokens](https://jwt.io/introduction/)
+  * [Token Based Authentication Made Easy](https://auth0.com/learn/token-based-authentication-made-easy/)
+* [Heroku Dev Center](https://devcenter.heroku.com)
 
 
 
