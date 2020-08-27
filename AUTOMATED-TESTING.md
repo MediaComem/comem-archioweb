@@ -802,7 +802,7 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 * [Behavior-Driven Development][bdd]
 * [Test fixtures][fixture]
 * [Test-Driven Development][tdd]
-* [Top JavaScript Testing Frameworks in Demande for 2019][top-js-test-frameworks-2019]
+* [Top JavaScript Testing Frameworks in Demand for 2019][top-js-test-frameworks-2019]
 
 
 
