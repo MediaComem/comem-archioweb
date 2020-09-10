@@ -254,13 +254,13 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
 
 
 
-## [HyperText Transfer Protocol (HTTP)][http]
+## HyperText Transfer Protocol (HTTP)
 
 <!-- slide-front-matter class: center, middle -->
 
 > "An [application protocol][osi-application] for distributed, collaborative,
-  and [hypermedia][hypermedia] information systems.
-  HTTP is the foundation of data communication for the World Wide Web."
+> and [hypermedia][hypermedia] information systems. [HTTP][http] is the
+> foundation of data communication for the World Wide Web."
 
 
 
@@ -579,12 +579,20 @@ I'm lazy that way.
 
 ### Standards
 
-A lot of smart people have encountered **the same problems you have** over the years.
-They have come together and defined **standard solutions** to deal with some of those problems.
+A lot of smart people have encountered **the same problems you have** over the
+years. They have come together and defined **standard solutions** to deal with
+some of those problems.
 
-HTTP has a **very rich** vocabulary of *methods*, *headers* and *status codes* that are here to **help you** implement rich client-server interaction.
+HTTP has a **very rich** vocabulary of *methods*, *headers* and *status codes*
+that are here to **help you** implement rich client-server interaction.
 
-It's up to you to decide whether you want to **reinvent the wheel**, or **stand on the shoulders of giants**.
+.center[
+> [Standards.REST][rest-standards]
+>
+> A collection of standards and specifications, that help make fantastic
+> HTTP/REST APIs. Don't reinvent the wheel, use fantastic wheels, hashed out by
+> experts, that solve problems you hadn't even considered yet.
+]
 
 
 
@@ -1033,6 +1041,7 @@ Collection errors                                                               
 [rest-constraints]: https://en.wikipedia.org/wiki/Representational_state_transfer#Architectural_constraints
 [rest-intro]: https://www.infoq.com/articles/rest-introduction
 [rest-pragmatic]: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+[rest-standards]: https://standards.rest
 [roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
 [url]: https://en.wikipedia.org/wiki/Uniform_Resource_Locator
 [web-service]: https://en.wikipedia.org/wiki/Web_service
