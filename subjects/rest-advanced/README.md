@@ -276,9 +276,10 @@ resource **can be modified** (because you can use the `PUT` method).
 
 There are hypermedia formats similar to HTML but meant for APIs:
 
+* [JSON:API][json-api]
 * [Collection+JSON][collection-json]
 * [Hypertext Application Language (HAL)][hal] - [(Draft RFC)][hal-rfc]
-* [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec] - based on the [Resource Description Framework (RDF)][rdf]
+* [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec]
 * [JSON Hyper-Schema (RFC Draft)][json-hyper-schema]
 * [Siren][siren]
 
@@ -353,8 +354,8 @@ Hypermedia is not a silver bullet: clients must still know your domain.
 
 <!-- slide-container -->
 
-Real-world examples: [GitHub v3 API (custom media type)][github-api], [Foxy REST
-API (HAL+JSON)][foxy-api].
+Real-world examples: [GitHub v3 API (custom media type)][github-api], [Flapjack
+REST API (JSON:API)][flapjack-api], [Foxy REST API (HAL+JSON)][foxy-api].
 
 
 
@@ -668,12 +669,11 @@ Instead of just the ID, you could include a hyperlink to the director's resource
 * *Advantage:* **decouples** the client from your API through **hypermedia**:
   the client can browse the API without knowing your URLs in advance
   ([HATEOAS][hateoas]).
-* *Disadvantages:* it **increases chattiness**. It also requires **more work
-  from the client** as it must follow link relations instead of accessing URLs
-  directly.
+* *Disadvantages:* it **increases chattiness**. It requires **more requests by
+  the client** to follow link relations instead of accessing URLs directly.
 
 > This would be REST maturity level 3. If you use this solution, you should use an appropriate media type instead of
-> plain JSON. The above example uses [HAL][hal] but there are others, or you can
+> plain JSON. The above example uses [HAL][hal] but there are others like [JSON:API][json-api], or you can
 > define your own.
 
 ### Optional resource embedding
@@ -949,12 +949,13 @@ Content-Type: application/json; charset=utf-8
 
 ### Hypermedia pagination (solution 4)
 
-Most hypermedia formats, like [HAL][hal], also allow you to include the
-pagination information in the response with standard link relations:
+Most hypermedia formats, like [JSON:API][json-api] or [HAL][hal], also allow you
+to include the pagination information in the response with standard link
+relations:
 
 ```http
 HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
+Content-Type: application/hal+json; charset=utf-8
 
 {
   `"data": [`
@@ -981,11 +982,9 @@ Content-Type: application/json; charset=utf-8
 
 ## Resources
 
-**Documentation**
-
 * [HTTP methods][http-methods], [Web Linking][web-linking]
-* APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Foxy][foxy-api] (L3)
-* [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
+* APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Flapjack][flapjack-api] (L3), [Foxy][foxy-api] (L3)
+* [JSON:API][json-api], [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
 * [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
 
 **Further reading**
@@ -1024,6 +1023,7 @@ constraints. REST might not always be the best fit for all use cases.
 [collection-json]: https://github.com/collection-json/spec
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
 [facebook-api]: https://developers.facebook.com/docs/graph-api/
+[flapjack-api]: https://flapjack.io/docs/1.0/jsonapi/
 [flickr-api]: https://www.flickr.com/services/api/
 [foxy-api]: https://api.foxycart.com/docs
 [get-coffee]: https://www.infoq.com/articles/webber-rest-workflow/
@@ -1050,6 +1050,7 @@ constraints. REST might not always be the best fit for all use cases.
 [iana]: https://www.iana.org
 [iana-link-relations]: https://www.iana.org/assignments/link-relations/link-relations.xhtml
 [iana-media-types]: https://www.iana.org/assignments/media-types/media-types.xhtml
+[json-api]: https://jsonapi.org
 [json-hyper-schema]: https://json-schema.org/latest/json-schema-hypermedia.html
 [json-ld]: https://json-ld.org
 [json-ld-spec]: https://www.w3.org/2018/jsonld-cg-reports/json-ld/
@@ -1062,7 +1063,6 @@ constraints. REST might not always be the best fit for all use cases.
 [npm-search-link-header]: https://www.npmjs.com/search?q=link+header
 [pragmatic-rest]: https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
 [rabbitmq]: https://www.rabbitmq.com
-[rdf]: https://en.wikipedia.org/wiki/Resource_Description_Framework
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [rest-maturity]: https://www.crummy.com/writing/speaking/2008-QCon/act3.html
 [rest-maturity-fowler]: https://martinfowler.com/articles/richardsonMaturityModel.html
