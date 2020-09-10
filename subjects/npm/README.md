@@ -435,12 +435,7 @@ $> npm install --global http-server
 ```bash
 $> mkdir ~/.npm-global
 $> npm config set prefix '~/.npm-global'
-```
-
-And add this line to your CLI configuration file (e.g. `~/.bashrc` or `~/.bash_profile`):
-
-```bash
-export PATH=~/.npm-global/bin:$PATH
+$> echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bash_profile
 ```
 
 Re-open your CLI, then retry the installation, which should work this time:
