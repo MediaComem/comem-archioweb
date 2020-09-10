@@ -70,7 +70,7 @@ export class RunkitController {
     }
 
     this.source = this.parseCode(this.$element);
-    this.sourceId = `runkit-comem-webdev-${sha1(this.source)}`;
+    this.sourceId = `runkit-comem-archioweb-${sha1(this.source)}`;
 
     $('<button />').addClass('runkit-button').attr('type', 'button').text('RunKit').prependTo(this.$element);
     this.$element.attr('title', 'Click to run this code');

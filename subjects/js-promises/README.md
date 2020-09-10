@@ -215,7 +215,7 @@ phonePromise`.then(onResolved, onRejected)`;
 
 #### Let's try it
 
-<runkit></runkit>
+<codepen></codepen>
 
 ```js
 let phonePromise = new Promise(function(resolve, reject) {
@@ -257,7 +257,7 @@ phonePromise.then(onResolved, onRejected);
 
 ### Promise callback syntax
 
-<runkit></runkit>
+<codepen></codepen>
 
 As we've seen in the previous examples,
 you can declare your resolution and rejection callbacks separately and pass them to `.then()`:
@@ -280,7 +280,7 @@ promise.then(`onResolved`, `onRejected`); // "ok"
 
 #### More promise callback syntax
 
-<runkit></runkit>
+<codepen></codepen>
 
 But you can also declare the callbacks directly in the `.then()` call:
 
@@ -313,7 +313,7 @@ Further examples will use these shorter versions for brevity.
 
 ### Promise callbacks are **optional**
 
-<runkit></runkit>
+<codepen></codepen>
 
 You don't have to pass both resolution and rejection callbacks:
 
@@ -331,7 +331,7 @@ promise.then(undefined, console.warn); // Not called.
 
 #### Unhandled promise rejections
 
-<runkit></runkit>
+<codepen></codepen>
 
 However, if you don't specify a **rejection callback** and the promise is rejected,
 it will produce an **unhandled promise rejection warning**.
@@ -387,7 +387,7 @@ But it's easier to read and is similar in behavior to `try/catch`.
 
 ### Asynchronicity
 
-<runkit></runkit>
+<codepen></codepen>
 
 A promise is **always asynchronous**:
 
@@ -418,7 +418,7 @@ I got a Samsung
 
 ### Promises can only be resolved or rejected **once**
 
-<runkit></runkit>
+<codepen></codepen>
 
 Once you call `resolve`, the promise is **resolved**,
 and additional calls to `resolve` or `reject` have no effect:
@@ -452,7 +452,7 @@ promise.then(console.log, err => console.warn(\`Oops: ${err.message}`));
 
 ### The result of a promise can be retrieved **later**
 
-<runkit></runkit>
+<codepen></codepen>
 
 Once a promise is resolved or rejected, its resolution value or rejection reason is **cached**.
 Further calls to `.then()` will always produce the same result, even if called **later**:
@@ -483,7 +483,7 @@ setTimeout(function() {
 
 ### Promises are resolved with **one** value
 
-<runkit></runkit>
+<codepen></codepen>
 
 **Only one value** can be passed when using `resolve()` in a promise.
 Additional values will be ignored:
@@ -511,7 +511,7 @@ fruitsPromise.then(console.log); // [ "apple", "banana", "orange" ]
 
 ### Promise utilities
 
-<runkit></runkit>
+<codepen></codepen>
 
 Quickly create a resolved promise with `Promise.resolve`:
 
@@ -547,7 +547,7 @@ rejectedPromise.then(function onResolved(value) {
 
 ### Chaining `.then()` calls
 
-<runkit except='0'></runkit>
+<codepen except='0'></codepen>
 
 Promises are chainable; the `then()` function also **returns a promise**:
 
@@ -618,7 +618,7 @@ let promise2 = phonePromise.then(onResolved, `onRejected`);
 
 #### Returning a value from the resolution or rejection callback (1 & 4)
 
-<runkit></runkit>
+<codepen></codepen>
 
 If `phonePromise` is resolved and we **return a value in the resolution callback**,
 the new `promise2` promise will be **resolved with that new value**:
@@ -652,7 +652,7 @@ but `promise2` is now **resolved**.
 
 #### Throwing an error from the resolution or rejection callback (2 & 5)
 
-<runkit></runkit>
+<codepen></codepen>
 
 If `phonePromise` is resolved and we **throw an error in the resolution callback**,
 the new `promise2` promise will be **rejected with that error**:
@@ -685,7 +685,7 @@ promise2.then(console.log, err => console.warn(\`Oops: ${err.message}`));
 
 #### Returning a promise in the resolution callback (3 & 6)
 
-<runkit></runkit>
+<codepen></codepen>
 
 The most interesting behavior is what happens when we **return a promise from a callback**,
 in this example the resolution callback:
@@ -715,7 +715,7 @@ In this example, it will be resolved.
 
 #### Returning a rejected promise in the resolution callback (3 & 6)
 
-<runkit></runkit>
+<codepen></codepen>
 
 The most interesting behavior is what happens when we **return a promise from a callback**,
 in this example the resolution callback:
@@ -1040,8 +1040,6 @@ The following functions will be called:
 
 ### An asynchronous example
 
-<runkit></runkit>
-
 ```js
 const request = require('request-promise-native'), peer = require('request');
 const apiUrl = 'https://evening-meadow-25867.herokuapp.com/api';
@@ -1072,8 +1070,6 @@ console.log('Doing all the things... please wait...');
 ```
 
 #### An asynchronous example with error handling
-
-<runkit></runkit>
 
 ```js
 const request = require('request-promise-native'), peer = require('request');
@@ -1284,7 +1280,7 @@ the new promise **is also rejected** with the same reason as the first promise t
 
 ### Successful parallel execution
 
-<runkit></runkit>
+<codepen></codepen>
 
 Here's an example of parallel promise execution where **both are resolved**:
 
@@ -1312,7 +1308,7 @@ Promise.all(promises).then(function(results) {
 
 ### Failed parallel execution
 
-<runkit></runkit>
+<codepen></codepen>
 
 Here's an example of parallel promise execution where **one is rejected**:
 
@@ -1348,7 +1344,7 @@ Promise.all(promises).then(function(results) {
 
 ### The problem with promises
 
-<runkit></runkit>
+<codepen></codepen>
 
 Promises are powerful, but they're still an **asynchronous construct** that's hard to reason about:
 
@@ -1400,7 +1396,7 @@ but it's just easier to understand **synchronous execution**.
 
 ### Async functions and the `await` operator
 
-<runkit></runkit>
+<codepen></codepen>
 
 By declaring a function with the `async` keyword,
 we can use the `await` operator inside it to **pause the execution of the function and wait for the promise to be resolved**.
@@ -1451,7 +1447,7 @@ At the same time, it **retains its asynchronous and non-blocking properties**.
 
 ### `await` and rejected promises
 
-<runkit></runkit>
+<codepen></codepen>
 
 When the promise being awaited is **rejected**,
 the function behaves as if the rejection error had been **thrown** on the line where the `await` statement is:
@@ -1499,7 +1495,7 @@ computeAllTheThings();
 
 #### Handling rejected promises with `await`
 
-<runkit></runkit>
+<codepen></codepen>
 
 Since a **rejected promise** behaves like a `throw` when using `await`,
 you can simply catch that error using a **traditional try/catch**:
@@ -1535,7 +1531,7 @@ computeAllTheThings().then(console.log) // 0
 
 ### Awaiting the result of parallel executions
 
-<runkit></runkit>
+<codepen></codepen>
 
 `Promise.all` is used to wait for the results of multiple promises executing in parallel.
 Since that also returns a promise, you can simply `await` that:
@@ -1569,7 +1565,7 @@ In this example, the 2 computations are executed in parallel and both results ar
 
 ### Async functions always return promises
 
-<runkit></runkit>
+<codepen></codepen>
 
 ```js
 async function multiplyAsync(value, by) {

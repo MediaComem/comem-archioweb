@@ -1,6 +1,6 @@
 # JavaScript
 
-<runkit global enabled='true'></runkit>
+<codepen global enabled='true'></codepen>
 
 Learn the basics of JavaScript, a high-level, dynamic, untyped and interpreted programming language,
 and one of the three core technologies of the web.
@@ -374,7 +374,7 @@ console.log(value); // 42
 
 ### Returning functions from a function
 
-<runkit except='1'></runkit>
+<codepen except='1'></codepen>
 
 ```js
 // Let's define a function that returns a function
@@ -445,7 +445,7 @@ value = compute(2, 4, multiply);
 console.log(value); // 8
 ```
 
-Open the **RunKit** and try to **implement it**!
+Open the **CodePen** and try to **implement it**!
 
 
 
@@ -479,7 +479,7 @@ console.log(lastNames); // [ "Doe", "Smith", "Smith" ]
 
 ### Arrow functions *(ES6+)*
 
-<runkit disabled></runkit>
+<codepen disabled></codepen>
 
 Modern JavaScript has a new additional syntax for functions which you will
 encounter more and more on the web:
@@ -499,7 +499,7 @@ let divideFunc = function(nb1, nb2) {
 
 #### Arrow function arguments
 
-<runkit except='0'></runkit>
+<codepen except='0'></codepen>
 
 Let's see how an arrow function is written:
 
@@ -526,7 +526,7 @@ setTimeout(callback, 1000);
 
 #### Body of arrow functions
 
-<runkit except='0'></runkit>
+<codepen except='0'></codepen>
 
 ```js
 (nb1, nb2) => `nb1 / nb2`
@@ -604,7 +604,7 @@ console.log(discovery);
 
 ### Defining variables
 
-<runkit disabled></runkit>
+<codepen disabled></codepen>
 
 There are three ways to define a variable in JavaScript:
 
@@ -785,7 +785,7 @@ Just **don't do it**.
 
 ## String syntax
 
-<runkit disabled></runkit>
+<codepen disabled></codepen>
 
 In JavaScript, you (now) have 3 ways to use strings:
 
@@ -835,7 +835,7 @@ Function     | Effect
 ```js
 let crew = ["Jonathan", "T'Pol", "Trip", "Malcolm", "Sato", "Travis"];
 crew.forEach(function(element, index) {
-  console.log("Hello, my name is " + element + ", and I'm n°" + index);
+  console.log(\`Hello, my name is ${element}, and I'm n°${index}`);
 });
 ```
 

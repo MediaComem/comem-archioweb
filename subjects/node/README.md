@@ -1,7 +1,5 @@
 # Node.js Introduction
 
-<runkit global enabled='true'></runkit>
-
 Learn how to use [Node.js][node], an asynchronous JavaScript runtime that can run on your local machine or server.
 
 **You will need**
@@ -186,8 +184,6 @@ I am running on darwin
 
 ### Writing your own module
 
-<runkit disabled></runkit>
-
 Let's say we want to extract the `hello` function to another module.
 Create a `utils.js` file:
 
@@ -208,8 +204,6 @@ Code that uses `require()` on that file will receive the `exports` object.
 
 
 ### Requiring local modules
-
-<runkit disabled></runkit>
 
 You also use `require()` for your own module, but instead of just a name you
 have to provide a **file path** (relative or absolute). Modify `script.js` as
@@ -235,8 +229,6 @@ I am running on darwin
 
 
 ### Export properties
-
-<runkit disabled></runkit>
 
 You can attach whatever you want to the `exports` object:
 
@@ -264,8 +256,6 @@ I am running on darwin
 
 
 ### Function as the main export
-
-<runkit disabled></runkit>
 
 Some modules only export a function instead of an object with properties.
 Add a `doIt.js` file:
@@ -631,8 +621,6 @@ Similar mechanisms are used in other frameworks and tools:
 
 ## Node.js callback convention
 
-<runkit disabled></runkit>
-
 Node.js callback functions usually have this signature:
 
 ```
@@ -714,7 +702,7 @@ const salutation = fs.readFile('hello.txt', 'utf-8', function(err, data) {
 console.log(salutation);
 ```
 
-Save it to a file and run it with `node` or run it with **RunKit** to see the issue.
+Save it to a file and run it with `node` to see the issue.
 
 #### Mistake 1 result
 
@@ -726,8 +714,6 @@ undefined
 ```
 
 #### Mistake 1 asynchronous issue
-
-<runkit disabled></runkit>
 
 There are two problems with this code. First, Node.js I/O functions (such as file operations) are **asynchronous**.
 
@@ -755,8 +741,6 @@ const salutation = `fs.readFile`('hello.txt', 'utf-8', function(err, data) {
 ```
 
 #### Mistake 1 return issue
-
-<runkit disabled></runkit>
 
 Second, even if there was no asynchronous issue, the assignment of `const salutation` would still be `undefined`:
 
@@ -851,8 +835,6 @@ But we also see another **unexpected error** and its stack trace.
 
 #### Mistake 2 issue
 
-<runkit disabled></runkit>
-
 There is an error check, but execution of the callback function is **not stopped**
 as there is no `return` and no `else`.
 
@@ -939,15 +921,11 @@ const server = http.createServer(function(req, res) {
 server.listen(port, hostname, function() {
   console.log('Server running at http://' + hostname + ':' + port + '/');
 });
-
-process.env.RUNKIT_ENDPOINT_URL // (for running with RunKit)
 ```
 
 
 
 ### Event emitters
-
-<runkit disabled></runkit>
 
 Many Node.js objects are [event emitters][node-event-emitter].
 You can register callback functions to **react** to these events:

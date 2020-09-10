@@ -42,7 +42,7 @@ Learn about JavaScript classes (ES6+).
 
 ## The new class syntax
 
-<runkit></runkit>
+<codepen></codepen>
 
 <!-- slide-column 35 -->
 
@@ -98,7 +98,7 @@ console.log(r.computeArea()); // 800
 
 ### Syntactical sugar
 
-<runkit></runkit>
+<codepen></codepen>
 
 Here's a few checks to show you that the new class syntax is just another way to use JavaScript's **existing prototypal inheritance system**:
 
@@ -132,7 +132,7 @@ console.log(Object.getPrototypeOf(r) === Rectangle.prototype);
 
 ## Static methods
 
-<runkit></runkit>
+<codepen></codepen>
 
 The `static` keyword defines a static method for a class.
 Static methods are called without instantiating their class and cannot be called through a class instance:
@@ -164,7 +164,7 @@ Static methods are often used to create utility functions for an application.
 
 ## Sub-classing
 
-<runkit></runkit>
+<codepen></codepen>
 
 The `extends` keyword allows you to easily create a sub-class of another class.
 You can **override methods** of the super-class by simply redefining them:
@@ -198,7 +198,7 @@ jb.greet(); // "My name is Bond, James Bond"
 
 ### Using `super` in the constructor
 
-<runkit></runkit>
+<codepen></codepen>
 
 If both sub-class and super-class have a constructor,
 the sub-class's constructor **MUST** call `super` as its first statement, which executes the super-class's constructor:
@@ -210,7 +210,7 @@ class Cat {
   }
 
   speak() {
-    console.log(this.name + ' makes a noise.');
+    console.log(\`${this.name} makes a noise.`);
   }
 }
 
@@ -230,7 +230,7 @@ l.speak();
 
 ### Using `super` in methods
 
-<runkit></runkit>
+<codepen></codepen>
 
 You can use `super` in a sub-class to reference the super-class or call its methods:
 
@@ -241,14 +241,14 @@ class Cat {
   }
 
   speak() {
-    console.log(this.name + ' makes a noise.');
+    console.log(\`${this.name} makes a noise.`);
   }
 }
 
 class Lion `extends` Cat {
   speak() {
 *   super.speak();
-    console.log(this.name + ' roars.');
+    console.log(\`${this.name} roars.`);
   }
 }
 
@@ -262,7 +262,7 @@ l.speak();
 
 ## Getters and setters
 
-<runkit></runkit>
+<codepen></codepen>
 
 You can also define [getters][js-get] and [setters][js-set] with the new class syntax:
 

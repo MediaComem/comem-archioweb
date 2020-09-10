@@ -49,7 +49,7 @@ Learn about prototypal inheritance in JavaScript.
 
 ### The prototype chain
 
-<runkit></runkit>
+<codepen></codepen>
 
 Each object has a **private property** which holds a **link to another object** called its **prototype**.
 That prototype object has a prototype of its own, and so on until an object is reached with null as its prototype.
@@ -78,7 +78,7 @@ the prototype of the prototype, and so on until either a property with a matchin
 
 ### Creating plain JavaScript objects
 
-<runkit></runkit>
+<codepen></codepen>
 
 There are **3 ways to create objects** in JavaScript.
 
@@ -108,7 +108,7 @@ a property that doesn't exist on `person` or on `Object.prototype`, we got `unde
 
 ### Creating objects with `Object.create`
 
-<runkit></runkit>
+<codepen></codepen>
 
 The **second way to create objects** is using [**`Object.create`**][js-object-create],
 which creates a new object **with the specified prototype**.
@@ -135,7 +135,7 @@ console.log(prototypeOfPerson === Object.prototype); // true
 
 #### Accessing properties in a prototype chain (part 1)
 
-<runkit></runkit>
+<codepen></codepen>
 
 But what can we do with that object?
 
@@ -159,7 +159,7 @@ Obviously, we can retrieve that property since we just added it to `child`.
 
 #### Accessing properties in a prototype chain (part 2)
 
-<runkit></runkit>
+<codepen></codepen>
 
 But what can we do with that object?
 
@@ -185,7 +185,7 @@ Since `person` is the prototype of `child`, and it has a `firstName` property, w
 
 #### Accessing properties in a prototype chain (part 3)
 
-<runkit></runkit>
+<codepen></codepen>
 
 But what can we do with that object?
 
@@ -210,7 +210,7 @@ so after moving all the way up the prototype chain and having found no matching 
 
 #### Overwriting a parent prototype's property
 
-<runkit></runkit>
+<codepen></codepen>
 
 What happens if you add a property with the same name to the `child` object?
 
@@ -237,7 +237,7 @@ When you access `child.lastName`, it returns its prototype's property:
 
 ### Creating objects with a constructor function
 
-<runkit></runkit>
+<codepen></codepen>
 
 ```js
 function Person(first, last) {
@@ -293,7 +293,7 @@ these things will be **available on any object constructed with that function**.
 
 ## Implementing a class-like structure with prototypes
 
-<runkit></runkit>
+<codepen></codepen>
 
 Welcome to your first *JavaScript-class-without-a-class*:
 
@@ -323,7 +323,7 @@ console.log(person.getFullName()); // "Bob Page"
 
 ### The value of `this`
 
-<runkit></runkit>
+<codepen></codepen>
 
 Note that **when calling a function on an object**,
 the keyword **`this`** always refers to **the object the function was called on**.
