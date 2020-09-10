@@ -115,4 +115,4 @@ more procedural (while remaining asynchronous).
 [mongoose]: https://mongoosejs.com
 [mongoose-save]: https://mongoosejs.com/docs/api.html#document_Document-save
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-[promise-course]: https://mediacomem.github.io/comem-webdev-docs/2018-2019/subjects/js-promises/?home=MediaComem%2Fcomem-archioweb%23readme#1
+[promise-course]: https://mediacomem.github.io/comem-webdev-docs/2020-2021/subjects/js-promises/?home=MediaComem%2Fcomem-archioweb%23readme#1

@@ -28,33 +28,33 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 
 ## Plan
 
-* [Introduction](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
+* [Introduction](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Basics
-  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Node.js](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
-  * [npm](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
-  * [REST introduction & HTTP](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Node.js](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
+  * [npm](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
+  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Creating a web service
-  * [Express](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
-  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
-  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
+  * [Express](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
+  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
+  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
 
 * Deploying your web service
-  * [Heroku](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/heroku?home=MediaComem%2Fcomem-archioweb%23readme) cloud application platform
+  * [Heroku](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/heroku?home=MediaComem%2Fcomem-archioweb%23readme) cloud application platform
 
 * Creating a REST API
-  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
-  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
+  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
+  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
   * [Writing API tests](AUTOMATED-TESTING.md)
 
 * Real-time communication
-  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2019-2020/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [*Extra: Web Application Messaging Protocol (WAMP)*](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
 
 
 
@@ -69,7 +69,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 * [MongoDB][mongodb]
 * A free [Heroku][heroku] account
 * The [Heroku CLI][heroku-cli]
-* [WebSocket & Web Application Messaging Protocol (WAMP) web client][msg-central]
+* [A WebSocket web client][msg-central]
 
 
 
@@ -83,7 +83,7 @@ This course is a [COMEM+][comem] [web development course][comem-webdev] taught a
 
 **Exercises**
 
-* [Tic-Tac-Toe WebSockets & WAMP Exercise][tictactoe]
+* [Tic-Tac-Toe Real-Time Exercise][tictactoe]
 
 **Guides**
 
@@ -168,7 +168,7 @@ Your REST API must be developed with the [Express][express] framework and use a
 **Bonus**
 
 Doing more than is required **MAY** earn you some bonus points in the
-evaluation. Here are some examples:
+evaluation if implemented correctly. Here are some examples:
 
 * Implement authorization, i.e. deny some users the right to perform specific
   operations even when they are authenticated.
