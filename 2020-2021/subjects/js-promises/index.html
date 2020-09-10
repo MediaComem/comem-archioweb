@@ -3,7 +3,7 @@
   <head>
     <title>JavaScript Promises (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/49565ffbd001c8ce31f05001163f502a84a1a6d7/subjects/js-promises/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/js-promises/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -193,7 +193,7 @@ phonePromise`.then(onResolved, onRejected)`;
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#2">What is a promise?</a> > <a href="#7">Consuming a promise</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 ```js
 let phonePromise = new Promise(function(resolve, reject) {
@@ -242,7 +242,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 As we've seen in the previous examples,
 you can declare your resolution and rejection callbacks separately and pass them to `.then()`:
@@ -268,7 +268,7 @@ promise.then(`onResolved`, `onRejected`); // "ok"
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a> > <a href="#10">Promise callback syntax</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 But you can also declare the callbacks directly in the `.then()` call:
 
@@ -304,7 +304,7 @@ Further examples will use these shorter versions for brevity.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 You don't have to pass both resolution and rejection callbacks:
 
@@ -325,7 +325,7 @@ promise.then(undefined, console.warn); // Not called.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a> > <a href="#12">Promise callbacks are **optional**</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 However, if you don't specify a **rejection callback** and the promise is rejected,
 it will produce an **unhandled promise rejection warning**.
@@ -387,7 +387,7 @@ But it's easier to read and is similar in behavior to `try/catch`.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 A promise is **always asynchronous**:
 
@@ -421,7 +421,7 @@ I got a Samsung
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Once you call `resolve`, the promise is **resolved**,
 and additional calls to `resolve` or `reject` have no effect:
@@ -458,7 +458,7 @@ promise.then(console.log, err => console.warn(\`Oops: ${err.message}`));
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Once a promise is resolved or rejected, its resolution value or rejection reason is **cached**.
 Further calls to `.then()` will always produce the same result, even if called **later**:
@@ -492,7 +492,7 @@ setTimeout(function() {
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 **Only one value** can be passed when using `resolve()` in a promise.
 Additional values will be ignored:
@@ -523,7 +523,7 @@ fruitsPromise.then(console.log); // [ "apple", "banana", "orange" ]
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Quickly create a resolved promise with `Promise.resolve`:
 
@@ -566,7 +566,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a>]
 
-<runkit except='0'></runkit>
+<codepen except='0'></codepen>
 
 Promises are chainable; the `then()` function also **returns a promise**:
 
@@ -649,7 +649,7 @@ let promise2 = phonePromise.then(onResolved, `onRejected`);
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 If `phonePromise` is resolved and we **return a value in the resolution callback**,
 the new `promise2` promise will be **resolved with that new value**:
@@ -686,7 +686,7 @@ but `promise2` is now **resolved**.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 If `phonePromise` is resolved and we **throw an error in the resolution callback**,
 the new `promise2` promise will be **rejected with that error**:
@@ -722,7 +722,7 @@ promise2.then(console.log, err => console.warn(\`Oops: ${err.message}`));
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 The most interesting behavior is what happens when we **return a promise from a callback**,
 in this example the resolution callback:
@@ -755,7 +755,7 @@ In this example, it will be resolved.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 The most interesting behavior is what happens when we **return a promise from a callback**,
 in this example the resolution callback:
@@ -1149,8 +1149,6 @@ The following functions will be called:
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a>]
 
-<runkit></runkit>
-
 ```js
 const request = require('request-promise-native'), peer = require('request');
 const apiUrl = 'https://evening-meadow-25867.herokuapp.com/api';
@@ -1184,8 +1182,6 @@ console.log('Doing all the things... please wait...');
 #### An asynchronous example with error handling
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#37">An asynchronous example</a>]
-
-<runkit></runkit>
 
 ```js
 const request = require('request-promise-native'), peer = require('request');
@@ -1433,7 +1429,7 @@ the new promise **is also rejected** with the same reason as the first promise t
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#45">Parallel execution</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Here's an example of parallel promise execution where **both are resolved**:
 
@@ -1464,7 +1460,7 @@ Promise.all(promises).then(function(results) {
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#45">Parallel execution</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Here's an example of parallel promise execution where **one is rejected**:
 
@@ -1507,7 +1503,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Promises are powerful, but they're still an **asynchronous construct** that's hard to reason about:
 
@@ -1568,7 +1564,7 @@ but it's just easier to understand **synchronous execution**.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 By declaring a function with the `async` keyword,
 we can use the `await` operator inside it to **pause the execution of the function and wait for the promise to be resolved**.
@@ -1628,7 +1624,7 @@ At the same time, it **retains its asynchronous and non-blocking properties**.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 When the promise being awaited is **rejected**,
 the function behaves as if the rejection error had been **thrown** on the line where the `await` statement is:
@@ -1683,7 +1679,7 @@ computeAllTheThings();
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a> > <a href="#51">`await` and rejected promises</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Since a **rejected promise** behaves like a `throw` when using `await`,
 you can simply catch that error using a **traditional try/catch**:
@@ -1722,7 +1718,7 @@ computeAllTheThings().then(console.log) // 0
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 `Promise.all` is used to wait for the results of multiple promises executing in parallel.
 Since that also returns a promise, you can simply `await` that:
@@ -1759,7 +1755,7 @@ In this example, the 2 computations are executed in parallel and both results ar
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 ```js
 async function multiplyAsync(value, by) {
@@ -1824,6 +1820,6 @@ after
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-37ffbf9cac73b1dcf04a.js'></script>
+    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
   </body>
 </html>

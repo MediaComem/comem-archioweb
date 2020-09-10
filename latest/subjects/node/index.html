@@ -3,13 +3,11 @@
   <head>
     <title>Node.js Introduction (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/49565ffbd001c8ce31f05001163f502a84a1a6d7/subjects/node/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/node/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
 # Node.js Introduction
-
-<runkit global enabled='true'></runkit>
 
 Learn how to use [Node.js][node], an asynchronous JavaScript runtime that can run on your local machine or server.
 
@@ -174,8 +172,6 @@ I am running on darwin
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-<runkit disabled></runkit>
-
 Let's say we want to extract the `hello` function to another module.
 Create a `utils.js` file:
 
@@ -199,8 +195,6 @@ Code that uses `require()` on that file will receive the `exports` object.
 ### Requiring local modules
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
-
-<runkit disabled></runkit>
 
 You also use `require()` for your own module, but instead of just a name you
 have to provide a **file path** (relative or absolute). Modify `script.js` as
@@ -229,8 +223,6 @@ I am running on darwin
 ### Export properties
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
-
-<runkit disabled></runkit>
 
 You can attach whatever you want to the `exports` object:
 
@@ -261,8 +253,6 @@ I am running on darwin
 ### Function as the main export
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
-
-<runkit disabled></runkit>
 
 Some modules only export a function instead of an object with properties.
 Add a `doIt.js` file:
@@ -686,8 +676,6 @@ Similar mechanisms are used in other frameworks and tools:
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a>]
 
-<runkit disabled></runkit>
-
 Node.js callback functions usually have this signature:
 
 ```
@@ -779,7 +767,7 @@ const salutation = fs.readFile('hello.txt', 'utf-8', function(err, data) {
 console.log(salutation);
 ```
 
-Save it to a file and run it with `node` or run it with **RunKit** to see the issue.
+Save it to a file and run it with `node` to see the issue.
 
 ---
 #### Mistake 1 result
@@ -797,8 +785,6 @@ undefined
 #### Mistake 1 asynchronous issue
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#30">Mistake 1</a>]
-
-<runkit disabled></runkit>
 
 There are two problems with this code. First, Node.js I/O functions (such as file operations) are **asynchronous**.
 
@@ -829,8 +815,6 @@ const salutation = `fs.readFile`('hello.txt', 'utf-8', function(err, data) {
 #### Mistake 1 return issue
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#30">Mistake 1</a>]
-
-<runkit disabled></runkit>
 
 Second, even if there was no asynchronous issue, the assignment of `const salutation` would still be `undefined`:
 
@@ -937,8 +921,6 @@ But we also see another **unexpected error** and its stack trace.
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#35">Mistake 2</a>]
 
-<runkit disabled></runkit>
-
 There is an error check, but execution of the callback function is **not stopped**
 as there is no `return` and no `else`.
 
@@ -1035,8 +1017,6 @@ const server = http.createServer(function(req, res) {
 server.listen(port, hostname, function() {
   console.log('Server running at http://' + hostname + ':' + port + '/');
 });
-
-process.env.RUNKIT_ENDPOINT_URL // (for running with RunKit)
 ```
 
 
@@ -1045,8 +1025,6 @@ process.env.RUNKIT_ENDPOINT_URL // (for running with RunKit)
 ### Event emitters
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#39">The HTTP module</a>]
-
-<runkit disabled></runkit>
 
 Many Node.js objects are [event emitters][node-event-emitter].
 You can register callback functions to **react** to these events:
@@ -1110,6 +1088,6 @@ server.on('request', function(message) {
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-37ffbf9cac73b1dcf04a.js'></script>
+    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
   </body>
 </html>

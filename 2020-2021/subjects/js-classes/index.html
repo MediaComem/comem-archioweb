@@ -3,7 +3,7 @@
   <head>
     <title>JavaScript Classes (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/49565ffbd001c8ce31f05001163f502a84a1a6d7/subjects/js-classes/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/js-classes/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -44,7 +44,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 .grid-35[
 
@@ -113,7 +113,7 @@ console.log(r.computeArea()); // 800
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a> > <a href="#3">The new class syntax</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Here's a few checks to show you that the new class syntax is just another way to use JavaScript's **existing prototypal inheritance system**:
 
@@ -150,7 +150,7 @@ console.log(Object.getPrototypeOf(r) === Rectangle.prototype);
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 The `static` keyword defines a static method for a class.
 Static methods are called without instantiating their class and cannot be called through a class instance:
@@ -185,7 +185,7 @@ Static methods are often used to create utility functions for an application.
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 The `extends` keyword allows you to easily create a sub-class of another class.
 You can **override methods** of the super-class by simply redefining them:
@@ -222,7 +222,7 @@ jb.greet(); // "My name is Bond, James Bond"
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a> > <a href="#6">Sub-classing</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 If both sub-class and super-class have a constructor,
 the sub-class's constructor **MUST** call `super` as its first statement, which executes the super-class's constructor:
@@ -234,7 +234,7 @@ class Cat {
   }
 
   speak() {
-    console.log(this.name + ' makes a noise.');
+    console.log(\`${this.name} makes a noise.`);
   }
 }
 
@@ -257,7 +257,7 @@ l.speak();
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a> > <a href="#6">Sub-classing</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 You can use `super` in a sub-class to reference the super-class or call its methods:
 
@@ -268,14 +268,14 @@ class Cat {
   }
 
   speak() {
-    console.log(this.name + ' makes a noise.');
+    console.log(\`${this.name} makes a noise.`);
   }
 }
 
 class Lion `extends` Cat {
   speak() {
 *   super.speak();
-    console.log(this.name + ' roars.');
+    console.log(\`${this.name} roars.`);
   }
 }
 
@@ -292,7 +292,7 @@ l.speak();
 
 .breadcrumbs[<a href="#1">JavaScript Classes</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 You can also define [getters][js-get] and [setters][js-set] with the new class syntax:
 
@@ -350,6 +350,6 @@ console.log(`p.full`); // "Bob Smith"
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-37ffbf9cac73b1dcf04a.js'></script>
+    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
   </body>
 </html>

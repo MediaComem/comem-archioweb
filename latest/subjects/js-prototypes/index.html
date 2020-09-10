@@ -3,7 +3,7 @@
   <head>
     <title>JavaScript Prototypes (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/49565ffbd001c8ce31f05001163f502a84a1a6d7/subjects/js-prototypes/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/js-prototypes/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -47,7 +47,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Each object has a **private property** which holds a **link to another object** called its **prototype**.
 That prototype object has a prototype of its own, and so on until an object is reached with null as its prototype.
@@ -79,7 +79,7 @@ the prototype of the prototype, and so on until either a property with a matchin
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 There are **3 ways to create objects** in JavaScript.
 
@@ -112,7 +112,7 @@ a property that doesn't exist on `person` or on `Object.prototype`, we got `unde
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 The **second way to create objects** is using [**`Object.create`**][js-object-create],
 which creates a new object **with the specified prototype**.
@@ -142,7 +142,7 @@ console.log(prototypeOfPerson === Object.prototype); // true
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a> > <a href="#5">Creating objects with `Object.create`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 But what can we do with that object?
 
@@ -169,7 +169,7 @@ Obviously, we can retrieve that property since we just added it to `child`.
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a> > <a href="#5">Creating objects with `Object.create`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 But what can we do with that object?
 
@@ -198,7 +198,7 @@ Since `person` is the prototype of `child`, and it has a `firstName` property, w
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a> > <a href="#5">Creating objects with `Object.create`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 But what can we do with that object?
 
@@ -226,7 +226,7 @@ so after moving all the way up the prototype chain and having found no matching 
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a> > <a href="#5">Creating objects with `Object.create`</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 What happens if you add a property with the same name to the `child` object?
 
@@ -256,7 +256,7 @@ When you access `child.lastName`, it returns its prototype's property:
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#2">Prototypal inheritance</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 ```js
 function Person(first, last) {
@@ -324,7 +324,7 @@ these things will be **available on any object constructed with that function**.
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Welcome to your first *JavaScript-class-without-a-class*:
 
@@ -357,7 +357,7 @@ console.log(person.getFullName()); // "Bob Page"
 
 .breadcrumbs[<a href="#1">JavaScript Prototypes</a> > <a href="#12">Implementing a class-like structure with prototypes</a>]
 
-<runkit></runkit>
+<codepen></codepen>
 
 Note that **when calling a function on an object**,
 the keyword **`this`** always refers to **the object the function was called on**.
@@ -434,6 +434,6 @@ In the second example, only one `getValue` function is defined and attached to t
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-37ffbf9cac73b1dcf04a.js'></script>
+    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
   </body>
 </html>
