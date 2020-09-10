@@ -81,9 +81,11 @@ It has been standardized in the [ECMAScript][es] language specification.
 <img src='images/timeline.png' width='100%' />
 
 * [**ECMAScript 2015** (also known as ECMAScript 6 or ES6)][es6] added iterators and for/of loops, Python-style [generators][js-generators] and generator expressions, [arrow functions][js-arrow-functions], binary data, typed arrays, collections (maps, sets and weak maps), [promises][js-promise], number and math enhancements, reflection, and [proxies][js-proxy].
-* [**ECMAScript 2017** (ES8)][es2017] added [async/await functions][js-async] and [shared memory and atomics][js-shared-memory].
-* [**ECMAScript 2018** (ES9)][es2018] added [asynchronous iteration][js-async-iteration] and more.
-* [**ECMAScript 2019** (ES10)][es2019] added various utility methods.
+* [**ECMAScript 2017**][es2017] added [async/await][js-async] and [shared memory and atomics][js-shared-memory].
+* [**ECMAScript 2018**][es2018], [**ECMAScript 2019**][es2019], and
+  [**ECMAScript 2020**][es2020] added [asynchronous
+  iteration][js-async-iteration], [optional chaining][js-optional-chaining],
+  [nullish coalescing][js-nullish-coalescing] and more.
 
 #### Yearly release schedule
 
@@ -127,8 +129,10 @@ Where backwards-compatilibity is important in client-side code running in the
 compiles to JavaScript like [TypeScript][ts], to turn your ES6+ code into
 compatible ES5 code before releasing it.
 
-In server-side code running with the latest **Node.js** versions, all **ES6+**
-features are supported except for [imports][js-imports].
+In server-side code running with the latest **Node.js** versions, most **ES6+**
+features are supported except for [ECMAScript modules
+(`import`/`export`)][js-imports], which are still [experimental in
+Node.js][node-imports].
 
 
 
@@ -477,14 +481,15 @@ console.log(lastNames); // [ "Doe", "Smith", "Smith" ]
 
 <runkit disabled></runkit>
 
-While seaching for examples on the web, you will stumble upon a strange syntax:
+Modern JavaScript has a new additional syntax for functions which you will
+encounter more and more on the web:
 
 ```js
 let divideFunc = (nb1, nb2) => nb1 / nb2;
 ```
 
-You are facing the new **ES6** syntax for functions called **arrow functions**.
-The example above is (mostly) equivalent to writing:
+This is the new **ES6** syntax for functions called **arrow functions**. The
+example above is (mostly) equivalent to writing:
 
 ```js
 let divideFunc = function(nb1, nb2) {
@@ -761,7 +766,7 @@ var i = 42;
 
 // And a function that logs each thing in the passed array
 function logThings(things) {
-  // Oops, we forgot the "var" or "let"
+  // Oops, we forgot the "var" or "let" before "i"
 * for (i = 0; i < things.length; i++) {
     console.log(things[i]);
   }
@@ -1038,7 +1043,8 @@ console.log('userId: ' + userId(user)); // "userId: 42"
 ### JSON who?
 
 [JSON][json] stands for **J**ava**S**cript **O**bject **N**otation.
-It is a syntax that is used to **represent JavaScript objects** with **text**.
+It is a syntax that is used to **represent JavaScript objects** with **text**,
+and has become one of the world's most popular data-interchange formats.
 
 JSON can only describe the following types:
 
@@ -1083,9 +1089,9 @@ let starship = {
 };
 ```
 
-This is a JavaScript object.
-You *can* put double quotes around property names, but you don't **have to**
-unless it's an **invalid identifier** (e.g. cannot use `.` in a variable name).
+You *can* put double quotes around property names in JavaScript, but don't
+**have to** unless it's an **invalid identifier** (e.g. the `.` character is
+invalid in a variable name).
 
 <!-- slide-column -->
 
@@ -1109,7 +1115,7 @@ unless it's an **invalid identifier** (e.g. cannot use `.` in a variable name).
 }
 ```
 
-This is JSON. The double quotes around property names are **required**.
+The double quotes around property names are **required** in JSON.
 
 
 
@@ -1159,20 +1165,23 @@ console.log(crew);
 [es]: https://en.wikipedia.org/wiki/ECMAScript
 [es-yearly-releases]: https://thenewstack.io/whats-new-es2016/
 [es6]: http://es6-features.org/
-[es2017]: http://2ality.com/2016/02/ecmascript-2017.html
-[es2018]: http://2ality.com/2017/02/ecmascript-2018.html
-[es2019]: http://2ality.com/2018/02/ecmascript-2019.html
+[es2017]: https://2ality.com/2016/02/ecmascript-2017.html
+[es2018]: https://2ality.com/2017/02/ecmascript-2018.html
+[es2019]: https://2ality.com/2018/02/ecmascript-2019.html
+[es2020]: https://2ality.com/2019/12/ecmascript-2020.html
 [ex-function-as-argument]: http://codepen.io/AlphaHydrae/pen/dNBpPv?editors=0010
 [first-class-functions]: https://en.wikipedia.org/wiki/First-class_function
 [func-prog]: https://en.wikipedia.org/wiki/Functional_programming
 [js-arrow-functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 [js-async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-[js-async-iteration]: http://2ality.com/2016/10/asynchronous-iteration.html
+[js-async-iteration]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
 [js-destructuring-assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [js-generators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators
 [js-imports]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
 [js-iterable]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
 [js-loops]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration
+[js-nullish-coalescing]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator
+[js-optional-chaining]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining
 [js-promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [js-proxy]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 [js-shared-memory]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer
@@ -1182,6 +1191,7 @@ console.log(crew);
 [foreach-doc]: https://www.w3schools.com/jsref/jsref_forEach.asp
 [concat-doc]: https://www.w3schools.com/jsref/jsref_concat_array.asp
 [find-doc]: https://www.w3schools.com/jsref/jsref_find.asp
+[node-imports]: https://nodejs.org/api/esm.html#esm_modules_ecmascript_modules
 [pop-doc]: https://www.w3schools.com/jsref/jsref_pop.asp
 [push-doc]: https://www.w3schools.com/jsref/jsref_push.asp
 [slice-doc]: https://www.w3schools.com/jsref/jsref_slice_array.asp
