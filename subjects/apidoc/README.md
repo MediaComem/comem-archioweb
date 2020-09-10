@@ -1,6 +1,7 @@
 # apiDoc
 
-Learn to generate HTML documentation for your RESTful API from annotations in your source code, using [apiDoc][apidoc].
+Learn to generate HTML documentation for your RESTful API from annotations in
+your source code, using [apiDoc][apidoc].
 
 **You will need**
 
@@ -269,22 +270,22 @@ This works for most apiDoc annotations, not just request parameters.
 **Generic alternatives**
 
 * Plain [Markdown][markdown]
-* [GitBook][gitbook] (Markdown, not API-specific)
 
 **API-specific alternatives**
 
-* [RAML][raml] (YAML-based schema, large community with many tools)
+* [OpenAPI specification][openapi], the new standard with a large community and
+  many tools like [Swagger][swagger].
 * [Slate][slate] (Markdown)
-* [Swagger][swagger] (OpenAPI specification, large community with many tools)
+* [RAML][raml] (YAML)
 
 
 
 [apiary]: https://apiary.io
 [apidoc]: http://apidocjs.com
 [apidoc-param]: http://apidocjs.com/#param-api-param
-[gitbook]: https://www.gitbook.com
 [markdown]: https://daringfireball.net/projects/markdown/syntax
 [node]: https://nodejs.org/
+[openapi]: https://github.com/OAI/OpenAPI-Specification
 [raml]: https://raml.org
 [slate]: https://github.com/lord/slate
 [swagger]: https://swagger.io
