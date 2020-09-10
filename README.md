@@ -170,11 +170,14 @@ Your REST API must be developed with the [Express][express] framework and use a
 Doing more than is required **MAY** earn you some bonus points in the
 evaluation if implemented correctly. Here are some examples:
 
-* Implement authorization, i.e. deny some users the right to perform specific
-  operations even when they are authenticated.
+* Implement authorization, i.e. document who is allowed to do what, and deny
+  some users the right to perform specific operations even when they are
+  authenticated.
 
   For example: event when authenticated, user A may not be able to edit resource
-  1, because it was created by user B, and only the creator can modify it.
+  2, because it was created by user B, and only the creator can modify it.
+* Implement a level 3 hypermedia API using a standard format such as
+  [JSON:API][json-api] or [HAL+JSON][hal].
 * Implement "full" (90-100%) test coverage with automated tests.
 
 
@@ -233,9 +236,11 @@ the end of each subject.
 [git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md
 [git-downloads]: https://git-scm.com/downloads
 [github]: https://github.com
+[hal]: https://en.wikipedia.org/wiki/Hypertext_Application_Language
 [heroku]: https://www.heroku.com/home
 [heroku-cli]: https://devcenter.heroku.com/articles/heroku-cli
 [heig]: http://www.heig-vd.ch
+[json-api]: https://jsonapi.org
 [jwt]: https://jwt.io/
 [mongodb]: https://www.mongodb.com
 [mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
