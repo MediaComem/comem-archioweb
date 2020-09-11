@@ -99,11 +99,11 @@ $> git commit -m "Initial commit"
 
 Heroku: one person in each group
 
-![Heroku dashboard][./images/heroku-01-dashboard.png]
-![Create an application][./images/heroku-02-create-app.png]
-![Add collaborators][./images/heroku-03-add-collaborator.png]
-![Configure the application][./images/heroku-04-configure-app.png]
-![Configure environment variables][./images/heroku-05-config-vars.png]
+![Heroku dashboard](./images/heroku-01-dashboard.png)
+![Create an application](./images/heroku-02-create-app.png)
+![Add collaborators](./images/heroku-03-add-collaborator.png)
+![Configure the application](./images/heroku-04-configure-app.png)
+![Configure environment variables](./images/heroku-05-config-vars.png)
 
 
 
@@ -111,17 +111,17 @@ Heroku: one person in each group
 
 Register a MongoDB account to use their Atlas service: https://www.mongodb.com/try
 
-![Register a MongoDB account][./images/mongodb-atlas-01-register.png]
-![Choose the free plan][./images/mongodb-atlas-02-plan.png]
-![Create a MongoDB cluster][./images/mongodb-atlas-03-cluster.png]
-![Configure the cluster][./images/mongodb-atlas-04-configure-cluster.png]
-![Configure network access][./images/mongodb-atlas-05-network-access.png]
-![Allow access from anywhere][./images/mongodb-atlas-06-whitelist-ip.png]
-![Configure database access][./images/mongodb-atlas-07-database-access.png]
-![Add a database user][./images/mongodb-atlas-08-add-user.png]
-![Connect to the cluster][./images/mongodb-atlas-09-connect.png]
-![Connect your application][./images/mongodb-atlas-10-connect-app.png]
-![Connect a Node.js application][./images/mongodb-atlas-11-connect-nodejs.png]
+![Register a MongoDB account](./images/mongodb-atlas-01-register.png)
+![Choose the free plan](./images/mongodb-atlas-02-plan.png)
+![Create a MongoDB cluster](./images/mongodb-atlas-03-cluster.png)
+![Configure the cluster](./images/mongodb-atlas-04-configure-cluster.png)
+![Configure network access](./images/mongodb-atlas-05-network-access.png)
+![Allow access from anywhere](./images/mongodb-atlas-06-whitelist-ip.png)
+![Configure database access](./images/mongodb-atlas-07-database-access.png)
+![Add a database user](./images/mongodb-atlas-08-add-user.png)
+![Connect to the cluster](./images/mongodb-atlas-09-connect.png)
+![Connect your application](./images/mongodb-atlas-10-connect-app.png)
+![Connect a Node.js application](./images/mongodb-atlas-11-connect-nodejs.png)
 
 
 
