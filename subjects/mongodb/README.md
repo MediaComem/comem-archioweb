@@ -5,7 +5,7 @@ Learn the basics of [MongoDB][mongodb], one of the most populars document-orient
 **You will need**
 
 * A Unix CLI
-* A running MongoDB server ([installation instructions](./install/))
+* A running MongoDB server ([installation instructions][install])
 
 **Recommended reading**
 
@@ -615,6 +615,7 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 [find]: https://docs.mongodb.com/manual/reference/method/db.collection.find/
 [getting-started]: https://docs.mongodb.com/getting-started/shell/
 [indexes]: https://docs.mongodb.com/manual/indexes/
+[install]: https://github.com/MediaComem/comem-archioweb/guides/install-mongodb.md
 [query-operators]: https://docs.mongodb.com/manual/reference/operator/query/
 [mongodb]: https://www.mongodb.com
 [remove]: https://docs.mongodb.com/manual/reference/method/db.collection.remove/

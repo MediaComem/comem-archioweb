@@ -1,6 +1,6 @@
 # Setting up automated testing for an Express.js REST API
 
-This tutorial explains how to set up [automated tests][automated-testing] for an
+This guide explains how to set up [automated tests][automated-testing] for an
 HTTP API implemented with [Express.js][express] and [Mongoose][mongoose], using
 the following tools:
 
@@ -14,7 +14,7 @@ the following tools:
 > JavaScript test frameworks in 2019.
 >
 > Note that the code in this tutorial uses [Promises][promise] and [async
-> functions][async-await]. Read [this guide](ASYNC-JS.md) if your are not
+> functions][async-await]. Read [this guide](./async-js.md) if you are not
 > familiar with the subject.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->

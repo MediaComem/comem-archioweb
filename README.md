@@ -43,7 +43,7 @@ This course is a [COMEM+][comem] web development course taught at
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
 
 * Deploying your web service
-  * [Heroku](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/heroku?home=MediaComem%2Fcomem-archioweb%23readme) cloud application platform
+  * [*Guide:* deploying an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
 
 * Creating a REST API
   * [REST in depth](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -51,11 +51,11 @@ This course is a [COMEM+][comem] web development course taught at
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
-  * [Writing API tests](AUTOMATED-TESTING.md)
+  * [*Guide:* setting up automated testing for an Express.js REST API](./guides/set-up-automated-tests.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [*Extra: Web Application Messaging Protocol (WAMP)*](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [*Extra:* Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
 
 
 
@@ -88,9 +88,14 @@ This course is a [COMEM+][comem] web development course taught at
 
 **Guides**
 
-* [Storing geospatial data with Mongoose](MONGOOSE-GEOSPATIAL.md)
-* [Setting up automated testing for an Express.js REST API](AUTOMATED-TESTING.md)
-* [The many worlds of asynchronous JavaScript](ASYNC-JS.md)
+* [Install MongoDB](./guides/install-mongodb.md)
+* [Deploying an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
+* [Storing geospatial data with Mongoose](./guides/store-geospatial-data.md)
+* [Setting up automated testing for an Express.js REST API](./guides/set-up-automated-tests.md)
+* [The many worlds of asynchronous JavaScript](./guides/async-js.md)
+
+**Miscellaneous**
+
 * [Command line cheatsheet][cli-cheatsheet]
 * [Git cheatsheet][git-cheatsheet]
 
@@ -109,29 +114,40 @@ Your REST API must be developed with the [Express][express] framework and use a
 * The API must provide at least **2 other types** of resources:
   * Both types must be linked together (e.g. aggregation or composition).
   * At least one of the types must be linked to users.
-  * The API must provide minimal CRUD operations to manage and use those types in a mobile application.
+  * The API must provide minimal CRUD operations to manage and use those types
+    in a mobile application.
 * The API must use the knowledge learned during the course:
   * At least one resource must be a **paginated list**.
   * At least one resource must be a **list with optional filters**.
-  * At least one resource must provide **aggregated data** from other resources using a [MongoDB aggregation pipeline][mongodb-aggregation]
-    (e.g. the number of items created by a user).
-  * The API must be developed as a backend to a mobile application
-    using at least 2 [**mobile hardware features**][cordova-plugins], for example:
+  * At least one resource must provide **aggregated data** from other resources
+    using a [MongoDB aggregation pipeline][mongodb-aggregation] (e.g. the number
+    of items created by a user).
+  * The API must be developed as a backend to a mobile application using at
+    least 2 [**mobile hardware features**][cordova-plugins], for example:
     * At least one resource must be **geolocated**.
 
-      > See [Storing geospatial data with Mongoose](MONGOOSE-GEOSPATIAL.md) for
-      > information on how to store this data.
-    * At least one resource must have one or multiple **pictures**
-      (it is sufficient to store a picture URL or URLs in the database).
-  * Sensitive operations must be protected by requiring valid **authentication**.
-    * Authentication must be provided in the form of a [JWT token][jwt] or an equivalent mechanism.
+      See [Storing geospatial data with
+      Mongoose](./guides/store-geospatial-data.md) for information on how to
+      store this data.
+    * At least one resource must have one or multiple **pictures**.
+
+      It is sufficient to store a picture URL or URLs in the database.
+  * Sensitive operations must be protected by requiring valid
+    **authentication**.
+    * Authentication must be provided in the form of a [JWT token][jwt] or an
+      equivalent mechanism.
 * The API must have a real-time pub-sub component:
   * *One or the other* of the following must be provided:
-    * A `ws://` or `wss://` endpoint to which a plain WebSockets client can connect to receive real-time messages.
-    * A WAMP pub-sub topic to which a Subscriber can subscribe to receive real-time messages.
-  * The WebSockets endpoint or WAMP topic must send real-time messages containing relevant data for the application.
-    (For example, a chat application may notify its clients in real-time of the number of channels, messages, etc, to display activity on the home page.)
-  * The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing authentication or authorization is mandatory).
+    * A `ws://` or `wss://` endpoint to which a plain WebSockets client can
+      connect to receive real-time messages.
+    * A WAMP pub-sub topic to which a Subscriber can subscribe to receive
+      real-time messages.
+  * The WebSockets endpoint or WAMP topic must send real-time messages
+    containing relevant data for the application. (For example, a chat
+    application may notify its clients in real-time of the number of channels,
+    messages, etc, to display activity on the home page.)
+  * The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing
+    authentication or authorization is mandatory).
 
 **Infrastructure**
 
@@ -141,7 +157,8 @@ Your REST API must be developed with the [Express][express] framework and use a
 **Documentation**
 
 * Your REST API must be documented.
-* The real-time component of your API must be documented (not necessarily in the same way).
+* The real-time component of your API must be documented (not necessarily in the
+  same way).
 
 **Automated testing**
 
@@ -158,13 +175,17 @@ Your REST API must be developed with the [Express][express] framework and use a
 **Quality of the implementation**
 
 * You must follow REST best practices:
-  * Your REST resources must use appropriate HTTP methods, headers and status codes.
-  * Your REST resources must have a consistent URL hierarchy and/or naming structure.
+  * Your REST resources must use appropriate HTTP methods, headers and status
+    codes.
+  * Your REST resources must have a consistent URL hierarchy and/or naming
+    structure.
 * Your asynchronous code must be correct.
 * Your Express routes must handle asynchronous operation errors.
 * You must avoid excessive code duplication (e.g. using Express middleware).
-* Your API must have basic validations on user input (e.g. using Mongoose validations).
-* Your API must validate the existence of linked resources (e.g. when creating an item linked to a user).
+* Your API must have basic validations on user input (e.g. using Mongoose
+  validations).
+* Your API must validate the existence of linked resources (e.g. when creating
+  an item linked to a user).
 
 **Bonus**
 

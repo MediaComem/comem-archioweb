@@ -60,10 +60,9 @@ you will develop a **hybrid mobile application frontend** to use your web servic
 
 Take a look at what was done in this course the previous years:
 
-* https://www.youtube.com/watch?v=6s2SCx0db90&feature=youtu.be
-* https://www.youtube.com/watch?v=ycZvdpfq_Qk&feature=youtu.be
-* https://www.youtube.com/watch?v=wki0t178x2k&feature=youtu.be
-* https://www.youtube.com/watch?v=Mu0KJCyIjf0
+* https://youtu.be/6s2SCx0db90
+* https://youtu.be/wki0t178x2k
+* https://youtu.be/Mu0KJCyIjf0
 
 <p class='center'><img class='w70' src='images/citizen-engagement-1.jpg' /></p>
 
