@@ -9,7 +9,8 @@ will:
 * **Deploy** your REST API on a cloud application platform.
 * Add a **real-time** component to your REST API with WebSockets.
 
-This course is a [COMEM+][comem] [web development course][comem-webdev] taught at [HEIG-VD][heig].
+This course is a [COMEM+][comem] web development course taught at
+[HEIG-VD][heig].
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -225,12 +226,11 @@ the end of each subject.
 
 
 [chrome]: https://www.google.com/chrome/
-[cli-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/CLI-CHEATSHEET.md
+[cli-cheatsheet]: https://github.com/MediaComem/comem-archidep/blob/master/CLI-CHEATSHEET.md
 [comem]: http://www.heig-vd.ch/comem
-[comem-webdev]: https://github.com/MediaComem/comem-webdev
 [cordova-plugins]: https://cordova.apache.org/docs/en/latest/#plugin-apis
-[demo-api]: https://github.com/MediaComem/comem-webdev-express-rest-demo
-[demo-api-doc]: https://mediacomem.github.io/comem-webdev-express-rest-demo/
+[demo-api]: https://github.com/MediaComem/comem-rest-demo
+[demo-api-doc]: https://mediacomem.github.io/comem-rest-demo/
 [diagrams]: diagrams.pdf
 [express]: https://expressjs.com
 [git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md
