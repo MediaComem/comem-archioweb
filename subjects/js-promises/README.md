@@ -1042,7 +1042,7 @@ The following functions will be called:
 
 ```js
 const request = require('request-promise-native'), peer = require('request');
-const apiUrl = 'https://evening-meadow-25867.herokuapp.com/api';
+const apiUrl = 'https://comem-rest-demo.herokuapp.com/api';
 const now = new Date().getTime();
 
 function `createDirector`() {
@@ -1073,7 +1073,7 @@ console.log('Doing all the things... please wait...');
 
 ```js
 const request = require('request-promise-native'), peer = require('request');
-const apiUrl = 'https://evening-meadow-25867.herokuapp.com/api';
+const apiUrl = 'https://comem-rest-demo.herokuapp.com/api';
 const now = new Date().getTime();
 
 function createDirector() {

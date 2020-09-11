@@ -402,8 +402,8 @@ Host: www.example.com
 In this case:
 
 * It's a `POST` request, so the server should create a new resource
-* The `Content-Type` header is `application/json`, so the server should interepret the body as a JSON payload
-  and use that data to create the resource
+* The `Content-Type` header is `application/json`, so the server should
+  interepret the body as a JSON payload and use that data to create the resource
 
 
 
@@ -709,9 +709,10 @@ there is a possible *race condition* where one user's changes can be **silently 
 
 #### Conditional update solution
 
-The `If-Match` and `If-Unmodified-Since` headers allow the client to **conditionally update** a resource.
-If the resource **has changed** compared to the specified identifier or since the specified date,
-the server should **refuse** the request and respond with `412 Precondition Failed`:
+The `If-Match` and `If-Unmodified-Since` headers allow the client to
+**conditionally update** a resource. If the resource **has changed** compared to
+the specified identifier or since the specified date, the server should
+**refuse** the request and respond with `412 Precondition Failed`:
 
 <p class='center'><img src='images/conditional-update-2.png' class='w100' /></p>
 
@@ -728,14 +729,14 @@ Since REST deals primarily with **resources**, in a REST API you will (mostly):
 
 Let's try these operations with a prepared REST API:
 
-https://evening-meadow-25867.herokuapp.com
+https://comem-rest-demo.herokuapp.com
 
 
 
 ### Postman
 
-To make requests to the API, we will use [Postman][postman], an HTTP client with a GUI.
-**Download and launch** the application now.
+To make requests to the API, we will use [Postman][postman], an HTTP client with
+a GUI. **Download and launch** the application now.
 
 You don't have to sign up when it prompts you to, you can skip it:
 
@@ -743,20 +744,28 @@ You don't have to sign up when it prompts you to, you can skip it:
 
 #### Postman interface
 
-Postman allows you to make any HTTP **request/response** (e.g. `POST`, `PUT`, custom headers, etc).
-It also remembers your **previous requests**..
+Postman allows you to make any HTTP **request/response** (e.g. `POST`, `PUT`,
+custom headers, etc). It also remembers your **previous requests**..
 
 <img src='images/postman-ui.png' width='100%' />
+
+#### Make your first request
+
+<img src='images/postman-first-request.png' width='100%' />
+
+> **Hint:** the next steps will show you have to make various HTTP requests. The
+> placeholder **"Your Name"** is used in several places. Replace it with your
+> name to avoid collisions with other people using the API at the same time.
 
 
 
 ### Create
 
-The API allows us to **create a person** by making a `POST` request with a **JSON representation** of the person.
-This is the request we want to make:
+The API allows us to **create a person by making a `POST` request with a **JSON
+representation** of the person. This is the request we want to make:
 
 ```http
-POST https://evening-meadow-25867.herokuapp.com/api/people HTTP/1.1
+POST https://comem-rest-demo.herokuapp.com/api/people HTTP/1.1
 Content-type: application/json
 
 { "name": "Your Name", "gender": "male" }
@@ -766,29 +775,35 @@ Let's make that request with Postman:
 
 <img src='images/postman-create.png' width='100%' />
 
-**Tip:** use your name to avoid collisions.
-
 #### Create request headers
 
 You can see and modify the request headers in the **Headers** tab:
 
 <img src='images/postman-create-headers.png' width='100%' />
 
-Notice that Postman has automatically set the `Content-Type` header to `application/json` when you selected JSON as the body type.
+Notice that Postman has automatically set the [`Content-Type`
+header][content-type] to `application/json` when you selected JSON as the body
+type.
 
 Press the **Send** button to send the request.
 
 #### Create response
 
-You should see the response below the request configuration:
+You should see the response below the request:
 
 <img src='images/postman-create-response.png' width='100%' />
 
-> "The **POST** method is used to request that the origin server accept the entity enclosed in the request as a **new subordinate** of the resource identified by the Request-URI in the Request-Line."
+> "The [**POST** method][post] is used to request that the origin server accept
+> the entity enclosed in the request as a **new subordinate** of the resource
+> identified by the Request-URI in the Request-Line."
 
-> "If a resource has been **created** on the origin server, the response SHOULD be **201 (Created)** and contain an entity which describes the status of the request and refers to the new resource, and a **Location header**."
+> "If a resource has been **created** on the origin server, the response SHOULD
+> be [`201 Created`][201] and contain an entity which describes the status of
+> the request and refers to the new resource, and a [`Location`
+> header][location]."
 
-In other words: the server tells us that **a new person has been created** by responding with the status code `201 Created` and the person's data.
+In other words: the server tells us that **a new person has been created** by
+responding with the status code `201 Created` and the person's data.
 
 #### Create response headers
 
@@ -796,7 +811,9 @@ You can also see the response headers in the **Headers** tab:
 
 <img src='images/postman-create-response-headers.png' width='100%' />
 
-> "If a resource has been **created** [...] the response SHOULD [...] contain a **Location header**."
+> "If a resource has been **created** [...] the response SHOULD [...] contain a
+> **Location header**. For 201 Created responses, the Location is that of the
+> new resource which was created by the request."
 
 The server tells us where to find the new resource in the **Location** header.
 
@@ -804,11 +821,12 @@ The server tells us where to find the new resource in the **Location** header.
 
 ### Read
 
-Let's make a request to **read** (or **retrieve**) the person we created.
-This time we need a simple `GET` request to the path given to us in the **Location** header of the previous response:
+Let's make a request to **read** (or **retrieve**) the person we created. This
+time we need a simple `GET` request to the path given to us in the **Location**
+header of the previous response:
 
 ```http
-GET https://evening-meadow-25867.herokuapp.com/api/people/58a...1c5 HTTP/1.1
+GET https://comem-rest-demo.herokuapp.com/api/people/5f5...037 HTTP/1.1
 ```
 
 Configure that request in Postman:
@@ -821,14 +839,17 @@ Press **Send** and you should retrieve the person in the response:
 
 <img src='images/postman-read-single-response.png' width='100%' />
 
-> "The **GET** method means retrieve whatever information (in the form of an entity) is identified by the Request-URI."
+> "The [**GET** method][get] means retrieve whatever information (in the form of
+> an entity) is identified by the Request-URI."
 
-Basically, the server is sending us the **JSON representation** of the `/api/people/58a...1c5` resource.
-The `200 OK` status code indicates that the request was **successful**.
+Basically, the server is sending us the **JSON representation** of the
+`/api/people/5f5...037` resource. The [`200 OK`][200] status code indicates that
+the request was **successful**.
 
 #### Read a resource that does not exist
 
-Configure the same request but change the last character of the URL path:
+Configure the same request but change the last few characters of the URL path so
+that the person identifier is invalid:
 
 <img src='images/postman-read-404.png' width='100%' />
 
@@ -836,7 +857,8 @@ Press **Send** and you will see that the server responds with an error message:
 
 <img src='images/postman-read-404-response.png' width='100%' />
 
-By sending a response with the `404 Not Found` status code, the server tells us that **no resource exists at that URL**.
+By sending a response with the [`404 Not Found`][404] status code, the server
+tells us that **no resource exists at that URL**.
 
 #### Read a collection
 
@@ -845,7 +867,7 @@ Let's make a `GET` request to **read** that.
 We simply have to remove the person's ID from the URL path:
 
 ```http
-GET https://evening-meadow-25867.herokuapp.com/api/people HTTP/1.1
+GET https://comem-rest-demo.herokuapp.com/api/people HTTP/1.1
 ```
 
 Configure that request in Postman:
@@ -858,21 +880,23 @@ Press **Send** and you should receive a response with several people in it:
 
 <img src='images/postman-read-collection-response.png' width='100%' />
 
-Again, the server is sending us the **JSON representation** of the `/api/people` resource.
-Since that represents multiple people, we receive a **JSON array**, where each element is a **JSON object** representing a person.
+Again, the server is sending us the **JSON representation** of the `/api/people`
+resource. Since that represents multiple people, we receive a **JSON array**,
+where each element is a **JSON object** representing a person.
 
 
 
 ### Update
 
-The API also allows us to **update** a person by making a `PUT` request to the person's resource with a **JSON representation** of the updated person.
-Let's make a request to add your birthdate:
+The API also allows us to **update** a person by making a `PUT` request to the
+person's resource with a **JSON representation** of the updated person. Let's
+make a request to add your birthdate:
 
 ```http
-PUT https://evening-meadow-25867.herokuapp.com/api/people/58a...1c5 HTTP/1.1
+PUT https://comem-rest-demo.herokuapp.com/api/people/5f5...037 HTTP/1.1
 Content-type: application/json
 
-{ "name": "Your Name", "gender": "male", "birthDate": "2000-01-01" }
+{ "name": "Your Name", "gender": "female", "birthDate": "2000-01-01" }
 ```
 
 Configure that request with Postman:
@@ -885,9 +909,14 @@ Press **Send** and you should receive the updated person in the response:
 
 <img src='images/postman-update-response.png' width='100%' />
 
-> "The **PUT** method requests that the enclosed **entity** be stored under the supplied Request-URI. If the Request-URI refers to an **already existing resource**, the enclosed entity SHOULD be considered as a **modified version** of the one residing on the origin server."
+> "The [**PUT** method][put] requests that the enclosed **entity** be stored
+> under the supplied Request-URI. If the Request-URI refers to an **already
+> existing resource**, the enclosed entity SHOULD be considered as a **modified
+> version** of the one residing on the origin server."
 
-> "If an existing resource is modified, either the **200 (OK)** or 204 (No Content) response codes SHOULD be sent to indicate successful completion of the request."
+> "If an existing resource is modified, either the [`200 OK`][200] or [`204 No
+> Content`][204] response codes SHOULD be sent to indicate successful completion
+> of the request."
 
 Basically, we **replaced** the person's data with the representation we sent.
 Since no new resource was created, the server simply responds with `200 OK`.
@@ -900,23 +929,28 @@ Now, configure the same request but **without the gender**, and press **Send**:
 
 #### Partial update response with PUT
 
-The server is responding with the status code `422 Unprocessable Entity`, meaning that the request was refused because the person representation you sent is invalid (it is missing the gender property):
+The server is responding with the status code [`422 Unprocessable Entity`][422]
+and telling you that the person representation you sent is invalid because it is
+missing the gender property:
 
 <img src='images/postman-update-failed-response.png' width='100%' />
 
-According to the HTTP specification, the `PUT` method is used to store the **entire representation** you are sending as the **new state of the resource**,
-which it cannot do in this case because it is **invalid**. API operations using `PUT` should **not support partial updates**.
+According to the HTTP specification, the `PUT` method is used to store the
+**entire representation** you are sending as the **new state of the resource**,
+which it cannot do in this case because it is **invalid**. API operations using
+**`PUT` should not support partial updates**.
 
 #### Partial updates with PATCH
 
-The `PATCH` method was later added to the HTTP specification to support **partial updates**.
-The API also supports it, so let's make a PATCH request to update your birthdate:
+The `PATCH` method was later added to the HTTP specification to support
+**partial updates**. The API also supports it, so let's make a PATCH request to
+update your birthdate:
 
 ```http
-PATCH https://evening-meadow-25867.herokuapp.com/api/people/58a...1c5 HTTP/1.1
+PATCH https://comem-rest-demo.herokuapp.com/api/people/5f5...037 HTTP/1.1
 Content-type: application/json
 
-{ "birthDate": "2000-01-02" }
+{ "birthDate": "2001-02-03" }
 ```
 
 Configure that request with Postman:
@@ -929,22 +963,26 @@ This time the request was accepted:
 
 <img src='images/postman-partial-update-response.png' width='100%' />
 
-> "The [PATCH][http-methods-patch-rfc] method requests that a **set of changes** described in the request entity be **applied to the resource** identified by the Request-URI."
+> "The [`PATCH` method][patch] requests that a **set of changes** described in
+> the request entity be **applied to the resource** identified by the
+> Request-URI."
 
-Instead of a replacement of the entire resource, our JSON representation is interpreted as a **partial update** to the resource,
-in this case an update of the `birthDate` property.
+Instead of a replacement of the entire resource, our JSON representation is
+interpreted as a **partial update** to the resource, in this case an update of
+the `birthDate` property.
 
-Like with `PUT`, no new resource was created, so the server responds with `200 OK`.
+Like with `PUT`, no new resource was created, so the server responds with [`200
+OK`][200].
 
 
 
 ### Delete
 
-Finally, let's **delete** the person.
-We simply need to make a `DELETE` request with no request body:
+Finally, let's **delete** the person. We simply need to make a `DELETE` request
+with no request body:
 
 ```http
-DELETE https://evening-meadow-25867.herokuapp.com/api/people/58a...1c5 HTTP/1.1
+DELETE https://comem-rest-demo.herokuapp.com/api/people/5f5...037 HTTP/1.1
 ```
 
 Configure that request with Postman:
@@ -953,18 +991,25 @@ Configure that request with Postman:
 
 #### Delete response
 
-Press **Send** and you should get a response from the server with no response body:
+Press **Send** and you should get a response from the server with no response
+body:
 
 <img src='images/postman-delete-response.png' width='100%' />
 
-> "The DELETE method requests that the origin server **delete the resource** identified by the Request-URI."
+> "The [`DELETE` method][delete] requests that the origin server **delete the
+> resource** identified by the Request-URI."
 
-> "A successful response SHOULD be 200 (OK) if the response includes an entity describing the status, 202 (Accepted) if the action has not yet been enacted, or **204 (No Content)** if the action has been enacted but **the response does not include an entity**."
+> "A successful response SHOULD be [`200 OK`][200] if the response includes an
+> entity describing the status, [`202 Accepted`][202] if the action has not yet
+> been enacted, or [**`204 No Content`**][204] if the action has been enacted
+> but **the response does not include an entity**."
 
-The server has **successfully deleted the person resource** and is not sending us any additional data as indicated by the `204 No Content` status code.
+The server has **successfully deleted the person resource** and is not sending
+us any additional data as indicated by the `204 No Content` status code.
 
-As you can see in the method's documentation, the server could also respond differently (e.g. `200 OK` with a representation of the deleted resource),
-but `204 No Content` was chosen for this API implementation.
+As you can see in the method's documentation, the server could also respond
+differently (e.g. `200 OK` with a representation of the deleted resource), but
+`204 No Content` was chosen for this API implementation.
 
 
 
@@ -998,7 +1043,7 @@ Collection errors                                                               
 
 **Documentation**
 
-* [HTTP request methods][http-methods] ([RFC][http-methods-rfc], [PATCH RFC][http-methods-patch-rfc])
+* [HTTP request methods][http-methods] ([RFC][http-methods-rfc], [PATCH RFC][patch-rfc])
 * [HTTP headers (request/response)][http-headers]
 * [HTTP status codes][http-status-codes] ([RFC][http-status-codes-rfc])
 
@@ -1012,10 +1057,19 @@ Collection errors                                                               
 
 
 
+[200]: https://httpstatuses.com/200
+[201]: https://httpstatuses.com/201
+[202]: https://httpstatuses.com/202
+[204]: https://httpstatuses.com/204
+[404]: https://httpstatuses.com/404
+[422]: https://httpstatuses.com/422
 [api]: https://en.wikipedia.org/wiki/Application_programming_interface
 [auth0-tokens]: https://auth0.com/blog/ten-things-you-should-know-about-tokens-and-cookies/
 [chrome]: https://www.google.com/chrome/
+[content-type]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+[delete]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.7
+[get]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
 [headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
 [http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
@@ -1025,7 +1079,6 @@ Collection errors                                                               
 [http-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
 [http-headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
 [http-methods]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
-[http-methods-patch-rfc]: https://tools.ietf.org/html/rfc5789
 [http-methods-rfc]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
 [http-methods-rest]: http://www.restapitutorial.com/lessons/httpmethods.html
 [http-request-headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
@@ -1034,8 +1087,13 @@ Collection errors                                                               
 [http-status-codes-rfc]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 [http-teapot]: https://tools.ietf.org/html/rfc2324
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
+[location]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
 [osi-application]: https://en.wikipedia.org/wiki/Application_layer
-[postman]: https://www.getpostman.com
+[patch]: https://tools.ietf.org/html/rfc5789#section-2
+[patch-rfc]: https://tools.ietf.org/html/rfc5789
+[post]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5
+[postman]: https://www.postman.com/downloads/
+[put]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [rest-cheat-sheet]: http://51elliot.blogspot.ch/2014/03/rest-api-best-practices-rest-cheat-sheet.html
 [rest-constraints]: https://en.wikipedia.org/wiki/Representational_state_transfer#Architectural_constraints
