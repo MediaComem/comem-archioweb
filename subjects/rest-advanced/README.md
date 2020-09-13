@@ -32,6 +32,8 @@ various ways REST APIs are implemented in the wild, from "practical REST" to
   - [Flat URLs](#flat-urls)
   - [Nested vs. flat URLs](#nested-vs-flat-urls)
   - [Using both nested & flat URLs](#using-both-nested--flat-urls)
+  - [Filtering with URLs](#filtering-with-urls)
+    - [Use URL query parameters for filtering](#use-url-query-parameters-for-filtering)
 - [Resources vs. actions](#resources-vs-actions)
   - [Modeling actions with REST](#modeling-actions-with-rest)
   - [REST actions as properties](#rest-actions-as-properties)
@@ -483,6 +485,48 @@ It's also possible to define **multiple collections** for the same resource at *
 
 These two collections both produce a list of resources of the same type (courses), but **they are different collections**.
 Their contents will vary over time, and most of the time the two collections will not produce the same result (there are courses taught by other professors).
+
+### Filtering with URLs
+
+Which URL structure is better for filtering parts of a collection?
+
+```
+  GET /employees/byDepartment/accounting
+  GET /employees/byLastName/Smith
+
+  GET /employees?department=accounting
+  GET /employees?lastName=Smith
+```
+
+The first two are simply not practical. What happens when you want to retrieve
+all people named Smith in the accounting department? Either you cannot, or you
+will end up with clunky, unintuitive URLs:
+
+```
+  GET /employees/byDepartmentAndLastName/accounting/Smith
+  GET /employees/byLastName/Smith/andByDepartment/accounting
+```
+
+#### Use URL query parameters for filtering
+
+The path of the URL is not meant to contain multiple dynamic parameters.
+However, the query string exists for just this purpose:
+
+```
+  GET /employees`?`department=accounting
+  GET /employees`?`department=accounting`&`lastName=Smith
+  GET /employees`?`lastName=Doe`&`department=sales
+```
+
+You can combine query parameters however you want (provided the implementation
+of the server supports it).
+
+It is also more logical to have the single resource `GET /employees` which you
+can filter with additional parameters. In the end, all responses to these
+requests are lists of employees.
+
+Always prefer query parameters to
+filter collections.
 
 
 
