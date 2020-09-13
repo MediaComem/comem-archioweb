@@ -3,7 +3,7 @@
   <head>
     <title>REST In Depth (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/rest-advanced/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a548a1549c0a2bfc905f1e3cc3fe017cf52feacc/subjects/rest-advanced/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -280,9 +280,10 @@ resource **can be modified** (because you can use the `PUT` method).
 
 There are hypermedia formats similar to HTML but meant for APIs:
 
+* [JSON:API][json-api]
 * [Collection+JSON][collection-json]
 * [Hypertext Application Language (HAL)][hal] - [(Draft RFC)][hal-rfc]
-* [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec] - based on the [Resource Description Framework (RDF)][rdf]
+* [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec]
 * [JSON Hyper-Schema (RFC Draft)][json-hyper-schema]
 * [Siren][siren]
 
@@ -367,8 +368,8 @@ Hypermedia is not a silver bullet: clients must still know your domain.
 ]
 .container[
 
-Real-world examples: [GitHub v3 API (custom media type)][github-api], [Foxy REST
-API (HAL+JSON)][foxy-api].
+Real-world examples: [GitHub v3 API (custom media type)][github-api], [Flapjack
+REST API (JSON:API)][flapjack-api], [Foxy REST API (HAL+JSON)][foxy-api].
 
 
 
@@ -381,10 +382,57 @@ API (HAL+JSON)][foxy-api].
 
 Resources often have relationships:
 
+* A resource which represents a **collection** has items (e.g. users/user).
 * Blog **posts** have **comments**.
 * **Courses** are taught by **professors**.
 
 How should we define the URLs to retrieve those resources?
+
+---
+### Retrieving a collection or a single resource
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
+
+Assume there is a resource which represents the list of users in a blog:
+
+```
+  http://blog.example.com/users
+```
+
+What should be the URL that identifies user number 2?
+
+```
+  http://blog.example.com`/user/2`
+  http://blog.example.com`/users/2`
+```
+
+---
+#### What should the URL of a single resource be?
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a> > <a href="#16">Retrieving a collection or a single resource</a>]
+
+Technically, the second solution is more correct with regards to URL
+structure and HTTP:
+
+```
+  http://blog.example.com/users    (collection)
+  http://blog.example.com/users/2  (item in the collection)
+```
+
+* `/users/2` expresses that user number `2` is somehow contained within the
+  `users` collection. The URL expresses the **hierarchical relationship**
+  between the two resources.
+* When creating a user with a `POST /users` request, the HTTP specification
+  states that the created resource should be a **subordinate** of the resource
+  identified by the request, so it makes sense to reflect that relationship in
+  the URL.
+* Many prefer to use `users` in both the collection and item URL so you do not
+  have to worry about switching between singular and plural (e.g.
+  `people/person`).
+
+> This is a matter of debate. You will see both solutions implemented in
+> real-world APIs. What's important is not mix the two techniques to avoid
+> confusion.
 
 ---
 ### Nested (or hierarchical) URLs
@@ -471,6 +519,54 @@ It's also possible to define **multiple collections** for the same resource at *
 These two collections both produce a list of resources of the same type (courses), but **they are different collections**.
 Their contents will vary over time, and most of the time the two collections will not produce the same result (there are courses taught by other professors).
 
+---
+### Filtering with URLs
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
+
+Which URL structure is better for filtering parts of a collection?
+
+```
+  GET /employees/byDepartment/accounting
+  GET /employees/byLastName/Smith
+
+  GET /employees?department=accounting
+  GET /employees?lastName=Smith
+```
+
+The first two are simply not practical. What happens when you want to retrieve
+all people named Smith in the accounting department? Either you cannot, or you
+will end up with clunky, unintuitive URLs:
+
+```
+  GET /employees/byDepartmentAndLastName/accounting/Smith
+  GET /employees/byLastName/Smith/andByDepartment/accounting
+```
+
+---
+#### Use URL query parameters for filtering
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a> > <a href="#22">Filtering with URLs</a>]
+
+The path of the URL is not meant to contain multiple dynamic parameters.
+However, the query string exists for just this purpose:
+
+```
+  GET /employees`?`department=accounting
+  GET /employees`?`department=accounting`&`lastName=Smith
+  GET /employees`?`lastName=Doe`&`department=sales
+```
+
+You can combine query parameters however you want (provided the implementation
+of the server supports it).
+
+It is also more logical to have the single resource `GET /employees` which you
+can filter with additional parameters. In the end, all responses to these
+requests are lists of employees.
+
+Always prefer query parameters to
+filter collections.
+
 
 
 ---
@@ -498,7 +594,7 @@ Which ones of these HTTP requests do you think are RESTful?
 ---
 ### Modeling actions with REST
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a>]
 
 The last 5 requests are technically **not RESTful**, for example:
 
@@ -516,7 +612,7 @@ represent the "thing" being acted upon, not an action.
 ---
 ### REST actions as properties
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a>]
 
 Take the following non-RESTful actions:
 
@@ -545,7 +641,7 @@ Content-Type: application/json
 ---
 ### REST actions that should really be resources
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a>]
 
 Take the following non-RESTful action:
 
@@ -565,7 +661,7 @@ followers:
 ---
 ### REST actions as a sub-resource
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a>]
 
 Take the following non-RESTful action:
 
@@ -586,7 +682,7 @@ each comment:
 ---
 ### REST actions as a collection
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a>]
 
 Take the following non-RESTful actions:
 
@@ -609,7 +705,7 @@ actions taken on a given user:
 ---
 #### Using a collection of actions
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#20">Resources vs. actions</a> > <a href="#25">REST actions as a collection</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a> > <a href="#29">REST actions as a collection</a>]
 
 With such a collection, you would `POST` to create actions:
 
@@ -661,7 +757,7 @@ You will retrieve the movie's data, of course, but what do you expect to see con
 ---
 ### Embedded resource
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
 The director can be **embedded** into the movie's data:
 
@@ -686,7 +782,7 @@ The director can be **embedded** into the movie's data:
 ---
 ### Resource reference via ID
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
 To save bandwidth, only a unique identifier for the director could be included:
 
@@ -713,7 +809,7 @@ To save bandwidth, only a unique identifier for the director could be included:
 ---
 ### Resource reference via hyperlink
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
 Instead of just the ID, you could include a hyperlink to the director's resource:
 
@@ -732,18 +828,17 @@ Instead of just the ID, you could include a hyperlink to the director's resource
 * *Advantage:* **decouples** the client from your API through **hypermedia**:
   the client can browse the API without knowing your URLs in advance
   ([HATEOAS][hateoas]).
-* *Disadvantages:* it **increases chattiness**. It also requires **more work
-  from the client** as it must follow link relations instead of accessing URLs
-  directly.
+* *Disadvantages:* it **increases chattiness**. It requires **more requests by
+  the client** to follow link relations instead of accessing URLs directly.
 
 > This would be REST maturity level 3. If you use this solution, you should use an appropriate media type instead of
-> plain JSON. The above example uses [HAL][hal] but there are others, or you can
+> plain JSON. The above example uses [HAL][hal] but there are others like [JSON:API][json-api], or you can
 > define your own.
 
 ---
 ### Optional resource embedding
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
 Again, there's no *right or wrong* answer: it depends on your use case. By
 spending a little more time on your server's implementation, it's also possible
@@ -801,7 +896,7 @@ This **lets the client decide** what's most appropriate **for each request** (de
 ---
 ### Embedding a collection
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
 You can ask yourself the same questions for **one-to-many** or **many-to-many** relationships:
 
@@ -858,7 +953,7 @@ but embedding a company's employees is probably a really bad idea.
 ---
 ### Multiple resource references
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#27">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
 You can also use identifiers or hypermedia for links to multiple resources:
 
@@ -903,7 +998,7 @@ Host: world-phonebook.com
 ---
 ### Huge collections
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
 
 Some collections can grow to a point where it is not possible to get all of its elements in a single HTTP request:
 
@@ -917,7 +1012,7 @@ You want to be able to **successively retrieve pages** of the collection:
 ---
 ### What you need for pagination
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
 
 There are two main requirements to be able to implement pagination:
 
@@ -933,7 +1028,7 @@ The most common way for clients to ask for a page is to add **URL query paramete
 ---
 #### Telling the client how to get more
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a> > <a href="#36">What you need for pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a> > <a href="#40">What you need for pagination</a>]
 
 There are many different ways popular APIs tell the client how to get more elements.
 Here are a few:
@@ -945,7 +1040,7 @@ Here are a few:
 ---
 ### The `Link` header (solution 1)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
 
 There have been many ways developers have implemented pagination over the years.
 
@@ -964,7 +1059,7 @@ The server can indicate where to find:
 ---
 #### Pagination with the `Link` header
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a> > <a href="#38">The `Link` header (solution 1)</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a> > <a href="#42">The `Link` header (solution 1)</a>]
 
 Consider the following request where the client requests the second page of 50
 elements in a collection:
@@ -992,7 +1087,7 @@ Link: <https://example.com/api/movies?`page=1`&pageSize=50>; rel="`first prev`",
 ---
 ### Custom headers (solution 2)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
 
 The `Link` header has the advantage of being a standard, but it's harder to
 build a **pager** from it:
@@ -1012,7 +1107,7 @@ so you could decide to use these **custom headers** to send the client the addit
 ---
 #### Custom headers in the response
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a> > <a href="#40">Custom headers (solution 2)</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a> > <a href="#44">Custom headers (solution 2)</a>]
 
 Consider the following request where the client requests the second page of 50 elements in a collection:
 
@@ -1037,7 +1132,7 @@ Content-Type: application/json; charset=utf-8
 ---
 ### JSON envelope (solution 3)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
 
 In some rare circumstances, there is a proxy between client and server that **strips some headers** from requests.
 In this case, you would have to send the pagination information in the **response body** instead of headers.
@@ -1062,14 +1157,15 @@ Content-Type: application/json; charset=utf-8
 ---
 ### Hypermedia pagination (solution 4)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#34">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
 
-Most hypermedia formats, like [HAL][hal], also allow you to include the
-pagination information in the response with standard link relations:
+Most hypermedia formats, like [JSON:API][json-api] or [HAL][hal], also allow you
+to include the pagination information in the response with standard link
+relations:
 
 ```http
 HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
+Content-Type: application/hal+json; charset=utf-8
 
 {
   `"data": [`
@@ -1099,11 +1195,9 @@ Content-Type: application/json; charset=utf-8
 
 .breadcrumbs[<a href="#1">REST In Depth</a>]
 
-**Documentation**
-
 * [HTTP methods][http-methods], [Web Linking][web-linking]
-* APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Foxy][foxy-api] (L3)
-* [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
+* APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Flapjack][flapjack-api] (L3), [Foxy][foxy-api] (L3)
+* [JSON:API][json-api], [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
 * [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
 
 **Further reading**
@@ -1145,6 +1239,7 @@ constraints. REST might not always be the best fit for all use cases.
 [collection-json]: https://github.com/collection-json/spec
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
 [facebook-api]: https://developers.facebook.com/docs/graph-api/
+[flapjack-api]: https://flapjack.io/docs/1.0/jsonapi/
 [flickr-api]: https://www.flickr.com/services/api/
 [foxy-api]: https://api.foxycart.com/docs
 [get-coffee]: https://www.infoq.com/articles/webber-rest-workflow/
@@ -1171,6 +1266,7 @@ constraints. REST might not always be the best fit for all use cases.
 [iana]: https://www.iana.org
 [iana-link-relations]: https://www.iana.org/assignments/link-relations/link-relations.xhtml
 [iana-media-types]: https://www.iana.org/assignments/media-types/media-types.xhtml
+[json-api]: https://jsonapi.org
 [json-hyper-schema]: https://json-schema.org/latest/json-schema-hypermedia.html
 [json-ld]: https://json-ld.org
 [json-ld-spec]: https://www.w3.org/2018/jsonld-cg-reports/json-ld/
@@ -1183,7 +1279,6 @@ constraints. REST might not always be the best fit for all use cases.
 [npm-search-link-header]: https://www.npmjs.com/search?q=link+header
 [pragmatic-rest]: https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
 [rabbitmq]: https://www.rabbitmq.com
-[rdf]: https://en.wikipedia.org/wiki/Resource_Description_Framework
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [rest-maturity]: https://www.crummy.com/writing/speaking/2008-QCon/act3.html
 [rest-maturity-fowler]: https://martinfowler.com/articles/richardsonMaturityModel.html
@@ -1198,8 +1293,9 @@ constraints. REST might not always be the best fit for all use cases.
 [vnd-media-type]: https://en.wikipedia.org/wiki/Media_type#Vendor_tree
 [wamp]: https://wamp-proto.org
 [web-linking]: https://tools.ietf.org/html/rfc8288
+
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
+    <script src='../../subject-7b3395a230350c7a2d47.js'></script>
   </body>
 </html>

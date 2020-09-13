@@ -3,7 +3,7 @@
   <head>
     <title>MongoDB (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/mongodb/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a548a1549c0a2bfc905f1e3cc3fe017cf52feacc/subjects/mongodb/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -14,7 +14,7 @@ Learn the basics of [MongoDB][mongodb], one of the most populars document-orient
 **You will need**
 
 * A Unix CLI
-* A running MongoDB server ([installation instructions](./install/))
+* A running MongoDB server ([installation instructions][install])
 
 **Recommended reading**
 
@@ -341,7 +341,7 @@ Here's an update example:
 db.people.update(
   { "name": "John Smith" },
   {
-    "$set": { "name": "John A. Smith" },
+    "$addFields": { "name": "John A. Smith" },
     "$push": { "interests": "Movies" }
   }
 )
@@ -388,7 +388,7 @@ The `upsert` option allows you to **automatically insert** a new document when y
 db.people.update(
   { "name": "Ned Stark" },
   {
-    "$set": {
+    "$addFields": {
       "children": 6,
       "interests": [ "Snow" ]
     }
@@ -674,6 +674,7 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 [find]: https://docs.mongodb.com/manual/reference/method/db.collection.find/
 [getting-started]: https://docs.mongodb.com/getting-started/shell/
 [indexes]: https://docs.mongodb.com/manual/indexes/
+[install]: https://github.com/MediaComem/comem-archioweb/guides/install-mongodb.md
 [query-operators]: https://docs.mongodb.com/manual/reference/operator/query/
 [mongodb]: https://www.mongodb.com
 [remove]: https://docs.mongodb.com/manual/reference/method/db.collection.remove/
@@ -683,6 +684,6 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
+    <script src='../../subject-7b3395a230350c7a2d47.js'></script>
   </body>
 </html>

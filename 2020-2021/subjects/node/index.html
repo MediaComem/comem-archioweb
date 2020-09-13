@@ -3,13 +3,14 @@
   <head>
     <title>Node.js Introduction (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/38313ec685593b4dd6c8a46628bdf71de247a5dd/subjects/node/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a548a1549c0a2bfc905f1e3cc3fe017cf52feacc/subjects/node/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
 # Node.js Introduction
 
-Learn how to use [Node.js][node], an asynchronous JavaScript runtime that can run on your local machine or server.
+Learn how to use [Node.js][node], an asynchronous JavaScript runtime that can
+run on your local machine or server.
 
 **You will need**
 
@@ -34,8 +35,9 @@ class: center, middle, image-header
 
 <p class='center'><img src='images/node.png' width='50%' /></p>
 
-> "Node.js is an **asynchronous JavaScript runtime** built on Chrome's V8 JavaScript engine.
-> Node.js uses an **event-driven**, **non-blocking I/O** model that makes it lightweight and efficient."
+> "Node.js is an **asynchronous JavaScript runtime** built on Chrome's V8
+> JavaScript engine. Node.js uses an **event-driven**, **non-blocking I/O**
+> model that makes it lightweight and efficient."
 
 > "Node.js is used on servers to develop fast, scalable web applications."
 
@@ -57,10 +59,12 @@ class: center, middle, image-header
 
 <p class='center'><img src='images/lts-schedule.png' width='80%' /></p>
 
-* Odd-numbered versions (e.g. v5, v7, v9) are **unstable** releases with the latest features, and will **no longer be supported after 6-9 months**.
-* Even-numbered versions (e.g. v4, v6, v8, v10, v12) have [**long term support (LTS)**][node-lts].
-  They are actively developed for 6 months, but maintained for a total of 30 months (e.g. security fixes).
-  Production applications should use LTS releases.
+* Odd-numbered versions (e.g. v5, v7, v9) are **unstable** releases with the
+  latest features, and will **no longer be supported after 6-9 months**.
+* Even-numbered versions (e.g. v4, v6, v8, v10, v12) have [**long term support
+  (LTS)**][node-lts]. They are actively developed for 6 months, but maintained
+  for a total of 30 months (e.g. security fixes). Production applications should
+  use LTS releases.
 
 
 
@@ -74,7 +78,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v12.10.0
+v14.10.0
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -100,7 +104,7 @@ Create a `script.js` file in a new `node-demo` project directory:
 
 ```js
 function hello(name) {
-  console.log('Hello ' + name + '!');
+  console.log(\`Hello ${name}!`);
 }
 
 hello('World');
@@ -129,9 +133,17 @@ Node.js code is organized in **modules**. These are the core modules available
 to you out of the box (with those that you are likely to use in most
 applications highlighted):
 
-Assertion Testing, Async Hooks, Buffer, C++ Addons, C/C++ Addons - N-API, **Child Processes**, Cluster, Command Line Options, Console, **Crypto**, Debugger, Deprecated APIs, DNS, Domain, ECMAScript Modules, Errors, **Events**, **File System**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector, Internationalization, Modules, Net, OS, **Path**, Performance Hooks, Policies, **Process**, Punycode, **Query Strings**, Readline, REPL, Report, **Stream**, String Decoder, Timers, **TLS/SSL**, Trace Events, TTY, UDP/Datagram, **URL**, Utilities, V8, VM, Worker Threads, Zlib.
+Assertion testing, Async hooks, Buffer, C++ addons, C/C++ addons with N-API, C++
+embedder API, **Child processes**, Cluster, Command line options, Console,
+**Crypto**, Debugger, Deprecated APIs, DNS, Domain, Errors, **Events**, **File
+system**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector,
+Internationalization, Modules: CommonJS modules, Modules: ECMAScript modules,
+Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
+**Process**, Punycode, **Query strings**, Readline, REPL, Report, **Stream**,
+String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
+Utilities, V8, VM, WASI, Worker threads, Zlib.
 
-> Refer to the [documentation][node-12-api] for more information.
+> Refer to the [documentation][node-14-api] for more information.
 
 
 
@@ -150,8 +162,8 @@ methods:
 *const os = require('os');
 
 function hello(name) {
-  console.log('Hello ' + name + '!');
-* console.log('I am running on ' + os.platform());
+  console.log(\`Hello ${name}!`);
+* console.log(\`I am running on ${os.platform()}`);
 }
 
 hello('World');
@@ -181,8 +193,8 @@ const os = require('os');
 // Attach properties to exports so that you can use
 // them when requiring this file
 `exports`.hello = function(name) {
-  console.log('Hello ' + name + '!');
-  console.log('I am running on ' + os.platform());
+  console.log(\`Hello ${name}!`);
+  console.log(\`I am running on ${os.platform()}`);
 };
 ```
 
@@ -235,7 +247,7 @@ And use it where it is required:
 ```js
 const utils = require('./utils');
 utils.hello('World');
-console.log('The meaning of life is ' + `utils.theMeaningOfLife`);
+*console.log(\`The meaning of life is ${utils.theMeaningOfLife}`);
 ```
 
 This will print:
@@ -270,7 +282,7 @@ Modify `script.js`:
 *const doIt = require('./doIt');
 const utils = require('./utils');
 utils.hello('World');
-console.log('The meaning of life is ' + utils.theMeaningOfLife);
+console.log(\`The meaning of life is ${utils.theMeaningOfLife}`);
 *doIt();
 ```
 
@@ -322,7 +334,7 @@ console.log('Hello');
 
 const result = getRandomNumber();
 
-console.log('Result: ' + result);
+console.log(\`Result: ${result}`);
 console.log('End of program');
 ```
 
@@ -352,7 +364,7 @@ console.log('Hello');
 
 // List the files at the root of the file system
 fs.readdir('/', function(err, result) {
-  console.log('Files: ' + result.join(', '));
+  console.log(\`Files: ${result.join(', ')}`);
   console.log('Done');
 });
 
@@ -414,10 +426,10 @@ let fileCount = 0;
 
 fs.readdir('/', function(err, result) {
   `fileCount = fileCount + result.length`;
-  console.log('Files listed: ' + fileCount);
+  console.log(\`Files listed: ${fileCount}`);
 });
 
-console.log('End of program: ' + fileCount);
+console.log(\`End of program: ${fileCount}`);
 ```
 
 This will **always** log `End of program: 0` first, then `Files listed: N`.
@@ -713,7 +725,7 @@ You should never forget to check for errors:
 const fs = require('fs');
 fs.readFile('name.txt', 'utf-8', function(err, data) {
 * if (err) {
-*   return console.warn('Could not read the file because: ' + err.message);
+*   return console.warn(\`Could not read the file because: ${err.message}`);
 * }
 
   console.log('Hello ' + data);
@@ -750,14 +762,14 @@ const fs = require('fs');
 const newSalutation = 'Hello Bob!';
 fs.writeFile('hello.txt', newSalutation, 'utf-8', function(err) {
   if (err) {
-    console.warn('Could not write in file because: ' + err.message);
+    console.warn(\`Could not write in file because: ${err.message}`);
   }
 });
 
 // Read the salutation from hello.txt
 const salutation = fs.readFile('hello.txt', 'utf-8', function(err, data) {
   if (err) {
-    return console.warn('Could not read file because: ' + err.message);
+    return console.warn(\`Could not read file because: ${err.message}`);
   }
 
   return data;
@@ -797,14 +809,14 @@ and **before Node.js is done writing the file**.
 const newSalutation = 'Hello Bob!';
 `fs.writeFile`('hello.txt', newSalutation, 'utf-8', function(err) {
   if (err) {
-    console.warn('Could not write in file because: ' + err.message);
+    console.warn(\`Could not write in file because: ${err.message}`);
   }
 });
 
 // Read the salutation from hello.txt
 const salutation = `fs.readFile`('hello.txt', 'utf-8', function(err, data) {
   if (err) {
-    return console.warn('Could not read file because: ' + err.message);
+    return console.warn(\`Could not read file because: ${err.message}`);
   }
 
   return data;
@@ -826,7 +838,7 @@ Second, even if there was no asynchronous issue, the assignment of `const saluta
 // Read the salutation from hello.txt
 `const salutation = fs.readFile`('hello.txt', 'utf-8', function(err, data) {
   if (err) {
-    return console.warn('Could not read file because: ' + err.message);
+    return console.warn(\`Could not read file because: ${err.message}`);
   }
 
   `return data;`
@@ -850,13 +862,13 @@ const fs = require('fs');
 const newSalutation = 'Hello Bob!';
 fs.writeFile('hello.txt', newSalutation, 'utf-8', `function(err) {`
   if (err) {
-    console.warn('Could not write in file because: ' + err.message);
+    console.warn(\`Could not write in file because: ${err.message}`);
   }
 
   // Read the salutation from hello.txt
   fs.readFile('hello.txt', 'utf-8', `function(err, data) {`
     if (err) {
-      return console.warn('Could not read file because: ' + err.message);
+      return console.warn(\`Could not read file because: ${err.message}`);
     }
 
     // Log the salutation read from hello.txt
@@ -884,7 +896,7 @@ const fs = require('fs');
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   if (err) {
-    console.warn('Could not read file because: ' + err.message);
+    console.warn(\`Could not read file because: ${err.message}`);
   }
 
   // Log the salutation in upper case
@@ -933,7 +945,7 @@ const fs = require('fs');
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   if (err) {
-*   console.warn('Could not read file because: ' + err.message);
+*   console.warn(\`Could not read file because: ${err.message}`);
   }
 
   // Log the contents in upper case
@@ -953,7 +965,7 @@ const fs = require('fs');
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   if (err) {
-    `return` console.warn('Could not read file because: ' + err.message);
+    `return` console.warn(\`Could not read file because: ${err.message}`);
   }
   // Log the contents in upper case
   console.log(text.toUpperCase());
@@ -967,7 +979,7 @@ const fs = require('fs');
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   `if (err) {`
-    console.warn('Could not read file because: ' + err.message);
+    console.warn(\`Could not read file because: ${err.message}`);
   `} else {`
     // Log the contents in upper case
     console.log(text.toUpperCase());
@@ -1015,7 +1027,7 @@ const server = http.createServer(function(req, res) {
 // Register a callback function to be notified when
 // the server has started successfully.
 server.listen(port, hostname, function() {
-  console.log('Server running at http://' + hostname + ':' + port + '/');
+  console.log(\`Server running at http://${hostname}:${port}/`);
 });
 ```
 
@@ -1039,11 +1051,11 @@ You can register callback functions to **react** to these events:
 
 ```js
 server.on('connection', function(socket) {
-  console.log(socket.remoteAddress + ' connected');
+  console.log(\`${socket.remoteAddress} connected`);
 });
 
 server.on('request', function(message) {
-  console.log(message.url + ' requested');
+  console.log(\`${message.url} requested`);
 });
 ```
 
@@ -1058,7 +1070,7 @@ server.on('request', function(message) {
 
 **Documentation**
 
-* [Core modules (12.x)][node-12-api]
+* [Core modules (14.x)][node-14-api]
 
 **Further reading**
 
@@ -1077,17 +1089,17 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-12-api]: https://nodejs.org/dist/latest-v12.x/docs/api/
+[node-14-api]: https://nodejs.org/dist/latest-v14.x/docs/api/
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
-[node-module-os]: https://nodejs.org/dist/latest-v12.x/docs/api/os.html#os_os
+[node-module-os]: https://nodejs.org/dist/latest-v14.x/docs/api/os.html#os_os
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
 [twisted]: http://twistedmatrix.com/trac/
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
-    <script src='../../subject-69409a5b15c4f2762e19.js'></script>
+    <script src='../../subject-7b3395a230350c7a2d47.js'></script>
   </body>
 </html>
