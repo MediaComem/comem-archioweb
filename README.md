@@ -134,7 +134,7 @@ Your REST API must be developed with the [Express][express] framework and use a
 
       It is sufficient to store a picture URL or URLs in the database.
   * Sensitive operations must be protected by requiring valid
-    **authentication** and performing **authorization**.
+    **authentication** and performing **authorization**:
     * Authentication must be provided in the form of a [JWT token][jwt] or an
       equivalent mechanism.
     * You must define who is authorized to perform which operations on which
