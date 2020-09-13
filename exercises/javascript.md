@@ -5,8 +5,8 @@
 
 
 - [Fill the missing bits](#fill-the-missing-bits)
-  - [Dynamically create functions](#dynamically-create-functions)
   - [Functions as arguments](#functions-as-arguments)
+  - [Dynamically create functions](#dynamically-create-functions)
   - [Deserialize JSON](#deserialize-json)
 - [ECMAScript 2015+](#ecmascript-2015)
   - [Template literals](#template-literals)
@@ -73,7 +73,7 @@ console.log(multiplyByFive(3)); // 15
 > This type of function is called a
 > [closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
 
-### Deserialize JSON
+### [Deserialize JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/gOrKOKw?editors=0011)
 
@@ -92,7 +92,7 @@ console.log(`My name is ${last}, ${first}, ${last}`);
 
 Learn how to use the modern JavaScript syntax.
 
-### Template literals
+### [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/PoNaoOG?editors=0011)
 
@@ -104,7 +104,7 @@ const lastName = 'Doe';
 console.log('Hello, I am ' + firstName + ' ' + lastName + '!');
 ```
 
-### Arrow functions
+### [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/QWNxWdg?editors=0011)
 
@@ -123,7 +123,7 @@ const lastNames = people.map(function(person) {
 console.log(lastNames); // [ "Doe", "Martin", "Krauss" ]
 ```
 
-### for...of
+### [for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/qBZKBVG?editors=0011)
 
@@ -137,7 +137,7 @@ for (let i = 0; i < fruits.length; i++) {
 }
 ```
 
-### Array destructuring
+### Array [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/abNKbLX?editors=0011)
 
@@ -153,7 +153,7 @@ console.log(`The first value is ${firstValue}`);
 console.log(`The other values are ${otherValues.join(', ')}`);
 ```
 
-### Object destructuring
+### Object [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/qBZKBXw?editors=0011)
 
