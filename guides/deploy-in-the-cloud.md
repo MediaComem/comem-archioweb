@@ -1,4 +1,4 @@
-# Deploying an Express.js application with Heroku & MongoDB Atlas
+# Deploy an Express.js application with Heroku & MongoDB Atlas
 
 This guide will walk you through the process of deploying an Express.js
 application in the [cloud][cloud]. You will use [Heroku][heroku], a

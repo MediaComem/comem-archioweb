@@ -1,4 +1,4 @@
-# Setting up automated testing for an Express.js REST API
+# Set up automated testing for an Express.js REST API
 
 This guide explains how to set up [automated tests][automated-testing] for an
 HTTP API implemented with [Express.js][express] and [Mongoose][mongoose], using

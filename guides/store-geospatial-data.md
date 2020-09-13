@@ -1,4 +1,4 @@
-# Storing geospatial data with Mongoose
+# Store geospatial data with Mongoose
 
 MongoDB can [store geospatial information and perform queries on
 it][mongodb-geospatial]. In order to do so, you should store information as

@@ -43,7 +43,7 @@ This course is a [COMEM+][comem] web development course taught at
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
 
 * Deploying your web service
-  * [*Guide:* deploying an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
+  * [*Guide:* deploy an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
 
 * Creating a REST API
   * [REST in depth](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -51,7 +51,7 @@ This course is a [COMEM+][comem] web development course taught at
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
-  * [*Guide:* setting up automated testing for an Express.js REST API](./guides/set-up-automated-tests.md)
+  * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -89,9 +89,9 @@ This course is a [COMEM+][comem] web development course taught at
 **Guides**
 
 * [Install MongoDB](./guides/install-mongodb.md)
-* [Deploying an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
-* [Storing geospatial data with Mongoose](./guides/store-geospatial-data.md)
-* [Setting up automated testing for an Express.js REST API](./guides/set-up-automated-tests.md)
+* [Deploy an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
+* [Store geospatial data with Mongoose](./guides/store-geospatial-data.md)
+* [Set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 * [The many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 **Miscellaneous**
@@ -126,7 +126,7 @@ Your REST API must be developed with the [Express][express] framework and use a
     least 2 [**mobile hardware features**][cordova-plugins], for example:
     * At least one resource must be **geolocated**.
 
-      See [Storing geospatial data with
+      See [Store geospatial data with
       Mongoose](./guides/store-geospatial-data.md) for information on how to
       store this data.
     * At least one resource must have one or multiple **pictures**.
