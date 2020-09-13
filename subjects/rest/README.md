@@ -265,6 +265,27 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
 
 
 
+### Evolution of HTTP
+
+* [HTTP/1.0][http] (1996) - [RFC 1945][http10-rfc]
+* HTTP/1.1 (1999) - [RFC 2616][http11-rfc]
+* [HTTP/2.0][http2] (2015) - [RFC 7540][http2-rfc]
+
+  > HTTP/2 is a more efficient expression of HTTP's semantics "on the wire",
+  > which **maintains high-level compatibility with HTTP/1.1** (for example with
+  > methods, status codes, URIs, and most header fields). It is now supported by
+  > virtually all web browsers and major web servers.
+* [HTTP/3.0][http3] ([Internet Draft][internet-draft]) - [Draft 29][http3-draft]
+
+  > HTTP/3 is the proposed successor to HTTP/2, which is already in use on the
+  > web, using [UDP][udp] instead of [TCP][tcp] for the underlying transport
+  > protocol. **Like HTTP/2, it does not obsolete previous major versions of the
+  > protocol.** Support for HTTP/3 was added to Cloudflare and Google Chrome in
+  > September 2019, and can be enabled in the stable versions of Chrome and
+  > Firefox.
+
+
+
 ### HTTP is a request-response protocol
 
 When you visit the following page:
@@ -1074,6 +1095,12 @@ Collection errors                                                               
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
 [headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
 [http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
+[http10-rfc]: https://tools.ietf.org/html/rfc1945
+[http11-rfc]: https://tools.ietf.org/html/rfc2616
+[http2]: https://en.wikipedia.org/wiki/HTTP/2
+[http2-rfc]: https://tools.ietf.org/html/rfc7540
+[http3]: https://en.wikipedia.org/wiki/HTTP/3
+[http3-draft]: https://tools.ietf.org/html/draft-ietf-quic-http-29
 [http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 [http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
@@ -1088,6 +1115,7 @@ Collection errors                                                               
 [http-status-codes-rfc]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 [http-teapot]: https://tools.ietf.org/html/rfc2324
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
+[internet-draft]: https://en.wikipedia.org/wiki/Internet_Draft
 [location]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
 [osi-application]: https://en.wikipedia.org/wiki/Application_layer
 [patch]: https://tools.ietf.org/html/rfc5789#section-2
@@ -1102,5 +1130,7 @@ Collection errors                                                               
 [rest-pragmatic]: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
 [rest-standards]: https://standards.rest
 [roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+[tcp]: https://en.wikipedia.org/wiki/Transmission_Control_Protocol
+[udp]: https://en.wikipedia.org/wiki/User_Datagram_Protocol
 [url]: https://en.wikipedia.org/wiki/Uniform_Resource_Locator
 [web-service]: https://en.wikipedia.org/wiki/Web_service
