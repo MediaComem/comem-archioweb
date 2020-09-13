@@ -44,12 +44,6 @@ Create a Node.js command line script named `yell.js` which:
 * Converts the contents of the file to uppercase.
 * Outputs the converted contents.
 
-You may find the following documentation useful:
-
-* [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
-* [`fs.readFile`](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback)
-* [`String.prototype.toUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
-
 The expected behavior should be:
 
 ```bash
@@ -93,3 +87,9 @@ If happy little bluebirds fly
 Beyond the rainbow
 Why, oh why can't I?
 ```
+
+You may find the following documentation useful:
+
+* [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
+* [`fs.readFile`](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback)
+* [`String.prototype.toUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
