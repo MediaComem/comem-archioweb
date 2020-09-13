@@ -31,10 +31,10 @@ When working as a team, only one member of the team needs to follow this guide.
 
 * [Node.js][node] 12+
 * [Git][git]
-* A [GitHub][github] account.
-* A [Heroku][heroku] account.
-* The [Heroku CLI][heroku-cli].
-* A [MongoDB Atlas][mongodb-atlas] account.
+* A [GitHub][github] account
+* A [Heroku][heroku] account
+* The [Heroku CLI][heroku-cli]
+* A [MongoDB Atlas][mongodb-atlas] account
 
 
 
