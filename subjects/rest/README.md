@@ -25,6 +25,7 @@ make RESTful web APIs with HTTP and URLs.
   - [[Uniform Resource Locator (URL)][url]](#uniform-resource-locator-urlurl)
   - [Resource vs. representation](#resource-vs-representation)
 - [HyperText Transfer Protocol (HTTP)](#hypertext-transfer-protocol-http)
+  - [Evolution of HTTP](#evolution-of-http)
   - [HTTP is a request-response protocol](#http-is-a-request-response-protocol)
   - [Anatomy of an HTTP request](#anatomy-of-an-http-request)
     - [Request method](#request-method)
