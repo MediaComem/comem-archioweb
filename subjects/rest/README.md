@@ -695,7 +695,6 @@ Code                         | What the server is telling you
 `405 Method Not Allowed`     | You can't make a `GET/POST/...` on this resource
 `406 Not Acceptable`         | I can't answer in the format you asked for in the `Accept` header
 `409 Conflict`               | Your request is not consistent with the resource's state
-`410 Gone`                   | The resource was here but no longer is
 `412 Precondition Failed`    | I am denying your [conditional request][http-conditional-requests]
 `415 Unsupported Media Type` | You are sending me XML/JSON/... but the resource cannot be represented in that format
 `418 I'm a teapot`           | [I don't make coffee][http-teapot]
