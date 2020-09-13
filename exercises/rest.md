@@ -1,9 +1,9 @@
 # REST exercises
 
-The goal of these exercises is for you to use HTTP endpoints and determine what
-is "not REST" about them, or what could otherwise be improved. You can use
-[Postman](https://www.postman.com/downloads/) (or your favorite HTTP client) to
-make the requests.
+The goal of these exercises is for you to use a number of provided HTTP
+endpoints and determine what is "not REST" about them, or what could otherwise
+be improved. You can use [Postman](https://www.postman.com/downloads/) (or your
+favorite HTTP client) to make the requests.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
