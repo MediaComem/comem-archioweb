@@ -29,7 +29,6 @@ and one of the three core technologies of the web.
   - [Storing functions in variables or data structures](#storing-functions-in-variables-or-data-structures)
   - [Returning functions from a function](#returning-functions-from-a-function)
   - [Passing functions as arguments](#passing-functions-as-arguments)
-    - [Function as argument exercise](#function-as-argument-exercise)
   - [Transforming data with functions](#transforming-data-with-functions)
   - [Arrow functions *(ES6+)*](#arrow-functions-es6)
     - [Arrow function arguments](#arrow-function-arguments)
@@ -418,34 +417,6 @@ function callIt(func) {
 
 callIt(hello); // "Hello World!"
 ```
-
-#### Function as argument exercise
-
-```js
-// Let's define a couple of arithmetic function
-function add(a, b) {
-  return a + b;
-}
-function multiply(a, b) {
-  return a * b;
-}
-
-// Define a function that takes two numbers
-// and a function to apply to those numbers
-function compute(/* TODO: give me some arguments! */) {
-  // TODO: implement me!
-}
-
-// Call compute with "add"
-let value = compute(2, 4, add);
-console.log(value); // 6
-
-// Call compute with "multiply"
-value = compute(2, 4, multiply);
-console.log(value); // 8
-```
-
-Open the **CodePen** and try to **implement it**!
 
 
 
