@@ -103,7 +103,7 @@ This course is a [COMEM+][comem] web development course taught at
 
 ## Evaluation
 
-**API**
+**REST API**
 
 Your REST API must be developed with the [Express][express] framework and use a
 [MongoDB][mongodb] database. It must provide (at least):
@@ -133,21 +133,38 @@ Your REST API must be developed with the [Express][express] framework and use a
 
       It is sufficient to store a picture URL or URLs in the database.
   * Sensitive operations must be protected by requiring valid
-    **authentication**.
+    **authentication** and performing **authorization**.
     * Authentication must be provided in the form of a [JWT token][jwt] or an
       equivalent mechanism.
-* The API must have a real-time pub-sub component:
-  * *One or the other* of the following must be provided:
-    * A `ws://` or `wss://` endpoint to which a plain WebSockets client can
-      connect to receive real-time messages.
-    * A WAMP pub-sub topic to which a Subscriber can subscribe to receive
-      real-time messages.
-  * The WebSockets endpoint or WAMP topic must send real-time messages
-    containing relevant data for the application. (For example, a chat
-    application may notify its clients in real-time of the number of channels,
-    messages, etc, to display activity on the home page.)
-  * The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing
-    authentication or authorization is mandatory).
+    * You must define who is authorized to perform which operations on which
+      resources, and enforce these permissions. These restrictions must make
+      sense in the context of your domain model. For example, a user may not be
+      authorized to update a resource created by another user, even when
+      authenticated.
+
+      There must be at least one operation in the API which limits the
+      permissions of authenticated users.
+
+**Real-time API**
+
+The API must have a real-time component:
+
+* *One or the other* of the following must be provided:
+  * A `ws://` or `wss://` endpoint to which a plain WebSockets client can
+    connect to receive real-time messages.
+  * A WAMP topic or topics to which a Subscriber can subscribe to receive
+    real-time messages.
+* The WebSockets endpoint or WAMP topic must send real-time messages
+  containing relevant data for the application. The data contained in the
+  messages must be structured (e.g. JSON), not plain text.
+
+  For example, a chat application may notify its clients in real-time of the
+  number of channels, messages, etc, to display activity on the home page.
+* The API must send at least two types of real-time messages (e.g. information
+  about two different resources, or different operations on the same
+  resource).
+* The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing
+  authentication or authorization is not mandatory).
 
 **Infrastructure**
 
@@ -157,8 +174,20 @@ Your REST API must be developed with the [Express][express] framework and use a
 **Documentation**
 
 * Your REST API must be documented.
+
+  By reading the documentation, a user must know in advance (before testing the
+  API) which requests can be made, what can be sent in each request (URL path
+  parameters, headers and/or body, and their validation constraints, if any),
+  and what responses can be expected from the API (status code, headers and/or
+  body).
+
+  You may but do not have to document the 500 Internal Server Error response,
+  which is considered to always be a possible response to any request.
 * The real-time component of your API must be documented (not necessarily in the
-  same way).
+  same format as the REST API documentation).
+
+  By reading the documentation, the user must know how to connect to the
+  real-time endpoint(s), what data will be sent through and when.
 
 **Automated testing**
 
@@ -177,8 +206,8 @@ Your REST API must be developed with the [Express][express] framework and use a
 * You must follow REST best practices:
   * Your REST resources must use appropriate HTTP methods, headers and status
     codes.
-  * Your REST resources must have a consistent URL hierarchy and/or naming
-    structure.
+  * Your REST resources must have an appropriate and consistent URL hierarchy
+    and/or naming structure.
 * Your asynchronous code must be correct.
 * Your Express routes must handle asynchronous operation errors.
 * You must avoid excessive code duplication (e.g. using Express middleware).
@@ -192,15 +221,15 @@ Your REST API must be developed with the [Express][express] framework and use a
 Doing more than is required **MAY** earn you some bonus points in the
 evaluation if implemented correctly. Here are some examples:
 
-* Implement authorization, i.e. document who is allowed to do what, and deny
-  some users the right to perform specific operations even when they are
-  authenticated.
-
-  For example: event when authenticated, user A may not be able to edit resource
-  2, because it was created by user B, and only the creator can modify it.
 * Implement a level 3 hypermedia API using a standard format such as
   [JSON:API][json-api] or [HAL+JSON][hal].
 * Implement "full" (90-100%) test coverage with automated tests.
+
+  Note that test coverage alone is useless. The tests must also make meaningful
+  assertions.
+* Implement role-based authorization, i.e. users may have different roles with
+  fewer or more permissions. For example, an admin user may be authorized to
+  update resources that do not belong to them, whereas a regular user may not.
 
 
 
