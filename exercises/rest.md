@@ -42,6 +42,7 @@ The following request allows you to create a person:
 ```http
 POST /unrest/people/create HTTP/1.1
 Content-Type: application/json
+Location: comem-rest-demo.herokuapp.com
 
 { "firstName": "John", "lastName": "Doe", "age": 20 }
 ```
