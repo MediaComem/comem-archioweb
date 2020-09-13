@@ -47,7 +47,9 @@ This course is a [COMEM+][comem] web development course taught at
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
   * [MongoDB](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
+    * [*Guide:* install MongoDB](./guides/install-mongodb.md)
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
+    * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
   * [*Guide:* deploy an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
@@ -59,9 +61,11 @@ This course is a [COMEM+][comem] web development course taught at
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
   * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
+  * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
   * [*Extra:* Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
 
 
@@ -89,19 +93,7 @@ This course is a [COMEM+][comem] web development course taught at
 * [Demonstration REST API implemented with Express][demo-api] ([documentation][demo-api-doc])
 * [Project suggestions](PROJECTS.md)
 
-**Exercises**
-
-* [Tic-Tac-Toe Real-Time Exercise][tictactoe]
-
-**Guides**
-
-* [Install MongoDB](./guides/install-mongodb.md)
-* [Deploy an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
-* [Store geospatial data with Mongoose](./guides/store-geospatial-data.md)
-* [Set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
-* [The many worlds of asynchronous JavaScript](./guides/async-js.md)
-
-**Miscellaneous**
+**Other**
 
 * [Command line cheatsheet][cli-cheatsheet]
 * [Git cheatsheet][git-cheatsheet]
