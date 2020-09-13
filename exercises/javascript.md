@@ -21,30 +21,6 @@
 
 ## Fill the missing bits
 
-### Dynamically create functions
-
-[Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxYe?editors=0011)
-
-```js
-// Implement this function in a way that makes the rest of the code work.
-function createMultiplier(/* TODO: give me some arguments! */) {
-  // TODO: implement me!
-}
-
-const multiplyByTwo = createMultiplier(2);
-console.log(multiplyByTwo(1)); // 2
-console.log(multiplyByTwo(2)); // 4
-console.log(multiplyByTwo(3)); // 6
-
-const multiplyByFive = createMultiplier(5);
-console.log(multiplyByFive(1)); // 5
-console.log(multiplyByFive(2)); // 10
-console.log(multiplyByFive(3)); // 15
-```
-
-> This type of function is called a
-> [closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
-
 ### Functions as arguments
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxEQ?editors=0011)
@@ -72,6 +48,30 @@ console.log(value); // 6
 value = compute(2, 4, multiply);
 console.log(value); // 8
 ```
+
+### Dynamically create functions
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxYe?editors=0011)
+
+```js
+// Implement this function in a way that makes the rest of the code work.
+function createMultiplier(/* TODO: give me some arguments! */) {
+  // TODO: implement me!
+}
+
+const multiplyByTwo = createMultiplier(2);
+console.log(multiplyByTwo(1)); // 2
+console.log(multiplyByTwo(2)); // 4
+console.log(multiplyByTwo(3)); // 6
+
+const multiplyByFive = createMultiplier(5);
+console.log(multiplyByFive(1)); // 5
+console.log(multiplyByFive(2)); // 10
+console.log(multiplyByFive(3)); // 15
+```
+
+> This type of function is called a
+> [closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
 
 ### Deserialize JSON
 
