@@ -26,6 +26,8 @@ various ways REST APIs are implemented in the wild, from "practical REST" to
     - [Custom Hypermedia Type](#custom-hypermedia-type)
     - [To HATEOAS or not to HATEOAS?](#to-hateoas-or-not-to-hateoas)
 - [URL structure](#url-structure)
+  - [Retrieving a collection or a single resource](#retrieving-a-collection-or-a-single-resource)
+    - [What should the URL of a single resource be?](#what-should-the-url-of-a-single-resource-be)
   - [Nested (or hierarchical) URLs](#nested-or-hierarchical-urls)
   - [Flat URLs](#flat-urls)
   - [Nested vs. flat URLs](#nested-vs-flat-urls)
@@ -363,10 +365,51 @@ REST API (JSON:API)][flapjack-api], [Foxy REST API (HAL+JSON)][foxy-api].
 
 Resources often have relationships:
 
+* A resource which represents a **collection** has items (e.g. users/user).
 * Blog **posts** have **comments**.
 * **Courses** are taught by **professors**.
 
 How should we define the URLs to retrieve those resources?
+
+### Retrieving a collection or a single resource
+
+Assume there is a resource which represents the list of users in a blog:
+
+```
+  http://blog.example.com/users
+```
+
+What should be the URL that identifies user number 2?
+
+```
+  http://blog.example.com`/user/2`
+  http://blog.example.com`/users/2`
+```
+
+#### What should the URL of a single resource be?
+
+Technically, the second solution is more correct with regards to URL
+structure and HTTP:
+
+```
+  http://blog.example.com/users    (collection)
+  http://blog.example.com/users/2  (item in the collection)
+```
+
+* `/users/2` expresses that user number `2` is somehow contained within the
+  `users` collection. The URL expresses the **hierarchical relationship**
+  between the two resources.
+* When creating a user with a `POST /users` request, the HTTP specification
+  states that the created resource should be a **subordinate** of the resource
+  identified by the request, so it makes sense to reflect that relationship in
+  the URL.
+* Many prefer to use `users` in both the collection and item URL so you do not
+  have to worry about switching between singular and plural (e.g.
+  `people/person`).
+
+> This is a matter of debate. You will see both solutions implemented in
+> real-world APIs. What's important is not mix the two techniques to avoid
+> confusion.
 
 ### Nested (or hierarchical) URLs
 
