@@ -3,7 +3,7 @@
   <head>
     <title>REST Introduction &amp; HTTP (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a548a1549c0a2bfc905f1e3cc3fe017cf52feacc/subjects/rest/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/d624f91e4ddf7dac8a2cba5898f8a243415852e3/subjects/rest/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -764,7 +764,6 @@ Code                         | What the server is telling you
 `405 Method Not Allowed`     | You can't make a `GET/POST/...` on this resource
 `406 Not Acceptable`         | I can't answer in the format you asked for in the `Accept` header
 `409 Conflict`               | Your request is not consistent with the resource's state
-`410 Gone`                   | The resource was here but no longer is
 `412 Precondition Failed`    | I am denying your [conditional request][http-conditional-requests]
 `415 Unsupported Media Type` | You are sending me XML/JSON/... but the resource cannot be represented in that format
 `418 I'm a teapot`           | [I don't make coffee][http-teapot]
