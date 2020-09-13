@@ -215,7 +215,7 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name'
 > 'mongodb://localhost/your-app-name'` which will either take the value of the
 > `$DATABASE_URL` environment variable, or default to
 > `mongodb://localhost/your-app-name` if the environment variable is not
-> available.
+> available. See https://nodejs.org/api/process.html#process_process_env.
 
 Stage all changes (including the changes made to `package.json` and
 `package-lock.json` as a result of the `npm install mongoose` command). Then
