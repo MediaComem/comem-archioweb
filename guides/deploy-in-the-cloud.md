@@ -7,19 +7,11 @@ Atlas][mongodb-atlas], a database cloud, to host your database.
 
 When working as a team, only one member of the team needs to follow this guide.
 
-You will need:
-
-* [Node.js][node] 12+
-* [Git][git]
-* A [GitHub][github] account.
-* A [Heroku][heroku] account.
-* The [Heroku CLI][heroku-cli].
-* A [MongoDB Atlas][mongodb-atlas] account.
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Requirements](#requirements)
 - [Name your project](#name-your-project)
 - [Create an Express.js application](#create-an-expressjs-application)
   - [Make it a Git repository](#make-it-a-git-repository)
@@ -32,6 +24,17 @@ You will need:
 - [Provide your database URL to your Heroku application](#provide-your-database-url-to-your-heroku-application)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
+## Requirements
+
+* [Node.js][node] 12+
+* [Git][git]
+* A [GitHub][github] account.
+* A [Heroku][heroku] account.
+* The [Heroku CLI][heroku-cli].
+* A [MongoDB Atlas][mongodb-atlas] account.
 
 
 
@@ -77,7 +80,7 @@ Once you're sure it works, you can stop it with `Ctrl-C`.
 ### Make it a Git repository
 
 To deploy code on Heroku, you will need to use [Git][git]. Initialize a Git
-repository in the app's directory:
+repository in the application's directory:
 
 ```bash
 $> git init
@@ -90,7 +93,7 @@ will be automatically installed by Heroku when you push):
 $> echo node_modules > .gitignore
 ```
 
-Your `.gitignore` file should look like this:
+The contents of your `.gitignore` file should look like this:
 
 ```txt
 node_modules
@@ -279,7 +282,7 @@ Choose the free shared cluster plan:
 
 Create a cluster if one has not already been created for you:
 
-![MongoDB Atlas: create a cluster](./images/mongodb-atlas-03-cluster.png)
+![MongoDB Atlas: create a cluster](./images/mongodb-atlas-03-create-cluster.png)
 
 Configure your cluster. The provider and region are unimportant as long as you
 choose one that is free, but you should at least change the default name:
@@ -292,7 +295,8 @@ outside world:
 ![MongoDB Atlas: configure network access](./images/mongodb-atlas-05-network-access.png)
 
 For the purposes of this guide, you can allow access from anywhere, which should
-set the access list entry to `0.0.0.0/0` (any source IP address):
+set the access list entry to `0.0.0.0/0` (i.e. any source IP address is allowed
+to access the cluster):
 
 ![MongoDB Atlas: allow access from anywhere](./images/mongodb-atlas-06-whitelist-ip.png)
 
@@ -350,7 +354,8 @@ environment variables in the Config Vars section:
 
 ![Heroku: configure environment variables](./images/heroku-05-config-vars.png)
 
-This should get rid of the error in your application logs.
+Setting the variable should restart your application and get rid of the error in
+the logs.
 
 
 
