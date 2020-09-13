@@ -8,6 +8,7 @@ will:
 * Learn how to **implement** a REST API in JavaScript with Node.js.
 * **Deploy** your REST API on a cloud application platform.
 * Add a **real-time** component to your REST API with WebSockets.
+* Write **documentation** and **automated tests** for your REST API.
 
 This course is a [COMEM+][comem] web development course taught at
 [HEIG-VD][heig].
