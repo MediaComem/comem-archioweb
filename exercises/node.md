@@ -40,7 +40,7 @@ $> node calculate.js
 Create a Node.js command line script named `yell.js` which:
 
 * Takes one file name as an argument.
-* Reads the file in the UTF-8 encoding.
+* Reads the file with the UTF-8 encoding.
 * Converts the contents of the file to uppercase.
 * Outputs the converted contents.
 
