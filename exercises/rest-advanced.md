@@ -1,4 +1,4 @@
-# REST exercises
+# Advanced REST exercises
 
 The goal of these exercises is for you to use a number of provided HTTP
 endpoints and determine what is "not REST" about them, or what could otherwise
@@ -10,9 +10,8 @@ favorite HTTP client) to make the requests.
 
 
 - [References](#references)
-- [Make someone](#make-someone)
+- [People, people everywhere](#people-people-everywhere)
 - [Find someone](#find-someone)
-- [Bad things](#bad-things)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -34,19 +33,37 @@ These websites also provide useful information:
 
 
 
-## Make someone
+## People, people everywhere
 
-The following request allows you to create a person:
+The following request allows you to retrieve a list of people:
 
 ```http
-POST /unrest/people/create HTTP/1.1
-Content-Type: application/json
+GET /unrest/people HTTP/1.1
 Location: comem-rest-demo.herokuapp.com
-
-{ "firstName": "John", "lastName": "Doe", "age": 20 }
 ```
 
-What's not RESTful about the request and/or the response?
+You can then filter this list by first name:
+
+```http
+GET /unrest/people/byFirstName/John HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+By last name:
+
+```http
+GET /unrest/people/byLastName/McDeere HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+Or by age:
+
+```http
+GET /unrest/people/byAge/35 HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+What could be improved in these requests?
 
 
 
@@ -67,27 +84,3 @@ Location: comem-rest-demo-herokuapp.com
 ```
 
 What's not RESTful or could be improved in the request and/or the response?
-
-
-
-## Bad things
-
-Make the following request to attempt to create a thing:
-
-```http
-POST /unrest/things HTTP/1.1
-Location: comem-rest-demo-herokuapp.com
-
-{}
-```
-
-Then make the following correct request:
-
-```http
-POST /unrest/things HTTP/1.1
-Location: comem-rest-demo-herokuapp.com
-
-{ "name": "Some thing" }
-```
-
-What's not RESTful or could be improved in the responses?
