@@ -14,6 +14,7 @@
   - [for...of](#forof)
   - [Array destructuring](#array-destructuring)
   - [Object destructuring](#object-destructuring)
+  - [Async functions](#async-functions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -177,4 +178,19 @@ function logHabitation(person) {
 }
 
 logHabitation(person); // "John lives in Yverdon"
+```
+
+### [Async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/bGpKaKx?editors=0011)
+
+```js
+advise();
+
+// Get rid of the .then calls and callback functions by using async/await.
+function advise() {
+  fetch('https://api.adviceslip.com/advice')
+    .then(res => res.json())
+    .then(({ slip: { advice } }) => console.log(advice));
+}
 ```
