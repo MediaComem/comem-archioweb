@@ -49,6 +49,7 @@ run on your local machine or server.
     - [Mistake 1 asynchronous issue](#mistake-1-asynchronous-issue)
     - [Mistake 1 return issue](#mistake-1-return-issue)
     - [Mistake 1 correct implementation](#mistake-1-correct-implementation)
+    - [Mistake 1 async/await implementation](#mistake-1-asyncawait-implementation)
   - [Mistake 2](#mistake-2)
     - [Mistake 2 result](#mistake-2-result)
     - [Mistake 2 issue](#mistake-2-issue)
@@ -798,6 +799,37 @@ fs.writeFile('hello.txt', newSalutation, 'utf-8', `function(err) {`
     `console.log(data);`
   `}`);
 `}`);
+```
+
+#### Mistake 1 async/await implementation
+
+If the module or library you are using supports promises, you can also use
+[`async/await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+to avoid nested callbacks and improve the readability of the code. In this
+example, the File System module provides an [alternative Promises
+API](https://nodejs.org/api/fs.html#fs_fs_promises_api) which you can access
+with `fs.promises`:
+
+```js
+const fs = require('fs');
+
+execute();
+
+`async function` execute() {
+  try {
+    // Save a salutation into hello.txt
+    const newSalutation = 'Hello Bob!';
+    `await fs.promises.writeFile`('hello.txt', newSalutation, 'utf-8');
+
+    // Read the salutation from hello.txt
+    const salutations = `await fs.promises.readFile`('hello.txt', 'utf-8');
+
+    // Log the salutation read from hello.txt
+    console.log(salutations);
+  } catch (err) {
+    console.warn(\`An error occurred: ${err.message}`);
+  }
+}
 ```
 
 
