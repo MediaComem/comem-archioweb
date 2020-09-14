@@ -3,7 +3,7 @@
   <head>
     <title>Node.js Introduction (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/d624f91e4ddf7dac8a2cba5898f8a243415852e3/subjects/node/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1b0e7c8d305669e74fd616bbab155e4b44ed30ac/subjects/node/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -877,6 +877,40 @@ fs.writeFile('hello.txt', newSalutation, 'utf-8', `function(err) {`
 `}`);
 ```
 
+---
+#### Mistake 1 async/await implementation
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#30">Mistake 1</a>]
+
+If the module or library you are using supports promises, you can also use
+[`async/await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+to avoid nested callbacks and improve the readability of the code. In this
+example, the File System module provides an [alternative Promises
+API](https://nodejs.org/api/fs.html#fs_fs_promises_api) which you can access
+with `fs.promises`:
+
+```js
+const fs = require('fs');
+
+execute();
+
+`async function` execute() {
+  try {
+    // Save a salutation into hello.txt
+    const newSalutation = 'Hello Bob!';
+    `await fs.promises.writeFile`('hello.txt', newSalutation, 'utf-8');
+
+    // Read the salutation from hello.txt
+    const salutations = `await fs.promises.readFile`('hello.txt', 'utf-8');
+
+    // Log the salutation read from hello.txt
+    console.log(salutations);
+  } catch (err) {
+    console.warn(\`An error occurred: ${err.message}`);
+  }
+}
+```
+
 
 
 ---
@@ -909,7 +943,7 @@ What's wrong with this code?
 ---
 #### Mistake 2 result
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#35">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#36">Mistake 2</a>]
 
 If you save this script in `bug2.js` and execute it, this is what will happen:
 
@@ -931,7 +965,7 @@ But we also see another **unexpected error** and its stack trace.
 ---
 #### Mistake 2 issue
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#35">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#36">Mistake 2</a>]
 
 There is an error check, but execution of the callback function is **not stopped**
 as there is no `return` and no `else`.
@@ -956,7 +990,7 @@ fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
 ---
 #### Mistake 2 correct implementation
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#35">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Spot the mistake</a> > <a href="#36">Mistake 2</a>]
 
 You can add a `return` to solve the issue:
 
@@ -1002,7 +1036,7 @@ class: center, middle
 ---
 ### Modern web language
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#39">The HTTP module</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#40">The HTTP module</a>]
 
 Node.js provides a ready-to-use HTTP server.
 Thanks to the event loop, this one small server can handle many clients concurrently.
@@ -1036,7 +1070,7 @@ server.listen(port, hostname, function() {
 ---
 ### Event emitters
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#39">The HTTP module</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#40">The HTTP module</a>]
 
 Many Node.js objects are [event emitters][node-event-emitter].
 You can register callback functions to **react** to these events:
