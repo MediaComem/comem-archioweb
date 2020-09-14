@@ -13,6 +13,7 @@ favorite HTTP client) to make the requests.
 - [Make someone](#make-someone)
 - [Find someone](#find-someone)
 - [Bad things](#bad-things)
+- [People, people everywhere](#people-people-everywhere)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -91,3 +92,37 @@ Location: comem-rest-demo-herokuapp.com
 ```
 
 What's not RESTful or could be improved in the responses?
+
+
+
+## People, people everywhere
+
+The following request allows you to retrieve a list of people:
+
+```http
+GET /unrest/people HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+You can then filter this list by first name:
+
+```http
+GET /unrest/people/byFirstName/John HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+By last name:
+
+```http
+GET /unrest/people/byLastName/McDeere HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+Or by age:
+
+```http
+GET /unrest/people/byAge/35 HTTP/1.1
+Location: comem-rest-demo.herokuapp.com
+```
+
+What could be improved in these requests?
