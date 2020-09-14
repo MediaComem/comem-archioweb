@@ -1,0 +1,82 @@
+# JavaScript exercises solutions
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Fill the missing bits](#fill-the-missing-bits)
+  - [Functions as arguments](#functions-as-arguments)
+  - [Dynamically create functions](#dynamically-create-functions)
+  - [Deserialize JSON](#deserialize-json)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
+## Fill the missing bits
+
+### Functions as arguments
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxEQ?editors=0011)
+
+```js
+// Let's define a couple of arithmetic function.
+function add(a, b) {
+  return a + b;
+}
+function multiply(a, b) {
+  return a * b;
+}
+
+// Define a function that takes two numbers
+// and a function to apply to those numbers.
+function compute(a, b, func) {
+  return func(a, b);
+}
+
+// Call compute with "add".
+let value = compute(2, 4, add);
+console.log(value); // 6
+
+// Call compute with "multiply".
+value = compute(2, 4, multiply);
+console.log(value); // 8
+```
+
+### Dynamically create functions
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxYe?editors=0011)
+
+```js
+// Implement this function in a way that makes the rest of the code work.
+function createMultiplier(factor) {
+  return number => number * factor;
+}
+
+const multiplyByTwo = createMultiplier(2);
+console.log(multiplyByTwo(1)); // 2
+console.log(multiplyByTwo(2)); // 4
+console.log(multiplyByTwo(3)); // 6
+
+const multiplyByFive = createMultiplier(5);
+console.log(multiplyByFive(1)); // 5
+console.log(multiplyByFive(2)); // 10
+console.log(multiplyByFive(3)); // 15
+```
+
+> This type of function is called a
+> [closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures).
+
+### [Deserialize JSON](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/gOrKOKw?editors=0011)
+
+```js
+const personJson = '{"first":"James","last":"Bond"}';
+
+// Extract the person's first and last names to new variables
+// to make this code work, without modifying the rest of the code.
+const { first, last } = JSON.parse(personJson);
+
+console.log(`My name is ${last}, ${first}, ${last}`);
+```
