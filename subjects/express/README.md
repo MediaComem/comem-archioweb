@@ -906,7 +906,7 @@ res.send('Some text');
 
 ```http
 HTTP/1.1 200 OK
-Content-Type: text/plain
+Content-Type: text/html
 
 Some text
 ```
