@@ -440,10 +440,8 @@ Content-Type: text/html; charset=UTF-8
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Film - Wikipedia</title>
-  </head>
-  ...
+  <head><title>Film - Wikipedia</title></head>
+  &lt;body&gt;...&lt;/body&gt;
 </html>
 ```
 
@@ -452,6 +450,7 @@ A resource we just created:
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
+Location: https://example.com/api/movies/xo349
 
 {
   "id": "xo349",
