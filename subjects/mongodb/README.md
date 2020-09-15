@@ -322,7 +322,7 @@ Here's an update example:
 db.people.update(
   { "name": "John Smith" },
   {
-    "$addFields": { "name": "John A. Smith" },
+    "$set": { "name": "John A. Smith" },
     "$push": { "interests": "Movies" }
   }
 )
@@ -363,7 +363,7 @@ The `upsert` option allows you to **automatically insert** a new document when y
 db.people.update(
   { "name": "Ned Stark" },
   {
-    "$addFields": {
+    "$set": {
       "children": 6,
       "interests": [ "Snow" ]
     }
