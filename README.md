@@ -34,6 +34,7 @@ This course is a [COMEM+][comem] web development course taught at
 
 * Basics
   * [JavaScript](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372552/mod_resource/content/8/ArchiOWeb%202020-09-14%20part%201%20JavaScript.mp4)
     * [*Exercises*](./exercises/javascript.md) ([solutions](./exercises/javascript-solutions.md))
     * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -41,17 +42,22 @@ This course is a [COMEM+][comem] web development course taught at
     * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Node.js](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
+    * [*Video 1*](https://cyberlearn.hes-so.ch/pluginfile.php/3372558/mod_resource/content/6/ArchiOWeb%202020-09-14%20part%202%20Node.js.mp4) & [*Video 2*](https://cyberlearn.hes-so.ch/pluginfile.php/3372559/mod_resource/content/6/ArchiOWeb%202020-09-14%20part%203%20Node.js.mp4)
     * [*Exercises*](./exercises/node.md) ([solutions](./exercises/node-solutions))
   * [npm](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372570/mod_resource/content/9/ArchiOWeb%202020-09-14%20part%204%20npm.mp4)
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372583/mod_resource/content/2/ArchiOWeb%202020-09-15%20part%201%20HTTP%20%20REST.mp4)
     * [*Exercises*](./exercises/rest.md)
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372598/mod_resource/content/8/ArchiOWeb%202020-09-15%20part%202%20Express.js.mp4)
     * [*Exercises*](./exercises/express.md)
   * [MongoDB](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372605/mod_resource/content/1/ArchiOWeb%202020-09-16%20part%203%20MongoDB.mp4)
     * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
