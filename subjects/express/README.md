@@ -657,6 +657,21 @@ app.use(function(req, res, next) {
 
 The middleware chain will not proceed until you call `next()`.
 
+#### Using promises
+
+If your asynchronous call returns a promise, you can also use `async/await`:
+
+```js
+app.use(`async function`(req, res, next) {
+  try {
+    req.myData = `await fs.promises.readFile`('data.txt', 'utf-8');
+    `next();`
+  } catch (err) {
+    next(err);
+  }
+});
+```
+
 
 
 ### How to deal with errors in middlewares
@@ -671,13 +686,29 @@ In that case, the proper thing to do with Express is to give the error to `next(
 ```js
 app.use(function(req, res, next) {
   fs.readFile('data.txt', { encoding: 'utf-8' }, function(err, data) {
-    if (err) {
+*   if (err) {
 *     return next(err);
-    }
+*   }
 
     req.myData = data;
     next();
   });
+});
+```
+
+#### Error-handling with promises
+
+If you are using `async/await`, remember to wrap your code in a `try/catch` to
+catch any error that might occur, and give it to Express:
+
+```js
+app.use(async function(req, res, next) {
+* try {
+    req.myData = await fs.promises.readFile('data.txt', 'utf-8');
+    next();
+* } catch (err) {
+*   next(err);
+* }
 });
 ```
 
