@@ -782,8 +782,8 @@ custom headers, etc). It also remembers your **previous requests**..
 
 ### Create
 
-The API allows us to **create a person by making a `POST` request with a **JSON
-representation** of the person. This is the request we want to make:
+The API allows us to **create a person** by making a `POST` request with a
+**JSON representation** of the person. This is the request we want to make:
 
 ```http
 POST https://comem-rest-demo.herokuapp.com/api/people HTTP/1.1
