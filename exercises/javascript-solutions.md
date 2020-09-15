@@ -8,6 +8,13 @@
   - [Functions as arguments](#functions-as-arguments)
   - [Dynamically create functions](#dynamically-create-functions)
   - [Deserialize JSON](#deserialize-json)
+- [ECMAScript 2015+](#ecmascript-2015)
+  - [Template literals](#template-literals)
+  - [Arrow functions](#arrow-functions)
+  - [for...of](#forof)
+  - [Array destructuring](#array-destructuring)
+  - [Object destructuring](#object-destructuring)
+  - [Async functions](#async-functions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -79,4 +86,104 @@ const personJson = '{"first":"James","last":"Bond"}';
 const { first, last } = JSON.parse(personJson);
 
 console.log(`My name is ${last}, ${first}, ${last}`);
+```
+
+
+
+## ECMAScript 2015+
+
+### [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/PoNaoOG?editors=0011)
+
+```js
+const firstName = 'John';
+const lastName = 'Doe';
+
+// Use a template literal instead of string concatenation.
+console.log(`Hello, I am ${firstName} ${lastName}!`);
+```
+
+### [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/QWNxWdg?editors=0011)
+
+```js
+const people = [
+  { first: "John", last: "Doe" },
+  { first: "Bob", last: "Martin" },
+  { first: "Alice", last: "Krauss" }
+];
+
+// Convert this function to an arrow function and save 2 lines.
+const lastNames = people.map(person => person.last);
+
+console.log(lastNames); // [ "Doe", "Martin", "Krauss" ]
+```
+
+### [for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/qBZKBVG?editors=0011)
+
+```js
+let fruits = [ 'apple', 'pear', 'lemon' ];
+
+// Use a for...of loop instead of iterating with an index.
+for (let fruit of fruits) {
+  console.log(`${fruit} is a fruit`);
+}
+```
+
+### Array [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/abNKbLX?editors=0011)
+
+```js
+const values = [ 23, 61, 42, 51, 12 ];
+
+// Use a destructuring assignment to convert the next 2 lines
+// to a single expression without modifying the rest of the code.
+const [ firstValue, ...otherValues ] = values;
+
+console.log(`The first value is ${firstValue}`);
+console.log(`The other values are ${otherValues.join(', ')}`);
+```
+
+### Object [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/qBZKBXw?editors=0011)
+
+```js
+const person = {
+  first: 'John',
+  last: 'Doe',
+  address: {
+    city: 'Yverdon',
+    street: 'Avenue des Sports',
+    zip: 1400
+  }
+};
+
+function logHabitation({ first, address: { city }}) {
+  // Use a destructuring assignment in the function's argument to
+  // remove the next 2 lines, without modifying the console.log statement.
+  console.log(`${first} lives in ${city}`);
+}
+
+logHabitation(person); // "John lives in Yverdon"
+```
+
+### [Async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/bGpKaKx?editors=0011)
+
+```js
+advise();
+
+// Get rid of the .then calls and callback functions by using async/await.
+async function advise() {
+  const res = await fetch('https://api.adviceslip.com/advice');
+  const { slip: { advice } } = await res.json();
+  console.log(advice);
+}
 ```
