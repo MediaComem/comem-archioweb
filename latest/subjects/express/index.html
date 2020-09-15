@@ -3,7 +3,7 @@
   <head>
     <title>Express (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1b0e7c8d305669e74fd616bbab155e4b44ed30ac/subjects/express/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/0ae295b24b588eb981b221d2b7380bd5c8982513/subjects/express/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -708,6 +708,24 @@ app.use(function(req, res, next) {
 
 The middleware chain will not proceed until you call `next()`.
 
+---
+#### Using promises
+
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#30">Asynchronous middleware</a>]
+
+If your asynchronous call returns a promise, you can also use `async/await`:
+
+```js
+app.use(`async function`(req, res, next) {
+  try {
+    req.myData = `await fs.promises.readFile`('data.txt', 'utf-8');
+    `next();`
+  } catch (err) {
+    next(err);
+  }
+});
+```
+
 
 
 ---
@@ -725,9 +743,9 @@ In that case, the proper thing to do with Express is to give the error to `next(
 ```js
 app.use(function(req, res, next) {
   fs.readFile('data.txt', { encoding: 'utf-8' }, function(err, data) {
-    if (err) {
+*   if (err) {
 *     return next(err);
-    }
+*   }
 
     req.myData = data;
     next();
@@ -736,9 +754,28 @@ app.use(function(req, res, next) {
 ```
 
 ---
+#### Error-handling with promises
+
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#32">How to deal with errors in middlewares</a>]
+
+If you are using `async/await`, remember to wrap your code in a `try/catch` to
+catch any error that might occur, and give it to Express:
+
+```js
+app.use(async function(req, res, next) {
+* try {
+    req.myData = await fs.promises.readFile('data.txt', 'utf-8');
+    next();
+* } catch (err) {
+*   next(err);
+* }
+});
+```
+
+---
 #### Error-handling middleware
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#31">How to deal with errors in middlewares</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#32">How to deal with errors in middlewares</a>]
 
 When you pass an error to `next()`, the following "normal" middleware functions are **not called**.
 Only special **error-handling middleware functions** are called.
@@ -756,7 +793,7 @@ Simply declaring the function with these 4 arguments tells Express that this is 
 ---
 #### Error-handling example
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#31">How to deal with errors in middlewares</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#32">How to deal with errors in middlewares</a>]
 
 As you can see in this example, when an error occurs in the first middleware,
 other normal middlewares are **bypassed** until an **error-handling middleware** is found.
@@ -777,7 +814,7 @@ Host: localhost:3000
 ---
 #### Error-handling middleware in the generated application
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#31">How to deal with errors in middlewares</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#16">Express middleware</a> > <a href="#32">How to deal with errors in middlewares</a>]
 
 Take a look at `app.js`.
 One error-handling middleware has already been plugged in for you:
@@ -814,7 +851,7 @@ Using the `req` object
 ---
 ### Request example
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#37">The request object</a>]
 
 How can we extract all the data from this request?
 
@@ -838,7 +875,7 @@ Authorization: Basic Zm9vOmJhcgo=
 ---
 ### Getting the HTTP method, URL path and query parameters
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#37">The request object</a>]
 
 Let's start with the request line:
 
@@ -863,7 +900,7 @@ app.all('/test/:param1/:param2', function(req, res, next) {
 ---
 ### Getting HTTP headers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#37">The request object</a>]
 
 Now let's get the headers:
 
@@ -900,7 +937,7 @@ app.all('/test/:param1/:param2', function(req, res, next) {
 ---
 ### Getting the HTTP request body
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#35">The request object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#37">The request object</a>]
 
 Finally, let's get the request body:
 
@@ -946,7 +983,7 @@ Using the `res` object
 ---
 ### Sending the response
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#42">The response object</a>]
 
 Use `res.send()` for most use cases.
 It will automatically determine the type of content your are sending and set the appropriate `Content-Type` header:
@@ -1002,7 +1039,7 @@ Content-Type: application/json
 ---
 ### Setting the HTTP status code
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#42">The response object</a>]
 
 Use `res.status()` to set the status code:
 
@@ -1056,7 +1093,7 @@ HTTP/1.1 204 No Content
 ---
 ### Sending HTTP response headers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#42">The response object</a>]
 
 Use `res.set()` to set headers:
 
@@ -1130,7 +1167,7 @@ Some text
 ---
 ### Chain response methods
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#40">The response object</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#42">The response object</a>]
 
 You can also chain all the previous methods together:
 
@@ -1180,7 +1217,7 @@ Mapping HTTP methods and URLs to handler functions
 ---
 ### Basic routing
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a>]
 
 As we've seen, basic routing can be applied to middleware by using `.get`, `.post`, etc and passing a path:
 
@@ -1209,7 +1246,7 @@ Getting book 33 by 24
 ---
 ### Routing middlewares
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a>]
 
 A route can also contain **its own chain of successive middlewares**:
 
@@ -1236,7 +1273,7 @@ These middleware functions are **only executed for that route** (`GET /hello` in
 ---
 ### Routers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a>]
 
 An Express [router][router] is an **isolated instance of middleware and routes**.
 It's basically a **mini-app**.
@@ -1277,7 +1314,7 @@ that way you don't have one monolithic file with all your code in it.
 ---
 #### Creating a router
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a> > <a href="#50">Routers</a>]
 
 ```js
 var express = require('express');
@@ -1307,7 +1344,7 @@ Note that we don't use `/books` and `/books/:id` as paths but `/` and `/:id`.
 ---
 #### Plugging in a router
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a> > <a href="#50">Routers</a>]
 
 A router behaves like a middleware function, so you can simply plug it into your application with `app.use()`:
 
@@ -1334,7 +1371,7 @@ It will handle HTTP requests to `/books/42`, for example.
 ---
 #### What's it for?
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a> > <a href="#50">Routers</a>]
 
 Imagine a more complex API where **comments** can be attached to **multiple other resources**:
 
@@ -1387,7 +1424,7 @@ moviesRouter.`delete('/:id/comments/:cid'`, /*...*/);
 ---
 #### Plugging routers on routers
 
-.breadcrumbs[<a href="#1">Express</a> > <a href="#45">Routing</a> > <a href="#48">Routers</a>]
+.breadcrumbs[<a href="#1">Express</a> > <a href="#47">Routing</a> > <a href="#50">Routers</a>]
 
 With a router, you could **define these sub-paths once**:
 

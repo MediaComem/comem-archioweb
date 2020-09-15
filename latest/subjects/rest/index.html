@@ -3,7 +3,7 @@
   <head>
     <title>REST Introduction &amp; HTTP (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1b0e7c8d305669e74fd616bbab155e4b44ed30ac/subjects/rest/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/0ae295b24b588eb981b221d2b7380bd5c8982513/subjects/rest/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -467,10 +467,8 @@ Content-Type: text/html; charset=UTF-8
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Film - Wikipedia</title>
-  </head>
-  ...
+  <head><title>Film - Wikipedia</title></head>
+  &lt;body&gt;...&lt;/body&gt;
 </html>
 ```
 
@@ -479,6 +477,7 @@ A resource we just created:
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
+Location: https://example.com/api/movies/xo349
 
 {
   "id": "xo349",
@@ -877,8 +876,8 @@ custom headers, etc). It also remembers your **previous requests**..
 
 .breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#38">[Create, read, update, delete (CRUD)][crud]</a>]
 
-The API allows us to **create a person by making a `POST` request with a **JSON
-representation** of the person. This is the request we want to make:
+The API allows us to **create a person** by making a `POST` request with a
+**JSON representation** of the person. This is the request we want to make:
 
 ```http
 POST https://comem-rest-demo.herokuapp.com/api/people HTTP/1.1
