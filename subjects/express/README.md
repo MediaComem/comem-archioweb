@@ -932,6 +932,23 @@ Content-Type: application/json
 }
 ```
 
+<!-- slide-container -->
+
+<!-- slide-column 45 -->
+
+```js
+res.send(Buffer.from('0101'));
+```
+
+<!-- slide-column -->
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/octet-stream
+
+0101
+```
+
 
 
 ### Setting the HTTP status code
