@@ -58,6 +58,7 @@ This course is a [COMEM+][comem] web development course taught at
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372605/mod_resource/content/1/ArchiOWeb%202020-09-16%20part%203%20MongoDB.mp4)
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3387064/mod_resource/content/1/ArchiOWeb%202020-09-28%20Mongoose.mp4)
     * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
