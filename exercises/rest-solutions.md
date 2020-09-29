@@ -21,8 +21,9 @@ follow the HTTP specification and is therefore not RESTful:
 * `create` is a verb and should not be in the URL path. The URL in a REST API
   must identify the resource being acted upon, i.e. a thing and not an action.
   Therefore the URL should end with a noun instead of a verb.
-* The `POST` method identifies the action, which is to create a new resource as
-  per the HTTP specification.
+* The `POST` method identifies the action, which is to [create a new resource as
+  per the HTTP
+  specification](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5).
 
 Additionally, the response looks something like this (abridged headers):
 
@@ -38,10 +39,12 @@ Content-Type: application/json
 }
 ```
 
-The status code of the response should be 201 Created if a resource was created
-as a result of the request, according to the HTTP specification. Additionally,
-it should include a `Location` header indicating the URL of the newly created
-resource. This header is also missing.
+The status code of the response should be [`201
+Created`](https://httpstatuses.com/201) if a resource was created as a result of
+the request, according to the HTTP specification. Additionally, it should
+include a [`Location`
+header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Location)
+indicating the URL of the newly created resource. This header is also missing.
 
 A correct request may look like this:
 
@@ -76,7 +79,8 @@ Location: https://comem-rest-demo.herokuapp.com/unrest/people/90715
 
 ## Find someone
 
-According to the HTTP specification, the `GET` method must be
+According to the HTTP specification, the [`GET`
+method](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3) must be
 [safe](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.1.1), meaning
 that it should take no action other than retrieval. Here we update a person
 using the `GET` method, which is an unsafe operation. This request does not
@@ -84,7 +88,9 @@ follow the HTTP specification and is therefore not RESTful.
 
 Additionally, URL query parameters are not appropriate for sending resource
 data. The resource representation is supposed to be in the request body, with
-the type of data indicated in the `Content-Type` header to support [content
+the type of data indicated in the [`Content-Type`
+header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type)
+to support [content
 negotation](https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation).
 
 There are also other concerns with URL query parameters. In this example, only a
@@ -93,9 +99,10 @@ be impractical. Query parameters do not support complex structures. Also, some
 web servers impose a limit on URL length which is usually much shorter than the
 limit on the size of the request body.
 
-This request should be a `PATCH` or a `PUT` request with a partial (for `PATCH`)
-or complete (for `PUT`) resource representation sent in the request body instead
-of the URL query parameters.
+This request should be a [`PATCH`](https://tools.ietf.org/html/rfc5789) or a
+[`PUT`](https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6) request
+with a partial (for `PATCH`) or complete (for `PUT`) resource representation
+sent in the request body instead of the URL query parameters.
 
 A correct request may look like this:
 
@@ -153,6 +160,10 @@ Content-Type: text/html
 
 The "name" property is required
 ```
+
+> Additionally, the API may want to return more structured information than a
+> plain text or HTML message for programmatic use, e.g. a JSON payload including
+> metadata about why a property is considered invalid.
 
 
 
