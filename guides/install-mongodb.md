@@ -291,9 +291,9 @@ $> sudo mkdir -p /data/db
 mkdir: /data/db: Read-only file system
 ```
 
-This is because starting with macOS Catalina, the root of the file system is
-read-only for increased security, to help prevent the accidental overwriting of
-critical operating system files.
+This is because starting with macOS Catalina, [the root of the file system is
+read-only for increased security](https://support.apple.com/en-us/HT210650), to
+help prevent the accidental overwriting of critical operating system files.
 
 In this case, you need to create the MongoDB data directory elsewhere, for
 example in your home directory. In this case, you will not need `sudo`, since
