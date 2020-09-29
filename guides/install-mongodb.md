@@ -108,12 +108,26 @@ assuming you have it at `~/mongodb` (adapt the instructions otherwise):
 #### What you should see
 
 When you run `mongod`, it should take over the CLI and show you the MongoDB
-server logs:
+server logs. They should look something like this (abridged output):
+
+```bash
+...
+{"t":{"$date":"2020-09-29T..."}, ... ,"msg":"MongoDB starting","attr":{"pid":24769,"port":27018,"dbPath":"/data/db","architecture":"64-bit","host":"example.local"}}
+...
+{"t":{"$date":"2020-09-29T..."}, ... ,"msg":"Access control is not enabled for the database. Read and write access to data and configuration is unrestricted","tags":["startupWarnings"]}
+{"t":{"$date":"2020-09-29T..."}, ... ,"msg":"This server is bound to localhost. Remote systems will be unable to connect to this server. Start the server with --bind_ip <address> to specify which IP addresses it should serve responses from, or with --bind_ip_all to bind to all interfaces. If this behavior is desired, start the server with --bind_ip 127.0.0.1 to disable this warning","tags":["startupWarnings"]}
+...
+{"t":{"$date":"2020-09-29T..."}, ... ,"msg":"Waiting for connections","attr":{"port":27017,"ssl":"off"}}
+...
+```
+
+If you have a slightly older version of MongoDB, the logs may look something
+like this (abridged output):
 
 ```bash
 $> mongod
 2019-09-25T... [initandlisten] MongoDB starting ...
-2019-09-25T... [initandlisten] db version v4.4.1
+2019-09-25T... [initandlisten] db version v4.2.1
 2019-09-25T... [initandlisten] ...
 2019-09-25T... [initandlisten] ** WARNING: Access control is not enabled
 2019-09-25T... [initandlisten] **          for the database. Read and write
@@ -121,13 +135,18 @@ $> mongod
 2019-09-25T... [initandlisten] **          is unrestricted.
 2019-09-25T... [initandlisten] ...
 2019-09-25T... [initandlisten] Listening on 127.0.0.1
-2019-09-25T... [initandlisten] `waiting for connections on port 27017`
+2019-09-25T... [initandlisten] waiting for connections on port 27017
 2019-09-25T... [initandlisten] ...
 ```
 
-You will know it's working if it says that it's **waiting for connections on
-port 27017** (the default port for MongoDB). You now have a running MongoDB
-server that **will accept connections from clients**.
+The warnings shown above are expected with the default configuration.
+
+You will know it's working if it says that it's **waiting for connections** on
+port 27017 (the default port for MongoDB). This may not be the last line of the
+log.
+
+You now have a running MongoDB server that **will accept connections from
+clients**.
 
 
 
