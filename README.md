@@ -48,7 +48,7 @@ This course is a [COMEM+][comem] web development course taught at
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372570/mod_resource/content/9/ArchiOWeb%202020-09-14%20part%204%20npm.mp4)
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372583/mod_resource/content/2/ArchiOWeb%202020-09-15%20part%201%20HTTP%20%20REST.mp4)
-    * [*Exercises*](./exercises/rest.md) ([solutions](./exercises/rest-solutions))
+    * [*Exercises*](./exercises/rest.md) ([solutions](./exercises/rest-solutions.md))
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
