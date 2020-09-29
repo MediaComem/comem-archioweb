@@ -30,6 +30,10 @@ the documentation][installation-instructions].
 
 ## MongoDB on macOS
 
+> **Homebrew users**: if you have installed MongoDB with [Homebrew][brew], you
+> should already have a MongoDB server installed and running. You can skip to
+> [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos).
+
 Run the following commands to download and uncompress the binary distribution of
 MongoDB. (These instructions assume that you have a `~/Downloads` directory. Use
 another path if that is not the case.)
@@ -375,6 +379,7 @@ Then try running `mongod.exe` again in that shell and see if it fixes the issue.
 
 
 
+[brew]: https://brew.sh
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
 [mongodb-download]: https://www.mongodb.com/download-center/community
