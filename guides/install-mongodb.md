@@ -181,6 +181,8 @@ You will know it's working if you see a **different prompt** in your CLI. That
 means you are now connected to the MongoDB shell and can **type MongoDB
 commands**.
 
+You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
+
 
 
 ## MongoDB on Windows
@@ -247,6 +249,8 @@ MongoDB server version: 4.4.1
 You will know it's working if you see a **different prompt** in your CLI. That
 means you are now connected to the MongoDB shell and can **type MongoDB
 commands**.
+
+You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
 
 
