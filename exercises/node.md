@@ -33,6 +33,10 @@ $> node calculate.js
 2 to the power of 10 is: 1024
 ```
 
+You may find the [`Math.pow`
+function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow)
+helpful.
+
 
 
 ## Yell
