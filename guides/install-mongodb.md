@@ -18,6 +18,7 @@ the documentation][installation-instructions].
   - [Run the MongoDB shell on Windows](#run-the-mongodb-shell-on-windows)
 - [Test the MongoDB shell on macOS or Windows](#test-the-mongodb-shell-on-macos-or-windows)
 - [Troubleshooting](#troubleshooting)
+  - [`Read-only file system` error on macOS Catalina and later](#read-only-file-system-error-on-macos-catalina-and-later)
   - [`Data directory not found` error in the MongoDB server](#data-directory-not-found-error-in-the-mongodb-server)
   - [`Attempted to create a lock file` error in the MongoDB server](#attempted-to-create-a-lock-file-error-in-the-mongodb-server)
   - [`Connection refused` error in the MongoDB shell](#connection-refused-error-in-the-mongodb-shell)
@@ -74,6 +75,10 @@ $> sudo chown "$(whoami)" /data/db
 
 *(**Note:** you will need to enter your password.)*
 
+> If you get a `Read-only file system` error after running the first command,
+> see
+> [Troubleshooting](#read-only-file-system-error-on-macos-catalina-and-later).
+
 
 
 ### Run the MongoDB server on macOS
@@ -104,6 +109,11 @@ assuming you have it at `~/mongodb` (adapt the instructions otherwise):
    ```
 
    (Re-read [The `PATH` variable](https://mediacomem.github.io/comem-archidep/2019-2020/subjects/cli/#49) if you need to refresh your memory.)
+
+> If you have created a custom data directory other than `/data/db`, for example
+> `~/data/db`, you must supply the `--dbpath` option to tell MongoDB where it
+> is, e.g. run `mongod --dbpath ~/data/db` instead of just `mongodb` if you
+> chose the third way.
 
 #### What you should see
 
@@ -269,6 +279,32 @@ WriteResult({ "nInserted" : 1 })
 ## Troubleshooting
 
 <!-- slide-front-matter class: center, middle -->
+
+
+
+### `Read-only file system` error on macOS Catalina and later
+
+If you are on macOS Catalina (10.15) or later, you may get the following error:
+
+```bash
+$> sudo mkdir -p /data/db
+mkdir: /data/db: Read-only file system
+```
+
+In this case, you need to create the MongoDB data directory elsewhere, for
+example in your home directory. In this case, you will not need `sudo`, since
+your home directory already belongs to you:
+
+```bash
+$> mkdir -p ~/data/db
+```
+
+When you run the `mongod` command later, you will need to supply the `--dbpath`
+option to indicate to MongoDB that it should store data in that directory:
+
+```bash
+$> mongod --dbpath ~/data/db
+```
 
 
 
