@@ -44,7 +44,11 @@ POST /unrest/people/create HTTP/1.1
 Content-Type: application/json
 Location: comem-rest-demo.herokuapp.com
 
-{ "firstName": "John", "lastName": "Doe", "age": 20 }
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "age": 20
+}
 ```
 
 What's not RESTful about the request and/or the response?
@@ -88,7 +92,9 @@ Then make the following correct request:
 POST /unrest/things HTTP/1.1
 Location: comem-rest-demo-herokuapp.com
 
-{ "name": "Some thing" }
+{
+  "name": "Some thing"
+}
 ```
 
 What's not RESTful or could be improved in the responses?
