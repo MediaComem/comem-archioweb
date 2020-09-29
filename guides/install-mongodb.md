@@ -75,7 +75,7 @@ $> sudo chown "$(whoami)" /data/db
 
 *(**Note:** you will need to enter your password.)*
 
-> If you get a `Read-only file system` error after running the first command,
+> If you get a `Read-only file system` error after running the `mkdir` command,
 > see
 > [Troubleshooting](#read-only-file-system-error-on-macos-catalina-and-later).
 
@@ -290,6 +290,10 @@ If you are on macOS Catalina (10.15) or later, you may get the following error:
 $> sudo mkdir -p /data/db
 mkdir: /data/db: Read-only file system
 ```
+
+This is because starting with macOS Catalina, the root of the file system is
+read-only for increased security, to help prevent the accidental overwriting of
+critical operating system files.
 
 In this case, you need to create the MongoDB data directory elsewhere, for
 example in your home directory. In this case, you will not need `sudo`, since
