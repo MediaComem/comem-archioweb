@@ -53,7 +53,7 @@ This course is a [COMEM+][comem] web development course taught at
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372598/mod_resource/content/8/ArchiOWeb%202020-09-15%20part%202%20Express.js.mp4)
-    * [*Exercises*](./exercises/express.md) ([solutions](./exercises/express-solutions))
+    * [*Exercises*](./exercises/express.md) ([solutions](./exercises/express-solutions/routes))
   * [MongoDB](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372605/mod_resource/content/1/ArchiOWeb%202020-09-16%20part%203%20MongoDB.mp4)
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
