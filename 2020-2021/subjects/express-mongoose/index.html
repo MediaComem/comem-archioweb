@@ -3,7 +3,7 @@
   <head>
     <title>Using Mongoose with Express (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2aced8a1b71d1effbc372143f2531c9b331e084a/subjects/express-mongoose/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/c1f010428a730b461178b206fb347664b7c90422/subjects/express-mongoose/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -43,6 +43,81 @@ You should read about the [resources][demo-res] that you can manipulate with thi
 
 ---
 class: center, middle
+## Relationships
+
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a>]
+
+
+
+<p class='center'><img class='w60' src='images/relationships.jpg' /></p>
+
+How do I link stuff together?
+
+
+
+---
+### Mongoose references
+
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#3">Relationships</a>]
+
+MongoDB has no foreign keys, but you can still link documents together by
+storing references to other documents. These references could be of any type and
+to any field, but they are often a reference to the MongoDB ID of the target
+document.
+
+You can tell Mongoose that a property is a [**reference**][mongoose-reference]
+to another model by setting its `type` to `Schema.Types.ObjectId` (indicating
+that it is a MongoDB document ID), and setting its **`ref`** to the name of the
+target model:
+
+```js
+/**
+ * A movie directed by a person.
+ */
+const movieSchema = new Schema({
+  // ...
+  director: {
+*   type: Schema.Types.ObjectId,
+*   ref: 'Person'
+  }
+});
+```
+
+
+
+---
+### Mongoose population
+
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#3">Relationships</a>]
+
+Let's assume you have a movie document. Its `director` property is a MongoDB ID
+which references another document:
+
+```js
+Movie
+  .findOne({ title: 'Casino Royale' })
+  .exec(function(err, movie) {
+    console.log(movie.director); // ObjectId("5f7a3e74576b3d75acea6c7d")
+  });
+```
+
+When calling [`populate`][mongoose-population], the reference is replaced by the
+target document itself, loaded using the model defined with the `ref` property
+in the schema:
+
+```js
+Movie
+  .findOne({ title: 'Casino Royale' })
+* .populate('director').
+  .exec(function (err, movie) {
+    console.log(movie.director.name); // "Martin Campbell"
+  });
+```
+
+
+
+---
+class: center, middle
 ## Filtering
 
 .breadcrumbs[<a href="#1">Using Mongoose with Express</a>]
@@ -58,7 +133,7 @@ How do I get only the right stuff?
 ---
 ### Limiting collections
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#3">Filtering</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#6">Filtering</a>]
 
 Often when clients make requests on a RESTful API's **collection** resource,
 they don't need the whole thing; they need **only the items they are interested in** for the current view.
@@ -74,7 +149,7 @@ For example, you might want to display:
 ---
 ### Simple filters
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#3">Filtering</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#6">Filtering</a>]
 
 Express gives you access to **URL query parameters** in `req.query`,
 and Mongoose offers a chainable **query builder**; they're very easy to plug together:
@@ -108,7 +183,7 @@ router.get('/', function(req, res, next) {
 ---
 ### Dynamic filters
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#3">Filtering</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#6">Filtering</a>]
 
 What about our director filter?
 Can we make it work for **multiple directors** as well?
@@ -152,7 +227,7 @@ How do I get a reasonable amount of stuff?
 ---
 ### Paginating collections
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#7">Pagination</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
 
 Some collections are just **too large to send** to the client in their entirety.
 The following examples will demonstrate two ways implement **pagination** to
@@ -167,7 +242,7 @@ a RESTful API.
 ---
 ### Using query parameters to select a page
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#7">Pagination</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
 
 In principle, pagination is a **specialized filter**. The client uses **URL query parameters** to tell the server which chunk of the collection it wants.
 Implementing a `page` and `pageSize` parameters with Express and Mongoose is quite straightforward:
@@ -200,7 +275,7 @@ router.get('/', function(req, res, next) {
 ---
 ### Telling the client how to get more elements
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#7">Pagination</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
 
 To include information about getting more elements in the response,
 you will need to know **how many elements there are in total**,
@@ -229,7 +304,7 @@ router.get('/', function(req, res, next) {
 ---
 ### Using the `Link` header (solution 1)
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#7">Pagination</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
 
 The format is a bit convoluted, but other developers have already gone through the trouble for you.
 Use the [format-link-header][format-link-header] npm package:
@@ -264,7 +339,7 @@ if (Object.keys(links).length >= 1) {
 ---
 ### Using custom pagination headers (solution 2)
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#7">Pagination</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
 
 To implement this solution, you simply have to set the headers before sending the response:
 
@@ -299,7 +374,7 @@ router.get('/', function(req, res, next) {
 ---
 ### Using a JSON envelope (solution 3)
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#7">Pagination</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
 
 Instead of setting headers, you simply have to build and pass your envelope to `res.send()`:
 
@@ -330,6 +405,18 @@ router.get('/', function(req, res, next) {
 
 
 ---
+### Hypermedia pagination (solution 4)
+
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#10">Pagination</a>]
+
+Using hypermedia pagination is fundamentally the same as solution 3 (using a
+JSON envelope), since the pagination information is also included in JSON in the
+response body. You just have to pass an object of the appropriate shape to
+Express's `res.send` function.
+
+
+
+---
 class: center, middle
 ## Aggregation
 
@@ -344,7 +431,7 @@ class: center, middle
 ---
 ### Aggregation example
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a>]
 
 Let's say that when we retrieve **People** from the API, we also want to know **how many movies they have directed**.
 
@@ -359,7 +446,7 @@ SELECT people.*, SUM(movies.id) AS directed_movies_count
 ---
 #### MongoDB aggregations
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a> > <a href="#15">Aggregation example</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a> > <a href="#19">Aggregation example</a>]
 
 If your related documents are stored in two **separate collections** (as is the
 case for People and Movies in the demonstration RESTful API), you have to
@@ -377,7 +464,7 @@ To use it, you have to use [MongoDB aggregations][mongodb-aggregation].
 ---
 ### Aggregation pipeline
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a>]
 
 The preferred MongoDB aggregation method is the [aggregation pipeline][mongodb-aggregation-pipeline]:
 documents go through a multi-stage pipeline where **each stage transforms the collection of documents** into **aggregated results**.
@@ -401,7 +488,7 @@ Each **stage** is an object with an [aggregation pipeline operator][mongodb-aggr
 ---
 #### Aggregation pipeline example (part 1/3)
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a> > <a href="#17">Aggregation pipeline</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a> > <a href="#21">Aggregation pipeline</a>]
 
 Let's say you have retrieved a list of Person documents from the database, and
 you want to know how many Movies they have directed. The [`$lookup`
@@ -448,7 +535,7 @@ Applying this operator adds the new `directedMovies` property to each Person:
 ---
 #### Aggregation pipeline example (part 2/3)
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a> > <a href="#17">Aggregation pipeline</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a> > <a href="#21">Aggregation pipeline</a>]
 
 This would be sufficient to count the number of directed movies, but it also
 means you would fetch all the Movies' information from the database when you
@@ -499,7 +586,7 @@ with 1 Movie each:
 ---
 #### Aggregation pipeline example (part 3/3)
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a> > <a href="#17">Aggregation pipeline</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a> > <a href="#21">Aggregation pipeline</a>]
 
 Now that you have one document per Person per directed movie in the aggregation
 pipeline, you can use the [`$group` operator][mongodb-group] to merge these
@@ -548,14 +635,14 @@ directed movies, transforming `directedMovies` into a number:
 ---
 #### How does it work?
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a> > <a href="#17">Aggregation pipeline</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a> > <a href="#21">Aggregation pipeline</a>]
 
 <p class='center'><img src='images/aggregation-pipeline.png' class='w100' /></p>
 
 ---
 ### Using the aggregation pipeline with Mongoose
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a>]
 
 You can use MongoDB aggregations with Mongoose quite easily by simply calling
 the [`aggregate` method][mongoose-aggregate] on models:
@@ -586,7 +673,7 @@ const aggregatedDocuments = results.map(result => new Person(result));
 ---
 ### Aggregation pipeline operators
 
-.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#14">Aggregation</a>]
+.breadcrumbs[<a href="#1">Using Mongoose with Express</a> > <a href="#18">Aggregation</a>]
 
 There are many operators you can use in pipeline aggregation stages.
 They are all described in [the documentation][mongodb-aggregation-pipeline-operators].
@@ -631,6 +718,8 @@ Operator   | Description
 [mongodb-unwind]: https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
 [mongoose]: http://mongoosejs.com
 [mongoose-aggregate]: https://mongoosejs.com/docs/api/aggregate.html
+[mongoose-population]: https://mongoosejs.com/docs/populate.html#population
+[mongoose-reference]: https://mongoosejs.com/docs/populate.html#saving-refs
 
     </textarea>
     <script src='https://embed.runkit.com'></script>
