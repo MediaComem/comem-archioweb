@@ -19,6 +19,9 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
 
 
 - [Demonstration RESTful API](#demonstration-restful-api)
+- [Relationships](#relationships)
+  - [Mongoose references](#mongoose-references)
+  - [Mongoose population](#mongoose-population)
 - [Filtering](#filtering)
   - [Limiting collections](#limiting-collections)
   - [Simple filters](#simple-filters)
@@ -54,6 +57,71 @@ You will find the [source code][demo] of this API and its [documentation][demo-d
 The API is also deployed on [Heroku][heroku] (follow the instructions in the documentation to try it).
 
 You should read about the [resources][demo-res] that you can manipulate with this API before moving on.
+
+
+
+## Relationships
+
+<!-- slide-front-matter class: center, middle -->
+
+<p class='center'><img class='w60' src='images/relationships.jpg' /></p>
+
+How do I link stuff together?
+
+
+
+### Mongoose references
+
+MongoDB has no foreign keys, but you can still link documents together by
+storing references to other documents. These references could be of any type and
+to any field, but they are often a reference to the MongoDB ID of the target
+document.
+
+You can tell Mongoose that a property is a [**reference**][mongoose-reference]
+to another model by setting its `type` to `Schema.Types.ObjectId` (indicating
+that it is a MongoDB document ID), and setting its **`ref`** to the name of the
+target model:
+
+```js
+/**
+ * A movie directed by a person.
+ */
+const movieSchema = new Schema({
+  // ...
+  director: {
+*   type: Schema.Types.ObjectId,
+*   ref: 'Person'
+  }
+});
+```
+
+
+
+### Mongoose population
+
+Let's assume you have a movie document. Its `director` property is a MongoDB ID
+which references another document:
+
+```js
+Movie
+  .findOne({ title: 'Casino Royale' })
+  .exec(function(err, movie) {
+    console.log(movie.director); // ObjectId("5f7a3e74576b3d75acea6c7d")
+  });
+```
+
+When calling [`populate`][mongoose-population], the reference is replaced by the
+target document itself, loaded using the model defined with the `ref` property
+in the schema:
+
+```js
+Movie
+  .findOne({ title: 'Casino Royale' })
+* .populate('director').
+  .exec(function (err, movie) {
+    console.log(movie.director.name); // "Martin Campbell"
+  });
+```
 
 
 
@@ -566,3 +634,5 @@ Operator   | Description
 [mongodb-unwind]: https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
 [mongoose]: http://mongoosejs.com
 [mongoose-aggregate]: https://mongoosejs.com/docs/api/aggregate.html
+[mongoose-population]: https://mongoosejs.com/docs/populate.html#population
+[mongoose-reference]: https://mongoosejs.com/docs/populate.html#saving-refs
