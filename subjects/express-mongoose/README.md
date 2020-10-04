@@ -33,6 +33,7 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
   - [Using the `Link` header (solution 1)](#using-the-link-header-solution-1)
   - [Using custom pagination headers (solution 2)](#using-custom-pagination-headers-solution-2)
   - [Using a JSON envelope (solution 3)](#using-a-json-envelope-solution-3)
+  - [Hypermedia pagination (solution 4)](#hypermedia-pagination-solution-4)
 - [Aggregation](#aggregation)
   - [Aggregation example](#aggregation-example)
     - [MongoDB aggregations](#mongodb-aggregations)
@@ -375,6 +376,15 @@ router.get('/', function(req, res, next) {
   });
 });
 ```
+
+
+
+### Hypermedia pagination (solution 4)
+
+Using hypermedia pagination is fundamentally the same as solution 3 (using a
+JSON envelope), since the pagination information is also included in JSON in the
+response body. You just have to pass an object of the appropriate shape to
+Express's `res.send` function.
 
 
 
