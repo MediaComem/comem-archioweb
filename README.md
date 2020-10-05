@@ -68,7 +68,9 @@ This course is a [COMEM+][comem] web development course taught at
   * [REST in depth](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3388586/mod_resource/content/1/ArchiOWeb%202020-09-29%20REST%20in%20depth.mp4)
   * [Express best practices](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3394597/mod_resource/content/1/ArchiOWeb%202020-10-05%20part%201%20Express%20Best%20Practices.mp4)
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3394602/mod_resource/content/1/ArchiOWeb%202020-10-05%20part%202%20Using%20Mongoose%20with%20Express.mp4)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
   * [REST API documentation](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/apidoc?home=MediaComem%2Fcomem-archioweb%23readme) with apiDoc
   * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
