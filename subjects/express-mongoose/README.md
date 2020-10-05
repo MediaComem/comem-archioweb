@@ -118,7 +118,7 @@ in the schema:
 ```js
 Movie
   .findOne({ title: 'Casino Royale' })
-* .populate('director').
+* .populate('director')
   .exec(function (err, movie) {
     console.log(movie.director.name); // "Martin Campbell"
   });
