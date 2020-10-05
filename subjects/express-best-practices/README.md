@@ -156,7 +156,7 @@ don't want to unintentionally commit sensitive information into your repository:
 
 ```bash
 $> echo .env >> .gitignore
-$> git add .env
+$> git add .gitignore
 $> git commit -m "Ignore .env file"
 ```
 
