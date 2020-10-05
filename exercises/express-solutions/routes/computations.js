@@ -2,8 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-// POST /computations
-router.post('/', function(req, res, next) {
+router.post('/computations', function(req, res, next) {
 
   const numbers = req.body.numbers;
   const total = numbers.reduce((memo, n) => memo + n, 0);

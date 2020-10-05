@@ -7,8 +7,7 @@ const booksDirectory = path.resolve(path.join(__dirname, '..', 'data', 'books'))
 
 const router = express.Router();
 
-// GET /books/:id
-router.get('/:id', function(req, res, next) {
+router.get('/books/:id', function(req, res, next) {
 
   // Make sure the ID is a valid integer, otherwise a malicious user could pass
   // a relative path and potentially access anything on the file system.
