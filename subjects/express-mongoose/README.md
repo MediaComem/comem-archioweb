@@ -623,6 +623,8 @@ Operator   | Description
 
 **Documentation**
 
+* [Mongoose `populate`][mongoose-populate]
+* [`format-link-header` package][format-link-header]
 * [MongoDB aggregation][mongodb-aggregation]
 
 
@@ -644,5 +646,6 @@ Operator   | Description
 [mongodb-unwind]: https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
 [mongoose]: http://mongoosejs.com
 [mongoose-aggregate]: https://mongoosejs.com/docs/api/aggregate.html
+[mongoose-populate]: https://mongoosejs.com/docs/populate.html
 [mongoose-population]: https://mongoosejs.com/docs/populate.html#population
 [mongoose-reference]: https://mongoosejs.com/docs/populate.html#saving-refs
