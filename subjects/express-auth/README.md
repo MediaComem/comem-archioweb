@@ -544,7 +544,7 @@ For example, let's assume a user can only modify the things he or she created.
 Here's an example of how you could check that:
 
 ```js
-router.post('/things/:id', `authenticate`, function(req, res, next) {
+router.put('/things/:id', `authenticate`, function(req, res, next) {
 
   // Get the thing.
   Thing.findById(req.params.id).exec(function(err, thing) {
