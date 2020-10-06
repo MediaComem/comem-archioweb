@@ -20,6 +20,8 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
   - [What is a hash function?](#what-is-a-hash-function)
   - [Hashing is not encryption](#hashing-is-not-encryption)
   - [Cryptographic hash functions](#cryptographic-hash-functions)
+  - [Storing hashed passwords](#storing-hashed-passwords)
+    - [Salting](#salting)
 - [bcrypt](#bcrypt)
   - [Using bcrypt to hash a password](#using-bcrypt-to-hash-a-password)
     - [Using bcrypt with Express and Mongoose](#using-bcrypt-with-express-and-mongoose)
@@ -120,6 +122,52 @@ A [cryptographic hash function][hash] is a [hash function][hash-non-crypto] that
 * It is infeasible to generate a message from its hash value except by trying all possible messages (**one-way**).
 * A small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value.
 * It is infeasible to find two different messages with the same hash value (collisions).
+
+### Storing hashed passwords
+
+The properties of a hash function make it suitable for securely verifying
+users' passwords without actually storing them:
+
+* When the user **registers** the first time, their password is hashed. **Only
+  the hash is stored** in the database. The plain password is not kept.
+* When the user comes back later to **log in**, the password is passed through
+  the same hash function. **If the hash is the same, the password is the correct
+  one** (in all probability).
+
+If the database of such a service is compromised, a hacker does not get the
+actual passwords, only the hashes, which are not reversible due to the
+properties of a cryptographic hash function.
+
+> This is also why most secure services cannot tell you what your current
+> password is, because they do not store it. They can only verify that it is the
+> correct one when you log in.
+
+#### Salting
+
+Using only a hash function is vulnerable to [rainbow tables][rainbow-table]: a
+hacker may precompute the hashes for the most common passwords in advance. With
+such a table, the password could be deduced from the hash.
+
+The addition of a [**salt**][salt] solves this problem. A salt is a random piece
+of data. In the simplest implementation, it is concatenated with your password
+before the hash function is applied.
+
+```js
+// Without salt, vulnerable to rainbow table attacks.
+hashFunction(password);
+
+// With salt, generating rainbow tables for all
+// possible salts is virtually impossible.
+const salt = generateRandomBytes();
+hashFunction(password + salt);
+```
+
+If you generate a different salt for each user account and store it alongside
+the hashed password, you can reproduce the same hash when the user logs in.
+
+Salting makes it impractical to generate rainbow tables because it would require
+too much computing power and storage, since you would have to generate the
+tables for all possible salts (a potentially infinite number).
 
 
 
@@ -530,7 +578,6 @@ router.post('/things/:id', `authenticate`, function(req, res, next) {
 
 ## TODO
 
-* Hash with salts
 * bcrypt cost factor
 * PBKDF2 alternative
 
@@ -547,4 +594,5 @@ router.post('/things/:id', `authenticate`, function(req, res, next) {
 [jwt]: https://jwt.io
 [jwt-claims]: https://www.iana.org/assignments/jwt/jwt.xhtml
 [mongoose]: https://mongoosejs.com
+[rainbow-table]: https://en.wikipedia.org/wiki/Rainbow_table
 [salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)
