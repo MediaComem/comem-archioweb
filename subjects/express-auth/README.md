@@ -181,16 +181,17 @@ An adaptive password hashing function.
 
 ### Using bcrypt to hash a password
 
-The npm `bcrypt` package provides an implementation of bcrypt.
-Simply use its `hash` function to generate a bcrypt hash from a password.
+The [`bcrypt` package][bcrypt-npm] provides an implementation of the
+[bcrypt][bcrypt] password-hashing function. Simply use its `hash` function to
+generate a bcrypt hash from a password.
 
 ```js
 const bcrypt = require('bcrypt');
 
 const plainPassword = 'changeme';
-const saltRounds = 10;
+const costFactor = 10;
 
-bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
+bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
   // Store the hashed password in your database.
 });
 ```
@@ -210,9 +211,9 @@ const User = require('../models/user');
 router.post('/', function(req, res, next) {
 
   const plainPassword = req.body.password;
-  const saltRounds = 10;
+  const cost = 10;
 
-* bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
+* bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
     if (err) {
       return next(err);
     }
@@ -272,7 +273,8 @@ The asynchronous callback will be called with **a boolean indicating whether the
 
 #### Verifying a password with Express and Mongoose
 
-Here's a password verification example for a hypothetical login route in an Express application using Mongoose:
+Here's a password verification example for a hypothetical login route in an
+Express application using Mongoose:
 
 ```js
 const bcrypt = require('bcrypt');
@@ -491,7 +493,6 @@ const User = require('../models/user');
 const secretKey = process.env.SECRET_KEY || 'changeme';
 
 function authenticate(req, res, next) {
-
   // Ensure the header is present.
   const authorization = req.get('Authorization');
   if (!authorization) {
@@ -586,6 +587,7 @@ router.post('/things/:id', `authenticate`, function(req, res, next) {
 
 
 [bcrypt]: https://en.wikipedia.org/wiki/Bcrypt
+[bcrypt-npm]: https://www.npmjs.com/package/bcrypt
 [express]: https://expressjs.com
 [hash]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
 [hash-function]: https://en.wikipedia.org/wiki/Hash_function
