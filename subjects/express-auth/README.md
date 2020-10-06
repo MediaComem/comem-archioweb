@@ -211,7 +211,7 @@ const User = require('../models/user');
 router.post('/', function(req, res, next) {
 
   const plainPassword = req.body.password;
-  const cost = 10;
+  const costFactor = 10;
 
 * bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
     if (err) {
