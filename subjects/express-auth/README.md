@@ -18,7 +18,7 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
 - [Security concepts](#security-concepts)
 - [Storing passwords securely](#storing-passwords-securely)
   - [What is a hash function?](#what-is-a-hash-function)
-  - [Encryption vs. hashing](#encryption-vs-hashing)
+  - [Hashing is not encryption](#hashing-is-not-encryption)
   - [Cryptographic hash functions](#cryptographic-hash-functions)
 - [bcrypt](#bcrypt)
   - [Using bcrypt to hash a password](#using-bcrypt-to-hash-a-password)
@@ -88,7 +88,7 @@ The value returned by a hash function is called a hash value, a **digest**, or s
 
 <img class='w100' src='images/hash-function.jpg' />
 
-### Encryption vs. hashing
+### Hashing is not encryption
 
 <!-- slide-column -->
 
