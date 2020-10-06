@@ -325,7 +325,7 @@ It is an alternative to cookies, with the following advantages:
 
 ### JSON Web Token (JWT)
 
-A JSON Web Token is a special format for authentication tokens:
+A [JSON Web Token][jwt] is a special format for authentication tokens:
 
 <p class='center'><img class='w100' src='images/jwt.png' /></p>
 
