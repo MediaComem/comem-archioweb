@@ -44,7 +44,14 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
   - [Sample login route](#sample-login-route)
   - [Sample Express JWT authentication middleware](#sample-express-jwt-authentication-middleware)
     - [Using the authentication middleware](#using-the-authentication-middleware)
-    - [Performing authorization](#performing-authorization)
+- [Authorization](#authorization)
+  - [Enforcing permissions](#enforcing-permissions)
+    - [Checking the owner](#checking-the-owner)
+  - [Using roles](#using-roles)
+    - [Extracting roles from the JWT](#extracting-roles-from-the-jwt)
+    - [Writing an authorization middleware](#writing-an-authorization-middleware)
+    - [Enforcing roles](#enforcing-roles)
+    - [Augmenting permissions](#augmenting-permissions)
 - [References](#references)
 - [TODO](#todo)
 
@@ -384,7 +391,7 @@ const jwt = require('jsonwebtoken');
 // Retrieve the secret key from your configuration.
 const secretKey = process.env.SECRET_KEY || 'changeme';
 // UNIX timstamp representing a date in 7 days.
-const exp = (new Date().getTime() + 7 * 24 * 3600 * 1000) / 1000;
+const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
 
 // Create and sign a token.
 *jwt.sign({ sub: 'userId42', exp: exp }, secretKey, function(err, token) {
@@ -475,9 +482,9 @@ router.post('/login', function(req, res, next) {
       else if (`!valid`) { return res.sendStatus(401); }
 
       // Generate a valid JWT which expires in 7 days.
-      const exp = (new Date().getTime() + 7 * 24 * 3600 * 1000) / 1000;
-      const claims = { sub: `user._id.toString()`, exp: exp };
-      jwt.sign(claims, secretKey, function(err, token) {
+      const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
+      const payload = { sub: `user._id.toString()`, exp: exp };
+      jwt.sign(payload, secretKey, function(err, token) {
         if (err) { return next(err); }
         res.send({ token: token }); // Send the token to the client.
       });
@@ -498,13 +505,11 @@ function authenticate(req, res, next) {
   if (!authorization) {
     return res.status(401).send('Authorization header is missing');
   }
-
   // Check that the header has the correct format.
   const match = authorization.match(/^Bearer (.+)$/);
   if (!match) {
     return res.status(401).send('Authorization header is not a bearer token');
   }
-
   // Extract and verify the JWT.
   const token = match[1];
   jwt.verify(token, secretKey, function(err, payload) {
@@ -535,13 +540,30 @@ router.post('/things', `authenticate`, function(req, res, next) {
 
 > If you need the whole user object, you can always find it from the ID with `User.findById` or `User.findOne`.
 
-#### Performing authorization
+You may also use an existing library which will verify the token for you instead
+of writing the code yourself, like [express-jwt][express-jwt].
 
-Even once you have made sure the user is **authenticated**, your job is not necessarily done.
-You may still have to check whether the user is **authorized** to perform the action.
+
+
+## Authorization
+
+<!-- slide-front-matter class: center, middle -->
+
+<p class='center'><img class='w80' src='images/access-denied.jpg' /></p>
+
+### Enforcing permissions
+
+Even once you have made sure the user is **authenticated**, your job is not
+necessarily done. You may still have to check whether the user is **authorized**
+to perform the action.
 
 For example, let's assume a user can only modify the things he or she created.
-Here's an example of how you could check that:
+When a thing is modified, you have to check **whether the currently
+authenticated user is the one who actually created that thing**.
+
+#### Checking the owner
+
+Here's an example of how you could do that:
 
 ```js
 router.put('/things/:id', `authenticate`, function(req, res, next) {
@@ -563,7 +585,131 @@ router.put('/things/:id', `authenticate`, function(req, res, next) {
 });
 ```
 
+### Using roles
 
+If your application requires more advanced permissions than just checking the
+owner, you can define simple static **roles**, such as "administrator"; or you
+can go all the way and define individual permissions and roles that can be
+dynamically configured in your database.
+
+In both cases, an interesting property of JWTs is that you can store anything in
+them, such as a user's permissions:
+
+```js
+const payload = {
+  exp: Math.floor(Date.now() / 1000) + 7 * 24 * 3600, // Expire in 7 days.
+  sub: user._id.toString(), // The subject (who is authenticated).
+* scope: 'admin' // Include permissions in the payload.
+};
+
+jwt.sign(payload, secretKey, function(err, token) {
+  if (err) { return next(err); }
+  res.send({ token: token }); // Send the token to the client.
+});
+```
+
+> The `scope` claim is an officially [registered claim][jwt-claims] which was
+> defined in [RFC 8693 OAuth 2.0 Token Exchange][jwt-scope].
+
+#### Extracting roles from the JWT
+
+To use the roles or permissions you have defined, you must extract them from the
+JWT when verifying it, and pass it further along the middleware chain just like
+the subject. You could modify the `authenticate` middleware to do this:
+
+```js
+// Extract and verify the JWT.
+const token = match[1];
+jwt.verify(token, secretKey, function(err, payload) {
+  if (err) {
+    return res.status(401).send('Your token is invalid or has expired');
+  } else {
+
+    // Attach authentication information to the
+    // request for the next middleware.
+    req.currentUserId = payload.sub;
+
+*   // Obtain the list of permissions from the "scope" claim.
+*   const scope = payload.scope;
+*   req.currentUserPermissions = scope ? scope.split(' ') : [];
+
+    next();
+  }
+});
+```
+
+#### Writing an authorization middleware
+
+You could write a simple factory function to create Express middlewares that
+check whether a user has a role or permission:
+
+```js
+function authorize(requiredPermission) {
+  // Create an return an authorization middleware. The required permission
+  // will be available in the returned function because it is a closure.
+  return function authorizationMiddleware(req, res, next) {
+    if (!req.currentUserPermissions) {
+      // The user is not authenticated or has no permissions.
+      return res.sendStatus(403);
+    }
+
+    const authorized = req.currentUserPermissions.includes(requiredPermission);
+    if (!authorized) {
+      // The user is authenticated but does not have the required permission.
+      return res.sendStatus(403);
+    }
+
+    // The user is authorized.
+    next();
+  };
+}
+```
+
+#### Enforcing roles
+
+You can then use this function to add authorization middleware to your routes.
+For example, you could require a specific permission before allowing access to a
+route:
+
+```js
+router.put('/protected/route', `authorize('admin')`, function(req, res, next) {
+  // Do admin stuff...
+});
+```
+
+You may also use an existing library which will verify permissions for you
+instead of writing the code yourself, like
+[express-jwt-permissions][express-jwt-permissions].
+
+#### Augmenting permissions
+
+Or you could use a role to grant further permissions to a route accessible by
+normal users. For example, a user may not be able to edit another user's things,
+but maybe an administrator is allowed to:
+
+```js
+// All authenticated users can access this route.
+router.put('/things/:id', `authenticate`, function(req, res, next) {
+  // Get the thing.
+  Thing.findById(req.params.id).exec(function(err, thing) {
+    if (err) {
+      return next(err);
+    }
+
+*   // The user is authorized to edit the thing only if he or she is
+*   // the owner of the thing, or if he or she is an administrator.
+*   const authorized =
+*     req.currentUserPermissions.includes('admin') ||
+*     req.currentUserId === thing.user.toString();
+*
+*   if (!authorized) {
+*     return res.status(403).send('Please mind your own things.')
+*   }
+
+    // Do what needs to be done...
+  });
+});
+```
 
 
 
@@ -589,12 +735,15 @@ router.put('/things/:id', `authenticate`, function(req, res, next) {
 [bcrypt]: https://en.wikipedia.org/wiki/Bcrypt
 [bcrypt-npm]: https://www.npmjs.com/package/bcrypt
 [express]: https://expressjs.com
+[express-jwt]: https://github.com/auth0/express-jwt
+[express-jwt-permissions]: https://www.npmjs.com/package/express-jwt-permissions
 [hash]: https://en.wikipedia.org/wiki/Cryptographic_hash_function
 [hash-function]: https://en.wikipedia.org/wiki/Hash_function
 [hash-non-crypto]: https://en.wikipedia.org/wiki/Hash_function
 [hmac]: https://en.wikipedia.org/wiki/HMAC
 [jwt]: https://jwt.io
 [jwt-claims]: https://www.iana.org/assignments/jwt/jwt.xhtml
+[jwt-scope]: https://tools.ietf.org/html/rfc8693#section-4.2
 [mongoose]: https://mongoosejs.com
 [rainbow-table]: https://en.wikipedia.org/wiki/Rainbow_table
 [salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)
