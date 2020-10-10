@@ -3,17 +3,18 @@
 Your REST APIs should always be documented. Your users need to know:
 
 * The purpose of your API and each operation in it.
-* What requests can be made, including which parameters can be sent in the URL
-  path, URL query parameters, headers and the request body. Parameter
+* What HTTP requests can be made, including which parameters can be sent in the
+  URL path, URL query parameters, headers and the request body. Parameter
   constraints, e.g. validations, should also be documented.
-* What responses they will receive, including the status code and headers the
-  response may have, and what will be in the response body.
+* What HTTP responses they will receive, including the status code and headers
+  the response may have, and what will be in the response body.
 
 They should know this by reading your documentation before ever having to test
 your API. This will greatly improve their experience and understanding.
 
-This guide suggests two ways to documenta REST API: [OpenAPI](#openapi) and
-[apiDoc](#apidoc).
+This guide suggests two ways to document a REST API: [OpenAPI/Swagger](#openapi)
+and [apiDoc](#apidoc). These are [not the only ways](#alternatives), but they
+are popular tools.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -44,15 +45,16 @@ specification within the [OpenAPI initiative][openapi]. It defines a standard,
 programming language-agnostic interface description for HTTP APIs, which allows
 both humans and computers to discover and understand the capabilities of a
 service without requiring access to source code, additional documentation, or
-inspection of network traffic
+inspection of network traffic.
 
 [Swagger][swagger] is a suite of open source tools which can be used with an
 OpenAPI document.
 
 ### What it looks like
 
-An OpenAPI document is a [JSON][json] or [YAML][yaml] document which follows
-the specification. Here's a short example in the YAML format:
+An OpenAPI document is a [JSON][json] or [YAML][yaml] document which follows the
+specification. Here's a short sample document which defines one API route (in
+the YAML format):
 
 ```yml
 openapi: 3.0.3
@@ -125,8 +127,8 @@ Be aware that when using [swagger-ui-express][swagger-ui-express], you are using
 the [Swagger OpenAPI specification][swagger-spec]. You should use that as your
 reference.
 
-The Swagger UI is kept automatically up to date every time you launch your
-Express application.
+With the code above, the Swagger UI is kept automatically up to date every time
+you launch your Express application.
 
 > If you use [nodemon][nodemon] and have a `nodemon.json` configuration file,
 > remember to add your `openapi.json` or `openapi.yml` file to the `watch` list
@@ -139,17 +141,15 @@ Express application.
   have a chunk of your documentation that is the same for several routes.
 * Document **validation constraints** by including [JSON schemas][json-schema]
   in your OpenAPI document. A JSON schema is a standard way of validating a JSON
-  document.
-
-  Use the [JSON Schema Reference][json-schema-reference] and the [JSON Schema
-  Validation draft][json-schema-validation] as your references.
+  document. Use the [JSON Schema Reference][json-schema-reference] and the [JSON
+  Schema Validation draft][json-schema-validation] as your references.
 
 
 
 ## apiDoc
 
-[apiDoc][apiDoc] creates a documentation from API annotations in your source
-code.
+[apiDoc][apiDoc] creates a user-friendly documentation page from API annotations
+in your source code.
 
 ### What it looks like
 
@@ -188,7 +188,7 @@ Move into your project's directory and run apiDoc with two options:
 
 ```bash
 $> cd /path/to/projects/my-project
-$> apidoc -i `routes` -o `docs`
+$> apidoc -i routes -o docs
 warn: Please create an apidoc.json configuration file.
 info: Done.
 ```
@@ -230,7 +230,7 @@ Add an `apidoc` script to your `package.json` file:
     "apidoc": "apidoc -i routes -o docs",
     "...": "..."
   },
-  ...
+  "...": "..."
 }
 ```
 
@@ -271,10 +271,10 @@ time you modify an apiDoc comment.
 
   ```js
   /**
-   * @apiParam `(URL path parameters)` {String} id The movie's unique identifier
-   * @apiParam `(URL query parameters)` {Number} page The page to retrieve
-   * @apiParam `(Request body)` {String} title The movie's title
-   * @apiParam `(Request body)` {Number} rating The movie's rating
+   * @apiParam (URL path parameters) {String} id The movie's unique identifier
+   * @apiParam (URL query parameters) {Number} page The page to retrieve
+   * @apiParam (Request body) {String} title The movie's title
+   * @apiParam (Request body) {Number} rating The movie's rating
    */
   ```
 
