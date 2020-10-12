@@ -351,11 +351,19 @@ Continue this process until the feature is finalized.
 
 Working like this will improve code quality because it **forces you to really
 think about your features up front** to write the tests, before even starting to
-write one line of production code.
+write one line of production code. This will improve your design.
 
 Imagine that you are always working with this process. **At any given point in
 time, virtually all your code is covered by at least one automated test.** You
 will end up with a very high-quality test suite for your project.
+
+Having a high-quality test suite will:
+
+* Help ensure you maintain high quality by preventing
+  [regression][regression-testing].
+* Help someone who is not familiar with the code (*that could be you in 6
+  months*) be sure that they have not broken anything when adding new features
+  or fixing bugs.
 
 ### The three laws of TDD
 
@@ -416,6 +424,7 @@ will end up with a very high-quality test suite for your project.
 [python-unittest]: https://docs.python.org/3/library/unittest.html
 [qa]: https://en.wikipedia.org/wiki/Quality_assurance
 [quick]: https://github.com/Quick/Quick
+[regression-testing]: https://en.wikipedia.org/wiki/Regression_testing
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [robotium]: https://github.com/RobotiumTech/robotium
 [rpc]: https://en.wikipedia.org/wiki/Remote_procedure_call
