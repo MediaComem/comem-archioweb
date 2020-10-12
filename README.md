@@ -72,8 +72,9 @@ This course is a [COMEM+][comem] web development course taught at
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3394602/mod_resource/content/1/ArchiOWeb%202020-10-05%20part%202%20Using%20Mongoose%20with%20Express.mp4)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3395487/mod_resource/content/1/ArchiOWeb%202020-10-06%20Express%20Authentication.mp4)
+    * [*Video 1*](https://cyberlearn.hes-so.ch/pluginfile.php/3395487/mod_resource/content/1/ArchiOWeb%202020-10-06%20Express%20Authentication.mp4) & [*Video 2*](https://cyberlearn.hes-so.ch/pluginfile.php/3400630/mod_resource/content/2/ArchiOWeb%202020-10-12%20part%201%20Authorization.mp4)
   * [*Guide:* document a REST API](./guides/api-documentation.md)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3400634/mod_resource/content/1/ArchiOWeb%202020-10-12%20part%202%20REST%20API%20Documentation.mp4)
   * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
   * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
