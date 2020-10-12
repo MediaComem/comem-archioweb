@@ -294,7 +294,7 @@ the end of each subject.
 [cordova-plugins]: https://cordova.apache.org/docs/en/latest/#plugin-apis
 [demo-api]: https://github.com/MediaComem/comem-rest-demo
 [demo-api-apidoc]: https://mediacomem.github.io/comem-rest-demo/
-[demo-api-openapi]: https://mediacomem.github.io/comem-rest-demo/swagger/
+[demo-api-openapi]: https://comem-rest-demo.herokuapp.com/swagger/
 [diagrams]: diagrams.pdf
 [express]: https://expressjs.com
 [git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md
