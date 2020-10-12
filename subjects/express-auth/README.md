@@ -672,9 +672,16 @@ For example, you could require a specific permission before allowing access to a
 route:
 
 ```js
-router.put('/protected/route', `authorize('admin')`, function(req, res, next) {
-  // Do admin stuff...
-});
+router.put(
+  '/protected/route',
+  // Authenticate before authorization.
+  authenticate,
+  // Ensure only administrators can access this route.
+  `authorize('admin')`,
+  function(req, res, next) {
+    // Do admin stuff...
+  }
+);
 ```
 
 You may also use an existing library which will verify permissions for you
