@@ -104,7 +104,7 @@ This course is a [COMEM+][comem] web development course taught at
 **Documentation**
 
 * [Architecture & source code management diagrams][diagrams]
-* [Demonstration REST API implemented with Express][demo-api] ([documentation][demo-api-doc])
+* [Demonstration REST API implemented with Express][demo-api] ([OpenAPI documentation][demo-api-openapi], [apiDoc documentation][demo-api-apidoc])
 * [Project suggestions](PROJECTS.md)
 
 **Other**
@@ -293,7 +293,8 @@ the end of each subject.
 [comem]: http://www.heig-vd.ch/comem
 [cordova-plugins]: https://cordova.apache.org/docs/en/latest/#plugin-apis
 [demo-api]: https://github.com/MediaComem/comem-rest-demo
-[demo-api-doc]: https://mediacomem.github.io/comem-rest-demo/
+[demo-api-apidoc]: https://mediacomem.github.io/comem-rest-demo/
+[demo-api-openapi]: https://mediacomem.github.io/comem-rest-demo/swagger/
 [diagrams]: diagrams.pdf
 [express]: https://expressjs.com
 [git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/master/GIT-CHEATSHEET.md
