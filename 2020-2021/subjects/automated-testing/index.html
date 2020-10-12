@@ -3,7 +3,7 @@
   <head>
     <title>Automated Testing (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/206794e7cb4d78dd915ae5a898c0c45fe21fc44d/subjects/automated-testing/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/e0a49921ed564ec74967025c62ecbd1bfab09442/subjects/automated-testing/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -437,11 +437,19 @@ Continue this process until the feature is finalized.
 
 Working like this will improve code quality because it **forces you to really
 think about your features up front** to write the tests, before even starting to
-write one line of production code.
+write one line of production code. This will improve your design.
 
 Imagine that you are always working with this process. **At any given point in
 time, virtually all your code is covered by at least one automated test.** You
 will end up with a very high-quality test suite for your project.
+
+Having a high-quality test suite will:
+
+* Help ensure you maintain high quality by preventing
+  [regression][regression-testing].
+* Help someone who is not familiar with the code (*that could be you in 6
+  months*) be sure that they have not broken anything when adding new features
+  or fixing bugs.
 
 ---
 class: center, middle, image-header
@@ -509,6 +517,7 @@ class: center, middle, image-header
 [python-unittest]: https://docs.python.org/3/library/unittest.html
 [qa]: https://en.wikipedia.org/wiki/Quality_assurance
 [quick]: https://github.com/Quick/Quick
+[regression-testing]: https://en.wikipedia.org/wiki/Regression_testing
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
 [robotium]: https://github.com/RobotiumTech/robotium
 [rpc]: https://en.wikipedia.org/wiki/Remote_procedure_call
