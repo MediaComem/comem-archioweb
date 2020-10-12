@@ -144,6 +144,8 @@ you launch your Express application.
   in your OpenAPI document. A JSON schema is a standard way of validating a JSON
   document. Use the [JSON Schema Reference][json-schema-reference] and the [JSON
   Schema Validation draft][json-schema-validation] as your references.
+* The [swagger-jsdoc][swagger-jsdoc] package allows you to put each route's
+  documentation in a comment next to the route if that's your thing.
 
 
 
@@ -319,6 +321,7 @@ time you modify an apiDoc comment.
 [slate]: https://github.com/lord/slate
 [swagger]: https://swagger.io
 [swagger-editor]: https://editor.swagger.io
+[swagger-jsdoc]: https://github.com/Surnet/swagger-jsdoc/blob/master/docs/GETTING-STARTED.md
 [swagger-spec]: https://swagger.io/specification/
 [swagger-ui-express]: https://www.npmjs.com/package/swagger-ui-express
 [yaml]: https://yaml.org
