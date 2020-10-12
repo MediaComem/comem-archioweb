@@ -45,7 +45,7 @@ the following tools:
 
 ## Requirements
 
-* [Node.js][node] 12.x
+* [Node.js][node] 12+
 * You are using [npm][npm] to manage your dependencies.
 * A working [Express.js][express] application providing the HTTP API you wish to
   test.
