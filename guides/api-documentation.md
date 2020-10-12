@@ -196,6 +196,14 @@ info: Done.
 
 Open the generated `docs/index.html` file in your browser to see the result.
 
+You can make your application serve this documentation by using the
+[`express.static` middleware][express-static]:
+
+```js
+// Serve the apiDoc documentation.
+app.use('/apidoc', express.static(path.join(__dirname, 'docs')));
+```
+
 #### Using a configuration file
 
 It's good practice to create an `apidoc.json` file in your project's directory
@@ -294,6 +302,7 @@ time you modify an apiDoc comment.
 [apidoc-params]: https://apidocjs.com/#params
 [example-apidoc]: https://comem-rest-demo.herokuapp.com
 [example-openapi]: https://comem-rest-demo.herokuapp.com/swagger/
+[express-static]: https://expressjs.com/en/starter/static-files.html
 [js-yaml]: https://www.npmjs.com/package/js-yaml
 [json]: https://www.json.org
 [json-schema]: https://json-schema.org
