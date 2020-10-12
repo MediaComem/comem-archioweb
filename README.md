@@ -76,12 +76,14 @@ This course is a [COMEM+][comem] web development course taught at
   * [*Guide:* document a REST API](./guides/api-documentation.md)
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3400634/mod_resource/content/1/ArchiOWeb%202020-10-12%20part%202%20REST%20API%20Documentation.mp4)
   * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
-  * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
-  * [*Extra:* Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
+
+* *Extras*
+  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 
 
