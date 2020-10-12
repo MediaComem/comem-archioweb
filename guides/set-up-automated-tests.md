@@ -196,14 +196,14 @@ variable. For example, your `app.js` file may contain a line that looks like
 this:
 
 ```js
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/my-app', {
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/my-app', {
   // Options...
 });
 ```
 
 This means that you can easily switch the database URL by setting the
-`$MONGODB_URI` environment variable. This is useful not only when deploying in a
-production environment, but also for the test environment.
+`$DATABASE_URL` environment variable. This is useful not only when deploying in
+a production environment, but also for the test environment.
 
 To avoid setting this variable by hand every time, you can use the [`cross-env`
 package][cross-env] which sets environment variables in a
@@ -218,11 +218,11 @@ like this:
 
 ```json
 "scripts": {
-  "test": "cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test mocha spec/**/*.spec.js"
+  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test mocha spec/**/*.spec.js"
 }
 ```
 
-This switches the `$MONGODB_URI` variable to another value before running your
+This switches the `$DATABASE_URL` variable to another value before running your
 tests. In this example, it connects to the `my-app-test` database on
 `127.0.0.1` (localhost) instead of the `my-app` database. That way, your tests
 will modify a separate database without touching your development data.
@@ -355,7 +355,7 @@ To get rid of it, set the `useCreateIndex` option to true in your
 `mongoose.connect` call (presumably in `app.js`):
 
 ```js
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/my-app', {
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/my-app', {
   // <PREVIOUS OPTIONS HERE...>
   useCreateIndex: true
 });
@@ -414,7 +414,7 @@ To avoid setting this variable every time, you can use `cross-env` again.
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js"
+  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js"
 }
 ```
 
@@ -647,7 +647,7 @@ has 2 users:
 ```bash
 $> npm test
 > my-app@0.0.0 test /path/to/my-app
-> cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js
+> cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js
 
   POST /users
     ✓ should create a user (104ms)
@@ -740,7 +740,7 @@ right before the `mocha` command:
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env MONGODB_URI=mongodb://127.0.0.1/my-app-test NODE_ENV=test nyc --reporter=html mocha spec/**/*.spec.js"
+  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test NODE_ENV=test nyc --reporter=html mocha spec/**/*.spec.js"
 }
 ```
 
