@@ -404,6 +404,10 @@ const `ws` = new WebSocket('ws://localhost:3000');
   * [HTTP/2 server push][http2-push]
 * [TCP Presentation][tcp]
 
+**Going further**
+
+* [Web Application Messaging Protocol (WAMP)](../wamp/)
+
 
 
 ## TODO
