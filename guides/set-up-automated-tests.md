@@ -555,6 +555,12 @@ check important headers, check the response body.
 > were not expecting. That way, when you add more properties to your schema, the
 > test will remind you that you should add new assertions.
 >
+> You may have the additional `__v` property which is a default version added by
+> Mongoose for [optimistic concurrency
+> control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control). If it
+> makes your test fail, you can either remove it from the model's serialization,
+> or modify the assertions in your test to take it into account.
+>
 > If you wanted to go further, you could also check that the created user has
 > actually been saved to the database. There could conceivable be a bug where
 > the API gives you the correct answer even though it saved something slightly
