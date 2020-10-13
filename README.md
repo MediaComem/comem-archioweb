@@ -78,7 +78,8 @@ This course is a [COMEM+][comem] web development course taught at
   * [*Guide:* document a REST API](./guides/api-documentation.md)
     * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3400634/mod_resource/content/1/ArchiOWeb%202020-10-12%20part%202%20REST%20API%20Documentation.mp4)
   * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3402300/mod_resource/content/1/ArchiOWeb%202020-10-13%20Automated%20Testing.mp4)
+    * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
