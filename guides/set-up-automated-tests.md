@@ -34,6 +34,7 @@ the following tools:
 - [Reproducible tests](#reproducible-tests)
 - [Write more detailed assertions](#write-more-detailed-assertions)
 - [Write a second test](#write-a-second-test)
+- [Optional: authenticate](#optional-authenticate)
 - [Test fixtures](#test-fixtures)
 - [Am I testing every possible scenario?](#am-i-testing-every-possible-scenario)
 - [Optional: check your test coverage](#optional-check-your-test-coverage)
@@ -595,13 +596,50 @@ expect(res.body).to.have.lengthOf(0);
 
 
 
+## Optional: authenticate
+
+If you have previously set up token-based authentication for the `GET /users`
+route during this course's previous tutorials, the test will fail because the
+request is not properly authenticated. You must send a valid bearer token in the
+`Authorization` header.
+
+Add this function somewhere in the test file outside the `describe` blocks. You
+can use it later to generate a valid token:
+
+```js
+const jwt = require('jsonwebtoken');
+const config = require('../config');
+
+function generateValidJwt(user) {
+  // Generate a valid JWT which expires in 7 days.
+  const exp = (new Date().getTime() + 7 * 24 * 3600 * 1000) / 1000;
+  const claims = { sub: user._id.toString(), exp: exp };
+  return new Promise((resolve, reject) => {
+    jwt.sign(claims, config.secretKey, function(err, token) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(token);
+    });
+  });
+}
+```
+
+But you need a pre-existing user in the database before you can generate a
+token. And the database is currently empty when the test runs since it is
+cleaned before each test runs.
+
+
+
 ## Test fixtures
 
 In the case of the `POST /users` test, it was necessary to have an empty
 database to avoid issues with the unicity constraint. But it's a bit of a
 problem for the `GET /users` test: with the database empty, the API will always
 respond with an empty list. That's not a really good test of the list
-functionality.
+functionality. Also, if you have authentication in place, you need a user to
+authenticate.
 
 You need specific data to already be in the database before you run the test, so
 that you will know what the expected result is. This is what's called a [test
@@ -628,18 +666,36 @@ Here's how it should look like:
 
 ```js
 describe('GET /users', function() {
+  let user;
   beforeEach(async function() {
     // Create 2 users before retrieving the list.
-    await Promise.all([
+    const users = await Promise.all([
       User.create({ name: 'John Doe' }),
       User.create({ name: 'Jane Doe' })
     ]);
+
+    // Retrieve a user to authenticate as.
+    user = users[0];
   });
 
   it('should retrieve the list of users', async function() {
     // ...
   });
 });
+```
+
+If the `GET /users` route requires authentication, modify your request to
+include a valid `Authorization` header with SuperTest's `set` method:
+
+```js
+const token = await generateValidJwt(user);
+const res = await supertest(app)
+  .get('/users')
+  .set('Authorization', `Bearer ${token}`)
+  .expect(200)
+  .expect('Content-Type', /json/);
+
+// ...
 ```
 
 If you run `npm test` now, your test will fail because you made an assertion
