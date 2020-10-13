@@ -19,15 +19,25 @@ Learn about the various kinds of automated tests.
 
 ### Manual testing
 
+<!-- slide-column -->
+
 When writing or modifying software, especially large software, you must
 regularly **test** it to make sure it works. **Manual testing** is basically
 testing the software yourself, whether it's a desktop or mobile application, or
 a website. You'll browse through the pages or screens, fill and submit forms,
 trigger actions, etc.
 
+<!-- slide-column -->
+
+<img class='w100' src='images/manual-testing.jpg' />
+
+#### Quality assurance
+
 In a large company, this might be handled by specialized [Quality Assurance
 (QA)][qa] engineers. Whether you or a QA engineer is doing it, manual testing
 has certain disadvantages:
+
+<!-- slide-column -->
 
 * It is **time-consuming**. Testing a large software application manually can
   take hours or even days. You might skip some tests to save time, allowing bugs
@@ -35,11 +45,23 @@ has certain disadvantages:
 * It is **boring** and **repetitive**. This makes it more likely that you will
   make a mistake while testing and miss a bug.
 
+<!-- slide-column 30 -->
+
+<img class='w100' src='images/time-consuming.jpg' />
+
 ### Automated testing
+
+<!-- slide-column -->
 
 Running functions, making HTTP calls or clicking on specific buttons does not
 have to be done by a human being. A program can do it just as well, *and it will
 never get bored doing it*.
+
+<!-- slide-column 35 -->
+
+<img class='w100' src='images/robot.jpg' />
+
+<!-- slide-container -->
 
 [**Test automation**][automated-tests] is the use of special **testing
 software**:
@@ -51,13 +73,19 @@ software**:
 
 ### Automated vs. manual
 
+<!-- slide-column -->
+
 **Automated tests are not a replacement for manual tests**. They are
 complementary in that they can be used to accelerate or automate tests that can
-be run by a machine instead of a human.
+be run by a machine instead of a human. But an automated test cannot think.
 
 Manual testers still have their place, but are better employed running complex
 or hard-to-reproduce tests which actually require a human being at the wheel, or
 finding ways to break your application.
+
+<!-- slide-column -->
+
+<p class='center'><img class='w100' src='images/thinker.png' /></p>
 
 ### Test frameworks
 
@@ -118,17 +146,19 @@ everybody agrees how they should be called:
 
 ### Yet another classification
 
-This is how we will separate the 3 main types of tests in this guide:
+This is one way to look at the different types of tests:
 
-Type                                     | What is tested                           | Properties
-:--------------------------------------- | :--------------------------------------- | :---------------------------
-[Unit tests][unit-testing]               | Things in isolation                      | Fastest, easiest to maintain
-[Integration tests][integration-testing] | Things together                          |
-[End-to-end tests][system-testing]       | Whole system from the user's perspective | Slower, harder to maintain
+Type                                     | What is tested                                                                               | Properties
+:--------------------------------------- | :------------------------------------------------------------------------------------------- | :----------------------------
+[Unit tests][unit-testing]               | Things in isolation.                                                                         | Fastest, easiest to maintain.
+[Integration tests][integration-testing] | A number of things plugged together.                                                         |
+[System tests][system-testing]           | Whole system from the user's perspective, often through the GUI; also known as "end-to-end". | Slower, harder to maintain.
 
-There are also other specialized types of tests which we will not focus on, like
-[performance tests][performance-testing], which can be used to test the response
-time or scalability of software or infrastructure.
+> There are also other specialized types of tests, like [API tests][api-testing]
+> which are used to test REST APIs; or [performance tests][performance-testing]
+> which can be used to test the response time or scalability of software and
+> infrastructure. You could consider they are a subtype of integration and
+> system tests.
 
 
 
@@ -144,18 +174,11 @@ The goal of [unit testing][unit-testing] is to test **individual units of source
 code in isolation**. You can view a **unit** as the **smallest testable part of
 your software**.
 
-For example, you might test an individual JavaScript function:
-
-```js
-function add(a, b) {
-  return a + b;
-}
-```
+<p class='center'><img class='w70' src='images/unit-test-exec.jpg' /></p>
 
 ### How to write a unit test
 
-When writing a unit test for a piece of code, you want to identify the
-**inputs** and **outputs** (or side effects) of that code.
+For example, you might test an individual JavaScript function.
 
 ```js
 function add(a, b) {
@@ -163,10 +186,11 @@ function add(a, b) {
 }
 ```
 
-In this case:
+When writing a unit test for a piece of code, you want to identify the
+**inputs** and **outputs** (or side effects) of that code. In this case:
 
-* There are two numbers as inputs, `a` and `b`.
-* There is one number as output.
+* There are **two numbers as inputs**, `a` and `b`.
+* There is **one number as output**.
 
 ### Assertions
 
@@ -192,14 +216,16 @@ compare the **actual** output value with the **expected** one.
 ### An implementation in JavaScript
 
 For example, this is how you could write those assertions with the
-[Mocha][mocha] test framework and the [Chai][chai] assertion library:
+[Mocha][mocha] test runner and the [Chai][chai] assertion library:
 
 ```js
+const { expect } = require('chai');
+
 describe('add', function() {
   it('should add two numbers together', function() {
-    const actual = add(2, 3);
-    const expected = 5;
-    expect(actual).to.equal(expected);
+*   const actual = add(2, 3);
+*   const expected = 5;
+*   expect(actual).to.equal(expected);
   });
 
   it('should add a positive number to a negative number', function() {
@@ -219,23 +245,10 @@ individual part is correct**.
 
 > Unit tests provide a strict, written contract.
 
-Unit tests **find problems early in the development cycle**.
-
-> The process of writing unit tests forces the programmer to think through
-> inputs, outputs, and error conditions, and thus more crisply define the unit's
-> desired behavior. The cost of finding a bug when the code is first written is
-> considerably lower than the cost of detecting, identifying, and correcting the
-> bug later.
-
 Unit tests may **reduce uncertainty** in the units themselves.
 
 > By testing the parts of a program first and then testing the sum of its parts,
 > integration testing becomes much easier.
-
-Unit tests provide a sort of **living documentation** of the system.
-
-> Looking at a unit's tests can give a basic understanding of the unit's
-> interface.
 
 #### Disadvantages of unit tests
 
@@ -244,13 +257,13 @@ evaluate every execution path in any but the most trivial programs. They will
 not catch integration errors or broader system-level errors.
 
 Software testing is a combinatorial problem. For every logical branch (true or
-false), a test case must be written, which is quite **time-consuming** and might
-not be worth the effort.
+false), a test case must be written, which is quite time-consuming and might not
+be worth the effort.
 
-To obtain the intended benefits from unit testing, **rigorous discipline is
-needed** throughout the software development process. You must keep track of
-which tests have been written already, which are missing, and ensure that
-failures are reviewed and addressed immediately.
+To obtain the intended benefits from unit testing, rigorous discipline is needed
+throughout the software development process. You must keep track of which tests
+have been written already, which are missing, and ensure that failures are
+reviewed and addressed immediately.
 
 
 
@@ -262,17 +275,14 @@ only individually as tested by unit tests.
 
 <p class='center'><img class='w70' src='images/integration-test-exec.jpg' /></p>
 
-The tools used to write integration tests are often the same as for unit tests,
-so you do not need to install any new library.
-
 ### Advantages and disadvantages of integration testing
 
 **Advantages**
 
 * Integration tests help **discover interfacing problems** between components.
-* Integration tests **catch system-level issues**, such as broken database
-  schema, mistaken cache integration, and so on, which might be difficult to
-  identify with unit tests.
+* Integration tests **catch system-level issues**, such as miscommunication,
+  broken database schema, mistaken cache integration, and so on, which might be
+  difficult to identify with unit tests.
 
 **Disadvantages**
 
@@ -284,19 +294,31 @@ so you do not need to install any new library.
 
 ## API tests
 
-[API testing][api-testing] is a part of [integration
-testing][integration-testing].
-
-Specifically, it involves **testing application programming interfaces (APIs)**
-directly to **determine if they meet expectations** for functionality,
+[API testing][api-testing] involves **testing application programming interfaces
+(APIs)** directly to **determine if they meet expectations** for functionality,
 reliability, performance and security.
 
 For example, your application may provide a [RESTful][rest] API or an [RPC][rpc]
 API accessible over the Internet. Automated tests can make HTTP calls to these
 APIs and compared actual outcomes with expected outcomes.
 
-> API tests are a type of integration test since they test all components of
-> your API working together.
+> **API tests can be considered a type of integration test** since they test
+> multiple components of your API working together.
+
+### How to write an API test
+
+The tools used to write integration tests are often the same as for unit tests.
+You might need additional tools depending on the type of test. For example, when
+testing a REST API, you will need to make HTTP requests somehow.
+
+But the basic principle is the same as for unit tests:
+
+* Think about the inputs (HTTP request) and outputs (HTTP response, database
+  changes, etc) of an API operation. In other words, define the **expected**
+  result of the operation.
+* Perform that API operation (make the HTTP request and retrieve the response).
+  In other words, get the **actual** result.
+* Make **assertions** to check that the actual result is as expected.
 
 ### Benefits of API tests
 
@@ -309,16 +331,70 @@ changes commonly used with iterative software development.
 
 
 
-## End-to-end tests
+## System tests
 
-End-to-end tests, or [Graphical User Interface (GUI) tests][gui-testing] are
-automated tests focused on testing the whole system from the user perspective.
+[System tests][system-testing], often end-to-end [Graphical User Interface (GUI)
+tests][gui-testing], are focused on testing the whole system from the user's
+perspective.
 
 <p class='center'><img class='w70' src='images/e2e-test-exec.jpg' /></p>
 
 For example, testing tools like [Selenium WebDriver][selenium-webdriver] allow
 you to control a browser and simulate a user by navigating to web pages, filling
 forms, clicking buttons, etc.
+
+### Advantages and disadvantages of integration testing
+
+**Advantages**
+
+* System tests are the only type of test that check that **your entire system
+  works as expected**.
+
+**Disadvantages**
+
+* System tests tend to be **complex** in that they require the whole system to
+  be properly set up for each test. Also, when an error occurs, it might not be
+  clear where exactly in the system it originated from.
+* Since system tests are often performed through the GUI, they also tend to be
+  **brittle**: they may break easily due to minor UI changes.
+
+
+
+## Ok, but...
+
+<!-- slide-front-matter class: center, middle -->
+
+<p class='center'><img class='w70' src='images/why.png' /></p>
+
+Why take the time and effort to write tests?
+
+### The benefits of automated tests
+
+Automated tests **find problems early in the development cycle**:
+
+> The process of writing unit tests forces the programmer to think through
+> inputs, outputs and error conditions, and thus more crisply define the
+> program's desired behavior. The cost of finding a bug when the code is first
+> written is considerably lower than the cost of detecting, identifying, and
+> correcting the bug later.
+
+Automated tests provide a sort of **living documentation** of the system:
+
+> Looking at a program's tests can give a basic understanding of its interface.
+
+### All green!
+
+Having a good automated test suite **prevents
+[regression][regression-testing]**.
+
+Imagine you had a [magic button](https://youtu.be/OrsT94FJOQc) which you can
+push to check whether everything in the system is still working. It might help
+someone who is not familiar with the code (**that could be you in 6 months**)
+to know that they have not broken the system after making a change.
+
+**Having a good test suite removes fear:** the fear of breaking your system. It
+enables you to move forward and to clean your code whenever you choose, thereby
+improving quality, because you can easily check that everything still works.
 
 
 
@@ -347,29 +423,23 @@ first, then writing your tests, you use this process:
 
 Continue this process until the feature is finalized.
 
-### Why the hell would I do that?
+### Why on earth would I do that?
 
-Working like this will improve code quality because it **forces you to really
-think about your features up front** to write the tests, before even starting to
-write one line of production code. This will improve your design.
+<!-- slide-column -->
 
 Imagine that you are always working with this process. **At any given point in
-time, virtually all your code is covered by at least one automated test.** You
-will end up with a very high-quality test suite for your project.
+time, virtually all your code is covered by automated tests.** The only code
+that may not yet be fully tested is the one you have been during since the last
+15 minutes.
 
-Having a high-quality test suite will:
+You will end up with a very high-quality test suite for your project.
 
-* Help ensure you maintain high quality by preventing
-  [regression][regression-testing].
-* Help someone who is not familiar with the code (*that could be you in 6
-  months*) be sure that they have not broken anything when adding new features
-  or fixing bugs.
+In other words, TDD will help you get *the magic button*. The one that allows to
+check that everything works whenever you want.
 
-### The three laws of TDD
+<!-- slide-column 45 -->
 
-<!-- slide-front-matter class: center, middle, image-header -->
-
-<img class='w50' src='images/the-three-laws-of-tdd.jpg' />
+<img class='w100' src='images/the-three-laws-of-tdd.jpg' />
 
 
 
@@ -387,9 +457,9 @@ Having a high-quality test suite will:
 * [Atlassian CI/CD - Types of Software Testing](https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing)
 * [I Don't Write Unit Tests Because... The Excuses](https://edwardthienhoang.wordpress.com/2014/10/29/i-dont-write-unit-tests-because-the-excuses/)
 * [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development)
+  * [*YouTube:* Expecting Profesionnalism – Robert C. Martin](https://youtu.be/BSaAMQVq01E)
   * [*YouTube:* GOTO 2017 – The Scribe's Oath – Robert C. Martin](https://youtu.be/Tng6Fox8EfI)
   * [*YouTube:* The Future of Programming – Robert C. Martin](https://youtu.be/ecIWPzGEbFc)
-  * [*YouTube:* Expecting Profesionnalism – Robert C. Martin](https://youtu.be/BSaAMQVq01E)
 
 
 
