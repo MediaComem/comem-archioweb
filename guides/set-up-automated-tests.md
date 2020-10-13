@@ -34,6 +34,8 @@ the following tools:
 - [Reproducible tests](#reproducible-tests)
 - [Write more detailed assertions](#write-more-detailed-assertions)
 - [Write a second test](#write-a-second-test)
+- [Test fixtures](#test-fixtures)
+- [Am I testing every possible scenario?](#am-i-testing-every-possible-scenario)
 - [Optional: check your test coverage](#optional-check-your-test-coverage)
 - [Tips](#tips)
   - [Chai](#chai)
@@ -593,7 +595,7 @@ expect(res.body).to.have.lengthOf(0);
 
 
 
-## Test fixtures
+## Test fixtures
 
 In the case of the `POST /users` test, it was necessary to have an empty
 database to avoid issues with the unicity constraint. But it's a bit of a
@@ -699,7 +701,7 @@ You are mainly testing 2 things here:
 
 
 
-## Am I testing every possible scenario?
+## Am I testing every possible scenario?
 
 You now have partial coverage on these two `POST /users` and `GET /users`
 routes. But the two tests you have written only cover the best case scenario:
