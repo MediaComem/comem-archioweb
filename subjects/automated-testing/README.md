@@ -343,7 +343,7 @@ For example, testing tools like [Selenium WebDriver][selenium-webdriver] allow
 you to control a browser and simulate a user by navigating to web pages, filling
 forms, clicking buttons, etc.
 
-### Advantages and disadvantages of integration testing
+### Advantages and disadvantages of system testing
 
 **Advantages**
 
