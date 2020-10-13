@@ -6,8 +6,42 @@ Learn about the various kinds of automated tests.
 
 * [Set up automated testing for an Express.js REST API](https://github.com/MediaComem/comem-archioweb/blob/master/guides/set-up-automated-tests.md)
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [What is automated testing?](#what-is-automated-testing)
+  - [Manual testing](#manual-testing)
+    - [Quality assurance](#quality-assurance)
+  - [Automated testing](#automated-testing)
+  - [Automated vs. manual](#automated-vs-manual)
+  - [Test frameworks](#test-frameworks)
+    - [Which test framework should I use?](#which-test-framework-should-i-use)
+  - [Types of automated tests](#types-of-automated-tests)
+  - [Yet another classification](#yet-another-classification)
+- [Unit tests](#unit-tests)
+- [What is a unit test?](#what-is-a-unit-test)
+  - [How to write a unit test](#how-to-write-a-unit-test)
+  - [Assertions](#assertions)
+  - [An implementation in JavaScript](#an-implementation-in-javascript)
+  - [Why write unit tests?](#why-write-unit-tests)
+    - [Disadvantages of unit tests](#disadvantages-of-unit-tests)
+- [Integration tests](#integration-tests)
+  - [Advantages and disadvantages of integration testing](#advantages-and-disadvantages-of-integration-testing)
+- [API tests](#api-tests)
+  - [How to write an API test](#how-to-write-an-api-test)
+  - [Benefits of API tests](#benefits-of-api-tests)
+- [System tests](#system-tests)
+  - [Advantages and disadvantages of system testing](#advantages-and-disadvantages-of-system-testing)
+- [Ok, but...](#ok-but)
+  - [The benefits of automated tests](#the-benefits-of-automated-tests)
+  - [All green!](#all-green)
+- [Test-Driven Development (TDD)](#test-driven-development-tdd)
+  - [What is test-driven development?](#what-is-test-driven-development)
+  - [Why on earth would I do that?](#why-on-earth-would-i-do-that)
+- [References](#references)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
