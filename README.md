@@ -83,7 +83,9 @@ This course is a [COMEM+][comem] web development course taught at
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3410291/mod_resource/content/1/ArchiOWeb%202020-10-26%20part%201%20WebSocket.mp4)
     * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
+      * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3410299/mod_resource/content/1/ArchiOWeb%202020-10-26%20part%202%20WebSocket%20Exercise.mp4)
 
 * *Extras*
   * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
