@@ -28,7 +28,7 @@
     "gulp": "^3.9.1",
     "gulp-chain": "^2.0.1",
     "gulp-util": "^3.0.8",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "lodash": "^4.17.4",
     "micromodal": "^0.3.0",
     "through2": "^2.0.3",
