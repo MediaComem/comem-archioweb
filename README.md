@@ -34,31 +34,24 @@ This course is a [COMEM+][comem] web development course taught at
 
 * Basics
   * [JavaScript](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372552/mod_resource/content/8/ArchiOWeb%202020-09-14%20part%201%20JavaScript.mp4)
-    * [*Exercises*](./exercises/javascript.md) ([solutions](./exercises/javascript-solutions.md))
+    * [*Exercises*](./exercises/javascript.md)
     * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Node.js](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
-    * [*Video 1*](https://cyberlearn.hes-so.ch/pluginfile.php/3372558/mod_resource/content/6/ArchiOWeb%202020-09-14%20part%202%20Node.js.mp4) & [*Video 2*](https://cyberlearn.hes-so.ch/pluginfile.php/3372559/mod_resource/content/6/ArchiOWeb%202020-09-14%20part%203%20Node.js.mp4)
-    * [*Exercises*](./exercises/node.md) ([solutions](./exercises/node-solutions))
+    * [*Exercises*](./exercises/node.md)
   * [npm](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372570/mod_resource/content/9/ArchiOWeb%202020-09-14%20part%204%20npm.mp4)
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372583/mod_resource/content/2/ArchiOWeb%202020-09-15%20part%201%20HTTP%20%20REST.mp4)
-    * [*Exercises*](./exercises/rest.md) ([solutions](./exercises/rest-solutions.md))
+    * [*Exercises*](./exercises/rest.md)
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372598/mod_resource/content/8/ArchiOWeb%202020-09-15%20part%202%20Express.js.mp4)
-    * [*Exercises*](./exercises/express.md) ([solutions](./exercises/express-solutions/routes))
+    * [*Exercises*](./exercises/express.md)
   * [MongoDB](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3372605/mod_resource/content/1/ArchiOWeb%202020-09-16%20part%203%20MongoDB.mp4)
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3387064/mod_resource/content/1/ArchiOWeb%202020-09-28%20Mongoose.mp4)
     * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
@@ -66,26 +59,18 @@ This course is a [COMEM+][comem] web development course taught at
 
 * Creating a REST API
   * [REST in depth](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3388586/mod_resource/content/1/ArchiOWeb%202020-09-29%20REST%20in%20depth.mp4)
   * [Express best practices](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3394597/mod_resource/content/1/ArchiOWeb%202020-10-05%20part%201%20Express%20Best%20Practices.mp4)
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3394602/mod_resource/content/1/ArchiOWeb%202020-10-05%20part%202%20Using%20Mongoose%20with%20Express.mp4)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video 1*](https://cyberlearn.hes-so.ch/pluginfile.php/3395487/mod_resource/content/1/ArchiOWeb%202020-10-06%20Express%20Authentication.mp4) & [*Video 2*](https://cyberlearn.hes-so.ch/pluginfile.php/3400630/mod_resource/content/2/ArchiOWeb%202020-10-12%20part%201%20Authorization.mp4)
 
 * Documenting and testing a REST API
   * [*Guide:* document a REST API](./guides/api-documentation.md)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3400634/mod_resource/content/1/ArchiOWeb%202020-10-12%20part%202%20REST%20API%20Documentation.mp4)
   * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3402300/mod_resource/content/1/ArchiOWeb%202020-10-13%20Automated%20Testing.mp4)
     * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3410291/mod_resource/content/1/ArchiOWeb%202020-10-26%20part%201%20WebSocket.mp4)
     * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
-      * [*Video*](https://cyberlearn.hes-so.ch/pluginfile.php/3410299/mod_resource/content/1/ArchiOWeb%202020-10-26%20part%202%20WebSocket%20Exercise.mp4)
 
 * *Extras*
   * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2020-2021/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -257,7 +242,8 @@ evaluation if implemented correctly. Here are some examples:
 
 ### Delivery
 
-Send an e-mail *no later than __November 9th 2020__* to Simon Oulevay with:
+Send an e-mail *no later than __November 15th 2021 at 23:59:59.999 CET__* to
+Simon Oulevay with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
