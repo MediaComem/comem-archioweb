@@ -3,6 +3,5 @@
 /config.local.js
 /node_modules
 /npm-debug.log
-/pdf
 /tmp
 /subjects/**/node_modules

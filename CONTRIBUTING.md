@@ -84,7 +84,6 @@ The following environment variables can be used for customization:
 * `$BROWSER` - The browser with which to open the slides when running the slides server (defaults to your system's browser)
 * `$BUILD_DIR` - The directory in which the generated HTML slides are saved (defaults to `build`)
 * `$LIVERELOAD_PORT` - The port on which the live-reload server is run (defaults to 35729)
-* `$PDF_BUILD_DIR` - The directory in which the generated PDF slides are saved (defaults to `pdf`)
 * `$PORT` - The port on which the slides server is run (defaults to 3000)
 * `$SOURCE_VERSION` - The branch/commit to which source links to GitHub (in the top-right corner of slides) will point to (defaults to the current branch, or the latest commit when using `npm run deploy`)
 * `$WEB_URL` - The URL to which the home link (in the top-right corner of slides) will point to (defaults to `https://mediacomem.github.io/comem-archioweb/`)
@@ -95,7 +94,6 @@ You can also put these settings in a `local.config.js` file in the project's dir
 exports.browser = 'Google Chrome';
 exports.buildDir = 'build';
 exports.liveReloadPort = 35729;
-exports.pdfBuildDir = 'pdf';
 exports.port = 3000;
 exports.sourceVersion = 'master';
 exports.webUrl = 'https://mediacomem.github.io/comem-archioweb/';
@@ -106,9 +104,7 @@ exports.webUrl = 'https://mediacomem.github.io/comem-archioweb/';
 [docs]: https://mediacomem.github.io/comem-archioweb/
 [docs-repo]: https://github.com/MediaComem/comem-archioweb
 [doctoc]: https://github.com/thlorenz/doctoc
-[html-pdf]: https://www.npmjs.com/package/html-pdf
 [md2remark]: https://github.com/AlphaHydrae/md2remark#md2remark
-[phantomjs]: http://phantomjs.org
 [remark]: https://remarkjs.com
 [remark-syntax]: https://github.com/gnab/remark/wiki/Markdown
 [subject-template]: templates/README.md
