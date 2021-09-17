@@ -14,7 +14,6 @@ Learn the basics of [MongoDB][mongodb], one of the most populars document-orient
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is MongoDB?](#what-is-mongodb)
   - [Key features](#key-features)
   - [Document-oriented database](#document-oriented-database)

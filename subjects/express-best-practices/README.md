@@ -14,7 +14,6 @@ Learn best development practices for [Express][express] web applications.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Use environment variables for configuration](#use-environment-variables-for-configuration)
   - [Running your application with environment variables](#running-your-application-with-environment-variables)
   - [Create a configuration file if you have many variables](#create-a-configuration-file-if-you-have-many-variables)

@@ -15,7 +15,6 @@ run on your local machine or server.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is [Node.js][node]?](#what-is-nodejsnode)
   - [Installation](#installation)
   - [Which Node.js version to choose?](#which-nodejs-version-to-choose)

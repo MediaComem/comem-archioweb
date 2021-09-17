@@ -14,7 +14,6 @@ between a client and a remote host.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Real-time HTTP](#real-time-http)
   - [HTTP is not optimized for small messages](#http-is-not-optimized-for-small-messages)
   - [Real-time request/response workarounds](#real-time-requestresponse-workarounds)

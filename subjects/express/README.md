@@ -16,7 +16,6 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is Express?](#what-is-express)
   - [Core functionality](#core-functionality)
   - [Install the Express generator](#install-the-express-generator)

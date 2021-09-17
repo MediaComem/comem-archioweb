@@ -19,7 +19,6 @@ are popular tools.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [OpenAPI](#openapi)
   - [What it looks like](#what-it-looks-like)
   - [Setup](#setup)

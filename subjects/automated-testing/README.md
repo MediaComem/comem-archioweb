@@ -9,7 +9,6 @@ Learn about the various kinds of automated tests.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is automated testing?](#what-is-automated-testing)
   - [Manual testing](#manual-testing)
     - [Quality assurance](#quality-assurance)

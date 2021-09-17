@@ -13,7 +13,6 @@ Learn about JavaScript module systems and ECMAScript modules.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Why are modules needed?](#why-are-modules-needed)
   - [Traditional client-side JavaScript dependencies](#traditional-client-side-javascript-dependencies)
   - [Traditional client-side JavaScript encapsulation](#traditional-client-side-javascript-encapsulation)

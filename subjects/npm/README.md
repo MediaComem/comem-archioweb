@@ -14,7 +14,6 @@ Learn how to use [npm][npm], the most popular [Node.js][node] package manager, a
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is npm?](#what-is-npm)
   - [Why use a package manager?](#why-use-a-package-manager)
   - [There are many package managers](#there-are-many-package-managers)

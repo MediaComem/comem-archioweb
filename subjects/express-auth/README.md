@@ -14,7 +14,6 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Security concepts](#security-concepts)
 - [Storing passwords securely](#storing-passwords-securely)
   - [What is a hash function?](#what-is-a-hash-function)

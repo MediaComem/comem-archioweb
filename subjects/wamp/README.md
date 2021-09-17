@@ -11,7 +11,6 @@ connect application components in distributed applications.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is WAMP?](#what-is-wamp)
   - [A messaging protocol on top of WebSockets](#a-messaging-protocol-on-top-of-websockets)
   - [Routed protocol](#routed-protocol)

@@ -13,7 +13,6 @@ Learn what's a JavaScript closure, how to use them, and common pitfalls.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [THIS!.. IS!.. CLOSURE!](#this-is-closure)
   - [This is not...](#this-is-not)
 - [Closures in loops](#closures-in-loops)

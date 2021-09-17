@@ -15,7 +15,6 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [MongoDB Node.js driver](#mongodb-nodejs-driver)
   - [Usage](#usage)
   - [MongoDB client API](#mongodb-client-api)

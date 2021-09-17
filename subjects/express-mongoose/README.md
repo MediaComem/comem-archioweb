@@ -17,7 +17,6 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Demonstration RESTful API](#demonstration-restful-api)
 - [Relationships](#relationships)
   - [Mongoose references](#mongoose-references)

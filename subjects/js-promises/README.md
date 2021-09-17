@@ -10,7 +10,6 @@ Learn to use promises for asynchronous computation.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is a promise?](#what-is-a-promise)
   - [Asynchronous callback styles](#asynchronous-callback-styles)
   - [Promises/A+ specification](#promisesa-specification)

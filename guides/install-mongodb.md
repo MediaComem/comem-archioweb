@@ -7,7 +7,6 @@ the documentation][installation-instructions].
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [MongoDB on macOS](#mongodb-on-macos)
   - [Create the MongoDB data directory on macOS](#create-the-mongodb-data-directory-on-macos)
   - [Run the MongoDB server on macOS](#run-the-mongodb-server-on-macos)

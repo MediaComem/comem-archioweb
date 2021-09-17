@@ -10,7 +10,6 @@ When working as a team, only one member of the team needs to follow this guide.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Requirements](#requirements)
 - [Name your project](#name-your-project)
 - [Create an Express.js application](#create-an-expressjs-application)

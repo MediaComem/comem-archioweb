@@ -11,7 +11,6 @@ various ways REST APIs are implemented in the wild, from "practical REST" to
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Richardson Maturity Model](#richardson-maturity-model)
   - [How RESTful is my API?](#how-restful-is-my-api)
   - [REST maturity level](#rest-maturity-level)

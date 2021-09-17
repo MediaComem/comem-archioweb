@@ -19,7 +19,6 @@ equivalent in functionality.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [The method](#the-method)
 - [Node.js callbacks](#nodejs-callbacks)
 - [Promises](#promises)

@@ -11,7 +11,6 @@ make RESTful web APIs with HTTP and URLs.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [What is a Web Service?](#what-is-a-web-service)
 - [Big web services](#big-web-services)
   - [Remote procedure call (RPC) or remote method invocation (RMI)](#remote-procedure-call-rpc-or-remote-method-invocation-rmi)

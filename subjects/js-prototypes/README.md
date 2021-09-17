@@ -13,7 +13,6 @@ Learn about prototypal inheritance in JavaScript.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Prototypal inheritance](#prototypal-inheritance)
   - [The prototype chain](#the-prototype-chain)
   - [Creating plain JavaScript objects](#creating-plain-javascript-objects)
