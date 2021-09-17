@@ -3,7 +3,6 @@ import subject from 'courses-md/dist/client';
 window.subject = subject;
 
 import { CodepenController } from './codepen';
-import { RunkitController } from './runkit';
 
 import 'font-awesome/css/font-awesome.css';
 
@@ -14,8 +13,6 @@ import './assets/fonts/UbuntuMono/UbuntuMono.css';
 import './assets/fonts/YanoneKaffeesatz/YanoneKaffeesatz.css';
 import './assets/slides.css';
 import './assets/codepen.css';
-import './assets/micromodal.css';
-import './assets/runkit.css';
 
 import heigLogo from './assets/heig.png';
 
@@ -28,6 +25,5 @@ subject.setLogo({
 subject
   .afterStart(() => {
     CodepenController.start();
-    RunkitController.start();
   })
   .start();

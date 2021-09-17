@@ -10,9 +10,7 @@ const config = {
     highlightSpans: true,
     countIncrementalSlides: false
   },
-  subjectScripts: [
-    'https://embed.runkit.com'
-  ],
+  subjectScripts: [],
   publish: {
     gitUrl: 'git@github.com:MediaComem/comem-archioweb.git',
     baseUrl: 'https://mediacomem.github.io/comem-archioweb',
