@@ -1018,7 +1018,7 @@ server.on('request', function(message) {
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
-[node-module-os]: https://nodejs.org/dist/latest-v14.x/docs/api/os.html#os_os
+[node-module-os]: https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
 [twisted]: http://twistedmatrix.com/trac/
