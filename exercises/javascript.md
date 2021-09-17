@@ -179,6 +179,55 @@ function logHabitation(person) {
 logHabitation(person); // "John lives in Yverdon"
 ```
 
+### [Optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) and the [nullish coalescing operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
+
+[Open in CodePen](https://codepen.io/AlphaHydrae/pen/PojQWKq?editors=0011)
+
+```js
+const bob = {
+  name: 'Bob',
+  address: null
+};
+
+const alice = {
+  name: 'Alice',
+  address: {
+    poBox: '000'
+  }
+};
+
+const chuck = {
+  name: 'Chuck',
+  address: {
+    city: 'Dallas'
+  }
+}
+
+// Simplify this function using optional chaining and the nullish coalescing
+// operator.
+function whereDoTheyLive(person) {
+  if (!person) {
+    return 'Unknown';
+  }
+
+  const address = person.address;
+  if (!address) {
+    return 'Unknown';
+  }
+
+  const city = address.city;
+  if (!city) {
+    return 'Unknown';
+  }
+
+  return city;
+}
+
+console.log(whereDoTheyLive(bob));    // "Unknown"
+console.log(whereDoTheyLive(alice));  // "Unknown"
+console.log(whereDoTheyLive(chuck));  // "Dallas"
+```
+
 ### [Async functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/bGpKaKx?editors=0011)

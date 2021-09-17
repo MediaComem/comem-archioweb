@@ -80,8 +80,8 @@ It has been standardized in the [ECMAScript][es] language specification.
 
 * [**ECMAScript 2015** (also known as ECMAScript 6 or ES6)][es6] added iterators and for/of loops, Python-style [generators][js-generators] and generator expressions, [arrow functions][js-arrow-functions], binary data, typed arrays, collections (maps, sets and weak maps), [promises][js-promise], number and math enhancements, reflection, and [proxies][js-proxy].
 * [**ECMAScript 2017**][es2017] added [async/await][js-async] and [shared memory and atomics][js-shared-memory].
-* [**ECMAScript 2018**][es2018], [**ECMAScript 2019**][es2019], and
-  [**ECMAScript 2020**][es2020] added [asynchronous
+* [**ECMAScript 2018**][es2018], [**ECMAScript 2019**][es2019], [**ECMAScript
+  2020**][es2020] and [**ECMAScript 2021**][es2021] added [asynchronous
   iteration][js-async-iteration], [optional chaining][js-optional-chaining],
   [nullish coalescing][js-nullish-coalescing] and more.
 
@@ -1004,6 +1004,66 @@ console.log('userId: ' + userId(user)); // "userId: 42"
 
 
 
+## Null-safe operators
+
+<!-- slide-front-matter class: center, middle -->
+
+[`null`: breaking programs since 1964](https://www.lucidchart.com/techblog/2015/08/31/the-worst-mistake-of-computer-science/)
+
+### Optional chaining
+
+The [optional chaining operator
+`?.`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+enables you to read the value of a property located deep within a chain of
+connected objects without having to check that each reference in the chain is
+valid:
+
+```js
+const adventurer = {
+  name: 'Alice',
+  cat: {
+    name: 'Dinah'
+  }
+};
+
+// Old style with a ternary operator:
+const dogName = adventurer.dog ? adventurer.dog.name : undefined;
+console.log(dogName); // undefined
+
+// With optional chaining (since ECMAScript 2020):
+const fishName = adventurer.fish?.name;
+console.log(fishName); // undefined
+```
+
+### Nullish coalescing operator
+
+The [nullish coalescing operator
+`??`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
+is a logical operator that returns its right-hand side operand when its
+left-hand side operand is null or undefined, and otherwise returns its left-hand
+side operand:
+
+```js
+// Old style:
+const foo = null || "default string";
+console.log(foo); // "default string"
+
+// With the nullish coalescing operator (since ECMAScript 2020):
+const bar = null ?? "default string";
+console.log(bar); // "default string"
+
+const baz = 0 ?? 42;
+console.log(baz); // 0
+
+// Problems with the old style:
+const qux = 0 || 42;
+console.log(qux); // 42
+```
+
+
+
+
+
 ## JSON
 
 <!-- slide-front-matter class: center, middle -->
@@ -1139,6 +1199,7 @@ console.log(crew);
 [es2018]: https://2ality.com/2017/02/ecmascript-2018.html
 [es2019]: https://2ality.com/2018/02/ecmascript-2019.html
 [es2020]: https://2ality.com/2019/12/ecmascript-2020.html
+[es2021]: https://2ality.com/2020/09/ecmascript-2021.html
 [ex-function-as-argument]: http://codepen.io/AlphaHydrae/pen/dNBpPv?editors=0010
 [first-class-functions]: https://en.wikipedia.org/wiki/First-class_function
 [func-prog]: https://en.wikipedia.org/wiki/Functional_programming
