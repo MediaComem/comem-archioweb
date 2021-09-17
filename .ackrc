@@ -1,2 +1,4 @@
+# https://beyondgrep.com
 --ignore-dir=assets
 --ignore-dir=build
+--ignore-file=is:package-lock.json
