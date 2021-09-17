@@ -86,9 +86,9 @@ run on your local machine or server.
 
 <p class='center'><img src='images/lts-schedule.png' width='80%' /></p>
 
-* Odd-numbered versions (e.g. v5, v7, v9) are **unstable** releases with the
+* Odd-numbered versions (e.g. v11, v13, v15) are **unstable** releases with the
   latest features, and will **no longer be supported after 6-9 months**.
-* Even-numbered versions (e.g. v4, v6, v8, v10, v12) have [**long term support
+* Even-numbered versions (e.g. v8, v10, v12, v14, v16) have [**long term support
   (LTS)**][node-lts]. They are actively developed for 6 months, but maintained
   for a total of 30 months (e.g. security fixes). Production applications should
   use LTS releases.
@@ -102,7 +102,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v14.10.0
+v16.9.1
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -161,7 +161,7 @@ Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
 String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
 Utilities, V8, VM, WASI, Worker threads, Zlib.
 
-> Refer to the [documentation][node-14-api] for more information.
+> Refer to the [documentation][node-16-api] for more information.
 
 
 
@@ -995,7 +995,7 @@ server.on('request', function(message) {
 
 **Documentation**
 
-* [Core modules (14.x)][node-14-api]
+* [Core modules (16.x)][node-16-api]
 
 **Further reading**
 
@@ -1014,7 +1014,7 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-14-api]: https://nodejs.org/dist/latest-v14.x/docs/api/
+[node-16-api]: https://nodejs.org/dist/latest-v16.x/docs/api/
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
