@@ -64,8 +64,8 @@ export class CodepenController {
     const $form = createForm(this.sourceId, this.source);
     $form.prependTo(this.$element);
 
-    this.$element.attr('title', 'Click on CodePen to run this code');
-    this.tip = tippy('.remark-visible .remark-slide-content .codepen[title]');
+    this.$element.attr('data-tippy-content', 'Click on CodePen to run this code');
+    this.tip = tippy('.remark-visible .remark-slide-content .codepen[data-tippy-content]');
   }
 
   parseCode($code) {
