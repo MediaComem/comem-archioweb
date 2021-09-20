@@ -3,3 +3,4 @@ source $HOME/.screenrc
 screen -t start 0
 stuff "DEBUG=courses-md:* COURSES_MD_BROWSER=\"Google Chrome\" npm start\012"
 screen -t zsh 1
+stuff "export DEBUG=courses-md:*\012"
