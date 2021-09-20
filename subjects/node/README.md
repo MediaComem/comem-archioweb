@@ -22,6 +22,7 @@ run on your local machine or server.
   - [Create and execute a Node.js file](#create-and-execute-a-nodejs-file)
   - [Node.js modules](#nodejs-modules)
   - [Requiring core modules](#requiring-core-modules)
+  - [A note on Node.js and CommonJS modules](#a-note-on-nodejs-and-commonjs-modules)
   - [Writing your own module](#writing-your-own-module)
   - [Requiring local modules](#requiring-local-modules)
   - [Export properties](#export-properties)
@@ -194,6 +195,37 @@ I am running on darwin
 
 
 
+### A note on Node.js and CommonJS modules
+
+Node.js was first released in 2009, before [ECMAScript 2015's modules][esm] were
+standardized. At the time, there were many module systems in the wild like
+[CommonJS][commonjs] and [RequireJS](requirejs). Node.js chose CommonJS, based
+on `require`.
+
+Node.js treats JavaScript code as CommonJS modules by default. You can [tell
+Node.js to treat your code as ECMAScript modules][node-16-esm-enabling] by
+naming your files with the `.mjs` extension instead of `.js`. If you have a
+`package.json` file (we'll learn more about these later), you can also set the
+`type` property to `module`.
+
+```js
+// File: script.mjs
+import os from 'os';
+
+function hello(name) {
+  console.log(\`Hello ${name}!`);
+  console.log(\`I am running on ${os.platform()}`);
+}
+
+hello('World');
+```
+
+> The Node.js ecosystem will no doubt eventually migrate to ECMAScript modules
+> for all new development, but there are many existing CommonJS-based codebases
+> which will stay with us a while.
+
+
+
 ### Writing your own module
 
 Let's say we want to extract the `hello` function to another module.
@@ -209,6 +241,8 @@ const os = require('os');
   console.log(\`I am running on ${os.platform()}`);
 };
 ```
+
+> This is the ECMAScript equivalent to `export function hello() {}`.
 
 Attaching properties to the `exports` object is how you expose the module's functionality.
 Code that uses `require()` on that file will receive the `exports` object.
@@ -278,6 +312,8 @@ Add a `doIt.js` file:
   console.log('Doing it');
 };
 ```
+
+> This is the ECMAScript equivalent to `export default function() {}`.
 
 Modify `script.js`:
 
@@ -1007,6 +1043,8 @@ server.on('request', function(message) {
 
 
 
+[commonjs]: https://nodejs.org/docs/latest-v16.x/api/modules.html
+[esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
 [event-loop-strongloop]: http://strongloop.com/strongblog/node-js-event-loop/
 [event-loop-wth]: https://www.youtube.com/watch?v=8aGhZQkoFbQ
@@ -1015,10 +1053,12 @@ server.on('request', function(message) {
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
 [node-16-api]: https://nodejs.org/dist/latest-v16.x/docs/api/
+[node-16-esm-enabling]: https://nodejs.org/docs/latest-v16.x/api/esm.html#esm_enabling
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
 [node-module-os]: https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
+[requirejs]: https://requirejs.org
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
 [twisted]: http://twistedmatrix.com/trac/
