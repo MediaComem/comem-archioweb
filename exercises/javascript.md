@@ -13,6 +13,7 @@
   - [for...of](#forof)
   - [Array destructuring](#array-destructuring)
   - [Object destructuring](#object-destructuring)
+  - [Optional chaining and the nullish coalescing operator](#optional-chaining-and-the-nullish-coalescing-operator)
   - [Async functions](#async-functions)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
