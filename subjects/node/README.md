@@ -43,6 +43,7 @@ run on your local machine or server.
   - [Other event-driven, non-blocking I/O architectures](#other-event-driven-non-blocking-io-architectures)
 - [Node.js callback convention](#nodejs-callback-convention)
   - [**Always** check for errors](#always-check-for-errors)
+  - [A note on Node.js and callbacks](#a-note-on-nodejs-and-callbacks)
 - [Spot the mistake](#spot-the-mistake)
   - [Mistake 1](#mistake-1)
     - [Mistake 1 result](#mistake-1-result)
@@ -54,6 +55,7 @@ run on your local machine or server.
     - [Mistake 2 result](#mistake-2-result)
     - [Mistake 2 issue](#mistake-2-issue)
     - [Mistake 2 correct implementation](#mistake-2-correct-implementation)
+    - [Mistake 2 async/await implementation](#mistake-2-asyncawait-implementation)
 - [The HTTP module](#the-http-module)
   - [Modern web language](#modern-web-language)
   - [Event emitters](#event-emitters)
@@ -716,6 +718,38 @@ Do not forget the `return` either, or use `else`, to ensure that your "success" 
 
 
 
+### A note on Node.js and callbacks
+
+Similarly to ECMAScript modules, [Promises][promise] were not yet part of
+ECMAScript when Node.js was first released, so the handling of asynchronous
+operations was built on callback functions, as we've seen:
+
+```js
+// List the files at the root of the file system
+fs.readdir('/', function(err, result) {
+  // handle error or result
+});
+```
+
+Today many Node.js libraries, and some Node.js core modules, also support
+promises. For example, the File System module provides an [alternative Promises
+API](https://nodejs.org/api/fs.html#fs_fs_promises_api) which you can access
+with `fs.promises`:
+
+```js
+// List the files at the root of the file system
+fs.promises.readdir('/').then(result => {
+  // handle result
+}, err => {
+  // handle error
+});
+```
+
+> Since you can use promies, that means you can also write your Node.js code
+> with [`async/await`][async] if you wish.
+
+
+
 ## Spot the mistake
 
 <!-- slide-front-matter class: center, middle -->
@@ -839,31 +873,25 @@ fs.writeFile('hello.txt', newSalutation, 'utf-8', `function(err) {`
 #### Mistake 1 async/await implementation
 
 If the module or library you are using supports promises, you can also use
-[`async/await`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function)
-to avoid nested callbacks and improve the readability of the code. In this
-example, the File System module provides an [alternative Promises
-API](https://nodejs.org/api/fs.html#fs_fs_promises_api) which you can access
-with `fs.promises`:
+[`async/await`][async] to avoid nested callbacks and improve the readability of
+the code. As we've seen, that is the case for [Node'js file system
+API](https://nodejs.org/api/fs.html#fs_fs_promises_api):
 
 ```js
 const fs = require('fs');
 
-execute();
+execute().catch(err => console.warn(\`An error occurred: ${err.message}`));
 
 `async function` execute() {
-  try {
-    // Save a salutation into hello.txt
-    const newSalutation = 'Hello Bob!';
-    `await fs.promises.writeFile`('hello.txt', newSalutation, 'utf-8');
+  // Save a salutation into hello.txt
+  const newSalutation = 'Hello Bob!';
+  `await fs.promises.writeFile`('hello.txt', newSalutation, 'utf-8');
 
-    // Read the salutation from hello.txt
-    const salutations = `await fs.promises.readFile`('hello.txt', 'utf-8');
+  // Read the salutation from hello.txt
+  const salutations = `await fs.promises.readFile`('hello.txt', 'utf-8');
 
-    // Log the salutation read from hello.txt
-    console.log(salutations);
-  } catch (err) {
-    console.warn(\`An error occurred: ${err.message}`);
-  }
+  // Log the salutation read from hello.txt
+  console.log(salutations);
 }
 ```
 
@@ -957,12 +985,44 @@ const fs = require('fs');
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   `if (err) {`
+    // Handle the error
     console.warn(\`Could not read file because: ${err.message}`);
   `} else {`
     // Log the contents in upper case
     console.log(text.toUpperCase());
   `}`
 });
+```
+
+#### Mistake 2 async/await implementation
+
+Here how the same example could be implemented with [promises][promise]:
+
+```js
+// Read the contents of a file
+fs.promises.readFile('file-that-does-not-exist.txt', 'utf-8').then(text => {
+  // Log the contents in upper case
+  console.log(text.toUpperCase());
+}).catch(err => {
+  // Handle the error
+  console.warn(\`Could not read file because: ${err.message}`);
+});
+```
+
+Or with [`async/await`][async]:
+
+```js
+async function printUppercaseFile(file) {
+  try {
+    // Read and log the contents of a file
+    console.log(await fs.promises.readFile(file, 'utf-8'));
+  } catch (err) {
+    // Handle the error
+    console.warn(\`Could not read file because: ${err.message}`);
+  }
+}
+
+printUppercaseFile('file-that-does-not-exist.txt');
 ```
 
 
@@ -1043,6 +1103,7 @@ server.on('request', function(message) {
 
 
 
+[async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 [commonjs]: https://nodejs.org/docs/latest-v16.x/api/modules.html
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
@@ -1058,6 +1119,7 @@ server.on('request', function(message) {
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
 [node-module-os]: https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os
+[promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
