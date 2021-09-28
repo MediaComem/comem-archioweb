@@ -41,22 +41,22 @@ another path if that is not the case.)
 ```bash
 $> cd ~/Downloads
 
-$> curl -O https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-4.4.1.tgz
+$> curl -O https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-5.0.tgz
 
-$> tar -zxvf mongodb-macos-x86_64-4.4.1.tgz
+$> tar -zxvf mongodb-macos-x86_64-5.0.tgz
 
-$> ls mongodb-macos-x86_64-4.4.1
+$> ls mongodb-macos-x86_64-5.0
 LICENSE-Community.txt  MPL-2  README  THIRD-PARTY-NOTICES  ...
 ```
 
-Move and/or rename the `mongodb-macos-x86_64-4.4.1` directory where you want it
+Move and/or rename the `mongodb-macos-x86_64-5.0` directory where you want it
 (you can do that in the CLI or manually in your Finder/Desktop).
 
 For example, you could move it to your home directory (**_only if_ your username
 doesn't have any spaces/accents**, otherwise move it somewhere else):
 
 ```bash
-$> mv mongodb-macos-x86_64-4.4.1 ~/mongodb
+$> mv mongodb-macos-x86_64-5.0 ~/mongodb
 ```
 
 
@@ -169,9 +169,9 @@ You run the MongoDB shell by launching the `mongo` executable. Use the same
 
 ```bash
 $> mongo
-MongoDB shell version v4.4.1
+MongoDB shell version v5.0
 connecting to: mongodb://127.0.0.1:27018...
-MongoDB server version: 4.4.1
+MongoDB server version: 5.0
 ...
 *>
 ```
@@ -217,7 +217,7 @@ $> "C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe"
 
 2016-02-22T07:25 I CONTROL  [init...] MongoDB starting :
 2016-02-22T07:25 I CONTROL  [init...]   pid=203 port=27017 dbpath=\data\db ...
-2016-02-22T07:25 I CONTROL  [init...] db version v4.4.1
+2016-02-22T07:25 I CONTROL  [init...] db version v5.0
 2016-02-22T07:25 I CONTROL  [init...] ...
 2016-02-22T07:25 I NETWORK  [init...] `waiting for connections on port 27017`
 ```
@@ -238,9 +238,9 @@ must use the **double-quoted, absolute path**:
 
 ```bash
 $> "C:\Program Files\MongoDB\Server\4.2\bin\mongo.exe"
-MongoDB shell version: 4.4.1
+MongoDB shell version: 5.0
 connecting to: mongodb://127.0.0.1:27017
-MongoDB server version: 4.4.1
+MongoDB server version: 5.0
 ...
 *>
 ```
