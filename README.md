@@ -16,6 +16,7 @@ This course is a [COMEM+][comem] web development course taught at
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [Plan](#plan)
 - [What you will need](#what-you-will-need)
 - [Useful links](#useful-links)
@@ -33,14 +34,14 @@ This course is a [COMEM+][comem] web development course taught at
 
 * Basics
   * [JavaScript](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Exercises*](./exercises/javascript.md)
+    * [*Exercises*](./exercises/javascript.md) ([**solutions**](./exercises/javascript-solutions.md))
     * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Node.js](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
-    * [*Exercises*](./exercises/node.md)
+    * [*Exercises*](./exercises/node.md) ([**solutions**](./exercises/node-solutions))
   * [npm](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/rest.md)
