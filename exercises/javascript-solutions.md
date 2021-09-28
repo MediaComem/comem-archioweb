@@ -14,7 +14,6 @@
   - [for...of](#forof)
   - [Array destructuring](#array-destructuring)
   - [Object destructuring](#object-destructuring)
-  - [Object destructuring](#object-destructuring-1)
   - [Optional chaining and the nullish coalescing operator](#optional-chaining-and-the-nullish-coalescing-operator)
   - [Async functions](#async-functions)
 
@@ -167,30 +166,6 @@ const person = {
 };
 
 function logHabitation({ first, address: { city }}) {
-  // Use a destructuring assignment in the function's argument to
-  // remove the next 2 lines, without modifying the console.log statement.
-  console.log(`${first} lives in ${city}`);
-}
-
-logHabitation(person); // "John lives in Yverdon"
-```
-
-### Object [destructuring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
-
-[Open in CodePen](https://codepen.io/AlphaHydrae/pen/qBZKBXw?editors=0011)
-
-```js
-const person = {
-  first: 'John',
-  last: 'Doe',
-  address: {
-    city: 'Yverdon',
-    street: 'Avenue des Sports',
-    zip: 1400
-  }
-};
-
-function logHabitation({ first, address: { city } }) {
   // Use a destructuring assignment in the function's argument to
   // remove the next 2 lines, without modifying the console.log statement.
   console.log(`${first} lives in ${city}`);
