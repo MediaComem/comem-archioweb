@@ -71,6 +71,7 @@ This course is a [COMEM+][comem] web development course taught at
 * Real-time communication
   * [WebSockets](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
+    * [*Guide:* add a WebSocket server to an Express.js application](./guides/express-wss.md)
 
 * *Extras*
   * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
