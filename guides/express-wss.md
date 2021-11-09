@@ -46,10 +46,20 @@ exports.createWebSocketServer = function(httpServer) {
     clients.push(ws);
 
     // Listen for messages sent by clients.
-    ws.on('message', message => onMessageReceived(
-      ws,
-      JSON.parse(message)
-    ));
+    ws.on('message', message => {
+
+      // Make sure the message is valid JSON.
+      let parsedMessage;
+      try {
+        parsedMessage = JSON.parse(message);
+      } catch (err) {
+        // Send an error message to the client with "ws" if you want...
+        return debug('Invalid JSON message received from client');
+      }
+
+      // Handle the message.
+      onMessageReceived(ws, parsedMessage);
+    });
 
     // Clean up disconnected clients.
     ws.on('close', () => {
