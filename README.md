@@ -243,7 +243,7 @@ evaluation if implemented correctly. Here are some examples:
 
 ### Delivery
 
-Send an e-mail *no later than __November 15th 2021 at 23:59:59.999 CET__* to
+Send an e-mail *no later than __November 16th 2021 at 23:59:59.999 CET__* to
 Simon Oulevay with:
 
 * The list of group members.
