@@ -61,14 +61,14 @@ Make the following request to retrieve a person:
 
 ```http
 GET /unrest/person/7 HTTP/1.1
-Location: comem-rest-demo-herokuapp.com
+Location: comem-rest-demo.herokuapp.com
 ```
 
 Then make the following request to modify the person's first name:
 
 ```http
 GET /unrest/person/7?updateFirstName=Bob HTTP/1.1
-Location: comem-rest-demo-herokuapp.com
+Location: comem-rest-demo.herokuapp.com
 ```
 
 What's not RESTful or could be improved in the request and/or the response?
@@ -81,7 +81,7 @@ Make the following request to attempt to create a thing:
 
 ```http
 POST /unrest/things HTTP/1.1
-Location: comem-rest-demo-herokuapp.com
+Location: comem-rest-demo.herokuapp.com
 
 {}
 ```
@@ -90,7 +90,7 @@ Then make the following correct request:
 
 ```http
 POST /unrest/things HTTP/1.1
-Location: comem-rest-demo-herokuapp.com
+Location: comem-rest-demo.herokuapp.com
 
 {
   "name": "Some thing"
