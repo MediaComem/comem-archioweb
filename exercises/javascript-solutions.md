@@ -3,7 +3,6 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Fill the missing bits](#fill-the-missing-bits)
   - [Functions as arguments](#functions-as-arguments)
   - [Dynamically create functions](#dynamically-create-functions)

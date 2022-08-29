@@ -1,3 +1,10 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Store geospatial data with Mongoose](#store-geospatial-data-with-mongoose)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Store geospatial data with Mongoose
 
 MongoDB can [store geospatial information and perform queries on
