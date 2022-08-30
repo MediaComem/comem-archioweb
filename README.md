@@ -242,14 +242,14 @@ evaluation if implemented correctly. Here are some examples:
 
 ### Delivery
 
-Send an e-mail *no later than __November 16th 2021 at 23:59:59.999 CET__* to
+Send an e-mail *no later than __November 16th 2022 at 23:59:59.999 CET__* to
 Simon Oulevay with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
 * The link to your deployed REST API on Heroku.
 
-## Project Roadmap
+## 🗓 Project Roadmap
 This course is structured in such a way that it will feel very heavy in new theory during the first month. Indeed, there are plenty of concepts which you will need to grasp before fully commiting to the term project. Nevertheless, this is first and foremost a practical course. Our goal is for you to be able to **apply** the concepts which we will discuss in class. In order to avoid losing sight of this fact during these first few weeks of the semester, we suggest you get going immediately with the project. 
 
 ### Week 1
@@ -258,34 +258,34 @@ This course is structured in such a way that it will feel very heavy in new theo
 
 The term project will be built in groups of 2 or 3, so try and get together as early as possible. We also suggest you mix it up: try working with people you've never worked with before. 
 
-**You are adults, communicate!**
+**Communicate!**
 
-Team formation is your responsibility. Be friendly and respectful during the process. If you feel dissapointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure team member feels heard by – for example – setting a list of each and everyone's needs: 
+Team formation is your responsibility. Be friendly and respectful during the process. If you feel dissapointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure every team member feels heard by – for example – setting a list of each and everyone's needs: 
   - Anna: *I need to be able to talk. Please do not interrupt me*.
   - Bijan: *I feel insecure about my code. Please be extra gentle when you are reviewing it*.
   - Charlene: *I need to use sarcasm, it's my way of communicating. Please do your best to not feel offended, it's nothing personal.*
 
 **Brainstorm**
 
-By the end of the first class, you should have a rough idea of what an API is and what we are looking for in your projects. On this basis, start having discussions about what could be interesting, useful or fun. Nothing is set in stone at this point, but having a few ideas in the back of your mind will help you add context to the theoretical lectures.
+By the end of the first class, you should have a rough idea of what an API is and what we are looking for in your projects. On this basis, start having discussions about what could be interesting, useful or fun. Nothing is set in stone at this point, but having a few ideas in the back of your mind will help you add context to the lectures.
 
 ### Week 2
 
 **JavaScript reviews**
 
-Make sure you do the assigned exercises. Help each other out and make sure everyone in your group has these basics covered. Everyone must code! 
+Make sure you do the assigned exercises. Help each other out so that everyone in your group has these basics covered. Everyone must code! 
 
 **Consume APIs**
 
-To get a better grasp of how APIs work and why they are useful, it's a good idea to try to consume them. There are many open APIs, so explore the [Public APIs List](https://github.com/public-apis/public-apis) and try getting data back from a couple different sources. To do so, you can already get going with [Postman](https://www.postman.com/), an API testing tool we will be discussing later in the semester. They have an excellent set of video tutorials.
+To get a better grasp of how APIs work and why they are useful, it's a good idea to try to consume them. There are many open APIs, so explore the [Public APIs List](https://github.com/public-apis/public-apis) and try getting data back from a couple different sources. To do so, you can already get going with [Postman](https://www.postman.com/), an API testing tool we will be discussing later in the semester. They have an excellent set of video tutorials. You could also use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) which you might have seen in ProgWeb.
 
-The list is huge, so might stumble onto something that is broken or poorly designed. If you can't make it work, try again. If that still doesn't work, move on.
+The list is huge, so you might stumble onto something that is broken or poorly designed. If you can't make it work, try again. If that still doesn't work, move on.
 
 ### Week 3
 
 **Decision Time**
 
-Now is a good time to really decide what the team's project will be. Remember, the API you design in this course will almost certainly be the basis for your front-end project in DevMobil, so every team member should feel some ownership for the idea. 
+Now is a good time to really decide what the team's project will be. Remember, the API you design in this course will almost certainly be the foundation for your front-end project in DevMobil, so every team member should feel some ownership for the idea. 
 
 **Get Specific**
 
@@ -293,23 +293,31 @@ A good way to transition from ideation to development is to write down an intent
 
 * General questions
   * What are we building, **in one sentence**?
-  * Why are we building that thing?
-  * Who will use the thing we are building?
+  * Why are we building it?
+  * Who will use it?
   * What is it called?
 * Specific questions
-  * How will we build that thing? 
+  * How will we build it? 
   * How will our team operate? Are there specific roles? 
   * What are our different ressources? 
   * What endpoints are we going to use?
 
-### Week 4
+**Divide and conquer**
 
+Even if you can't anticipate everything that you will need to complete for the project to work, try dividing the work into manageable tasks. 
 
+For example, a task like *Implement authentication* could be divided in the following way:
 
+* Design the endpoints
+* Add password hashing to the user model
+* Implement token-generating endpoint
+* Implement token-based authorization middleware
+* Write tests
+* Refactor
 
+You can be as granular as you want in the way you divide and define tasks. You can then assign tasks to people in your team.
 
-
-
+**Weeks 4 to 7 will be almost wholly dedicated to the developement of your API.**
 
 ## References
 
