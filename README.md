@@ -21,6 +21,7 @@ This course is a [COMEM+][comem] web development course taught at
 - [Useful links](#useful-links)
 - [Evaluation](#evaluation)
   - [Delivery](#delivery)
+  - [Project Roadmap](#project-roadmap)
 - [References](#references)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -242,14 +243,14 @@ evaluation if implemented correctly. Here are some examples:
 
 ### Delivery
 
-Send an e-mail *no later than __November 16th 2022 at 23:59:59.999 CET__* to
+Send an e-mail *no later than __November 20th 2022 at 23:59:59.999 CET__* to
 Simon Oulevay with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
 * The link to your deployed REST API on Heroku.
 
-## 🗓 Project Roadmap
+## Project Roadmap
 This course is structured in such a way that it will feel very heavy in new theory during the first month. Indeed, there are plenty of concepts which you will need to grasp before fully commiting to the term project. Nevertheless, this is first and foremost a practical course. Our goal is for you to be able to **apply** the concepts which we will discuss in class. In order to avoid losing sight of this fact during these first few weeks of the semester, we suggest you get going immediately with the project. 
 
 ### Week 1

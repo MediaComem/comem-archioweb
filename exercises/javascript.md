@@ -50,6 +50,7 @@ value = compute(2, 4, multiply);
 console.log(value); // 8
 ```
 
+ 
 ### Dynamically create functions
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxYe?editors=0011)

@@ -135,3 +135,7 @@ p.shadow { width: 100%; }
 .commands-table table td code:only-child {
   white-space: nowrap;
 }
+
+.slide-logo {
+  margin: 17px 0 0 1rem;
+}
