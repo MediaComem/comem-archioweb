@@ -1,7 +1,7 @@
-# Deploy an Express.js application with Heroku & MongoDB Atlas
+# Deploy an Express.js application with Render & MongoDB Atlas
 
 This guide will walk you through the process of deploying an Express.js
-application in the [cloud][cloud]. You will use [Heroku][heroku], a
+application in the [cloud][cloud]. You will use [Render][render], a
 [Platform-as-a-Service][paas] cloud, to run your application; and [MongoDB
 Atlas][mongodb-atlas], a database cloud, to host your database.
 
@@ -15,12 +15,10 @@ When working as a team, only one member of the team needs to follow this guide.
 - [Create an Express.js application](#create-an-expressjs-application)
   - [Make it a Git repository](#make-it-a-git-repository)
   - [Push it to GitHub](#push-it-to-github)
-- [Deploy the application on Heroku](#deploy-the-application-on-heroku)
-  - [Create the Heroku application](#create-the-heroku-application)
-  - [Deploy to Heroku](#deploy-to-heroku)
 - [Connect your application to a database](#connect-your-application-to-a-database)
+- [Deploy the application to Render](#deploy-the-application-to-render)
 - [Create a MongoDB cluster on MongoDB Atlas](#create-a-mongodb-cluster-on-mongodb-atlas)
-- [Provide your database URL to your Heroku application](#provide-your-database-url-to-your-heroku-application)
+- [Provide your database URL to your Render application](#provide-your-database-url-to-your-render-application)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -31,8 +29,7 @@ When working as a team, only one member of the team needs to follow this guide.
 * [Node.js][node] 12+
 * [Git][git]
 * A [GitHub][github] account
-* A [Heroku][heroku] account
-* The [Heroku CLI][heroku-cli]
+* A [Render][render] account
 * A [MongoDB Atlas][mongodb-atlas] account
 
 
@@ -45,7 +42,7 @@ When working as a team, only one member of the team needs to follow this guide.
 > -- Phil Karlton
 
 Choose a good name for your project. You will have to use it to name several
-things: your Express.js application, the Heroku application, the MongoDB cluster
+things: your Express.js application, the Render application, the MongoDB cluster
 and database, etc.
 
 
@@ -78,7 +75,7 @@ Once you're sure it works, you can stop it with `Ctrl-C`.
 
 ### Make it a Git repository
 
-To deploy code on Heroku, you will need to use [Git][git]. Initialize a Git
+To deploy code on Render, you will need to use [Git][git]. Initialize a Git
 repository in the application's directory:
 
 ```bash
@@ -86,7 +83,7 @@ $> git init
 ```
 
 Add a `.gitignore` file to ignore the `node_modules` directory (dependencies
-will be automatically installed by Heroku when you push):
+will be automatically installed by Render when you push):
 
 ```bash
 $> echo node_modules > .gitignore
@@ -122,79 +119,6 @@ GitHub so that they also have push access:
 
 ![GitHub: manage repository access](./images/github-manage-access.png)
 
-
-
-## Deploy the application on Heroku
-
-Register a [Heroku][heroku] account if you haven't already.
-
-### Create the Heroku application
-
-Go to your dashboard and create a new application:
-
-![Heroku: dashboard](./images/heroku-01-dashboard.png)
-
-Choose a region and name the application. Note that the name must be unique
-across all names in the region:
-
-![Heroku: create an application](./images/heroku-02-create-app.png)
-
-If other team member want to be able to deploy new versions of the application,
-you can add them as collaborators now (or later):
-
-![Heroku: add collaborators](./images/heroku-03-add-collaborator.png)
-
-Go to the application's Settings tab, and take a note of the **Heroku Git URL**
-and the **Config Vars** section. You will need both to deploy and configure your
-application:
-
-![Heroku: configure the application](./images/heroku-04-configure-app.png)
-
-If you reveal the configuration variables, you will see an interface allowing
-you to provide environment variables to your application:
-
-![Heroku: configure environment variables](./images/heroku-05-config-vars.png)
-
-Copy the **Heroku Git URL** and add it to your repository as a remote:
-
-```bash
-$> git remote add heroku https://git.heroku.com/your-app-name.git
-```
-
-### Deploy to Heroku
-
-To deploy the application to Heroku, simply push the code to the new remote:
-
-```bash
-$> git push heroku master
-Counting objects: 18, done.
-Delta compression using up to 8 threads.
-Compressing objects: 100% (14/14), done.
-Writing objects: 100% (18/18), 3.83 KiB | 0 bytes/s, done.
-Total 18 (delta 1), reused 0 (delta 0)
-remote: Compressing source files... done.
-remote: Building source:
-remote: -----> `Node.js app detected`
-remote: -----> Creating runtime environment
-remote: -----> `Building dependencies`
-remote:        Installing node modules (package.json)
-remote:        your-app@0.0.0 /tmp/build_c9758807eb8979e9eb8af687447e5985
-remote:        ├─┬ body-parser@1.16.1
-remote: -----> Launching...
-remote:        `https://your-app-name.herokuapp.com/` deployed to Heroku
-remote: Verifying deploy... done.
-To https://git.heroku.com/your-app-name.git
- * [new branch]      master -> master
-```
-
-> If you are denied access, run `heroku login` first. This requires you to have
-> the [Heroku CLI][heroku-cli] installed.
-
-As the log indicates, you should be able to access your application at
-https://your-app-name.herokuapp.com
-
-
-
 ## Connect your application to a database
 
 Add [Mongoose][mongoose] to your application:
@@ -223,50 +147,47 @@ commit and deploy this change:
 ```bash
 $> git add .
 $> git commit -m "Connect to a MongoDB database with Mongoose"
-$> git push heroku master
+$> git push origin master
 ```
 
-Your application may be broken at this stage, or it may still work. At any rate,
-you should see an error that looks something like this in the Heroku logs:
+## Deploy the application to Render
 
-```bash
-$> heroku logs
-...
-2020-09-13T09:46:06.584637+00:00 heroku[web.1]: Stopping all processes with SIGTERM
-2020-09-13T09:46:06.654228+00:00 heroku[web.1]: Process exited with status 143
-2020-09-13T09:46:07.926261+00:00 heroku[web.1]: Starting process with command `npm start`
-2020-09-13T09:46:12.601414+00:00 app[web.1]:
-2020-09-13T09:46:12.601432+00:00 app[web.1]: > your-app@0.0.0 start /app
-2020-09-13T09:46:12.601433+00:00 app[web.1]: > node ./bin/www
-2020-09-13T09:46:12.601433+00:00 app[web.1]:
-2020-09-13T09:46:13.394704+00:00 app[web.1]: (node:23) UnhandledPromiseRejectionWarning: MongoNetworkError: failed to connect to server [localhost:27017] on first connect [Error: connect ECONNREFUSED 127.0.0.1:27017
-2020-09-13T09:46:13.394707+00:00 app[web.1]: at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16) {
-2020-09-13T09:46:13.394708+00:00 app[web.1]: name: 'MongoNetworkError'
-2020-09-13T09:46:13.394709+00:00 app[web.1]: }]
-2020-09-13T09:46:13.394710+00:00 app[web.1]: at Pool.<anonymous> (/app/node_modules/mongodb/lib/core/topologies/server.js:438:11)
-2020-09-13T09:46:13.394711+00:00 app[web.1]: at Pool.emit (events.js:315:20)
-2020-09-13T09:46:13.394712+00:00 app[web.1]: at /app/node_modules/mongodb/lib/core/connection/pool.js:562:14
-2020-09-13T09:46:13.394712+00:00 app[web.1]: at /app/node_modules/mongodb/lib/core/connection/pool.js:995:11
-2020-09-13T09:46:13.394712+00:00 app[web.1]: at /app/node_modules/mongodb/lib/core/connection/connect.js:32:7
-2020-09-13T09:46:13.394713+00:00 app[web.1]: at callback (/app/node_modules/mongodb/lib/core/connection/connect.js:280:5)
-2020-09-13T09:46:13.394713+00:00 app[web.1]: at Socket.<anonymous> (/app/node_modules/mongodb/lib/core/connection/connect.js:310:7)
-2020-09-13T09:46:13.394714+00:00 app[web.1]: at Object.onceWrapper (events.js:422:26)
-2020-09-13T09:46:13.394714+00:00 app[web.1]: at Socket.emit (events.js:315:20)
-2020-09-13T09:46:13.394715+00:00 app[web.1]: at emitErrorNT (internal/streams/destroy.js:92:8)
-2020-09-13T09:46:13.394716+00:00 app[web.1]: at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
-2020-09-13T09:46:13.394716+00:00 app[web.1]: at processTicksAndRejections (internal/process/task_queues.js:84:21)
-...
+Register a [Render][render] account if you haven't already. If you register through GitHub, you will not have to link the two accounts together later. 
+
+![Render: register using an exisiting GitHub Account](./images/render-01-signup.png)
+
+Go to your dashboard and create a new Web Service:
+
+![Render: dashboard](./images/render-02-create.png)
+
+Connect your GitHub repository to Render by selecting the one the contains your app from the list. 
+
+![Render: connect to repo](./images/render-03-connect.png)
+
+Name the application, choose the region and enter the commands used to build and start your app. The branch name should automatically be set to "main" or "master", depending on how your repository is setup. 
+
+![Render: setup your application](./images/render-04-setup.png)
+
+Select the free plan and finish the creation process.
+
+![Render: end the web service creation process](./images/render-05-plans.png)
+
+Once you submit the form, Render will automatically try to deploy your app. You will be able to see live logs. Pretty cool, but be aware that deploys on the free plan can take a little while. Be patient. 
+
+![Render: first deploy](./images/render-06-deploy.png)
+
+The deployment process should eventually succeed. But... **Oh no there seems to be a some weird error in the logs!** Think about it for a second. What could've gone wrong?
+
+![Render: error on first deploy](./images/render-07-error.png)
+
+Remember this piece of code?
+
+```js
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
 ```
+At this point, our app is looking for a DATABASE_URL variable environment. Unfortunately we have not configured it yet and are therefore trying to connect to our local Mongo instance which is obviously inaccessible from remotely. 
 
-This error is caused by the fact that your application attempts to connect to
-the MongoDB database at `mongodb://localhost/your-app-name` (since
-`$DATABASE_URL` is not available). This may work on your machine if you have a
-MongoDB server running, but it will not work on Heroku which does not have one.
-
-You need to have a MongoDB server running somewhere on the web, reachable
-through an URL. The server on your machine will not do, since it does not have a
-publicly available URL. This is where MongoDB Atlas will help.
-
+We must therefore setup a database elsewhere and provide its URL to Render. Let's start by setting up a [MongoDB Atlas][mongodb-atlas] cluster. 
 
 
 ## Create a MongoDB cluster on MongoDB Atlas
@@ -337,34 +258,34 @@ should replace:
 > If you have the `mongo` executable available in your command line, you can
 > connect to your new MongoDB cluster from your machine with the command:
 >
->     mongo "mongodb+srv://admin:<password>@your-cluster-name.abcd.mongodb.net/<dbname>?retryWrites=true&w=majority"
+>     mongosh "mongodb+srv://admin:<password>@your-cluster-name.abcd.mongodb.net/<dbname>?retryWrites=true&w=majority"
 >
 > (Use the full path to `mongo.exe` on Windows instead of `mongo`.)
 
-
-
-## Provide your database URL to your Heroku application
+## Provide your database URL to your Render application
 
 Now that you have a connection URL for a MongoDB database, you should give it
-to your Heroku application.
+to your Render application.
 
 This is trivially done by adding `DATABASE_URL` to your application's
-environment variables in the Config Vars section:
+environment variables in the Environment section:
 
-![Heroku: configure environment variables](./images/heroku-05-config-vars.png)
+![Render: configure environment variables](./images/render-08-variables.png)
 
-Setting the variable should restart your application and get rid of the error in
-the logs.
+These changes will only be taken into account the next time we deploy. New deploys will automatically happen when you push commits on your main branch to GitHub.
 
-
+```bash
+$> git add .
+$> git commit -m "<exciting changes>"
+$> git push origin master
+```
 
 [cloud]: https://en.wikipedia.org/wiki/Cloud_computing
 [express]: https://expressjs.com
 [express-generator]: https://www.npmjs.com/package/express-generator
 [git]: https://git-scm.com
 [github]: https://github.com
-[heroku]: https://heroku.com
-[heroku-cli]: https://devcenter.heroku.com/articles/heroku-cli
+[render]: https://render.com
 [mongodb-atlas]: https://www.mongodb.com/cloud/atlas
 [mongodb-try]: https://www.mongodb.com/try
 [mongoose]: https://mongoosejs.com

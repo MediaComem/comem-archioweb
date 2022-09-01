@@ -21,7 +21,10 @@ This course is a [COMEM+][comem] web development course taught at
 - [Useful links](#useful-links)
 - [Evaluation](#evaluation)
   - [Delivery](#delivery)
-  - [Project Roadmap](#project-roadmap)
+- [Project Roadmap](#project-roadmap)
+  - [Week 1](#week-1)
+  - [Week 2](#week-2)
+  - [Week 3](#week-3)
 - [References](#references)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
