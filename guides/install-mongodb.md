@@ -79,7 +79,7 @@ The installation includes the following binaries:
 
 In addition, the installation creates the following files and directories at the location specified below, depending on your Apple hardware:
 
-|                    | Intel Processor            | Description                   |
+|                    | Intel Processor            | Apple Silicon (M1, M2)                  |
 | ------------------ | -------------------------- | ----------------------------- |
 | configuration file | /usr/local/etc/mongod.conf | /opt/homebrew/etc/mongod.conf |
 | log directory      | /usr/local/var/log/mongodb | /opt/homebrew/var/log/mongodb |
