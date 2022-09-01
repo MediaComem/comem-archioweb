@@ -8,16 +8,16 @@ the documentation][installation-instructions].
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [MongoDB on macOS](#mongodb-on-macos)
-  - [Create the MongoDB data directory on macOS](#create-the-mongodb-data-directory-on-macos)
+  - [Prerequisites](#prerequisites)
+  - [Installing MongoDB](#installing-mongodb)
   - [Run the MongoDB server on macOS](#run-the-mongodb-server-on-macos)
-    - [What you should see](#what-you-should-see)
+  - [What you should see](#what-you-should-see)
   - [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos)
 - [MongoDB on Windows](#mongodb-on-windows)
   - [Run the MongoDB server on Windows](#run-the-mongodb-server-on-windows)
   - [Run the MongoDB shell on Windows](#run-the-mongodb-shell-on-windows)
 - [Test the MongoDB shell on macOS or Windows](#test-the-mongodb-shell-on-macos-or-windows)
 - [Troubleshooting](#troubleshooting)
-  - [`Read-only file system` error on macOS Catalina and later](#read-only-file-system-error-on-macos-catalina-and-later)
   - [`Data directory not found` error in the MongoDB server](#data-directory-not-found-error-in-the-mongodb-server)
   - [`Attempted to create a lock file` error in the MongoDB server](#attempted-to-create-a-lock-file-error-in-the-mongodb-server)
   - [`Connection refused` error in the MongoDB shell](#connection-refused-error-in-the-mongodb-shell)
@@ -41,7 +41,8 @@ Homebrew requires the Xcode command-line tools from Apple's Xcode.
   ```bash
   $> xcode-select --install
   ```
-  **Install Homebrew**
+
+**Install Homebrew**
 
 macOS does not include the [Homebrew][brew] brew package by default.
 
@@ -106,22 +107,19 @@ process and is not interactive). There are **two ways** you can run MongoDB: as 
   - For macOS running Intel processors:
     ```bash
     $> mongod --config /usr/local/etc/mongod.conf --fork
-    ``` 
+    ```
   - For macOS running Intel processors:
     ```bash
     $> mongod --config /opt/homebrew/etc/mongod.conf --fork
-    ``` 
-  To stop a [`mongod`][mongod] running as a background process, connect to the `mongod` using [`mongosh`][mongosh], and issue de `shutdown` command. 
+    ```
+    To stop a [`mongod`][mongod] running as a background process, connect to the `mongod` using [`mongosh`][mongosh], and issue de `shutdown` command.
 
 > **If macOS Prevents mongod From Opening**
 > macOS may prevent `mongod` from running after installation. If you receive a security error when starting `mongod` indicating that the developer could not be identified or verified, do the following to grant mongod access to run:
-> - Open *System Preferences*
-> - Select the *Security* and *Privacy* pane. 
+>
+> - Open _System Preferences_
+> - Select the _Security_ and _Privacy_ pane.
 > - Under the General tab, click the button to the right of the message about `mongod`, labelled either Open Anyway or Allow Anyway depending on your version of macOS.
-
-
-
-
 
 ### What you should see
 
