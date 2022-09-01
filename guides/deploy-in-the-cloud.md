@@ -202,7 +202,7 @@ Remember this piece of code?
 ```js
 mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
 ```
-At this point, our app is looking for a DATABASE_URL variable environment. Unfortunately we have not configured it yet and are therefore trying to connect to our local Mongo instance which is obviously inaccessible from remotely. 
+At this point, our app is looking for a `DATABASE_URL` variable environment. Unfortunately we have not configured it yet and are therefore trying to connect to our local Mongo instance which is obviously inaccessible from remotely. 
 
 We must therefore setup a database elsewhere and provide its URL to Render. Let's start by setting up a [MongoDB Atlas][mongodb-atlas] cluster. 
 

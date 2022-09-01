@@ -26,97 +26,106 @@ the documentation][installation-instructions].
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## MongoDB on macOS
 
-> **Homebrew users**: if you have installed MongoDB with [Homebrew][brew], you
-> should already have a MongoDB server installed and running. You can skip to
-> [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos).
+### Prerequisites
 
-Run the following commands to download and uncompress the binary distribution of
-MongoDB. (These instructions assume that you have a `~/Downloads` directory. Use
-another path if that is not the case.)
+Ensure your system meets each of the following prerequisites. You only need to perform each prerequisite step once on your system. If you have already performed the prerequisite steps as part of an earlier MongoDB installation using Homebrew, you can skip to the
+installation procedure.
 
-```bash
-$> cd ~/Downloads
+**Install Xcode Command-Line Tools**
 
-$> curl -O https://fastdl.mongodb.org/osx/mongodb-macos-x86_64-5.0.3.tgz
+Homebrew requires the Xcode command-line tools from Apple's Xcode.
 
-$> tar -zxvf mongodb-macos-x86_64-5.0.3.tgz
+- Install the Xcode command-line tools by running the following command in your macOS Terminal:
+  ```bash
+  $> xcode-select --install
+  ```
+  **Install Homebrew**
 
-$> ls mongodb-macos-x86_64-5.0.3
-LICENSE-Community.txt  MPL-2  README  THIRD-PARTY-NOTICES  ...
-```
+macOS does not include the [Homebrew][brew] brew package by default.
 
-Move and/or rename the `mongodb-macos-x86_64-5.0.3` directory where you want it
-(you can do that in the CLI or manually in your Finder/Desktop).
+- Install homebrew:
+  ```bash
+  $> /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  ```
 
-For example, you could move it to your home directory (**_only if_ your username
-doesn't have any spaces/accents**, otherwise move it somewhere else):
+### Installing MongoDB
 
-```bash
-$> mv mongodb-macos-x86_64-5.0.3 ~/mongodb
-```
+Follow these steps to install MongoDB Community Edition using Homebrew's brew package manager. Be sure that you have followed the installation prerequisites above before proceeding.
 
+1. Tap the MongoDB Homebrew Tap to download the official Homebrew formula for MongoDB and the Database Tools, by running the following command in your macOS Terminal:
 
+   ```bash
+   $> brew tap mongodb/brew
+   ```
 
-### Create the MongoDB data directory on macOS
+   If you have already done this for a previous installation of MongoDB, you can skip this step.
 
-You need to create a directory for the MongoDB server to store its databases in
-(it looks in `/data/db` by default). Run the following commands to **create the
-data directory** and **give ownership of it to your user**:
+2. To update Homebrew and all existing formulae:
+   ```bash
+   $> brew update
+   ```
+3. To install MongoDB, run the following command in your macOS Terminal application:
+   ```bash
+   $> brew install mongodb-community@6.0
+   ```
 
-```bash
-$> sudo mkdir -p /data/db
-$> sudo chown "$(whoami)" /data/db
-```
+The installation includes the following binaries:
 
-*(**Note:** you will need to enter your password.)*
+- The [mongod][mongod] server
+- The MongoDB Shell, mongosh
 
-> If you get a `Read-only file system` error after running the `mkdir` command,
-> see
-> [Troubleshooting](#read-only-file-system-error-on-macos-catalina-and-later).
+In addition, the installation creates the following files and directories at the location specified below, depending on your Apple hardware:
 
-
+|                    | Intel Processor            | Description                   |
+| ------------------ | -------------------------- | ----------------------------- |
+| configuration file | /usr/local/etc/mongod.conf | /opt/homebrew/etc/mongod.conf |
+| log directory      | /usr/local/var/log/mongodb | /opt/homebrew/var/log/mongodb |
+| data directory     | /usr/local/var/mongodb     | /opt/homebrew/var/mongodb     |
 
 ### Run the MongoDB server on macOS
 
 To run the MongoDB server, you will need to launch the `mongod` executable. (The
 `d` in `mongod` means [daemon][daemon]: a program that runs as a background
-process and is not interactive). There are **three ways** you can run MongoDB,
-assuming you have it at `~/mongodb` (adapt the instructions otherwise):
+process and is not interactive). There are **two ways** you can run MongoDB: as macOS service (recommended) or manually.
 
-* Go in MongoDB's `bin` directory and run `./mongod`:
-
-  ```bash
-  $> cd ~/mongodb/bin
-  $> ./mongod
-  ```
-
-* **Or,** run `mongod` by its **absolute path** (from anywhere):
+- To run MongoDB (i.e. the mongod process) as a **macOS service**, run:
 
   ```bash
-  $> /Users/jdoe/mongodb/bin/mongod
+  $> brew services start mongodb-community@6.0
   ```
 
-* **Or,** add the line `export PATH=~/mongodb/bin:$PATH` to your `.bash_profile`
-  and re-launch your CLI so you can run it by simply typing `mongod`:
+  To stop `mongod` running as a macOS service, use the following command as needed:
 
-   ```bash
-   $> mongod
-   ```
+  ```bash
+  $> brew services stop mongodb-community@6.0
+  ```
 
-   (Re-read [The `PATH` variable](https://mediacomem.github.io/comem-archidep/2019-2020/subjects/cli/#49) if you need to refresh your memory.)
+- **Or,** to run MongoDB (i.e. the `mongod` process) **manually as a background process**, run:
+  - For macOS running Intel processors:
+    ```bash
+    $> mongod --config /usr/local/etc/mongod.conf --fork
+    ``` 
+  - For macOS running Intel processors:
+    ```bash
+    $> mongod --config /opt/homebrew/etc/mongod.conf --fork
+    ``` 
+  To stop a [`mongod`][mongod] running as a background process, connect to the `mongod` using [`mongosh`][mongosh], and issue de `shutdown` command. 
 
-> If you have created a custom data directory other than `/data/db`, for example
-> `~/data/db`, you must supply the `--dbpath` option to tell MongoDB where it
-> is, e.g. run `mongod --dbpath ~/data/db` instead of just `mongodb` if you
-> chose the third way.
+> **If macOS Prevents mongod From Opening**
+> macOS may prevent `mongod` from running after installation. If you receive a security error when starting `mongod` indicating that the developer could not be identified or verified, do the following to grant mongod access to run:
+> - Open *System Preferences*
+> - Select the *Security* and *Privacy* pane. 
+> - Under the General tab, click the button to the right of the message about `mongod`, labelled either Open Anyway or Allow Anyway depending on your version of macOS.
 
-#### What you should see
 
-When you run `mongod`, it should take over the CLI and show you the MongoDB
+
+
+
+### What you should see
+
+When you run [`mongod`][mongod], it should take over the CLI and show you the MongoDB
 server logs. They should look something like this (abridged output):
 
 ```bash
@@ -157,23 +166,21 @@ log.
 You now have a running MongoDB server that **will accept connections from
 clients**.
 
-
-
 ### Run the MongoDB shell on macOS
 
 You will use the MongoDB shell as a client. **Open another CLI** (you need to
 keep the MongoDB server running in the other one).
 
-You run the MongoDB shell by launching the `mongo` executable. Use the same
-**three ways** of launching it as for `mongod`, but type `mongo` instead:
+You run the MongoDB shell by launching the `mongosh` executable.
 
 ```bash
-$> mongo
-MongoDB shell version v5.0.3
-connecting to: mongodb://127.0.0.1:27018...
-MongoDB server version: 5.0.3
+$> mongosh
+Current Mongosh Log ID:	6310b4b33ec62956119c999a
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
+Using MongoDB:		6.0.1
+Using Mongosh:		1.5.4
 ...
-*>
+test>
 ```
 
 You will know it's working if you see a **different prompt** in your CLI. That
@@ -181,8 +188,6 @@ means you are now connected to the MongoDB shell and can **type MongoDB
 commands**.
 
 You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
-
-
 
 ## MongoDB on Windows
 
@@ -200,8 +205,6 @@ Run the following command in the Windows CLI to **create the data directory**:
 ```bash
 $> md \data\db
 ```
-
-
 
 ### Run the MongoDB server on Windows
 
@@ -226,18 +229,16 @@ You will know it's working if it says that it's **waiting for connections on
 port 27017** (the default port for MongoDB). You now have a running MongoDB
 server that **will accept connections from clients**.
 
-
-
 ### Run the MongoDB shell on Windows
 
 You will use the MongoDB shell as a client. **Open another Windows cmd** (you
 need to keep the MongoDB server running in the other one).
 
-You run the MongoDB shell by launching the `mongo.exe` executable. Again, you
+You run the MongoDB shell by launching the `mongosh.exe` executable. Again, you
 must use the **double-quoted, absolute path**:
 
 ```bash
-$> "C:\Program Files\MongoDB\Server\4.2\bin\mongo.exe"
+$> "C:\Program Files\MongoDB\Server\4.2\bin\mongosh.exe"
 MongoDB shell version: 5.0.3
 connecting to: mongodb://127.0.0.1:27017
 MongoDB server version: 5.0.3
@@ -251,14 +252,12 @@ commands**.
 
 You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
-
-
 ## Test the MongoDB shell on macOS or Windows
 
 Once you have:
 
-* A **running MongoDB server** in a CLI
-* An **open MongoDB shell**
+- A **running MongoDB server** in a CLI
+- An **open MongoDB shell** (run with the `mongosh` command)
 
 Make sure it works by trying a few commands:
 
@@ -266,54 +265,32 @@ Make sure it works by trying a few commands:
 > use test
 connecting to: test
 
-> db.things.insert({ "fruit": "apple" })
-WriteResult({ "nInserted" : 1 })
+> db.things.insertOne({ "fruit": "apple" })
+{
+  acknowledged: true,
+  insertedId: ObjectId("6310b5143ec62956119c999c")
+}
 
 > db.things.insert({ "name": "John Doe", "age": 24 })
-WriteResult({ "nInserted" : 1 })
+{
+  acknowledged: true,
+  insertedId: ObjectId("6310b52a3ec62956119c999d")
+}
 
 > db.things.find()
-{ "_id" : ObjectId("56ca09b5d536b4526d219ba8"), "fruit" : "apple" }
-{ "_id" : ObjectId("56ca095ed536b4526d219ba7"), "name" : "John Doe", "age" : 24 }
+[
+  { _id: ObjectId("6310b5143ec62956119c999c"), fruit: 'apple' },
+  {
+    _id: ObjectId("6310b52a3ec62956119c999d"),
+    name: 'John Doe',
+    age: 24
+  }
+]
 ```
-
-
 
 ## Troubleshooting
 
 <!-- slide-front-matter class: center, middle -->
-
-
-
-### `Read-only file system` error on macOS Catalina and later
-
-If you are on macOS Catalina (10.15) or later, you may get the following error:
-
-```bash
-$> sudo mkdir -p /data/db
-mkdir: /data/db: Read-only file system
-```
-
-This is because starting with macOS Catalina, [the root of the file system is
-read-only for increased security](https://support.apple.com/en-us/HT210650), to
-help prevent the accidental overwriting of critical operating system files.
-
-In this case, you need to create the MongoDB data directory elsewhere, for
-example in your home directory. In this case, you will not need `sudo`, since
-your home directory already belongs to you:
-
-```bash
-$> mkdir -p ~/data/db
-```
-
-When you run the `mongod` command later, you will need to supply the `--dbpath`
-option to indicate to MongoDB that it should store data in that directory:
-
-```bash
-$> mongod --dbpath ~/data/db
-```
-
-
 
 ### `Data directory not found` error in the MongoDB server
 
@@ -337,8 +314,6 @@ mongod
 It means that you have **not created MongoDB's data directory** at `/data/db` on
 macOS or `C:\data\db` on Windows. Follow the installation instructions.
 
-
-
 ### `Attempted to create a lock file` error in the MongoDB server
 
 If you see an error like this:
@@ -361,14 +336,12 @@ If you see an error like this:
 It means that you **have not given ownership of the `/data/db` directory to your
 user on macOS**. Follow the installation instructions.
 
-
-
 ### `Connection refused` error in the MongoDB shell
 
 If you see an error like this:
 
 ```bash
-$> mongo
+$> mongosh
 MongoDB shell version v3.4.1
 connecting to: mongodb://127.0.0.1:27017
 2017-02-27T09:51+0100 W NETWORK  [main] Failed to connect to 127.0.0.1:27017,
@@ -385,11 +358,9 @@ exception: connect failed
 It means that **your MongoDB server is not running**. You need to open another
 CLI, run it, and keep it running so that you can use the client.
 
-
-
 ### `Access control` warning in the MongoDB server or shell
 
-If you see this warning either when running `mongod` or `mongo`:
+If you see this warning either when running `mongod` or `mongosh`:
 
 ```
 2017-02-27T10:02 I CONTROL  [init...] ** WARNING: Access control is not enabled
@@ -406,8 +377,6 @@ are running the database on your local machine and external access is probably
 blocked by your firewall anyway. So you can **ignore** this warning **as long as
 you're only running MongoDB for development**.
 
-
-
 ### `Unhandled exception ..., terminating` in the MongoDB server on Windows
 
 If you see an error like this:
@@ -417,13 +386,13 @@ If you see an error like this:
 2019-08-22T11:27:41.167-0500 F CONTROL [main] *** stack trace for unhandled exception:
 2019-08-22T11:27:41.173-0500 I - [main] KERNELBASE.dll RaiseException+0x69
 VCRUNTIME140.dll CxxThrowException+0xad
-mongo.exe MallocExtension::GetEstimatedAllocatedSize+0x175210
-mongo.exe MallocExtension::GetEstimatedAllocatedSize+0x174fef
-mongo.exe tc_mallopt+0xa52c
-mongo.exe mozilla::detail::MutexImpl::~MutexImpl+0x866f
-mongo.exe mozilla::detail::MutexImpl::~MutexImpl+0x2317
-mongo.exe mozilla::detail::MutexImpl::~MutexImpl+0x8de5
-mongo.exe tcmalloc::Log+0xaaf04
+mongosh.exe MallocExtension::GetEstimatedAllocatedSize+0x175210
+mongosh.exe MallocExtension::GetEstimatedAllocatedSize+0x174fef
+mongosh.exe tc_mallopt+0xa52c
+mongosh.exe mozilla::detail::MutexImpl::~MutexImpl+0x866f
+mongosh.exe mozilla::detail::MutexImpl::~MutexImpl+0x2317
+mongosh.exe mozilla::detail::MutexImpl::~MutexImpl+0x8de5
+mongosh.exe tcmalloc::Log+0xaaf04
 KERNEL32.DLL BaseThreadInitThunk+0x14
 2019-08-22T11:27:41.176-0500 I CONTROL [main] writing minidump diagnostic file C:\Program Files\MongoDB\Server\4.2019-08-22T16-27-41.mdmp
 2019-08-22T11:27:41.421-0500 F CONTROL [main] *** immediate exit due to unhandled exception
@@ -439,9 +408,9 @@ $> set USERPROFILE=SomeNameWithoutAccents
 
 Then try running `mongod.exe` again in that shell and see if it fixes the issue.
 
-
-
 [brew]: https://brew.sh
+[mongod]: https://www.mongodb.com/docs/manual/reference/program/mongod/#mongodb-binary-bin.mongod
+[mongosh]: https://www.mongodb.com/docs/mongodb-shell/
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
 [mongodb-download]: https://www.mongodb.com/download-center/community
