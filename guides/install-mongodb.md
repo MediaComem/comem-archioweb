@@ -199,7 +199,7 @@ From the Command Prompt, you may start MongoDB by entering:
 ```bash
 > net start MongoDB
 ...
-The MongoDB Server (MongoDB) service was stopped successfully.
+The MongoDB Server (MongoDB) service was started successfully.
 ```
 
 And stop it by entering: 
@@ -207,7 +207,7 @@ And stop it by entering:
 ```bash
 > net stop MongoDB
 ...
-The MongoDB Server (MongoDB) service was started successfully.
+The MongoDB Server (MongoDB) service was stopped successfully.
 ```
 
 ### Install the MongoDB shell on Windows
