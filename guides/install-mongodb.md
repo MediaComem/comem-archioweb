@@ -250,7 +250,7 @@ connecting to: test
   insertedId: ObjectId("6310b5143ec62956119c999c")
 }
 
-> db.things.insert({ "name": "John Doe", "age": 24 })
+> db.things.insertOne({ "name": "John Doe", "age": 24 })
 {
   acknowledged: true,
   insertedId: ObjectId("6310b52a3ec62956119c999d")

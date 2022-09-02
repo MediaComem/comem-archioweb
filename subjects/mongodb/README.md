@@ -21,6 +21,7 @@ Learn the basics of [MongoDB][mongodb], one of the most populars document-orient
 - [Query language](#query-language)
   - [Connecting](#connecting)
   - [Inserting documents](#inserting-documents)
+  - [Inserting multiple documents](#inserting-multiple-documents)
   - [Finding documents](#finding-documents)
     - [Query operators](#query-operators)
     - [Projection](#projection)
@@ -31,7 +32,7 @@ Learn the basics of [MongoDB][mongodb], one of the most populars document-orient
     - [Upserts](#upserts)
     - [Upsert behavior](#upsert-behavior)
     - [Atomic operations](#atomic-operations)
-    - [Replacing documents](#replacing-documents)
+  - [Replacing documents](#replacing-documents)
   - [Removing documents](#removing-documents)
 - [Indexes](#indexes)
   - [Unique indexes](#unique-indexes)
@@ -144,20 +145,23 @@ Connect to the MongoDB shell from your CLI and you should have a **new prompt**,
 
 ```bash
 $> mongo
-MongoDB shell version v4.2.0
-connecting to: mongodb://127.0.0.1:27017
-MongoDB server version: 4.2.0
-*>
+Connecting to:		mongodb://127.0.0.1:27017/
+Using MongoDB:		6.0.1
+Using Mongosh:		1.5.4
+...
+test>
 ```
 
 You can switch databases with `use <name>`. Let's do that now:
 
 ```bash
-> use test
-switched to db test
+test> use test
+already on db test
+test> use archioweb
+switched to db archioweb
 ```
 
-Note that you do not need to create the "test" database before accessing it.
+Note that you do not need to create the "archioweb" database before accessing it.
 It is **automatically created** as you first access it.
 
 
@@ -167,7 +171,7 @@ It is **automatically created** as you first access it.
 Insert a couple of documents into a collection named **people** (again, it is automatically created if it doesn't exist):
 
 ```bash
-db.people.insert({
+db.people.insertOne({
   "name": "John Doe",
   "birthDate": ISODate("1970-10-01T00:00:00Z"),
   "children": 2,
@@ -176,7 +180,7 @@ db.people.insert({
   "phones": []
 })
 
-db.people.insert({
+db.people.insertOne({
   "name": "John Smith",
   "birthDate": ISODate("1990-12-24T00:00:00Z"),
   "address" : { "city": "Newport", "street" : "85 Bay Drive" },
@@ -188,9 +192,36 @@ db.people.insert({
 })
 ```
 
-After each query, MongoDB should tell you that it has inserted a new document (`WriteResult({ "nInserted" : 1  })`).
+After each query, MongoDB should tell you that it has inserted a new document:
 
+```bash
+{
+  acknowledged: true,
+  insertedId: ObjectId("6311d422d2b0f4cf05594182")
+}
+```
 
+### Inserting multiple documents
+You can insert multiple documents at once by using the [`insertMany`][insertMany] method and passing it an array.
+
+```bash
+db.people.insertMany([{
+  "name": "Saul Goodman",
+  "birthDate": ISODate("1970-10-01T00:00:00Z"),
+  "children": 2,
+  "address" : { "city": "Albuquerque", "street" : "13 Garden Street" },
+  "interests": [ "Law", "Money" ],
+  "phones": []
+  },
+  {
+  "name": "Jimmy McGill",
+  "birthDate": ISODate("1970-10-01T00:00:00Z"),
+  "children": 2,
+  "address" : { "city": "Albuquerque", "street" : "13 Garden Street" },
+  "interests": [ "Family", "Falling" ],"phones": []
+  }
+])
+```
 
 ### Finding documents
 
@@ -287,22 +318,22 @@ Counting documents works basically the same way as finding them:
 
 ```js
 // Count all people
-db.people.count({})
+db.people.countDocuments({})
 
 // Count all people named John Doe
-db.people.count({ "name": "John Doe" })
+db.people.countDocuments({ "name": "John Doe" })
 
 // Count all people that have a home phone number
-db.people.count({ "phones.type": "home" })
+db.people.countDocuments({ "phones.type": "home" })
 
 // Count all people named John Smith AND living in Livingston
-db.people.count({ "name": "John Smith", "address.city": "Livingston" })
+db.people.countDocuments({ "name": "John Smith", "address.city": "Livingston" })
 
 // Count all people born after 1980
-db.people.count({ "birthDate": { "$gt": ISODate("1980-01-01")  }  })
+db.people.countDocuments({ "birthDate": { "$gt": ISODate("1980-01-01")  }  })
 
 // Count all people named John Smith OR living in Livingston
-db.people.count({
+db.people.countDocuments({
   $or: [
     { "name": "John Smith" },
     { "address.city": "Livingston" }
@@ -318,7 +349,7 @@ Here's an update example:
 
 ```js
 // Rename "John Smith" to "John A. Smith" and add "Movies" to his interests
-db.people.update(
+db.people.updateOne(
   { "name": "John Smith" },
   {
     "$set": { "name": "John A. Smith" },
@@ -327,7 +358,7 @@ db.people.update(
 )
 ```
 
-The [update][update] method takes 3 parameters:
+The [updateOne][updateOne] method takes 3 parameters:
 
 * A filter to match the documents to update
 * An update document to specify the modification to perform
@@ -337,21 +368,8 @@ Read the documention on [update operators][update-operators] to learn more about
 
 #### Updating multiple documents
 
-To update multiple documents, you must set the `multi` option to `true`.
+To update multiple documents, you must use the [`updateMany`][updateMany] method.
 Otherwise, only the first matching document will be updated.
-
-```js
-// Everyone likes chocolate
-db.people.update(
-  {},
-  {
-    "$push": { "interests": "Chocolate" }
-  },
-  {
-    "multi": true
-  }
-)
-```
 
 #### Upserts
 
@@ -359,7 +377,7 @@ The `upsert` option allows you to **automatically insert** a new document when y
 
 ```js
 // Update Ned Stark, but create him if he doesn't exist
-db.people.update(
+db.people.updateOne(
   { "name": "Ned Stark" },
   {
     "$set": {
@@ -378,12 +396,13 @@ db.people.update(
 MongoDB will tell you that an upsert has taken place:
 
 ```txt
-WriteResult({
-  "nMatched" : 0,
-  "nUpserted" : 1,
-  "nModified" : 0,
-  "_id" : ObjectId("589f24f1f0bb4e1d9fedf1eb")
-})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6311d94c2af6bb4dd5b40a9a"),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
 ```
 
 Note that the query was merged with the update (the new person also has the `name` field):
@@ -405,7 +424,7 @@ Some operators are **atomic operations**:
 
 ```js
 // Add one child to John Doe
-db.people.update(
+db.people.updateOne(
   { "name": "John Doe" },
   {
     "$inc": {
@@ -420,42 +439,49 @@ This means that:
 * You can perform some arithmetic operations **directly in the database** without having to first fetch data, then update it
 * These operations are not subject to **concurrency issues** (at least on a single node)
 
-#### Replacing documents
+### Replacing documents
 
-**Be careful:** if you do not use update operators, MongoDB will replace the entire document with the second parameter passed to `update`:
+The [`replaceOne`][replaceOne] and [`replaceMany`][replaceMany] methods allow you to replace the entirety of a document.
 
 ```js
-db.people.update({ "name": "Ned Stark"  }, { "children": 5  })
-
-db.people.find({ "name": "Ned Stark" })
-
-db.people.find({ "children": 5  })
-{ "_id" : ObjectId("589f24f1f0bb4e1d9fedf1eb"), "children" : 5  }
+> db.people.replaceOne(
+  {name: "Saul Goodman"}, 
+  {
+    name: "Gene",
+    children: 0,
+    address: "N/A"
+  }
+)
+ 
+> db.people.find({name: "Gene"})
+[
+  {
+    _id: ObjectId("6311d6ccd2b0f4cf05594185"),
+    name: 'Gene',
+    children: 0,
+    address: 'N/A'
+  }
+]
 ```
-
-As you can see, there is no longer a person named Ned Stark in the collection, because we **replaced that entire document** with one that only has the `children` field.
-
-
-
 
 ### Removing documents
 
-You can use [remove][remove] to remove documents from a collection:
+You can use [deleteMany][deleteMany] to remove documents from a collection:
 
 ```js
 // Remove all people
-db.people.remove({})
+db.people.deleteMany({})
 
 // Remove all people who have 5 children
-db.people.remove({ "children": 5 })
+db.people.deleteMany({ "children": 5 })
 ```
 
 It removes all matching documents by default.
-Set the `justOne` option to `true` if you want to only remove the first matching document:
+Use the [`deleteOne`][deleteOne] mathod if you want to only remove the first matching document:
 
 ```js
 // Remove the first person found who likes chocolate
-db.people.remove({ "interests": "Chocolate" }, { "justOne": true })
+db.people.deleteOne({ "interests": "Chocolate" })
 ```
 
 
@@ -601,8 +627,11 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 
 * [Getting started with MongoDB][getting-started]
 * [db.collection.find][find] & [query operators][query-operators]
-* [db.collection.update][update] & [update operators][update-operators]
-* [db.collection.remove][remove]
+* [db.collection.insertOne][insertOne] & [db.collection.insertMany][insertMany]
+* [db.collection.updateOne][updateOne] & [db.collection.updateOne][updateMany]
+* [update operators][update-operators]
+* [db.collection.replaceOne][replaceOne] & [db.collection.replaceMany][replaceMany]
+* [db.collection.deleteMany][deleteMany] & [db.collection.deleteOne][deleteOne]
 * [db.collection.createIndex][create-index]
 * [Indexes][indexes]
 * [SQL comparison][sql-comparison]
@@ -617,7 +646,13 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 [install]: https://github.com/MediaComem/comem-archioweb/guides/install-mongodb.md
 [query-operators]: https://docs.mongodb.com/manual/reference/operator/query/
 [mongodb]: https://www.mongodb.com
-[remove]: https://docs.mongodb.com/manual/reference/method/db.collection.remove/
+[insertOne]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertOne/
+[insertMany]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/
+[deleteOne]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/
+[deleteMany]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteMany/
+[replaceOne]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/
+[replaceMany]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceMany/
+[updateOne]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/
+[updateMany]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany/
 [sql-comparison]: https://docs.mongodb.com/manual/reference/sql-comparison/
-[update]: https://docs.mongodb.com/manual/reference/method/db.collection.update/
 [update-operators]: https://docs.mongodb.com/manual/reference/operator/update/
