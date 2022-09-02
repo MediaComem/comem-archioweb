@@ -27,6 +27,7 @@ Learn how to use [npm][npm], the most popular [Node.js][node] package manager, a
 - [npm install](#npm-install)
   - [Installing packages](#installing-packages)
   - [Using installed packages](#using-installed-packages)
+  - [Importing ECMAScript Modules](#importing-ecmascript-modules)
   - [Tracking installed packages](#tracking-installed-packages)
     - [Re-installing dependencies manually](#re-installing-dependencies-manually)
   - [npm saves the dependencies to package.json](#npm-saves-the-dependencies-to-packagejson)
@@ -293,7 +294,29 @@ which returns an array with its duplicate elements removed.
 
 <p class='center'><img src='images/npm-require.png' width='50%' /></p>
 
+### Importing ECMAScript Modules
+As was mentionned during the presentation on Node, we will be using ECMAScript modules during this course.
 
+In your `package.json`, add the following property:
+```json
+type: "module"
+```
+This will allow you to use ES modules without having to name your files with the `.mjs` extension. It will however make it very difficult for you to use CommonJS imports and exports. You can now import `lodash` the ES way:
+
+```js
+import lodash from "lodash";
+```
+
+You could also use the `lodash-es` package, which will allow you to import only what you need (named imports) instead of the whole library:
+```bash
+> npm remove lodash && npm install lodash-es
+```
+```js
+import { uniq } from "lodash-es"; 
+let numbers = [ 1, 1, 2, 3, 2 ];
+console.log(uniq(numbers));
+```
+ 
 
 ### Tracking installed packages
 
@@ -307,11 +330,12 @@ Your script should no longer work since the `lodash` package is no longer availa
 
 ```bash
 $> node script.js
-module.js:471
-    throw err;
+node:internal/errors:464
+    ErrorCaptureStackTrace(err);
     ^
 
-Error: Cannot find module 'lodash'
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash-es' 
+Error: Cannot find module 'lodash-es'
 ```
 
 Deleting the `node_modules` directory is not a common real-world scenario,
@@ -514,7 +538,7 @@ npm WARN `saveError` ENOENT: no such file or directory,
 
 Npm will not know if you are in the **wrong directory**.
 It will simply **install packages there**.
-Of course, you will **NOT** be able to `require()` them from your project:
+Of course, you will **NOT** be able to `require()` or `import` them from your project:
 
 <p class='center'><img src='images/npm-install-wrong-dir.png' class='w80'></p>
 

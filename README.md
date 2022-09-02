@@ -88,11 +88,10 @@ This course is a [COMEM+][comem] web development course taught at
 * [Git][git-downloads]
 * A free [GitHub][github] account
 * [Google Chrome][chrome] (recommended, any browser with developer tools will do)
-* [Node.js][node] 12+
+* [Node.js][node] 13.2+
 * [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 * [MongoDB][mongodb]
-* A free [Heroku][heroku] account
-* The [Heroku CLI][heroku-cli]
+* A free [Render][render] account
 * [A WebSocket web client][msg-central]
 
 
@@ -368,8 +367,7 @@ the end of each subject.
 [git-downloads]: https://git-scm.com/downloads
 [github]: https://github.com
 [hal]: https://en.wikipedia.org/wiki/Hypertext_Application_Language
-[heroku]: https://www.heroku.com/home
-[heroku-cli]: https://devcenter.heroku.com/articles/heroku-cli
+[render]: https://www.render.com
 [heig]: http://www.heig-vd.ch
 [json-api]: https://jsonapi.org
 [jwt]: https://jwt.io/

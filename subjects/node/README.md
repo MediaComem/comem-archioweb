@@ -222,7 +222,7 @@ function hello(name) {
 hello('World');
 ```
 
-> It is still early days when it comes to the adoption of ECMAScript Modules in the Node.js ecosystem. Nevertheless, this is the style we will be using in this course once you are acquainted with NPM (we dislike the .mjs extension). In the meantime, you can continue using require(). 
+> It is still early days when it comes to the adoption of ECMAScript Modules in the Node.js ecosystem. Nevertheless, this is the style we will be using in this course once you are acquainted with NPM (we dislike the .mjs extension). In the meantime, you can continue using `require()`. 
 
 
 
