@@ -14,8 +14,7 @@ the documentation][installation-instructions].
   - [What you should see](#what-you-should-see)
   - [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos)
 - [MongoDB on Windows](#mongodb-on-windows)
-  - [Run the MongoDB server on Windows](#run-the-mongodb-server-on-windows)
-  - [Run the MongoDB shell on Windows](#run-the-mongodb-shell-on-windows)
+  - [Install the MongoDB shell on Windows](#install-the-mongodb-shell-on-windows)
 - [Test the MongoDB shell on macOS or Windows](#test-the-mongodb-shell-on-macos-or-windows)
 - [Troubleshooting](#troubleshooting)
   - [`Data directory not found` error in the MongoDB server](#data-directory-not-found-error-in-the-mongodb-server)
@@ -44,7 +43,7 @@ Homebrew requires the Xcode command-line tools from Apple's Xcode.
 
 **Install Homebrew**
 
-macOS does not include the [Homebrew][brew] brew package by default.
+Homebrew is a fantastic package manager for macOS. In other words, it is a command-line utility that allows you to install and manage third-party software. macOS does not include  [Homebrew][brew] by default.
 
 - Install homebrew:
   ```bash
@@ -189,64 +188,46 @@ You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
 ## MongoDB on Windows
 
-Download and install [MongoDB Community Edition][mongodb-download].
+Download and install [MongoDB Community Edition][mongodb-download]. Choose the **Windows Service** option during installation.
 
-You need to create a directory for the MongoDB server to store its databases in
-(it looks in `C:\data\db` by default).
 
-For MongoDB on Windows, you **SHOULD use the Windows command line** (not a Unix
-shell like Git Bash), otherwise you may have problems. Open the **Launch menu**
-and type `cmd` to launch it.
+For MongoDB on Windws, you **SHOULD use the Windows command line** (not a Unix
+shell like Git Bash), otherwise you may have problems. Open the **Launch menu**, type `cmd` and select "Run as administrator".
 
-Run the following command in the Windows CLI to **create the data directory**:
+From the Command Prompt, you may start MongoDB by entering:
 
 ```bash
-$> md \data\db
-```
-
-### Run the MongoDB server on Windows
-
-To run the MongoDB server, you will need to launch the `mongod` executable. (The
-`d` in `mongod` means [daemon][daemon]: a program that runs as a background
-process and is not interactive).
-
-You need to type the **double-quoted, absolute path** to `mongod.exe` (adapt the
-path if your MongoDB installation is elsewhere):
-
-```bash
-$> "C:\Program Files\MongoDB\Server\4.4\bin\mongod.exe"
-
-2016-02-22T07:25 I CONTROL  [init...] MongoDB starting :
-2016-02-22T07:25 I CONTROL  [init...]   pid=203 port=27017 dbpath=\data\db ...
-2016-02-22T07:25 I CONTROL  [init...] db version v5.0.3
-2016-02-22T07:25 I CONTROL  [init...] ...
-2016-02-22T07:25 I NETWORK  [init...] `waiting for connections on port 27017`
-```
-
-You will know it's working if it says that it's **waiting for connections on
-port 27017** (the default port for MongoDB). You now have a running MongoDB
-server that **will accept connections from clients**.
-
-### Run the MongoDB shell on Windows
-
-You will use the MongoDB shell as a client. **Open another Windows cmd** (you
-need to keep the MongoDB server running in the other one).
-
-You run the MongoDB shell by launching the `mongosh.exe` executable. Again, you
-must use the **double-quoted, absolute path**:
-
-```bash
-$> "C:\Program Files\MongoDB\Server\4.2\bin\mongosh.exe"
-MongoDB shell version: 5.0.3
-connecting to: mongodb://127.0.0.1:27017
-MongoDB server version: 5.0.3
+> net start MongoDB
 ...
-*>
+The MongoDB Server (MongoDB) service was stopped successfully.
 ```
+
+And stop it by entering: 
+
+```bash
+> net stop MongoDB
+...
+The MongoDB Server (MongoDB) service was started successfully.
+```
+
+### Install the MongoDB shell on Windows
+
+Download and install [MongoDB Shell][mongosh-download]. 
+
+You run the MongoDB shell by calling `mongosh` in the Command Prompt.
 
 You will know it's working if you see a **different prompt** in your CLI. That
 means you are now connected to the MongoDB shell and can **type MongoDB
 commands**.
+
+```bash
+$> mongosh
+connecting to: mongodb://127.0.0.1:27017
+Using MongoDB: 6.0.1
+Using Mongosh: 1.5.4
+...
+test>
+```
 
 You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
@@ -409,6 +390,7 @@ Then try running `mongod.exe` again in that shell and see if it fixes the issue.
 [brew]: https://brew.sh
 [mongod]: https://www.mongodb.com/docs/manual/reference/program/mongod/#mongodb-binary-bin.mongod
 [mongosh]: https://www.mongodb.com/docs/mongodb-shell/
+[mongosh-download]:https://downloads.mongodb.com/compass/mongosh-1.5.4-x64.msi
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
 [mongodb-download]: https://www.mongodb.com/download-center/community
