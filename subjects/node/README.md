@@ -222,9 +222,7 @@ function hello(name) {
 hello('World');
 ```
 
-> The Node.js ecosystem will no doubt eventually migrate to ECMAScript modules
-> for all new development, but there are many existing CommonJS-based codebases
-> which will stay with us a while.
+> It is still early days when it comes to the adoption of ECMAScript Modules in the Node.js ecosystem. Nevertheless, this is the style we will be using in this course once you are acquainted with NPM (we dislike the .mjs extension). In the meantime, you can continue using require(). 
 
 
 
