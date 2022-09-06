@@ -192,9 +192,9 @@ The [`bcrypt` package][bcrypt-npm] provides an implementation of the
 generate a bcrypt hash from a password.
 
 ```js
-const bcrypt = require('bcrypt');
+import bcrypt from "bcrypt";
 
-const plainPassword = 'changeme';
+const plainPassword = "changeme";
 const costFactor = 10;
 
 bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
@@ -211,10 +211,10 @@ bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
 Here's an example of how to use bcrypt in an Express application using Mongoose for database access.
 
 ```js
-const bcrypt = require('bcrypt');
-const User = require('../models/user');
+import bcrypt from "bcrypt";
+import User from "../models/user";
 
-router.post('/', function(req, res, next) {
+router.post("/", function(req, res, next) {
 
   const plainPassword = req.body.password;
   const costFactor = 10;
@@ -225,7 +225,7 @@ router.post('/', function(req, res, next) {
     }
 
     const newUser = new User(req.body);
-    `newUser.password = hashedPassword;`
+    newUser.password = hashedPassword;
     newUser.save(function(err, savedUser) {
       if (err) {
         return next(err);
@@ -251,7 +251,7 @@ const userSchema = new Schema({
   }
 });
 
-*userSchema.set('toJSON', {
+*userSchema.set("toJSON", {
 *  transform: transformJsonUser
 *});
 
@@ -272,7 +272,7 @@ The `compare` function takes the following arguments:
 The asynchronous callback will be called with **a boolean indicating whether the password matches**.
 
 ```js
-`bcrypt.compare(plainPassword, hashedPassword`, function(err, `valid`) {
+bcrypt.compare(plainPassword, hashedPassword, function(err, valid) {
   // Handle error and password validity...
 });
 ```
@@ -283,10 +283,10 @@ Here's a password verification example for a hypothetical login route in an
 Express application using Mongoose:
 
 ```js
-const bcrypt = require('bcrypt');
-const User = require('../models/user');
+import bcrypt from "bcrypt";
+import User from "../models/user";
 
-router.post('/login', function(req, res, next) {
+router.post("/login", function(req, res, next) {
   `User.findOne`({ name: req.body.name }).exec(function(err, user) {
     if (err) {
       return next(err);
@@ -385,15 +385,15 @@ For example, a very simple token might only contain `sub` to indicate the authen
 Generating a JWT is trivial with the `jsonwebtoken` npm package:
 
 ```js
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
 // Retrieve the secret key from your configuration.
-const secretKey = process.env.SECRET_KEY || 'changeme';
+const secretKey = process.env.SECRET_KEY || "changeme";
 // UNIX timstamp representing a date in 7 days.
 const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
 
 // Create and sign a token.
-*jwt.sign({ sub: 'userId42', exp: exp }, secretKey, function(err, token) {
+*jwt.sign({ sub: "userId42", exp: exp }, secretKey, function(err, token) {
 * // Use the signed token...
 *});
 ```
@@ -401,10 +401,10 @@ const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
 Verifying it is just as easy:
 
 ```js
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
 // Retrieve the secret key from your configuration.
-const secretKey = process.env.SECRET_KEY || 'changeme';
+const secretKey = process.env.SECRET_KEY || "changeme";
 
 // Create and sign a token.
 *jwt.verify(token, secretKey, function(err, payload) {
@@ -464,12 +464,12 @@ A little help.
 ### Sample login route
 
 ```js
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const secretKey = process.env.SECRET_KEY || 'changeme';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User from "../models/user";
+const secretKey = process.env.SECRET_KEY || "changeme";
 
-router.post('/login', function(req, res, next) {
+router.post("/login", function(req, res, next) {
   // Find the user by name.
   User.findOne({ name: req.body.name }).exec(function(err, `user`) {
     if (err) { return next(err); }
@@ -495,25 +495,25 @@ router.post('/login', function(req, res, next) {
 ### Sample Express JWT authentication middleware
 
 ```js
-const User = require('../models/user');
-const secretKey = process.env.SECRET_KEY || 'changeme';
+import User from "../models/user";
+const secretKey = process.env.SECRET_KEY || "changeme";
 
 function authenticate(req, res, next) {
   // Ensure the header is present.
-  const authorization = req.get('Authorization');
+  const authorization = req.get("Authorization");
   if (!authorization) {
-    return res.status(401).send('Authorization header is missing');
+    return res.status(401).send("Authorization header is missing");
   }
   // Check that the header has the correct format.
   const match = authorization.match(/^Bearer (.+)$/);
   if (!match) {
-    return res.status(401).send('Authorization header is not a bearer token');
+    return res.status(401).send("Authorization header is not a bearer token");
   }
   // Extract and verify the JWT.
   const token = match[1];
   jwt.verify(token, secretKey, function(err, payload) {
     if (err) {
-      return res.status(401).send('Your token is invalid or has expired');
+      return res.status(401).send("Your token is invalid or has expired");
     } else {
       req.currentUserId = payload.sub;
       next(); // Pass the ID of the authenticated user to the next middleware.
@@ -527,7 +527,7 @@ function authenticate(req, res, next) {
 The previous middleware can simply be plugged into routes which require authentication:
 
 ```js
-router.post('/things', `authenticate`, function(req, res, next) {
+router.post("/things", `authenticate`, function(req, res, next) {
 
   // If we reach this function, the previous authentication middleware
   // has done its job, i.e. a valid JWT was in the Authorization header.
@@ -565,7 +565,7 @@ authenticated user is the one who actually created that thing**.
 Here's an example of how you could do that:
 
 ```js
-router.put('/things/:id', `authenticate`, function(req, res, next) {
+router.put("/things/:id", `authenticate`, function(req, res, next) {
 
   // Get the thing.
   Thing.findById(req.params.id).exec(function(err, thing) {
@@ -576,7 +576,7 @@ router.put('/things/:id', `authenticate`, function(req, res, next) {
     // Check authorization: was this thing created by the authenticated
     // user (good), or by another user (bad)?
     if (`req.currentUserId !== thing.user.toString()`) {
-      return res.status(403).send('Please mind your own things.')
+      return res.status(403).send("Please mind your own business.")
     }
 
     // Do what needs to be done...
@@ -598,7 +598,7 @@ them, such as a user's permissions:
 const payload = {
   exp: Math.floor(Date.now() / 1000) + 7 * 24 * 3600, // Expire in 7 days.
   sub: user._id.toString(), // The subject (who is authenticated).
-* scope: 'admin' // Include permissions in the payload.
+* scope: "admin" // Include permissions in the payload.
 };
 
 jwt.sign(payload, secretKey, function(err, token) {
@@ -621,7 +621,7 @@ the subject. You could modify the `authenticate` middleware to do this:
 const token = match[1];
 jwt.verify(token, secretKey, function(err, payload) {
   if (err) {
-    return res.status(401).send('Your token is invalid or has expired');
+    return res.status(401).send("Your token is invalid or has expired");
   } else {
 
     // Attach authentication information to the
@@ -630,7 +630,7 @@ jwt.verify(token, secretKey, function(err, payload) {
 
 *   // Obtain the list of permissions from the "scope" claim.
 *   const scope = payload.scope;
-*   req.currentUserPermissions = scope ? scope.split(' ') : [];
+*   req.currentUserPermissions = scope ? scope.split(" ") : [];
 
     next();
   }
@@ -672,7 +672,7 @@ route:
 
 ```js
 router.put(
-  '/protected/route',
+  "/protected/route",
   // Authenticate before authorization.
   authenticate,
   // Ensure only administrators can access this route.
@@ -695,7 +695,7 @@ but maybe an administrator is allowed to:
 
 ```js
 // All authenticated users can access this route.
-router.put('/things/:id', `authenticate`, function(req, res, next) {
+router.put("/things/:id", `authenticate`, function(req, res, next) {
   // Get the thing.
   Thing.findById(req.params.id).exec(function(err, thing) {
     if (err) {
@@ -705,11 +705,11 @@ router.put('/things/:id', `authenticate`, function(req, res, next) {
 *   // The user is authorized to edit the thing only if he or she is
 *   // the owner of the thing, or if he or she is an administrator.
 *   const authorized =
-*     req.currentUserPermissions.includes('admin') ||
+*     req.currentUserPermissions.includes("admin") ||
 *     req.currentUserId === thing.user.toString();
 *
 *   if (!authorized) {
-*     return res.status(403).send('Please mind your own things.')
+*     return res.status(403).send("Please mind your own things.")
 *   }
 
     // Do what needs to be done...

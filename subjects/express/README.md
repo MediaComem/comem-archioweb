@@ -76,7 +76,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 <!-- slide-front-matter class: center, middle, image-header -->
 
-<img src='images/express.png' class='w70' />
+<img src="images/express.png" class="w70" />;
 
 A fast, unopinionated, **minimalist** web framework for Node.js
 
@@ -149,7 +149,10 @@ $> DEBUG=express-api:* npm start
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser and you should see the app running:
 
-<p class='center'><img src='images/express-running.png' width='100%' /></p>
+<p class="center">
+  <img src="images/express-running.png" width="100%" />
+</p>;
+
 
 In the CLI where you're running the app, you should also see that your request was **logged**:
 
@@ -162,7 +165,7 @@ GET / 200 2.050 ms - 17
 
 <!-- slide-front-matter class: center, middle -->
 
-<img src='images/structure.jpg' class='w70' />
+<img src="images/structure.jpg" class="w70" />;
 
 What goes where
 
@@ -219,7 +222,9 @@ Let's take a look at the generated `package.json`:
 
 <!-- slide-front-matter class: center, middle -->
 
-<p class='center'><img src='images/nodemon.png' class='w70' /></p>
+<p class="center">
+  <img src="images/nodemon.png" class="w70" />
+</p>;
 
 ### Not having to restart manually
 
@@ -452,7 +457,7 @@ Error [ERR_HTTP_HEADERS_SENT]:
 This is what happens:
 
 - Your middleware function sends the Hello World response
-- Another middleware a few lines below (`app.use('/', index);`) tries to send the index page
+- Another middleware a few lines below (`app.use("/", index);`) tries to send the index page
 
 HTTP is a request-response protocol: **one request** will get **one response**.
 Your code is trying to send _two responses for the same request_.
@@ -474,7 +479,7 @@ GET / HTTP/1.1
 Host: localhost:3000
 ```
 
-<img src='images/middleware-chain-1.png' width='100%' />
+<img src="images/middleware-chain-1.png" width="100%" />
 
 #### Serving static files
 
@@ -483,7 +488,7 @@ GET /stylesheets/style.css HTTP/1.1
 Host: localhost:3000
 ```
 
-<img src='images/middleware-chain-2.png' width='100%' />
+<img src="images/middleware-chain-2.png" width="100%" />
 
 #### Creating a user with a JSON payload
 
@@ -498,7 +503,7 @@ Host: localhost:3000
 }
 ```
 
-<img src='images/middleware-chain-3.png' width='100%' />
+<img src="images/middleware-chain-3.png" width="100%" />
 
 ### Attaching data to the request in a middleware
 
@@ -531,14 +536,13 @@ You can do it after some asynchronous calls:
 
 ```js
 app.use(function(req, res, next) {
-  `fs.readFile`('data.txt', 'utf-8', `function(err, data) {`
-    if (err) {
+  fs.readFile("data.txt", "utf-8", function(err, data) {
+  if (err) {
       return next(err);
     }
-
     req.myData = data;
-    `next();`
-  `}`);
+    next();
+  });
 });
 ```
 
@@ -549,10 +553,10 @@ The middleware chain will not proceed until you call `next()`.
 If your asynchronous call returns a promise, you can also use `async/await`:
 
 ```js
-app.use(`async function`(req, res, next) {
+app.use(async function(req, res, next) {
   try {
-    req.myData = `await fs.promises.readFile`('data.txt', 'utf-8');
-    `next();`
+    req.myData = await fs.promises.readFile("data.txt", "utf-8");
+    next();
   } catch (err) {
     next(err);
   }
@@ -570,7 +574,7 @@ In that case, the proper thing to do with Express is to give the error to `next(
 
 ```js
 app.use(function(req, res, next) {
-  fs.readFile('data.txt', { encoding: 'utf-8' }, function(err, data) {
+  fs.readFile("data.txt", { encoding: "utf-8" }, function(err, data) {
 *   if (err) {
 *     return next(err);
 *   }
@@ -589,7 +593,7 @@ catch any error that might occur, and give it to Express:
 ```js
 app.use(async function(req, res, next) {
 * try {
-    req.myData = await fs.promises.readFile('data.txt', 'utf-8');
+    req.myData = await fs.promises.readFile("data.txt", "utf-8");
     next();
 * } catch (err) {
 *   next(err);
@@ -976,19 +980,25 @@ Getting book 33 by 24
 A route can also contain **its own chain of successive middlewares**:
 
 ```js
-function `getNameFromQuery`(req, res, next) {
+function getNameFromQuery(req, res, next) {
   req.nameToSalute = req.query.name;
   next();
 }
 
-function `prepareSalutation`(req, res, next) {
-  req.salutation = 'Hello ' + req.nameToSalute;
+function prepareSalutation(req, res, next) {
+  req.salutation = "Hello " + req.nameToSalute;
   next();
 }
 
-app.get('/hello', `getNameFromQuery`, `prepareSalutation`, function(req, res, next) {
-  res.send(req.salutation);
-});
+app.get(
+  "/hello",
+  `getNameFromQuery`,
+  `prepareSalutation`,
+  function (req, res, next) {
+    res.send(req.salutation);
+  }
+);
+
 ```
 
 These middleware functions are **only executed for that route** (`GET /hello` in this case).
@@ -1031,22 +1041,23 @@ that way you don't have one monolithic file with all your code in it.
 import express from "express";
 const booksRouter = express.Router();
 
-booksRouter.post('/', /*...*/);
+booksRouter.post("/" /*...*/);
 
-booksRouter.get('/', function(req, res, next) {
-  const books = [ 'Catch-22', 'Fahrenheit 451' ];
+booksRouter.get("/", function (req, res, next) {
+  const books = ["Catch-22", "Fahrenheit 451"];
   res.send(books);
 });
 
-booksRouter.get('/:id', function(req, res, next) {
-  const book = { title: 'Fahrenheit 451', year: 1953, author: 'Ray Bradburry' };
+booksRouter.get("/:id", function (req, res, next) {
+  const book = { title: "Fahrenheit 451", year: 1953, author: "Ray Bradburry" };
   res.send(book);
 });
 
-booksRouter.put('/:id', /*...*/);
-booksRouter.delete('/:id', /*...*/);
+booksRouter.put("/:id" /*...*/);
+booksRouter.delete("/:id" /*...*/);
 
 export default booksRouter;
+
 ```
 
 Note that we don't use `/books` and `/books/:id` as paths but `/` and `/:id`.
@@ -1056,18 +1067,19 @@ Note that we don't use `/books` and `/books/:id` as paths but `/` and `/:id`.
 A router behaves like a middleware function, so you can simply plug it into your application with `app.use()`:
 
 ```js
-import express from "express";
-
 // Import the books router from the routes directory
 import booksRouter from "./routes/books.js";
-
 app.use("/books", booksRouter);
+
 ```
 
 Any request where the path starts with `/books` will be handled by that router,
 with that path as a **prefix**:
 
-<p class='center'><img src='images/routers.png' class='w80' /></p>
+<p class="center">
+  <img src="images/routers.png" class="w80" />
+</p>;
+
 
 <!-- slide-notes -->
 
@@ -1107,16 +1119,17 @@ If you didn't have routers, you would have to define these 4 routes in **both** 
 
 ```js
 // In routes/books.js
-booksRouter.post('/:id/comments', /*...*/);
-booksRouter.get('/:id/comments', /*...*/);
-booksRouter.patch('/:id/comments/:cid', /*...*/);
-booksRouter.delete('/:id/comments/:cid', /*...*/);
+booksRouter.post("/:id/comments" /*...*/);
+booksRouter.get("/:id/comments" /*...*/);
+booksRouter.patch("/:id/comments/:cid" /*...*/);
+booksRouter.delete("/:id/comments/:cid" /*...*/);
 
 // In routes/movies.js
-moviesRouter.post('/:id/comments', /*...*/);
-moviesRouter.get('/:id/comments', /*...*/);
-moviesRouter.patch('/:id/comments/:cid', /*...*/);
-moviesRouter.delete('/:id/comments/:cid', /*...*/);
+moviesRouter.post("/:id/comments" /*...*/);
+moviesRouter.get("/:id/comments" /*...*/);
+moviesRouter.patch("/:id/comments/:cid" /*...*/);
+moviesRouter.delete("/:id/comments/:cid" /*...*/);
+
 ```
 
 #### Plugging routers on routers
@@ -1142,12 +1155,13 @@ Then plug the whole URL sub-structure onto both the **books' and movies' routers
 
 ```js
 // In routes/books.js
-const makeCommentsRouter = require('./comments');
-booksRouter.use('/books/:id/comments', makeCommentsRouter(findBook));
+const makeCommentsRouter = require("./comments");
+booksRouter.use("/books/:id/comments", makeCommentsRouter(findBook));
 
 // In routes/movies.js
-const makeCommentsRouter = require('./comments');
-moviesRouter.use('/movies/:id/comments', makeCommentsRouter(findMovie));
+const makeCommentsRouter = require("./comments");
+moviesRouter.use("/movies/:id/comments", makeCommentsRouter(findMovie));
+
 ```
 
 ## Resources
