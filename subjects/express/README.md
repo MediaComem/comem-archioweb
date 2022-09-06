@@ -1140,12 +1140,12 @@ With a router, you could **define these sub-paths once**:
 // the parent found by the specified middleware
 import express from "express";
 
-export default function makeCommentsRouter(findParentMiddleware) {
+export default function `makeCommentsRouter`(findParentMiddleware) {
   const commentsRouter = express.Router();
-  commentsRouter.post("/", findParentMiddleware /*...*/);
-  commentsRouter.get("/", findParentMiddleware /*...*/);
-  commentsRouter.patch("/:cid", findParentMiddleware /*...*/);
-  commentsRouter.delete("/:cid", findParentMiddleware /*...*/);
+  commentsRouter.`post("/"`, findParentMiddleware /*...*/);
+  commentsRouter.`get("/"`, findParentMiddleware /*...*/);
+  commentsRouter.`patch("/:cid"`, findParentMiddleware /*...*/);
+  commentsRouter.`delete("/:cid"`, findParentMiddleware /*...*/);
   return commentsRouter;
 };
 ```
@@ -1155,11 +1155,11 @@ Then plug the whole URL sub-structure onto both the **books' and movies' routers
 ```js
 // In routes/books.js
 import makeCommentsRouter from "./comments.js";
-booksRouter.use("/books/:id/comments", makeCommentsRouter(findBook));
+booksRouter.`use("/books/:id/comments", makeCommentsRouter(findBook))`;
 
 // In routes/movies.js
 import makeCommentsRouter from "./comments.js";
-moviesRouter.use("/movies/:id/comments", makeCommentsRouter(findMovie));
+moviesRouter.`use("/movies/:id/comments", makeCommentsRouter(findMovie))`;
 
 ```
 

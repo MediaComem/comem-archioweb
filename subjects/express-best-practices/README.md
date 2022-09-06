@@ -105,7 +105,7 @@ needed:
 
 ```js
 // File: some other file
-import config from '../path/to/config`;
+import config from '../path/to/config';
 server.listen(config.port);
 ```
 
@@ -175,8 +175,8 @@ you retrieve configuration from environment variables):
 
 ```js
 // Load environment variables from the .env file.
-import * as dotenv from 'dotenv'
-dotenv.config()
+* import * as dotenv from 'dotenv'
+* dotenv.config()
 
 // Retrieve configuration from environment variables.
 const port = process.env.PORT || 3000;
