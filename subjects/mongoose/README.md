@@ -69,7 +69,7 @@ $> npm install mongodb --save
 You can then connect to your MongoDB database:
 
 ```js
-const MongoClient = require('mongodb').MongoClient;
+import { MongoClient } from 'mongodb'
 
 // Connection URL
 const url = 'mongodb://localhost:27017/myproject';
@@ -201,7 +201,7 @@ ORM examples: Hibernate (Java), Active Record (Ruby), SQLAlchemy (Python).
 Simply call `mongoose.connect()`:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.connect('mongodb://localhost/myproject');
 ```
 
@@ -214,7 +214,7 @@ It will also automatically create and manage a **connection pool** for you.
 The schema defines the shape of the documents you want to save:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const `Schema` = mongoose.Schema;
 
 // Define a schema
@@ -240,7 +240,7 @@ const blogSchema = `new Schema`({
 Once you have your schema, you can create a model to link that schema to a MongoDB collection:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 // Define a schema
@@ -579,10 +579,10 @@ my-app@0.0.0 /path/to/projects/my-app
 ...
 ```
 
-Open `app.js` and add these three lines below the first calls to `require()`:
+Open `app.js` and add these three lines below the first calls to `import`:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://localhost/my-database-name');
 ```
@@ -600,7 +600,7 @@ We'll need a Mongoose model for users.
 Create a new `models` directory with a `user.js` file inside it:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 // Define the schema for users

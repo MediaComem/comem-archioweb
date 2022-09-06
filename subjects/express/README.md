@@ -1155,11 +1155,11 @@ Then plug the whole URL sub-structure onto both the **books' and movies' routers
 
 ```js
 // In routes/books.js
-const makeCommentsRouter = require("./comments");
+import makeCommentsRouter from "./comments.js";
 booksRouter.use("/books/:id/comments", makeCommentsRouter(findBook));
 
 // In routes/movies.js
-const makeCommentsRouter = require("./comments");
+import makeCommentsRouter from "./comments.js";
 moviesRouter.use("/movies/:id/comments", makeCommentsRouter(findMovie));
 
 ```

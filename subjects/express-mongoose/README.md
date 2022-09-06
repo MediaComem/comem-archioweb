@@ -290,7 +290,7 @@ The format is a bit convoluted, but other developers have already gone through t
 Use the [format-link-header][format-link-header] npm package:
 
 ```js
-const formatLinkHeader = require('format-link-headers');
+import formatLinkHeader from 'format-link-headers';
 `const links = {};`
 
 function buildLinkUrl(url, page, pageSize) {
@@ -579,7 +579,7 @@ You can use MongoDB aggregations with Mongoose quite easily by simply calling
 the [`aggregate` method][mongoose-aggregate] on models:
 
 ```js
-const Person = require('../models/person');
+import Person from '../models/person';
 
 Person.aggregate([
   { stage1... },
