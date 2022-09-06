@@ -14,17 +14,16 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 - [RESTful APIs](../rest/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUNdoctoc TO UPDATE -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [What is Express?](#what-is-express)
   - [Core functionality](#core-functionality)
   - [Install the Express generator](#install-the-express-generator)
   - [Generate a skeleton application](#generate-a-skeleton-application)
-  - [Install dependencies and run it](#install-dependencies-and-run-it)
+  - [Run the app](#run-the-app)
   - [Browse the landing page](#browse-the-landing-page)
 - [Application structure](#application-structure)
   - [The server component](#the-server-component)
-  - [The client component](#the-client-component)
   - [The package.json file](#the-packagejson-file)
 - [Live reload](#live-reload)
   - [Not having to restart manually](#not-having-to-restart-manually)
@@ -115,7 +114,7 @@ $> npm install -g yo
 $> npm install -g generator-express-api-es
 ```
 
-It provides the `express-api-es` Yeoman generator.
+It provides the `express-api-es` [Yeoman][yeoman] generator.
 
 ### Generate a skeleton application
 
@@ -150,7 +149,7 @@ $> DEBUG=express-api:* npm start
 
 Visit [http://localhost:3000](http://localhost:3000) in your browser and you should see the app running:
 
-<p class='center'><img src='images/express-running.png' width='60%' /></p>
+<p class='center'><img src='images/express-running.png' width='100%' /></p>
 
 In the CLI where you're running the app, you should also see that your request was **logged**:
 
@@ -178,7 +177,7 @@ routes
   index.js
   users.js
 bin
-  www
+  start.js
 ```
 
 - `package.json` is used to track **dependencies** with npm
@@ -235,13 +234,14 @@ It's an npm package you can install globally:
 
 ```bash
 $> npm install -g nodemon
-$> cd /path/to/projects/my-app
-$> DEBUG=my-app:* nodemon
-[nodemon] 1.11.0
-[nodemon] to restart at any time, enter rs
-[nodemon] `watching: *.*`
-[nodemon] `starting node ./bin/www`
-  express-demo:server Listening on port 3000 +0ms
+$> cd /path/to/projects/express-api
+$> DEBUG=express-api:* nodemon
+[nodemon] 2.0.19
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node ./bin/start`
+  express-api:server Listening on port 3000 +0ms
 ```
 
 It will execute the `npm start` script defined in your `package.json` by default,
@@ -252,7 +252,7 @@ and restart the app if **any file changes**.
 Instead of installing it globally, it's good practice to install nodemon as a **development dependency** so that your whole team can use it without having to re-install it globally on their machine:
 
 ```bash
-$> cd /path/to/projects/my-app
+$> cd /path/to/projects/express-api
 $> npm install --save-dev nodemon
 ```
 
@@ -283,7 +283,7 @@ and memory. You can make it watch **only relevant files** by adding a
 
 ```json
 {
-  "watch": ["app.js", "bin/www", "routes/**/*.js"]
+    "watch": ["app.js", "bin/start.js", "roujtes/**/*"]
 }
 ```
 
@@ -331,17 +331,12 @@ So, middlewares form a **chain** and are executed **in order, one by one**.
 Open `app.js`:
 
 ```js
-var app = express();
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
@@ -355,7 +350,7 @@ As you can see, several middlewares are already plugged in.
 Add your new middleware function just below the creation of the Express application:
 
 ```js
-var app = express();
+const app = express();
 
 app.use(function myMiddleware(req, res, next) {
   console.log("Hello World!");
@@ -367,11 +362,9 @@ In your CLI, stop the running application with Ctrl-C, restart it, and reload th
 You should see your middleware working:
 
 ```bash
-  my-app:server Listening on port 3000 +0ms
-Hello World
+  my-app:express-api Listening on port 3000 +0ms
 GET / 304 287.312 ms - -
 Hello World
-GET /stylesheets/style.css 304 2.356 ms - -
 ```
 
 ### Limiting middleware by HTTP method or URL path
@@ -442,7 +435,7 @@ app.use(function myMiddleware(req, res, next) {
 Now there's an error... Why?
 
 ```bash
-  my-app:server Listening on port 3000 +0ms
+  express-api:server Listening on port 3000 +0ms
 Hello World!
 GET / 304 - ms - -
 Error [ERR_HTTP_HEADERS_SENT]:
@@ -1176,3 +1169,4 @@ moviesRouter.`use('/movies/:id/comments', makeCommentsRouter(findMovie)`);
 [router]: http://expressjs.com/en/4x/api.html#router
 [routing]: http://expressjs.com/en/guide/routing.html
 [postman]: https://www.getpostman.com
+[yeoman]: https://yeoman.io/
