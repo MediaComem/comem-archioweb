@@ -131,7 +131,7 @@ info Installing npm packages
 Your express app has been generated.
 You can start it by entering the following commands:
 cd express-api
-npm start
+DEBUG=express-api:* npm start
 ```
 
 ### Run the app
@@ -243,9 +243,9 @@ $> cd /path/to/projects/express-api
 $> DEBUG=express-api:* nodemon
 [nodemon] 2.0.19
 [nodemon] to restart at any time, enter `rs`
-[nodemon] watching path(s): *.*
+[nodemon] `watching path(s): *.*`
 [nodemon] watching extensions: js,mjs,json
-[nodemon] starting `node ./bin/start`
+[nodemon] `starting node ./bin/start`
   express-api:server Listening on port 3000 +0ms
 ```
 
@@ -288,7 +288,11 @@ and memory. You can make it watch **only relevant files** by adding a
 
 ```json
 {
-    "watch": ["app.js", "bin/start.js", "roujtes/**/*"]
+    "watch": [
+      "app.js",
+      "bin/start.js",
+      "roujtes/**/*"
+    ]
 }
 ```
 
@@ -536,13 +540,13 @@ You can do it after some asynchronous calls:
 
 ```js
 app.use(function(req, res, next) {
-  fs.readFile("data.txt", "utf-8", function(err, data) {
+  `fs.readFile`("data.txt", "utf-8", `function(err, data)` {
   if (err) {
       return next(err);
     }
     req.myData = data;
-    next();
-  });
+    `next();
+  }`);
 });
 ```
 
@@ -553,10 +557,10 @@ The middleware chain will not proceed until you call `next()`.
 If your asynchronous call returns a promise, you can also use `async/await`:
 
 ```js
-app.use(async function(req, res, next) {
+app.use(`async function`(req, res, next) {
   try {
-    req.myData = await fs.promises.readFile("data.txt", "utf-8");
-    next();
+    req.myData = `await fs.promises.readFile`("data.txt", "utf-8");
+    `next();`
   } catch (err) {
     next(err);
   }
@@ -980,25 +984,20 @@ Getting book 33 by 24
 A route can also contain **its own chain of successive middlewares**:
 
 ```js
-function getNameFromQuery(req, res, next) {
+function `getNameFromQuery`(req, res, next) {
   req.nameToSalute = req.query.name;
   next();
 }
 
-function prepareSalutation(req, res, next) {
+function `prepareSalutation`(req, res, next) {
   req.salutation = "Hello " + req.nameToSalute;
   next();
 }
 
 app.get(
-  "/hello",
-  `getNameFromQuery`,
-  `prepareSalutation`,
-  function (req, res, next) {
+  "/hello",`getNameFromQuery`,`prepareSalutation`, function (req, res, next) {
     res.send(req.salutation);
-  }
-);
-
+  });
 ```
 
 These middleware functions are **only executed for that route** (`GET /hello` in this case).
@@ -1041,20 +1040,20 @@ that way you don't have one monolithic file with all your code in it.
 import express from "express";
 const booksRouter = express.Router();
 
-booksRouter.post("/" /*...*/);
+booksRouter.`post("/"` /*...*/);
 
-booksRouter.get("/", function (req, res, next) {
+booksRouter.`get("/"`, function (req, res, next) {
   const books = ["Catch-22", "Fahrenheit 451"];
   res.send(books);
 });
 
-booksRouter.get("/:id", function (req, res, next) {
+booksRouter.`get("/:id"`, function (req, res, next) {
   const book = { title: "Fahrenheit 451", year: 1953, author: "Ray Bradburry" };
   res.send(book);
 });
 
-booksRouter.put("/:id" /*...*/);
-booksRouter.delete("/:id" /*...*/);
+booksRouter.`put("/:id"` /*...*/);
+booksRouter.`delete("/:id"` /*...*/);
 
 export default booksRouter;
 
@@ -1119,16 +1118,16 @@ If you didn't have routers, you would have to define these 4 routes in **both** 
 
 ```js
 // In routes/books.js
-booksRouter.post("/:id/comments" /*...*/);
-booksRouter.get("/:id/comments" /*...*/);
-booksRouter.patch("/:id/comments/:cid" /*...*/);
-booksRouter.delete("/:id/comments/:cid" /*...*/);
+booksRouter.`post("/:id/comments"`, /*...*/);
+booksRouter.`get("/:id/comments"`, /*...*/);
+booksRouter.`patch("/:id/comments/:cid"`, /*...*/);
+booksRouter.`delete("/:id/comments/:cid"`, /*...*/);
 
 // In routes/movies.js
-moviesRouter.post("/:id/comments" /*...*/);
-moviesRouter.get("/:id/comments" /*...*/);
-moviesRouter.patch("/:id/comments/:cid" /*...*/);
-moviesRouter.delete("/:id/comments/:cid" /*...*/);
+moviesRouter.`post("/:id/comments"`, /*...*/);
+moviesRouter.`get("/:id/comments"`, /*...*/);
+moviesRouter.`patch("/:id/comments/:cid"`, /*...*/);
+moviesRouter.`delete("/:id/comments/:cid"`, /*...*/);
 
 ```
 
