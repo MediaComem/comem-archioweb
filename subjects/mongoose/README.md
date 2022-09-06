@@ -609,7 +609,7 @@ const userSchema = new Schema({
 });
 
 // Create the model from the schema and export it
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);
 ```
 
 
@@ -619,9 +619,10 @@ module.exports = mongoose.model('User', userSchema);
 Add the following code to `routes/users.js`:
 
 ```js
-var express = require('express');
-var router = express.Router();
-*const User = require('../models/user');
+import express from 'express';
+import User from '../models/user';
+
+const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -634,7 +635,7 @@ router.get('/', function(req, res, next) {
 * });
 });
 
-module.exports = router;
+export default router;
 ```
 
 #### Retrieve users
