@@ -1028,26 +1028,25 @@ that way you don't have one monolithic file with all your code in it.
 #### Creating a router
 
 ```js
-var express = require('express');
+import express from "express";
+const booksRouter = express.Router();
 
-var booksRouter = express.Router();
+booksRouter.post('/', /*...*/);
 
-booksRouter.`post('/'`, /*...*/);
-
-booksRouter.`get('/'`, function(req, res, next) {
-  var books = [ 'Catch-22', 'Fahrenheit 451' ];
+booksRouter.get('/', function(req, res, next) {
+  const books = [ 'Catch-22', 'Fahrenheit 451' ];
   res.send(books);
 });
 
-booksRouter.`get('/:id'`, function(req, res, next) {
-  var book = { title: 'Fahrenheit 451', year: 1953, author: 'Ray Bradburry' };
+booksRouter.get('/:id', function(req, res, next) {
+  const book = { title: 'Fahrenheit 451', year: 1953, author: 'Ray Bradburry' };
   res.send(book);
 });
 
-booksRouter.`put('/:id'`, /*...*/);
-booksRouter.`delete('/:id'`, /*...*/);
+booksRouter.put('/:id', /*...*/);
+booksRouter.delete('/:id', /*...*/);
 
-module.exports = booksRouter;
+export default booksRouter;
 ```
 
 Note that we don't use `/books` and `/books/:id` as paths but `/` and `/:id`.
@@ -1057,10 +1056,10 @@ Note that we don't use `/books` and `/books/:id` as paths but `/` and `/:id`.
 A router behaves like a middleware function, so you can simply plug it into your application with `app.use()`:
 
 ```js
-var app = express();
+import express from "express";
 
-// Require the books router from the routes directory
-var booksRouter = require("./routes/books");
+// Import the books router from the routes directory
+import booksRouter from "./routes/books.js";
 
 app.use("/books", booksRouter);
 ```
@@ -1108,16 +1107,16 @@ If you didn't have routers, you would have to define these 4 routes in **both** 
 
 ```js
 // In routes/books.js
-booksRouter.`post('/:id/comments'`, /*...*/);
-booksRouter.`get('/:id/comments'`, /*...*/);
-booksRouter.`patch('/:id/comments/:cid'`, /*...*/);
-booksRouter.`delete('/:id/comments/:cid'`, /*...*/);
+booksRouter.post('/:id/comments', /*...*/);
+booksRouter.get('/:id/comments', /*...*/);
+booksRouter.patch('/:id/comments/:cid', /*...*/);
+booksRouter.delete('/:id/comments/:cid', /*...*/);
 
 // In routes/movies.js
-moviesRouter.`post('/:id/comments'`, /*...*/);
-moviesRouter.`get('/:id/comments'`, /*...*/);
-moviesRouter.`patch('/:id/comments/:cid'`, /*...*/);
-moviesRouter.`delete('/:id/comments/:cid'`, /*...*/);
+moviesRouter.post('/:id/comments', /*...*/);
+moviesRouter.get('/:id/comments', /*...*/);
+moviesRouter.patch('/:id/comments/:cid', /*...*/);
+moviesRouter.delete('/:id/comments/:cid', /*...*/);
 ```
 
 #### Plugging routers on routers
@@ -1127,12 +1126,14 @@ With a router, you could **define these sub-paths once**:
 ```js
 // Create a comments router to attach comments to
 // the parent found by the specified middleware
-module.exports = function `makeCommentsRouter`(findParentMiddleware) {
+import express from "express";
+
+export default function makeCommentsRouter(findParentMiddleware) {
   const commentsRouter = express.Router();
-  commentsRouter.`post('/'`, findParentMiddleware, /*...*/);
-  commentsRouter.`get('/'`, findParentMiddleware, /*...*/);
-  commentsRouter.`patch('/:cid'`, findParentMiddleware, /*...*/);
-  commentsRouter.`delete('/:cid'`, findParentMiddleware, /*...*/);
+  commentsRouter.post("/", findParentMiddleware /*...*/);
+  commentsRouter.get("/", findParentMiddleware /*...*/);
+  commentsRouter.patch("/:cid", findParentMiddleware /*...*/);
+  commentsRouter.delete("/:cid", findParentMiddleware /*...*/);
   return commentsRouter;
 };
 ```
@@ -1142,11 +1143,11 @@ Then plug the whole URL sub-structure onto both the **books' and movies' routers
 ```js
 // In routes/books.js
 const makeCommentsRouter = require('./comments');
-booksRouter.`use('/books/:id/comments', makeCommentsRouter(findBook))`;
+booksRouter.use('/books/:id/comments', makeCommentsRouter(findBook));
 
 // In routes/movies.js
 const makeCommentsRouter = require('./comments');
-moviesRouter.`use('/movies/:id/comments', makeCommentsRouter(findMovie)`);
+moviesRouter.use('/movies/:id/comments', makeCommentsRouter(findMovie));
 ```
 
 ## Resources
