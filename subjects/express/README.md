@@ -1130,10 +1130,10 @@ import express from "express";
 
 export default function makeCommentsRouter(findParentMiddleware) {
   const commentsRouter = express.Router();
-  commentsRouter.`post('/'`, findParentMiddleware, /*...*/);
-  commentsRouter.`get('/'`, findParentMiddleware, /*...*/);
-  commentsRouter.`patch('/:cid'`, findParentMiddleware, /*...*/);
-  commentsRouter.`delete('/:cid'`, findParentMiddleware, /*...*/);
+  commentsRouter.post("/", findParentMiddleware /*...*/);
+  commentsRouter.get("/", findParentMiddleware /*...*/);
+  commentsRouter.patch("/:cid", findParentMiddleware /*...*/);
+  commentsRouter.delete("/:cid", findParentMiddleware /*...*/);
   return commentsRouter;
 };
 ```
