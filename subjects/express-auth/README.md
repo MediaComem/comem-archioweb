@@ -272,7 +272,7 @@ The `compare` function takes the following arguments:
 The asynchronous callback will be called with **a boolean indicating whether the password matches**.
 
 ```js
-bcrypt.compare(plainPassword, hashedPassword, function(err, valid) {
+`bcrypt.compare(plainPassword, hashedPassword`, function(err, `valid`) {
   // Handle error and password validity...
 });
 ```
