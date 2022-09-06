@@ -130,7 +130,7 @@ $> npm install mongoose
 Then add the following code to the `app.js` file:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from ('mongoose');
 mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
 ```
 

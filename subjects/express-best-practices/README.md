@@ -105,7 +105,7 @@ needed:
 
 ```js
 // File: some other file
-const config = require('../path/to/config`);
+import config from '../path/to/config`;
 server.listen(config.port);
 ```
 
@@ -175,18 +175,15 @@ you retrieve configuration from environment variables):
 
 ```js
 // Load environment variables from the .env file.
-*try {
-* require('dotenv').config();
-*} catch (err) {
-* console.log('No .env file loaded');
-*}
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 // Retrieve configuration from environment variables.
 const port = process.env.PORT || 3000;
 // ...
 ```
 
-> Make sure that you execute the `require('dotenv').config()` line **before
+> Make sure that you execute the `dotenv.config()` line **before
 > accessing any environment variable in `process.env`**, otherwise it will be
 > too late. You'll be fine if you use a centralized configuration file and put
 > that code at the top.
@@ -203,7 +200,7 @@ The idea is that you create a named debug logger which you can then use to log
 debug messages as things happen in your application:
 
 ```js
-const debug = require('debug');
+import debug from 'debug';
 const log = debug('app:movies');
 
 log('Creating movie');
@@ -255,13 +252,13 @@ more advanced library such as:
 
 **Do NOT** define all your routes in `app.js`; it will get **too large and hard to maintain**.
 Group your API routes **by feature** and create a router for each group in the `routes` directory,
-then `require()` them in `app.js`:
+then `import` them in `app.js`:
 
 ```js
-const express = require('express');
+import express from 'express';
 
-const `peopleApiRouter` = require('./routes/people');
-const `moviesApiRouter` = require('./routes/movies');
+import `peopleApiRouter` from './routes/people';
+import `moviesApiRouter` from './routes/movies';
 
 const app = express();
 
