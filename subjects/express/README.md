@@ -4,17 +4,17 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 **You will need**
 
-* [Node.js][node] 12+
-* [Google Chrome][chrome] (recommended, any browser with developer tools will do)
-* [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
+- [Node.js][node] 13.2+
+- [Google Chrome][chrome] (recommended, any browser with developer tools will do)
+- [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 
 **Recommended reading**
 
-* [npm](../npm/)
-* [RESTful APIs](../rest/)
+- [npm](../npm/)
+- [RESTful APIs](../rest/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUNdoctoc TO UPDATE -->
 
 - [What is Express?](#what-is-express)
   - [Core functionality](#core-functionality)
@@ -73,8 +73,6 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## What is Express?
 
 <!-- slide-front-matter class: center, middle, image-header -->
@@ -82,8 +80,6 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 <img src='images/express.png' class='w70' />
 
 A fast, unopinionated, **minimalist** web framework for Node.js
-
-
 
 ### Core functionality
 
@@ -110,97 +106,45 @@ Render views with pluggable template engines
 Express is **minimalist**: it doesn't provide much out of the box.
 Use the many **middleware** packages at your disposal to build more complex applications.
 
-
-
 ### Install the Express generator
 
-You can create an Express app from scratch, but we'll use [express-generator][express-generator] to quickly create an application skeleton:
+You can create an Express app from scratch, but we'll use a [custom generator][generator-express-api-es] to quickly create an application skeleton:
 
 ```bash
-$> npm install -g express-generator
+$> npm install -g yo
+$> npm install -g generator-express-api-es
 ```
 
-It provides the `express` command:
-
-```bash
-$> express --help
-
-  Usage: express [options] [dir]
-
-  Options:
-
-    -h, --help           output usage information
-        --version        output the version number
-    -e, --ejs            add ejs engine support
-        --pug            add pug engine support
-        --hbs            add handlebars engine support
-    -H, --hogan          add hogan.js engine support
-    -v, --view <engine>  add view <engine> support (ejs|hbs|hjs|jade|pug|...
-    -c, --css <engine>   add stylesheet <engine> support (less|stylus|...
-        --git            add .gitignore
-    -f, --force          force on non-empty directory
-```
-
-
+It provides the `express-api-es` Yeoman generator.
 
 ### Generate a skeleton application
 
-```bash
-$> cd /path/to/projects
-$> express my-app
-
-   create : my-app
-   create : my-app/package.json
-   create : my-app/app.js
-   create : my-app/public
-   create : my-app/public/javascripts
-   create : my-app/public/images
-   create : my-app/public/stylesheets
-   create : my-app/public/stylesheets/style.css
-   create : my-app/routes
-   create : my-app/routes/index.js
-   create : my-app/routes/users.js
-   create : my-app/views
-   create : my-app/views/index.jade
-   create : my-app/views/layout.jade
-   create : my-app/views/error.jade
-   create : my-app/bin
-   create : my-app/bin/www
-
-   install dependencies:
-     $ cd my-app && npm install
-
-   run the app:
-     $ DEBUG=my-app:* npm start
-```
-
-
-
-### Install dependencies and run it
-
-As instructed, let's install the dependencies:
+Run the generator and follow the prompts. Here we will use the default `express-api` project name.
 
 ```bash
-$> cd my-app
-$> npm install
-...
-npm notice created a lockfile as package-lock.json. You should commit this file.
-added 99 packages from 139 contributors and audited 194 packages in 2.705s
-...
+$> yo express-api-es
+create express-api/app.js
+create express-api/bin/start.js
+create express-api/package.json
+create express-api/routes/index.js
+create express-api/routes/users.js
+info Installing npm packages
+Your express app has been generated.
+You can start it by entering the following commands:
+cd express-api
+npm start
 ```
 
-And run it:
+### Run the app
 
 ```bash
-$> DEBUG=my-app:* npm start
+$> DEBUG=express-api:* npm start
 
-> my-app@0.0.0 start /path/to/projects/my-app
-> node ./bin/www
+> express-api@0.1.0 start /path/to/projects/my-app
+> node ./bin/start
 
-  my-app:server Listening on port 3000 +0ms
+  express-api:server Listening on port 3000 +0ms
 ```
-
-
 
 ### Browse the landing page
 
@@ -211,12 +155,9 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser and you sho
 In the CLI where you're running the app, you should also see that your request was **logged**:
 
 ```txt
-  my-app:server Listening on port 3000 +0ms
-GET / 200 321.805 ms - -
-GET /stylesheets/style.css 200 2.457 ms - -
+  express-api:server Listening on port 3000 +0ms
+GET / 200 2.050 ms - 17
 ```
-
-
 
 ## Application structure
 
@@ -225,8 +166,6 @@ GET /stylesheets/style.css 200 2.457 ms - -
 <img src='images/structure.jpg' class='w70' />
 
 What goes where
-
-
 
 ### The server component
 
@@ -242,35 +181,13 @@ bin
   www
 ```
 
-* `package.json` is used to track **dependencies** with npm
-* `app.js` is the **main script** that will create and configure the Express app
-* `routes` contains files that define the app's **routes and controllers**
-* `bin/www` is the **entrypoint** (the script you execute to launch the app)
+- `package.json` is used to track **dependencies** with npm
+- `app.js` is the **main script** that will create and configure the Express app
+- `routes` contains files that define the app's **routes and controllers**
+- `bin/start.js` is the **entrypoint** (the script you execute to launch the app)
 
 The above files are executed **locally** on your machine when you develop,
 or **on the server** when you deploy to a host.
-
-
-
-### The client component
-
-The rest of the files are:
-
-```txt
-views
-  index.jade
-  layout.jade
-  error.jade
-public
-  javascripts
-  images
-  stylesheets
-    style.css
-```
-
-* `views` contains the **page templates** (written in [Jade][jade] by default)
-  that will be rendered to HTML by the server and **served to the browser**
-* `public` contains **static files** that will be **served to the browser**
 
 ### The package.json file
 
@@ -278,28 +195,26 @@ Let's take a look at the generated `package.json`:
 
 ```json
 {
-  "name": "my-app",
-  "version": "0.0.0",
+  "name": "express-api",
+  "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/start"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
     "morgan": "~1.9.1"
   }
 }
 
 ```
 
-* There is a **start script** configured to launch the app with `npm start`
-* A few **dependencies** are pre-installed to provide basic web app functionality
-
-
+- There is a **start script** configured to launch the app with `npm start`
+- A few **dependencies** are pre-installed to provide basic web app functionality
 
 ## Live reload
 
@@ -368,11 +283,7 @@ and memory. You can make it watch **only relevant files** by adding a
 
 ```json
 {
-  "watch": [
-    "app.js",
-    "bin/www",
-    "routes/**/*.js"
-  ]
+  "watch": ["app.js", "bin/www", "routes/**/*.js"]
 }
 ```
 
@@ -380,27 +291,21 @@ If you add **new directories** containing source code to your project, **do not
 forget** to add them to this configuration file for nodemon to watch them as
 well.
 
-
-
 ## Express middleware
 
 <!-- slide-front-matter class: center, middle -->
 
 Handling requests and responses
 
-
-
 ### What is middleware?
 
 Middlewares are functions that are called **during the application's request-response cycle**.
 They can:
 
-* Execute any code
-* Make changes to the request and the response objects
-* End the request-response cycle
-* Call the next middleware in the chain
-
-
+- Execute any code
+- Make changes to the request and the response objects
+- End the request-response cycle
+- Call the next middleware in the chain
 
 ### Middleware function signature
 
@@ -408,20 +313,18 @@ This is an example of a middleware function:
 
 ```js
 function myMiddleware(req, res, next) {
-  console.log('Hello World!');
+  console.log("Hello World!");
   next();
 }
 ```
 
 Whenever a request is made to the Express application, it will receive:
 
-* The current **request** object (HTTP method, path, headers, etc)
-* The **response** object (can be used to configure and send the response)
-* A `next()` function that **calls the next middleware**
+- The current **request** object (HTTP method, path, headers, etc)
+- The **response** object (can be used to configure and send the response)
+- A `next()` function that **calls the next middleware**
 
 So, middlewares form a **chain** and are executed **in order, one by one**.
-
-
 
 ### Plug in middleware functions
 
@@ -431,23 +334,21 @@ Open `app.js`:
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
 ```
 
 Middleware functions are **plugged into your application** by passing them to `app.use()`.
 As you can see, several middlewares are already plugged in.
-
-
 
 ### Add your own
 
@@ -457,7 +358,7 @@ Add your new middleware function just below the creation of the Express applicat
 var app = express();
 
 app.use(function myMiddleware(req, res, next) {
-  console.log('Hello World!');
+  console.log("Hello World!");
   next();
 });
 ```
@@ -473,29 +374,25 @@ Hello World
 GET /stylesheets/style.css 304 2.356 ms - -
 ```
 
-
-
 ### Limiting middleware by HTTP method or URL path
 
 You can use a middleware only for HTTP requests on a specific path:
 
 ```js
-app.use('/hello', function hello(req, res, next) {
-  res.send('world');
+app.use("/hello", function hello(req, res, next) {
+  res.send("world");
 });
 ```
 
 Express also provides `.get`, `.post`, `.put`, etc to apply a middleware only for requests made with that HTTP method:
 
 ```js
-app.post('/ping', function ping(req, res, next) {
-  res.send('pong');
+app.post("/ping", function ping(req, res, next) {
+  res.send("pong");
 });
 ```
 
 As you can see, you can use `res.send()` to send a response to the client.
-
-
 
 ### Controlling the middleware chain
 
@@ -503,7 +400,7 @@ Remove the call to `next()` in your first middleware function:
 
 ```js
 app.use(function myMiddleware(req, res, next) {
-  console.log('Hello World!');
+  console.log("Hello World!");
 });
 ```
 
@@ -520,8 +417,8 @@ Update your middleware again, this time to send a response to the client:
 
 ```js
 app.use(function myMiddleware(req, res, next) {
-  console.log('Hello World!');
-  res.send('Hello World!');
+  console.log("Hello World!");
+  res.send("Hello World!");
 });
 ```
 
@@ -536,8 +433,8 @@ Put the call to `next()` back in:
 
 ```js
 app.use(function myMiddleware(req, res, next) {
-  console.log('Hello World!');
-  res.send('Hello World!');
+  console.log("Hello World!");
+  res.send("Hello World!");
   next();
 });
 ```
@@ -561,16 +458,16 @@ Error [ERR_HTTP_HEADERS_SENT]:
 
 This is what happens:
 
-* Your middleware function sends the Hello World response
-* Another middleware a few lines below (`app.use('/', index);`) tries to send the index page
+- Your middleware function sends the Hello World response
+- Another middleware a few lines below (`app.use('/', index);`) tries to send the index page
 
 HTTP is a request-response protocol: **one request** will get **one response**.
-Your code is trying to send *two responses for the same request*.
+Your code is trying to send _two responses for the same request_.
 
 Remember that each middleware function can either:
 
-* Modify the request/response and pass them along to the **next middleware** in the chain
-* **OR send the response** to the client and interrupt the chain
+- Modify the request/response and pass them along to the **next middleware** in the chain
+- **OR send the response** to the client and interrupt the chain
 
 This is an application of the [chain of responsibility][design-pattern-cor] design pattern.
 Each middleware decides whether to handle the request and stop the chain, or pass it along.
@@ -610,15 +507,13 @@ Host: localhost:3000
 
 <img src='images/middleware-chain-3.png' width='100%' />
 
-
-
 ### Attaching data to the request in a middleware
 
 You can attach data to the request object:
 
 ```js
-app.use(function(req, res, next) {
-  req.hello = 'World';
+app.use(function (req, res, next) {
+  req.hello = "World";
   next();
 });
 ```
@@ -626,8 +521,8 @@ app.use(function(req, res, next) {
 Then use that in the next middleware:
 
 ```js
-app.use(function(req, res, next) {
-  console.log('Hello ' + req.hello); // "Hello World"
+app.use(function (req, res, next) {
+  console.log("Hello " + req.hello); // "Hello World"
   next();
 });
 ```
@@ -635,8 +530,6 @@ app.use(function(req, res, next) {
 Many middlewares use this pattern to **provide data to the next middlewares**.
 For example, the `express.json()` middleware parses the body of HTTP requests with the `application/json` content type,
 and attaches it to the `req.body` property.
-
-
 
 ### Asynchronous middleware
 
@@ -673,14 +566,12 @@ app.use(`async function`(req, res, next) {
 });
 ```
 
-
-
 ### How to deal with errors in middlewares
 
 Sometimes things go wrong:
 
-* The user sends invalid data
-* A database query fails (invalid query, connection issue, etc)
+- The user sends invalid data
+- A database query fails (invalid query, connection issue, etc)
 
 In that case, the proper thing to do with Express is to give the error to `next()`:
 
@@ -721,8 +612,8 @@ Only special **error-handling middleware functions** are called.
 Compared to normal middleware functions, an error-handling middleware takes a fourth argument (the error):
 
 ```js
-app.use(function(err, req, res, next) {
-  res.send('Your request failed because: ' + err.message);
+app.use(function (err, req, res, next) {
+  res.send("Your request failed because: " + err.message);
 });
 ```
 
@@ -753,28 +644,24 @@ One error-handling middleware has already been plugged in for you:
 
 ```js
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 ```
 
 It will render any error in a "pretty" error page.
-
-
 
 ## The request object
 
 <!-- slide-front-matter class: center, middle -->
 
 Using the `req` object
-
-
 
 ### Request example
 
@@ -795,8 +682,6 @@ Authorization: Basic Zm9vOmJhcgo=
 }
 ```
 
-
-
 ### Getting the HTTP method, URL path and query parameters
 
 Let's start with the request line:
@@ -808,16 +693,14 @@ POST /test/a/b?page=3&select=foo&select=bar HTTP/1.1
 This is how to get the different parts:
 
 ```js
-app.all('/test/:param1/:param2', function(req, res, next) {
-  console.log(req.method);  // "POST"
-  console.log(req.path);    // "/test/a/b"
-  console.log(req.params);  // { param1: "a", param2: "b" }
-  console.log(req.query);   // { page: 3, select: [ "foo", "bar" ] }
+app.all("/test/:param1/:param2", function (req, res, next) {
+  console.log(req.method); // "POST"
+  console.log(req.path); // "/test/a/b"
+  console.log(req.params); // { param1: "a", param2: "b" }
+  console.log(req.query); // { page: 3, select: [ "foo", "bar" ] }
   next();
 });
 ```
-
-
 
 ### Getting HTTP headers
 
@@ -832,7 +715,7 @@ Authorization: Basic Zm9vOmJhcgo=
 You can get the **normalized** headers (all in lower case):
 
 ```js
-app.all('/test/:param1/:param2', function(req, res, next) {
+app.all("/test/:param1/:param2", function (req, res, next) {
   console.log(req.headers);
   // {
   //   "content-type": "application/json",
@@ -845,13 +728,11 @@ app.all('/test/:param1/:param2', function(req, res, next) {
 Or you can use `req.get()` to retrieve them in a case-insensitive manner:
 
 ```js
-app.all('/test/:param1/:param2', function(req, res, next) {
-  console.log(req.get('content-type')); // "application/json"
-  console.log(req.get('Content-Type')); // "application/json"
+app.all("/test/:param1/:param2", function (req, res, next) {
+  console.log(req.get("content-type")); // "application/json"
+  console.log(req.get("Content-Type")); // "application/json"
 });
 ```
-
-
 
 ### Getting the HTTP request body
 
@@ -870,7 +751,7 @@ Finally, let's get the request body:
 As long as you have the `express.json()` middleware in your chain, it's as simple as this:
 
 ```js
-app.all('/test/:param1/:param2', function(req, res, next) {
+app.all("/test/:param1/:param2", function (req, res, next) {
   console.log(req.body);
   // {
   //   "age": "24",
@@ -882,15 +763,11 @@ app.all('/test/:param1/:param2', function(req, res, next) {
 });
 ```
 
-
-
 ## The response object
 
 <!-- slide-front-matter class: center, middle -->
 
 Using the `res` object
-
-
 
 ### Sending the response
 
@@ -900,7 +777,7 @@ It will automatically determine the type of content your are sending and set the
 <!-- slide-column 45 -->
 
 ```js
-res.send('Some text');
+res.send("Some text");
 ```
 
 <!-- slide-column -->
@@ -918,7 +795,7 @@ Some text
 
 ```js
 res.send({
-  some: 'object'
+  some: "object",
 });
 ```
 
@@ -938,7 +815,7 @@ Content-Type: application/json
 <!-- slide-column 45 -->
 
 ```js
-res.send(Buffer.from('0101'));
+res.send(Buffer.from("0101"));
 ```
 
 <!-- slide-column -->
@@ -950,8 +827,6 @@ Content-Type: application/octet-stream
 0101
 ```
 
-
-
 ### Setting the HTTP status code
 
 Use `res.status()` to set the status code:
@@ -960,7 +835,7 @@ Use `res.status()` to set the status code:
 
 ```js
 res.status(201).send({
-  some: 'object'
+  some: "object",
 });
 ```
 
@@ -991,8 +866,6 @@ res.sendStatus(204);
 HTTP/1.1 204 No Content
 ```
 
-
-
 ### Sending HTTP response headers
 
 Use `res.set()` to set headers:
@@ -1000,13 +873,10 @@ Use `res.set()` to set headers:
 <!-- slide-column -->
 
 ```js
-res.set('Header-1', 'foo');
-res.set('Total-Books', 2);
+res.set("Header-1", "foo");
+res.set("Total-Books", 2);
 
-res.send([
-  'Catch-22',
-  'Fahrenheit 451'
-]);
+res.send(["Catch-22", "Fahrenheit 451"]);
 ```
 
 <!-- slide-column -->
@@ -1030,14 +900,14 @@ Setting headers does not send the response, so you can do it in **multiple middl
 <!-- slide-column -->
 
 ```js
-app.use(function(req, res, next) {
-  res.set('Header-1', 'foo');
+app.use(function (req, res, next) {
+  res.set("Header-1", "foo");
   next();
 });
 
-app.use(function(req, res, next) {
-  res.set('Header-2', 'bar');
-  res.send('Some text');
+app.use(function (req, res, next) {
+  res.set("Header-2", "bar");
+  res.send("Some text");
 });
 ```
 
@@ -1052,8 +922,6 @@ Header-2: bar
 Some text
 ```
 
-
-
 ### Chain response methods
 
 You can also chain all the previous methods together:
@@ -1061,10 +929,7 @@ You can also chain all the previous methods together:
 <!-- slide-column -->
 
 ```js
-res
-  .set('Header-1', 'foo')
-  .status(201)
-  .send('Some text');
+res.set("Header-1", "foo").status(201).send("Some text");
 ```
 
 <!-- slide-column -->
@@ -1081,31 +946,29 @@ Some text
 
 Express's `res` object is an application of the [builder][design-pattern-builder] design pattern.
 
-
-
 ## Routing
 
 <!-- slide-front-matter class: center, middle -->
 
 Mapping HTTP methods and URLs to handler functions
 
-
-
 ### Basic routing
 
 As we've seen, basic routing can be applied to middleware by using `.get`, `.post`, etc and passing a path:
 
 ```js
-app.get('/hello', function() {
-  res.send('World');
+app.get("/hello", function () {
+  res.send("World");
 });
 ```
 
 You can also have dynamic parameters in your URLs:
 
 ```js
-app.get('/authors/`:authorId`/books/`:bookId`', function(req, res, next) {
-  res.send('Getting book ' + `req.params.bookId` + ' by ' + `req.params.authorId`);
+app.get("/authors/`:authorId`/books/`:bookId`", function (req, res, next) {
+  res.send(
+    "Getting book " + `req.params.bookId` + " by " + `req.params.authorId`
+  );
 });
 ```
 
@@ -1114,8 +977,6 @@ Calling `http://localhost:3000/authors/24/books/33` will produce the following r
 ```txt
 Getting book 33 by 24
 ```
-
-
 
 ### Routing middlewares
 
@@ -1138,8 +999,6 @@ app.get('/hello', `getNameFromQuery`, `prepareSalutation`, function(req, res, ne
 ```
 
 These middleware functions are **only executed for that route** (`GET /hello` in this case).
-
-
 
 ### Routers
 
@@ -1208,9 +1067,9 @@ A router behaves like a middleware function, so you can simply plug it into your
 var app = express();
 
 // Require the books router from the routes directory
-var booksRouter = require('./routes/books');
+var booksRouter = require("./routes/books");
 
-app.use('/books', booksRouter);
+app.use("/books", booksRouter);
 ```
 
 Any request where the path starts with `/books` will be handled by that router,
@@ -1297,15 +1156,11 @@ const makeCommentsRouter = require('./comments');
 moviesRouter.`use('/movies/:id/comments', makeCommentsRouter(findMovie)`);
 ```
 
-
-
 ## Resources
 
-* [API reference][api] (documentation for `app`, `req`, `res` and `Router`)
-* [Routing][routing]
-* [Using middleware][using-middleware]
-
-
+- [API reference][api] (documentation for `app`, `req`, `res` and `Router`)
+- [Routing][routing]
+- [Using middleware][using-middleware]
 
 [api]: http://expressjs.com/en/4x/api.html
 [chrome]: https://www.google.com/chrome/
@@ -1313,6 +1168,7 @@ moviesRouter.`use('/movies/:id/comments', makeCommentsRouter(findMovie)`);
 [design-pattern-cor]: https://sourcemaking.com/design_patterns/chain_of_responsibility
 [express]: https://expressjs.com
 [express-generator]: https://www.npmjs.com/package/express-generator
+[generator-express-api-es]: https://github.com/MediaComem/generator-express-api-es
 [jade]: https://www.npmjs.com/package/jade
 [using-middleware]: http://expressjs.com/en/guide/using-middleware.html
 [node]: https://nodejs.org/en/
