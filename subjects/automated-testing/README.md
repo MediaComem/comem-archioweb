@@ -252,21 +252,19 @@ For example, this is how you could write those assertions with the
 [Mocha][mocha] test runner and the [Chai][chai] assertion library:
 
 ```js
-const { expect } = require('chai');
-
 describe('add', function() {
-  it('should add two numbers together', function() {
+  test('should add two numbers together', function() {
 *   const actual = add(2, 3);
 *   const expected = 5;
-*   expect(actual).to.equal(expected);
+*   expect(actual).toEqual(expected);
   });
 
-  it('should add a positive number to a negative number', function() {
-    expect(add(-3, 4)).to.equal(1);
+  test('should add a positive number to a negative number', function() {
+    expect(add(-3, 4)).toEqual(1);
   });
 
-  it('should add a negative number to a positive number', function() {
-    expect(add(10, -12)).to.equal(-2);
+  test('should add a negative number to a positive number', function() {
+    expect(add(10, -12)).toEqual(-2);
   });
 });
 ```
