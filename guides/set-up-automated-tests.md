@@ -4,14 +4,13 @@ This guide explains how to set up [automated tests][automated-testing] for an
 HTTP API implemented with [Express.js][express] and [Mongoose][mongoose], using
 the following tools:
 
-* [Mocha][mocha] (test framework)
-* [Chai][chai] (assertion library)
+* [Jest][jest] (test framework)
 * [SuperTest] (HTTP test library)
 
 > This is just a particular selection of popular tools. There are many other
 > tools that can do the same. For example, read [this
-> article][top-js-test-frameworks-2019] for a list of the most popular
-> JavaScript test frameworks in 2019.
+> article][top-js-test-frameworks-2021] for a list of the most popular
+> JavaScript test frameworks in 2021.
 >
 > Note that the code in this tutorial uses [Promises][promise] and [async
 > functions][async-await]. Read [this guide](./async-js.md) if you are not
@@ -47,7 +46,7 @@ the following tools:
 
 ## Requirements
 
-* [Node.js][node] 12+
+* [Node.js][node] 13.2+
 * You are using [npm][npm] to manage your dependencies.
 * A working [Express.js][express] application providing the HTTP API you wish to
   test.
@@ -58,11 +57,10 @@ the following tools:
 
 ## Install the test framework and run your first test
 
-Start by installing Mocha, which will run your tests, and Chai, which you will
-use to make assertions:
+Start by installing Jest, which we will use to create and run our tests:
 
 ```bash
-$> npm install --save-dev mocha chai
+$> npm install --save-dev jest
 ```
 
 Create a `spec` folder in your project.
@@ -75,46 +73,44 @@ Create a `spec` folder in your project.
 >
 > This practice is part of [Behavior-Driven Development][bdd].
 
-You will now create a sample test to make sure that both Mocha and Chai work.
+You will now create a sample test to make sure that Jest works.
 Create a `spec/example.spec.js` file with the following contents:
 
 ```js
-const { expect } = require('chai');
-
-// Define a test with Mocha.
-it('should work', function() {
-  // Make assertions with Chai.
-  expect(true).to.equal(true);
+// Define a test with Jest.
+test('should work', function() {
+  expect(true).toEqual(true);
 });
 ```
 
-To run these tests, you can use the `mocha` command which comes with the npm
+To run these tests, you can use the `jest` command which comes with the npm
 package. The most convenient way to do it is to define a new `test` script in
-the `scripts` section of your `package.json`:
+the `scripts` section of your `package.json`. Unfortunately, we need to add a `--experimental-vm-modules` in order to use Jest with ES Modules. 
 
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "mocha spec/**/*.spec.js"
+  "test": "--experimental-vm-modules node_modules/.bin/jest"
 }
 ```
 
-> Running `mocha spec/**/*.spec.js` instructs Mocha to run all the files
-> matching the pattern `spec/**/*.spec.js`, which means any file in the `spec`
-> directory (recursively) with the extension `.spec.js`. The file you just
-> created, `spec/example.spec.js`, matches this pattern.
+>Jest will first look for files in a `__test__` directory. It will then look for files with the `*.spec.js` and `*.test.js` suffixes. As such, you shouldn't have to specify your test's location.
 
 You can now simply run `npm test` to execute your test(s):
 
 ```bash
 $> npm test
 
-> my-app@0.0.0 test /path/to/my-app
-> mocha spec/**/*.spec.js
+> express-api@0.0.0 test
+PASS  spec/example.spec.js
+  ✓ should work (1 ms)
 
-  ✓ should work
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.152 s, estimated 1 s
+Ran all test suites.
 ```
-
 
 
 ## Your domain model & API
@@ -144,42 +140,40 @@ You can delete the `spec/example.spec.js` file you created earlier. Create a
 routes:
 
 ```js
-const { expect } = require('chai');
-
 describe('POST /users', function() {
-  it('should create a user');
+  test('should create a user');
 });
 
 describe('GET /users', function() {
-  it('should retrieve the list of users');
+  test('should retrieve the list of users');
 });
 ```
 
-> Note the nested `describe/it` structure provided by Mocha. It helps you
+> Note the nested `describe/test` structure provided by Jest. It helps you
 > structure your tests when writing them. Everything that is in the
 > `describe('POST /users')` block describes how that route should work. The
-> `it('should create a user')` block insides describes one thing that route
+> `test('should create a user')` block insides describes one thing that route
 > should do. Combining the two gives you the whole test specification: `POST
-> /users should create a user`. You can use multiple `it` blocks inside a
-> `describe` block if you want.
+> /users should create a user`.
 
-Mocha allows you to write `it` calls without a test function: this creates a
+Jest allows you to write `test.todo` calls without a test function: this creates a
 **pending test**, a test that is not yet implemented. If you run your tests with
-`npm test` now, you should see the tests marked as pending:
+`npm test` now, you should see the tests marked as `todo:
 
 ```bash
 $> npm test
-> my-app@0.0.0 test /path/to/my-app
-> mocha spec/**/*.spec.js
-
+> express-api@0.0.0 test
+PASS  spec/users.spec.js
   POST /users
-    - should create a user
-
+    ✎ todo should create a user
   GET /users
-    - should retrieve the list of users
+    ✎ todo should retrieve the list of users
 
-  0 passing (3ms)
-  2 pending
+Test Suites: 1 passed, 1 total
+Tests:       2 todo, 2 total
+Snapshots:   0 total
+Time:        0.156 s
+Ran all test suites.
 ```
 
 > You could use this functionality to prepare your test suite before writing the
@@ -220,7 +214,7 @@ like this:
 
 ```json
 "scripts": {
-  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test mocha spec/**/*.spec.js"
+  "test": "cross-env LOCAL_MONGODB_URI=mongodb://localhost/jest node --experimental-vm-modules node_modules/.bin/jest"
 }
 ```
 
@@ -874,21 +868,22 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 [async-await]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 [automated-testing]: https://mediacomem.github.io/comem-archidep/2019-2020/subjects/automated-testing/?home=MediaComem%2Fcomem-archidep%23readme#1
 [bdd]: https://en.wikipedia.org/wiki/Behavior-driven_development
-[chai]: https://www.chaijs.com
-[chai-bdd]: https://www.chaijs.com/api/bdd/
+
 [cross-env]: https://www.npmjs.com/package/cross-env
 [express]: https://expressjs.com
 [fixture]: https://en.wikipedia.org/wiki/Test_fixture
 [istanbul]: https://istanbul.js.org
-[mocha]: https://mochajs.org
-[mocha-hooks]: https://mochajs.org/index.html#hooks
+[jest]: https://jestjs.io/
+[jest-matchers]: https://jestjs.io/docs/expect
+[jest-extended]: https://github.com/jest-community/jest-extended
+[jest-test]: https://jestjs.io/docs/api#testname-fn-timeout
+[jest-afterAll]:https://jestjs.io/docs/api#afterallfn-timeout
 [mongo]: https://www.mongodb.com
 [mongoose]: https://mongoosejs.com
 [node]: https://nodejs.org
 [npm]: https://www.npmjs.com
-[nyc]: https://github.com/istanbuljs/nyc
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [supertest]: https://github.com/visionmedia/supertest
 [supertest-examples]: https://github.com/visionmedia/supertest#example
 [tdd]: https://en.wikipedia.org/wiki/Test-driven_development
-[top-js-test-frameworks-2019]: https://blog.bitsrc.io/top-javascript-testing-frameworks-in-demand-for-2019-90c76e7777e9
+[top-js-test-frameworks-2021]: https://2021.stateofjs.com/en-US/libraries/testing
