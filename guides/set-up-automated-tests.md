@@ -5,6 +5,7 @@ HTTP API implemented with [Express.js][express] and [Mongoose][mongoose], using
 the following tools:
 
 * [Jest][jest] (test framework)
+* [Jest Extended][jest-extended] (assertion library)
 * [SuperTest] (HTTP test library)
 
 > This is just a particular selection of popular tools. There are many other
@@ -31,6 +32,7 @@ the following tools:
 - [Add a unicity constraint to your model](#add-a-unicity-constraint-to-your-model)
 - [Reproducible tests](#reproducible-tests)
 - [Write more detailed assertions](#write-more-detailed-assertions)
+- [Add some matchers to Jest with jest-extended](#add-some-matchers-to-jest-with-jest-extended)
 - [Write a second test](#write-a-second-test)
 - [Optional: authenticate](#optional-authenticate)
 - [Test fixtures](#test-fixtures)
@@ -337,7 +339,7 @@ afterAll(async () => {
 
 > Here you are using [Jest hooks][jest-hooks]. The `beforeAll` and `afterAll` global
 > functions provided by Jest allow you to run code before or after your test
-> suite. The `beforeEach` and `afterEach` hooks allow us to run code before or after **each** test in the suite. 
+> suite.
 
 ### Fix Mongoose `collection.ensureIndex is deprecated` warning
 
@@ -398,7 +400,7 @@ have run the test more than once. Otherwise, MongoDB will not be able to create
 the unique index (since there are already duplicates stored in the collection):
 
 ```bash
-$> mongo my-app-test
+$> mongosh my-app-test
 > db.users.deleteMany({})
 { acknowledged: true, deletedCount: 3 }
 ```
@@ -443,9 +445,9 @@ This ensures that any test will alway starts with the same state: nothing.
 Create a new `spec/utils.js` file with the following function:
 
 ```js
-const User = require('../models/user');
+import User from "../models/user.js"
 
-exports.cleanUpDatabase = async function() {
+export const cleanUpDatabase = async function() {
   await Promise.all([
     User.deleteMany()
   ]);
@@ -459,7 +461,7 @@ exports.cleanUpDatabase = async function() {
 Import this new function at the top of the `spec/users.spec.js` file:
 
 ```js
-const { cleanUpDatabase } = require('./utils');
+import { cleanUpDatabase } from "./utils.js"
 ```
 
 You can now call it before each test by adding this line before your `describe`
@@ -469,8 +471,8 @@ calls:
 beforeEach(cleanUpDatabase);
 ```
 
-> You are using [Mocha hooks][mocha-hooks] again. The `beforeEach` and
-> `afterEach` global functions provided by Mocha allow you to run code before or
+> You are using [Jest hooks][jest-hooks] again. The `beforeEach` and
+> `afterEach` global functions provided by Jest allow you to run code before or
 > after each test runs.
 
 You should now be able to run `npm test` several times in a row without error.
@@ -493,27 +495,54 @@ Add the following assertions to your test after the SuperTest call chain:
 
 ```js
 // Check that the response body is a JSON object with exactly the properties we expect.
-expect(res.body).to.be.an('object');
-expect(res.body._id).to.be.a('string');
-expect(res.body.name).to.equal('John Doe');
-expect(res.body).to.have.all.keys('_id', 'name');
+expect(typeof res.body).toEqual('object');
+expect(typeof res.body._id).toEqual('string');
+expect(res.body.name).toEqual('John Doe');
+expect(res.body).toEqual(
+  expect.objectContaining({
+    _id: expect.any(String),
+    name: expect.any(String)
+  })
+);
 ```
 
-Chai has [many assertions][chai-bdd] you can use to verify the shape of objects
-or any other kind of JavaScript value (e.g. arrays).
+## Add some matchers to Jest with jest-extended
+
+Jest has [many matchers][jest-matchers]. However, as you can see, checking an object's keys can be a bit convoluted. Fortunately, we can use the [jest-extended][jest-extended] package to add plenty of cleaner methods to our test suite. 
+
+Install jest-extended:
+```bash
+npm install --save-dev jest-extended
+```
+
+You can then setup the library by adding the following to your `package.json` file:
+```json
+"jest": {
+  "setupFilesAfterEnv": ["jest-extended/all"]
+}
+```
+
+We can now write our assertions this way:
+
+```js
+expect(res.body).toBeObject();
+expect(res.body._id).toBeString();
+expect(res.body.name).toEqual('John Doe');
+expect(res.body).toContainAllKeys(['_id', 'name'])
+```
 
 When testing a particular API route, **you should make assertions on everything
 your route does that is expected to be used by the end user**. You want to make
 sure that your API works as advertised. For example: check the status code,
 check important headers, check the response body.
 
-> Note the `expect(res.body._id).to.be.a('string')` assertion. You cannot check
+> Note the `expect(res.body._id).toBeString()` assertion. You cannot check
 > the exact value of the user's ID because you cannot know it until the user has
 > been created. So you just check that it's a string. If you wanted to go
 > further, you could check the exact format of that ID with
-> `expect(res.body._id).to.match(/^[0-9a-f]{24}$/)` (for MongoDB IDs).
+> `expect(res.body._id).toMatch(/^[0-9a-f]{24}$/)` (for MongoDB IDs).
 >
-> Also note the `expect(res.body).to.have.all.keys('_id', 'name')` assertion.
+> Also note the `expect(res.body).toContainAllKeys('_id', 'name')` assertion.
 > You have an assertion to check the ID and another to check the name, but it's
 > also important to check that the body does not contain other properties you
 > were not expecting. That way, when you add more properties to your schema, the
@@ -816,12 +845,11 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 
 ## Documentation
 
-* [Mocha][mocha] (test framework)
-  * [Hooks][mocha-hooks]
-* [Chai][chai] (assertion library)
-  * [Assertions][chai-bdd] ([BDD][bdd] style)
+* [Jest][jest] (test framework)
+  * [Hooks][jest-hooks]
+  * [Matchers][jest-matchers]
+* [Jest Extended][jest-extended]
 * [SuperTest][supertest] (HTTP test library)
-* [nyc][nyc] (test coverage analysis)
 * [Express.js][express] (Node.js web framework)
 * [Mongoose][mongoose] (Node.js object-document mapper)
 
@@ -830,7 +858,7 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 * [Behavior-Driven Development][bdd]
 * [Test fixtures][fixture]
 * [Test-Driven Development][tdd]
-* [Top JavaScript Testing Frameworks in Demand for 2019][top-js-test-frameworks-2019]
+* [State of JS 2021: Testing ][top-js-test-frameworks-2021]
 
 
 
@@ -846,7 +874,7 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 [istanbul]: https://istanbul.js.org
 [jest]: https://jestjs.io/
 [jest-matchers]: https://jestjs.io/docs/expect
-[jest-extended]: https://github.com/jest-community/jest-extended
+[jest-extended]: https://jest-extended.jestcommunity.dev/docs/matchers/
 [jest-test]: https://jestjs.io/docs/api#testname-fn-timeout
 [jest-hooks]:https://jestjs.io/docs/setup-teardown
 [mongo]: https://www.mongodb.com
