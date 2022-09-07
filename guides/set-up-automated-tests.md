@@ -38,8 +38,7 @@ the following tools:
 - [Test fixtures](#test-fixtures)
 - [Am I testing every possible scenario?](#am-i-testing-every-possible-scenario)
 - [Optional: check your test coverage](#optional-check-your-test-coverage)
-- [Tips](#tips)
-  - [Chai](#chai)
+- [Tip](#tip)
 - [Documentation](#documentation)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
