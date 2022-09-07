@@ -304,7 +304,7 @@ If you run `npm test` now, you should see something like this:
 ```bash
 $> npm test
 
-> express-api@0.0.0 test /path/to/my-app
+> express-api@0.0.0 test
 PASS  spec/users.spec.js
   POST /users
     ✓ should create a user (92 ms)
@@ -568,7 +568,7 @@ list of users')` call** to add the test function. It should look like this:
 
 ```js
 describe('GET /users', function() {
-  it('should retrieve the list of users', async function() {
+  test('should retrieve the list of users', async function() {
 
   });
 });
@@ -589,8 +589,8 @@ this time. Since this is a GET request, no request body can be sent.
 Make some assertions on the request body:
 
 ```js
-expect(res.body).to.be.an('array');
-expect(res.body).to.have.lengthOf(0);
+expect(res.body).toBeArray();
+expect(res.body).toHaveLengthOf(0);
 ```
 
 
@@ -603,33 +603,27 @@ request is not properly authenticated. You must send a valid bearer token in the
 `Authorization` header.
 
 Add this function somewhere in the test file outside the `describe` blocks. You
-can use it later to generate a valid token:
+can use it later to generate a valid token. You can add the following function in `spec/utils.js`:
 
 ```js
-const jwt = require('jsonwebtoken');
-const config = require('../config');
-
-function generateValidJwt(user) {
+import jwt from "jsonwebtoken"
+// ...
+export function generateValidJwt(user) {
   // Generate a valid JWT which expires in 7 days.
   const exp = (new Date().getTime() + 7 * 24 * 3600 * 1000) / 1000;
   const claims = { sub: user._id.toString(), exp: exp };
   return new Promise((resolve, reject) => {
-    jwt.sign(claims, config.secretKey, function(err, token) {
+    jwt.sign(claims, process.env.SECRET_KEY, function(err, token) {
       if (err) {
         return reject(err);
       }
-
       resolve(token);
     });
   });
 }
 ```
 
-But you need a pre-existing user in the database before you can generate a
-token. And the database is currently empty when the test runs since it is
-cleaned before each test runs.
-
-
+But you need a pre-existing user in the database before you can generate a token. And the database is currently empty when the test runs since it is cleaned before each test runs.
 
 ## Test fixtures
 
@@ -652,11 +646,11 @@ attempt to retrieve the list. To create them, you will need the `User` model,
 which you can import by adding this to the top of the test file:
 
 ```js
-const User = require('../models/user');
+import User from "../models/user.js"
 ```
 
 You now need to make sure that some users are created **before the test runs**.
-You can use Mocha's `beforeEach` hook. Just make sure to put it in the right
+You can use Jest's `beforeEach` hook. Just make sure to put it in the right
 place. You want these fixtures to be created for the `GET /users` test, but not
 for the `POST /users` test. You can achieve this by putting it inside the
 `describe('GET /users', ...)` block: it will only apply to tests in that block.
@@ -677,14 +671,20 @@ describe('GET /users', function() {
     user = users[0];
   });
 
-  it('should retrieve the list of users', async function() {
+  test('should retrieve the list of users', async function() {
     // ...
   });
 });
 ```
 
-If the `GET /users` route requires authentication, modify your request to
+If the `GET /users` route requires authentication, first import the `generateValidJwt` function from your `utils.js` file: 
+
+```js
+import { cleanUpDatabase, generateValidJwt } from "./utils.js"
+```
+Then modify your request to
 include a valid `Authorization` header with SuperTest's `set` method:
+
 
 ```js
 const token = await generateValidJwt(user);
@@ -703,47 +703,45 @@ has 2 users:
 
 ```bash
 $> npm test
-> my-app@0.0.0 test /path/to/my-app
-> cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js
-
+> express-api@0.0.0 test 
+ FAIL  spec/users.spec.js
   POST /users
-    ✓ should create a user (104ms)
-
+    ✓ should create a user (121 ms)
   GET /users
-    1) should retrieve the list of users
+    ✕ should retrieve the list of users (69 ms)
 
-  1 passing (194ms)
-  1 failing
+  ● GET /users › should retrieve the list of users
 
-  1) GET /users
-       should retrieve the list of users:
+    expect(received).toHaveLength(expected)
 
-      AssertionError: expected [ Array(2) ] to have a length of 0 but got 2
-      + expected - actual
+    Expected length: 0
+    Received length: 2
 
-      -2
-      +0
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 passed, 2 total
+Snapshots:   0 total
+Time:        0.863 s, estimated 1 s
 ```
 
 Update the assertion to fit the new data:
 
 ```js
-expect(res.body).to.have.lengthOf(2);
+expect(res.body).toHaveLength(2);
 ```
 
 Now add some more assertions to check that the array contains exactly what you
 expect:
 
 ```js
-expect(res.body[0]).to.be.an('object');
-expect(res.body[0]._id).to.be.a('string');
-expect(res.body[0].name).to.equal('Jane Doe');
-expect(res.body[0]).to.have.all.keys('_id', 'name');
+expect(res.body[0]).toBeObject();
+expect(res.body[0]._id).toBeString();
+expect(res.body[0].name).toEqual('Jane Doe');
+expect(res.body[0]).toContainAllKeys(['_id', 'name']);
 
-expect(res.body[1]).to.be.an('object');
-expect(res.body[1]._id).to.be.a('string');
-expect(res.body[1].name).to.equal('John Doe');
-expect(res.body[1]).to.have.all.keys('_id', 'name');
+expect(res.body[1]).toBeObject();
+expect(res.body[1]._id).toBeString();
+expect(res.body[1].name).toEqual('John Doe');
+expect(res.body[1]).toContainAllKeys(['_id', 'name']);
 ```
 
 You are mainly testing 2 things here:
@@ -784,32 +782,28 @@ Here's a few examples of some tests you could add to this small project:
 
 ## Optional: check your test coverage
 
-Install [nyc][nyc], the command line interface for [Istanbul][istanbul], a test
+Jest features in integrates a test
 coverage analysis tool:
 
-```bash
-$> npm install --save-dev nyc
-```
 
-**Update** the `test` script in your `package.json` to add `nyc --reporter=html`
-right before the `mocha` command:
+**Update** the `test` script in your `package.json` to add the `--coverage` flag
+right after the `jest` command:
 
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test NODE_ENV=test nyc --reporter=html mocha spec/**/*.spec.js"
+  "test": "cross-env LOCAL_MONGODB_URI=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage"
 }
 ```
 
 Add the following directories to your `.gitignore` file:
 
 ```
-/.nyc_output
-/coverage
+coverage
 ```
 
 Run `npm test` again. You should see a new `coverage` directory appear. If you
-open the `index.html` file within, you will see a report indicating which lines
+open the `lcov-report/index.html` file within, you will see a report indicating which lines
 of your code are covered by your automated tests, and which are not.
 
 It is not always possible to achieve 100% coverage, but generally the higher
@@ -817,29 +811,12 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 
 
 
-## Tips
-
-### Chai
-
+## Tip
 * You can make negative assertions with `.not`:
 
   ```js
-  expect(numberVariable).to.not.be.an.('object');
+  expect(numberVariable).not.toBeString();
   ```
-* Pay attention to the subtle difference between
-  `expect(object).to.equal(anotherObject)` and
-  `expect(object).to.eql(anotherObject)`. The `equal` assertion checks for
-  strict equality, while the `eql` assertion performs a deep comparison. For
-  example, take the following two objects:
-
-  ```js
-  const object = { foo: 'bar' };
-  const anotherObject = { foo: 'bar' };
-  ```
-
-  These are **not the same object**: they are two separate object instances, so
-  an `equal` assertion would not pass. However, **the structure of both objects
-  is the same**, so an `eql` assertion would pass.
 
 
 
