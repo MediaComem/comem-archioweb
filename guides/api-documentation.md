@@ -105,18 +105,23 @@ $> cd /path/to/projects/my-project
 $> npm install swagger-ui-express js-yaml
 ```
 
-Add the following code to your `app.js` file, somewhere under the `const app =
+Add the following code in the imports section  of your `app.js` file:
+```js
+import fs from 'fs';
+import yaml from 'js-yaml';
+import swaggerUi from 'swagger-ui-express';
+```
+And the following code somewhere under the `const app =
 express();` line:
 
 ```js
-const fs = require('fs');
-const yaml = require('js-yaml');
-const swaggerUi = require('swagger-ui-express');
 // Parse the OpenAPI document.
 const openApiDocument = yaml.load(fs.readFileSync('./openapi.yml'));
 // Serve the Swagger UI documentation.
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(openApiDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 ```
+
+You should now be able to access your documentation through the Swagger UI at `localhost:3000/api-docs`
 
 ### Usage
 
