@@ -179,7 +179,7 @@ The API must have a real-time component:
 **Infrastructure**
 
 * The source code of your REST API must be in a repository on GitHub.
-* Your REST API must be deployed on Heroku.
+* Your REST API must be deployed on Render.
 
 **Documentation**
 
@@ -250,7 +250,7 @@ Simon Oulevay with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
-* The link to your deployed REST API on Heroku.
+* The link to your deployed REST API on Render.
 
 ## Project Roadmap
 This course is structured in such a way that it will feel very heavy in new theory during the first month. Indeed, there are plenty of concepts which you will need to grasp before fully commiting to the term project. Nevertheless, this is first and foremost a practical course. Our goal is for you to be able to **apply** the concepts which we will discuss in class. In order to avoid losing sight of this fact during these first few weeks of the semester, we suggest you get going immediately with the project. 
@@ -350,7 +350,7 @@ the end of each subject.
 * [Auth0](https://auth0.com)
   * [Introduction to JSON Web Tokens](https://jwt.io/introduction/)
   * [Token Based Authentication Made Easy](https://auth0.com/learn/token-based-authentication-made-easy/)
-* [Heroku Dev Center](https://devcenter.heroku.com)
+* [Render Documentation](https://render.com/docs)
 
 
 
