@@ -58,7 +58,7 @@ This course is a [COMEM+][comem] web development course taught at
     * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
-  * [*Guide:* deploy an Express.js application with Heroku & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
+  * [*Guide:* deploy an Express.js application with Render & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
 
 * Creating a REST API
   * [REST in depth](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
