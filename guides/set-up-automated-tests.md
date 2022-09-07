@@ -214,7 +214,7 @@ like this:
 
 ```json
 "scripts": {
-  "test": "cross-env LOCAL_MONGODB_URI=mongodb://localhost/jest node --experimental-vm-modules node_modules/.bin/jest"
+  "test": "cross-env LOCAL_MONGODB_URI=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest"
 }
 ```
 
@@ -243,18 +243,18 @@ Import it into the `spec/users.spec.js` file by adding the following line at the
 top:
 
 ```js
-const supertest = require('supertest');
+import supertest from "supertest"
 ```
 
-You will also your Express.js application, which presumably is exported from the
+You will also import your Express.js application, which presumably is exported from the
 `app.js` file at the root of your repository. Add the following line to import
 it:
 
 ```js
-const app = require('../app');
+import app from "../app.js"
 ```
 
-Now you can implement your test. **Modify the `it('should create a user')`
+Now you can implement your test. **Modify the `test('should create a user')`
 call** to add the test function. It should look like this:
 
 ```js
@@ -302,18 +302,16 @@ If you run `npm test` now, you should see something like this:
 ```bash
 $> npm test
 
-> my-app@0.0.0 test /path/to/my-app
-> mocha spec/**/*.spec.js
-
+> express-api@0.0.0 test /path/to/my-app
+PASS  spec/users.spec.js
   POST /users
-POST /users 200 93.114 ms - 52
-    ✓ should create a user (109ms)
+    ✓ should create a user (92 ms)
 
-  GET /users
-    - should retrieve the list of users
-
-  1 passing (115ms)
-  1 pending
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.766 s, estimated 1 s
+Ran all test suites.
 ```
 
 ### Disconnect from the database once the tests are done
@@ -326,18 +324,20 @@ You have to tell Mongoose to disconnect after your tests are done. Import
 Mongoose at the top of the file:
 
 ```js
-const mongoose = require('mongoose');
+import mongoose from "mongoose"
 ```
 
 At this at the bottom of the file:
 
 ```js
-after(mongoose.disconnect);
+afterAll(async () => {
+  await mongoose.disconnect();
+});
 ```
 
-> Here you are using [Mocha hooks][mocha-hooks]. The `before` and `after` global
-> functions provided by Mocha allow you to run code before or after your test
-> suite.
+> Here you are using [Jest hooks][jest-hooks]. The `beforeAll` and `afterAll` global
+> functions provided by Jest allow you to run code before or after your test
+> suite. The `beforeEach` and `afterEach` hooks allow us to run code before or after **each** test in the suite. 
 
 ### Fix Mongoose `collection.ensureIndex is deprecated` warning
 
@@ -360,13 +360,13 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/my-app', {
 ### Get rid of request logs while testing
 
 You may have a request logger in your Express.js application. If you used
-`express-generator`, you might see this line in the `npm test` command's output:
+`generator-express-api-es`, you might see this line in the `npm test` command's output:
 
 ```
 POST /users 200 93.114 ms - 52
 ```
 
-It is because of this line in `app.js` (for `express-generator` apps):
+It is because of this line in `app.js`:
 
 ```js
 app.use(logger('dev'));
@@ -385,35 +385,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 ```
 
-Setting this environment variable when running your tests now gets rid of the
-request logs:
-
-```bash
-$> NODE_ENV=test npm test
-
-> my-app@0.0.0 test /path/to/my-app
-> mocha spec/**/*.spec.js
-
-  POST /users
-    ✓ should create a user (109ms)
-
-  GET /users
-    - should retrieve the list of users
-
-  1 passing (115ms)
-  1 pending
-```
-
-To avoid setting this variable every time, you can use `cross-env` again.
-**Update** the `test` script in your `package.json` file to look like this:
-
-```json
-"scripts": {
-  "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test NODE_ENV=test mocha spec/**/*.spec.js"
-}
-```
-
+Jest automatically sets our `NODE_ENV` environment variable to `test`. 
 
 
 ## Add a unicity constraint to your model
@@ -427,8 +399,8 @@ the unique index (since there are already duplicates stored in the collection):
 
 ```bash
 $> mongo my-app-test
-> db.users.remove({})
-WriteResult({ "nRemoved" : 3 })
+> db.users.deleteMany({})
+{ acknowledged: true, deletedCount: 3 }
 ```
 
 Now **update** the schema to look like this (add a `unique` constraint to the
@@ -449,7 +421,6 @@ Run it a second time, and it will fail because it is trying to insert the same
 user again.
 
 Your test changes behavior depending on the state of the database.
-
 
 
 ## Reproducible tests
@@ -877,7 +848,7 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 [jest-matchers]: https://jestjs.io/docs/expect
 [jest-extended]: https://github.com/jest-community/jest-extended
 [jest-test]: https://jestjs.io/docs/api#testname-fn-timeout
-[jest-afterAll]:https://jestjs.io/docs/api#afterallfn-timeout
+[jest-hooks]:https://jestjs.io/docs/setup-teardown
 [mongo]: https://www.mongodb.com
 [mongoose]: https://mongoosejs.com
 [node]: https://nodejs.org
