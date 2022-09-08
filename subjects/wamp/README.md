@@ -405,25 +405,23 @@ procedure, and to publish/subscribe to any topic.
 
 ### Connecting to a WAMP router with a client library
 
+>**Warning** Autobahn currently does not work with the latest version of the **ws** library. To get it to work, install version 7.5.9 by running `npm install ws@7.5.9`
+
 Here is an example of how to connect to a WAMP router from Node.js code using
 the [Autobahn JavaScript library][autobahn-js]:
 
 ```js
-const autobahn = require('autobahn');
+import autobahn from 'autobahn';
 const connection = new autobahn.Connection({
-  url: 'ws://127.0.0.1:9000',
+  url: 'ws://127.0.0.1:8080/ws',
   realm: 'realm1'
 });
-
 // Open the connection.
 connection.open();
-
 // Wait until the connection is open before interacting with the router.
 connection.onopen = function(session) {
-
   // Publish an event on a topic.
   `session.publish`('com.myapp.hello', [ 'Hello, world!' ]);
-
   // Register a procedure.
   `session.register`('com.myapp.add2', function(args) {
     return args[0] + args[1];
@@ -437,9 +435,9 @@ Another client could connect to the same router to call that procedure and
 subscribe to those events:
 
 ```js
-const autobahn = require('autobahn');
+import autobahn from 'autobahn';
 const connection = new autobahn.Connection({
-  url: 'ws://127.0.0.1:9000',
+  url: 'ws://127.0.0.1:8080/ws',
   realm: 'realm1'
 });
 
