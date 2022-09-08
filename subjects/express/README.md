@@ -139,7 +139,7 @@ DEBUG=express-api:* npm start
 ```bash
 $> DEBUG=express-api:* npm start
 
-> express-api@0.1.0 start /path/to/projects/my-app
+> express-api@0.1.0 start 
 > node ./bin/start
 
   express-api:server Listening on port 3000 +0ms
@@ -265,7 +265,7 @@ Add an npm run script called `dev` in your `package.json` file:
 
 ```json
 {
-  "name": "my-app",
+  "name": "express-api",
   "scripts": {
 *   "dev": "nodemon",
     "start": "node ./bin/www"
@@ -371,7 +371,7 @@ In your CLI, stop the running application with Ctrl-C, restart it, and reload th
 You should see your middleware working:
 
 ```bash
-  my-app:express-api Listening on port 3000 +0ms
+express-api:server Listening on port 3000 +0ms
 GET / 304 287.312 ms - -
 Hello World
 ```

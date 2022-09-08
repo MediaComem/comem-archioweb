@@ -24,29 +24,28 @@ functionality, for example `messaging.js` (but you can name it however you want,
 e.g. `ws.js`, `dispatcher.js`). This is a basic skeleton to handle multiple client connections:
 
 ```js
-const debug = require('debug')('my-app:messaging');
-const WebSocket = require('ws');
+import createDebugger from 'debug';
+import { WebSocketServer } from 'ws';
 
-// Array of currently connected WebSocket clients.
+const debug = createDebugger('express-api:messaging');
+
 const clients = [];
 
-// Create a WebSocket server using the specified HTTP server.
-exports.createWebSocketServer = function(httpServer) {
+export function createWebSocketServer(httpServer) {
   debug('Creating WebSocket server');
-  const wss = new WebSocket.Server({
-    server: httpServer
+  const wss = new WebSocketServer({
+    server: httpServer,
   });
 
   // Handle new client connections.
-  wss.on('connection', function(ws) {
+  wss.on('connection', function (ws) {
     debug('New WebSocket client connected');
 
     // Keep track of clients.
     clients.push(ws);
 
     // Listen for messages sent by clients.
-    ws.on('message', message => {
-
+    ws.on('message', (message) => {
       // Make sure the message is valid JSON.
       let parsedMessage;
       try {
@@ -66,29 +65,31 @@ exports.createWebSocketServer = function(httpServer) {
       debug('WebSocket client disconnected');
     });
   });
-};
+}
 
-// Broadcast a message to all connected clients.
-exports.broadcastMessage = function(message) {
-  debug(`Broadcasting message to all connected clients: ${JSON.stringify(message)}`);
+export function broadcastMessage(message) {
+  debug(
+    `Broadcasting message to all connected clients: ${JSON.stringify(message)}`
+  );
   // You can easily iterate over the "clients" array to send a message to all
   // connected clients.
-};
+}
 
 function onMessageReceived(ws, message) {
   debug(`Received WebSocket message: ${JSON.stringify(message)}`);
   // Do something with message...
 }
+
 ```
 
 ## Create the WebSocket server
 
-You should import the WebSocket file in `bin/www` since that is where the HTTP
+You should import the WebSocket file in `bin/www.js` since that is where the HTTP
 server is created. Adding the following code will plug the WebSocket server into
 the HTTP server:
 
 ```js
-const { createWebSocketServer } = require('../messaging');
+import { createWebSocketServer } from '../messaging.js';
 
 // ...
 
@@ -106,7 +107,7 @@ createWebSocketServer(server);
 You can easily import the WebSocket file from your routes to send messages:
 
 ```js
-const { broadcastMessage } = require('../messaging');
+import { broadcastMessage } from '../messaging.js';
 
 router.post('/', function(req, res, next) {
   // Do stuff...
