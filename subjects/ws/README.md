@@ -171,9 +171,9 @@ client in the HTTP `Sec-WebSocket-Accept` header:
 ```
 Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 ```
-
+<!-- websocket echo server is down... find alternative -->
 > **Demo:** use the [WebSocket Echo Test][ws-echo] with your browser's developer
-> tools to see a real handshake. [QuickHash][quickhash] will help you compute
+> tools to see a real handshake. [This tool][sha1-hasher] will help you compute
 > the base64-encoded SHA-1 hash.
 
 ### WebSocket is full duplex
@@ -321,10 +321,10 @@ This is a simple Node.js WebSocket server that will accept connections from
 clients, send them a message, and listen for client messages:
 
 ```js
-const WebSocket = require('ws');
+import { WebSocketServer } from 'ws';
 
 // Create a WebSocket server that will accept connections on port 3000.
-const `wss` = new WebSocket.Server({
+const `wss` = new WebSocketServer({
   port: 3000
 });
 
@@ -431,6 +431,7 @@ const `ws` = new WebSocket('ws://localhost:3000');
 [http2-websockets]: https://medium.com/@pgjones/http-2-websockets-81ae3aab36dd
 [quickhash]: https://quickhash.com
 [sha1]: https://en.wikipedia.org/wiki/SHA-1
+[sha1-hasher]:https://emn178.github.io/online-tools/sha1.html
 [sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
 [tcp]: https://www.slideserve.com/johana/tcp
 [tcp-connections-limit]: https://stackoverflow.com/questions/2332741/what-is-the-theoretical-maximum-number-of-open-tcp-connections-that-a-modern-lin
