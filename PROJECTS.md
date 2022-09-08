@@ -115,7 +115,3 @@ Sensitive data:
 ## Other
 
 Other ideas can be accepted as long as they meet the [evaluation criteria](README.md#evaluation).
-You may find inspiration there:
-
-* [Idea Machine](http://www.ideamachine.io/#view-ideas-top)
-* [Ideas Watch](https://www.ideaswatch.com/startup-ideas/app)
