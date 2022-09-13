@@ -19,7 +19,7 @@ import heigLogo from './assets/heig.png';
 subject.setLogo({
   url: 'https://heig-vd.ch',
   imageUrl: heigLogo,
-  height: 40
+  height: 35
 });
 
 subject
