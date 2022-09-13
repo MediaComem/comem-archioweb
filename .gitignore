@@ -1,6 +1,7 @@
 *.odg#
 /build
 /config.local.js
+/.envrc
 /node_modules
 /npm-debug.log
 /tmp
