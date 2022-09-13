@@ -4,7 +4,7 @@ Learn about the various kinds of automated tests.
 
 **Going further**
 
-* [Set up automated testing for an Express.js REST API](https://github.com/MediaComem/comem-archioweb/blob/master/guides/set-up-automated-tests.md)
+* [Set up automated testing for an Express.js REST API](https://github.com/MediaComem/comem-archioweb/blob/main/guides/set-up-automated-tests.md)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
