@@ -1,8 +1,8 @@
-import subject from 'courses-md/dist/client';
+import subject from 'courses-md/dist/client.js';
 
 window.subject = subject;
 
-import { CodepenController } from './codepen';
+import { CodepenController } from './codepen.js';
 
 import 'font-awesome/css/font-awesome.css';
 

@@ -15,16 +15,23 @@
     "url": "git+https://github.com/MediaComem/comem-archioweb.git"
   },
   "author": "COMEM+",
+  "contributors": [
+    "Simon Oulevay <simon.oulevay@heig-vd.ch>",
+    "Simon Pinkas <simon.pinkas@heig-vd.ch>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MediaComem/comem-archioweb/issues"
   },
   "homepage": "https://github.com/MediaComem/comem-archioweb#readme",
   "dependencies": {
-    "courses-md": "~0.6.0",
+    "courses-md": "~0.7.5",
     "doctoc": "^2.0.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
     "tippy.js": "^6.3.1"
+  },
+  "engines": {
+    "node": ">= 18.0.0"
   }
 }

@@ -33,51 +33,51 @@ This course is a [COMEM+][comem] web development course taught at
 
 ## Plan
 
-* [Introduction](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
+* [Introduction](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Basics
-  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/javascript.md) ([**solutions**](./exercises/javascript-solutions.md))
-    * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Node.js](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
+    * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Node.js](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
     * [*Exercises*](./exercises/node.md) ([**solutions**](./exercises/node-solutions))
-  * [npm](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
-  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [npm](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
+  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/rest.md)
 
 * Creating a web service
-  * [Express](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
+  * [Express](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
     * [*Exercises*](./exercises/express.md)
-  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
+  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
-  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
+  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
     * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
   * [*Guide:* deploy an Express.js application with Render & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
 
 * Creating a REST API
-  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
-  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
+  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Documenting and testing a REST API
   * [*Guide:* document a REST API](./guides/api-documentation.md)
-  * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 
 * Real-time communication
-  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
     * [*Guide:* add a WebSocket server to an Express.js application](./guides/express-wss.md)
 
 * *Extras*
-  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2021-2022/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
   * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 
@@ -253,17 +253,17 @@ Simon Oulevay with:
 * The link to your deployed REST API on Render.
 
 ## Project Roadmap
-This course is structured in such a way that it will feel very heavy in new theory during the first month. Indeed, there are plenty of concepts which you will need to grasp before fully commiting to the term project. Nevertheless, this is first and foremost a practical course. Our goal is for you to be able to **apply** the concepts which we will discuss in class. In order to avoid losing sight of this fact during these first few weeks of the semester, we suggest you get going immediately with the project. 
+This course is structured in such a way that it will feel very heavy in new theory during the first month. Indeed, there are plenty of concepts which you will need to grasp before fully commiting to the term project. Nevertheless, this is first and foremost a practical course. Our goal is for you to be able to **apply** the concepts which we will discuss in class. In order to avoid losing sight of this fact during these first few weeks of the semester, we suggest you get going immediately with the project.
 
 ### Week 1
 
 **Get in a team!**
 
-The term project will be built in groups of 2 or 3, so try and get together as early as possible. We also suggest you mix it up: try working with people you've never worked with before. 
+The term project will be built in groups of 2 or 3, so try and get together as early as possible. We also suggest you mix it up: try working with people you've never worked with before.
 
 **Communicate!**
 
-Team formation is your responsibility. Be friendly and respectful during the process. If you feel dissapointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure every team member feels heard by – for example – setting a list of each and everyone's needs: 
+Team formation is your responsibility. Be friendly and respectful during the process. If you feel dissapointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure every team member feels heard by – for example – setting a list of each and everyone's needs:
   - Anna: *I need to be able to talk. Please do not interrupt me*.
   - Bijan: *I feel insecure about my code. Please be extra gentle when you are reviewing it*.
   - Charlene: *I need to use sarcasm, it's my way of communicating. Please do your best to not feel offended, it's nothing personal.*
@@ -276,7 +276,7 @@ By the end of the first class, you should have a rough idea of what an API is an
 
 **JavaScript reviews**
 
-Make sure you do the assigned exercises. Help each other out so that everyone in your group has these basics covered. Everyone must code! 
+Make sure you do the assigned exercises. Help each other out so that everyone in your group has these basics covered. Everyone must code!
 
 **Consume APIs**
 
@@ -288,7 +288,7 @@ The list is huge, so you might stumble onto something that is broken or poorly d
 
 **Decision Time**
 
-Now is a good time to really decide what the team's project will be. Remember, the API you design in this course will almost certainly be the foundation for your front-end project in DevMobil, so every team member should feel some ownership for the idea. 
+Now is a good time to really decide what the team's project will be. Remember, the API you design in this course will almost certainly be the foundation for your front-end project in DevMobil, so every team member should feel some ownership for the idea.
 
 **Get Specific**
 
@@ -300,14 +300,14 @@ A good way to transition from ideation to development is to write down an intent
   * Who will use it?
   * What is it called?
 * Specific questions
-  * How will we build it? 
-  * How will our team operate? Are there specific roles? 
-  * What are our different ressources? 
+  * How will we build it?
+  * How will our team operate? Are there specific roles?
+  * What are our different ressources?
   * What endpoints are we going to use?
 
 **Divide and conquer**
 
-Even if you can't anticipate everything that you will need to complete for the project to work, try dividing the work into manageable tasks. 
+Even if you can't anticipate everything that you will need to complete for the project to work, try dividing the work into manageable tasks.
 
 For example, a task like *Implement authentication* could be divided in the following way:
 

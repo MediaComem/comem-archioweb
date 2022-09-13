@@ -87,17 +87,6 @@ The following environment variables can be used for customization:
 * `$SOURCE_VERSION` - The branch/commit to which source links to GitHub (in the top-right corner of slides) will point to (defaults to the current branch, or the latest commit when using `npm run deploy`)
 * `$WEB_URL` - The URL to which the home link (in the top-right corner of slides) will point to (defaults to `https://mediacomem.github.io/comem-archioweb/`)
 
-You can also put these settings in a `local.config.js` file in the project's directory (which will be ignored by Git):
-
-```js
-exports.browser = 'Google Chrome';
-exports.buildDir = 'build';
-exports.liveReloadPort = 35729;
-exports.port = 3000;
-exports.sourceVersion = 'master';
-exports.webUrl = 'https://mediacomem.github.io/comem-archioweb/';
-```
-
 
 
 [docs]: https://mediacomem.github.io/comem-archioweb/
