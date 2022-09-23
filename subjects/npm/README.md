@@ -267,23 +267,24 @@ lodash
 
 ### Using installed packages
 
-Any script that is in the same directory as `package.json` and `node_modules` can `require()` the installed packages:
+Any script that is in the same directory as `package.json` and `node_modules`
+can `import` the installed packages:
 
-Create a `script.js` file in the project and run it::
+Create a `script.mjs` file in the project and run it::
 
 <!-- slide-column -->
 
 ```js
-const lodash = require('lodash');
+import _ from 'lodash';
 
 let numbers = [ 1, 1, 2, 3, 2 ];
-console.log(lodash.uniq(numbers));
+console.log(_.uniq(numbers));
 ```
 
 <!-- slide-column 40 -->
 
 ```bash
-$> node script.js
+$> node script.mjs
 [ 1, 2, 3 ]
 ```
 
@@ -292,31 +293,27 @@ $> node script.js
 You have used the `uniq` function from the `lodash` package,
 which returns an array with its duplicate elements removed.
 
-<p class='center'><img src='images/npm-require.png' width='50%' /></p>
+<p class='center'><img src='images/npm-import.png' width='50%' /></p>
 
 ### Importing ECMAScript Modules
-As was mentionned during the presentation on Node, we will be using ECMAScript modules during this course.
+
+As was mentionned during the presentation on Node, we will be using ECMAScript
+modules during this course.
 
 In your `package.json`, add the following property:
+
 ```json
 type: "module"
 ```
-This will allow you to use ES modules without having to name your files with the `.mjs` extension. It will however make it very difficult for you to use CommonJS imports and exports. You can now import `lodash` the ES way:
 
-```js
-import lodash from "lodash";
-```
+This will allow you to use ES modules without having to name your files with the
+`.mjs` extension. You can now rename it to `.js`.
 
-You could also use the `lodash-es` package, which will allow you to import only what you need (named imports) instead of the whole library:
 ```bash
-> npm remove lodash && npm install lodash-es
+$> mv script.mjs script.js
+$> node script.js
+[ 1, 2, 3 ]
 ```
-```js
-import { uniq } from "lodash-es"; 
-let numbers = [ 1, 1, 2, 3, 2 ];
-console.log(uniq(numbers));
-```
- 
 
 ### Tracking installed packages
 
@@ -334,14 +331,14 @@ node:internal/errors:464
     ErrorCaptureStackTrace(err);
     ^
 
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash-es' 
-Error: Cannot find module 'lodash-es'
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash'
+Error: Cannot find module 'lodash'
 ```
 
 Deleting the `node_modules` directory is not a common real-world scenario,
-
-However, it can get quite large, so most people have it in their `.gitignore` file in their Git repositories,
-since you just have to run `npm install` to get your dependencies back.
+However, it can get quite large, so most people have it in their `.gitignore`
+file in their Git repositories, since you just have to run `npm install` to get
+your dependencies back.
 
 That means that when **cloning** your project, your colleagues **won't** get the `node_modules` directory.
 
@@ -544,7 +541,7 @@ Of course, you will **NOT** be able to `require()` or `import` them from your pr
 
 
 
-## The behavior of `require()`
+## The behavior of `import`
 
 <!-- slide-front-matter class: center, middle -->
 
@@ -554,15 +551,9 @@ Of course, you will **NOT** be able to `require()` or `import` them from your pr
 
 You can require your own Node.js scripts with **relative file paths**:
 
-<!-- slide-column -->
+<p class='center'><img src='images/import-relative-module.png' class='w70' /></p>
 
-<p class='center'><img src='images/require-relative-module.png' class='w100' /></p>
-
-<!-- slide-column -->
-
-<p class='center'><img src='images/require-parent-module.png' class='w100' /></p>
-
-<!-- slide-container -->
+<p class='center'><img src='images/import-parent-module.png' class='w60' /></p>
 
 Beware of **circular dependencies**.
 In this example, you should do one or the other, **not both**.
