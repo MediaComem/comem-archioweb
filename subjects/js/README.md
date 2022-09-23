@@ -84,9 +84,10 @@ It has been standardized in the [ECMAScript][es] language specification.
 * [**ECMAScript 2015** (also known as ECMAScript 6 or ES6)][es6] added iterators and for/of loops, Python-style [generators][js-generators] and generator expressions, [arrow functions][js-arrow-functions], binary data, typed arrays, collections (maps, sets and weak maps), [promises][js-promise], number and math enhancements, reflection, and [proxies][js-proxy].
 * [**ECMAScript 2017**][es2017] added [async/await][js-async] and [shared memory and atomics][js-shared-memory].
 * [**ECMAScript 2018**][es2018], [**ECMAScript 2019**][es2019], [**ECMAScript
-  2020**][es2020] and [**ECMAScript 2021**][es2021] added [asynchronous
-  iteration][js-async-iteration], [optional chaining][js-optional-chaining],
-  [nullish coalescing][js-nullish-coalescing] and more.
+  2020**][es2020], [**ECMAScript 2021**][es2021] and [**ECMAScript
+  2022**][es2022] added [asynchronous iteration][js-async-iteration], [optional
+  chaining][js-optional-chaining], [nullish coalescing][js-nullish-coalescing],
+  [error cause][js-error-cause] and more.
 
 #### Yearly release schedule
 
@@ -131,9 +132,8 @@ compiles to JavaScript like [TypeScript][ts], to turn your ES6+ code into
 compatible ES5 code before releasing it.
 
 In server-side code running with the latest **Node.js** versions, most **ES6+**
-features are supported except for [ECMAScript modules
-(`import`/`export`)][js-imports], which are still [experimental in
-Node.js][node-imports].
+features are supported, including [ECMAScript modules
+(`import`/`export`)][js-imports] in [recent versions][node-imports].
 
 
 
@@ -1203,6 +1203,7 @@ console.log(crew);
 [es2019]: https://2ality.com/2018/02/ecmascript-2019.html
 [es2020]: https://2ality.com/2019/12/ecmascript-2020.html
 [es2021]: https://2ality.com/2020/09/ecmascript-2021.html
+[es2022]: https://2ality.com/2022/06/ecmascript-2022.html
 [ex-function-as-argument]: http://codepen.io/AlphaHydrae/pen/dNBpPv?editors=0010
 [first-class-functions]: https://en.wikipedia.org/wiki/First-class_function
 [func-prog]: https://en.wikipedia.org/wiki/Functional_programming
@@ -1210,6 +1211,7 @@ console.log(crew);
 [js-async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 [js-async-iteration]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
 [js-destructuring-assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+[js-error-cause]: https://2ality.com/2022/06/ecmascript-2022.html#error.cause
 [js-generators]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators
 [js-imports]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
 [js-iterable]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
