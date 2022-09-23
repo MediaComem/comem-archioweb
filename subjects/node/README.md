@@ -87,14 +87,14 @@ run on your local machine or server.
 
 ### Which Node.js version to choose?
 
-<p class='center'><img src='images/lts-schedule.png' width='80%' /></p>
+<p class='center'><img src='images/lts-schedule.png' width='75%' /></p>
 
-* Odd-numbered versions (e.g. v11, v13, v15) are **unstable** releases with the
-  latest features, and will **no longer be supported after 6-9 months**.
-* Even-numbered versions (e.g. v8, v10, v12, v14, v16) have [**long term support
-  (LTS)**][node-lts]. They are actively developed for 6 months, but maintained
-  for a total of 30 months (e.g. security fixes). Production applications should
-  use LTS releases.
+* Odd-numbered versions (e.g. v11, v13, v15,v 17) are **unstable** releases with
+  the latest features, and will **no longer be supported after 6-9 months**.
+* Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18) have [**long term
+  support (LTS)**][node-lts]. They are actively developed for 6 months, but
+  maintained for a total of 30 months (e.g. security fixes). Production
+  applications should use LTS releases.
 
 
 
@@ -105,7 +105,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v16.9.1
+v18.9.0
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -124,7 +124,7 @@ Type `.exit` or press `Ctrl-C` twice to exit.
 
 ### Create and execute a Node.js file
 
-Create a `script.js` file in a new `node-demo` project directory:
+Create a `script.mjs` file in a new `node-demo` project directory:
 
 ```js
 function hello(name) {
@@ -139,7 +139,7 @@ Execute it by running it with the `node` executable:
 ```bash
 $> cd /path/to/projects/node-demo
 
-$> node script.js
+$> node script.mjs
 Hello World!
 ```
 
@@ -164,20 +164,20 @@ Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
 String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
 Utilities, V8, VM, WASI, Worker threads, Zlib.
 
-> Refer to the [documentation][node-16-api] for more information.
+> Refer to the [documentation][node-18-api] for more information.
 
 
 
 ### Requiring core modules
 
-You can get a hold of Node.js's modules in your code by calling `require()` with
-the name of the module. The following example requires the [`os`
+You can get a hold of Node.js's modules in your code by simply `import`-ing the
+name of the module. The following example requires the [`os`
 module][node-module-os], which provides operating system-related utility
 methods:
 
 ```js
-// Require the operating system core module
-*const os = require('os');
+// Import the operating system core module
+*import os from 'os';
 
 function hello(name) {
   console.log(\`Hello ${name}!`);
@@ -190,7 +190,7 @@ hello('World');
 This will log the platform on which you are running:
 
 ```bash
-$> node script.js
+$> node script.mjs
 Hello World!
 I am running on darwin
 ```
@@ -205,14 +205,15 @@ standardized. At the time, there were many module systems in the wild like
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
-Node.js to treat your code as ECMAScript modules][node-16-esm-enabling] by
+Node.js to treat your code as ECMAScript modules][node-18-esm-enabling] by
 naming your files with the `.mjs` extension instead of `.js`. If you have a
 `package.json` file (we'll learn more about these later), you can also set the
 `type` property to `module`.
 
+This is what a CommonJS-based Node.js file used to look like:
+
 ```js
-// File: script.mjs
-import os from 'os';
+*const os = require('os');
 
 function hello(name) {
   console.log(\`Hello ${name}!`);
@@ -222,43 +223,39 @@ function hello(name) {
 hello('World');
 ```
 
-> It is still early days when it comes to the adoption of ECMAScript Modules in the Node.js ecosystem. Nevertheless, this is the style we will be using in this course once you are acquainted with NPM (we dislike the .mjs extension). In the meantime, you can continue using `require()`. 
-
+> Since ECMAScript modules are now [natively supported][node-imports], we will
+> use them rather than the obsolete `require`.
 
 
 ### Writing your own module
 
 Let's say we want to extract the `hello` function to another module.
-Create a `utils.js` file:
+Create a `utils.mjs` file:
 
 ```js
-const os = require('os');
+import os from 'os';
 
 // Attach properties to exports so that you can use
 // them when requiring this file
-`exports`.hello = function(name) {
+export function hello(name) {
   console.log(\`Hello ${name}!`);
   console.log(\`I am running on ${os.platform()}`);
 };
 ```
 
-> This is the ECMAScript equivalent to `export function hello() {}`.
-
-Attaching properties to the `exports` object is how you expose the module's functionality.
-Code that uses `require()` on that file will receive the `exports` object.
+`export`-ing things is what allow you to `import` them from other files.
 
 
 
-### Requiring local modules
+### Importing local modules
 
-You also use `require()` for your own module, but instead of just a name you
-have to provide a **file path** (relative or absolute). Modify `script.js` as
+You also use `import` for your own module, but instead of just a name you have
+to provide a **file path** (relative or absolute). Modify `script.mjs` as
 follows:
 
 ```js
-// Require the utils.js file in the current directory
-// (You can omit the .js extension)
-const utils = require(`'./utils'`);
+// Import everything from the utils.mjs file in the current directory
+*import * as utils from './utils.mjs';
 
 // Use the exported function
 utils.hello('World');
@@ -267,7 +264,31 @@ utils.hello('World');
 It should still work:
 
 ```bash
-$> node script.js
+$> node script.mjs
+Hello World!
+I am running on darwin
+```
+
+
+
+### Importing specific exports
+
+You don't have to import everything. You can also import only what you need
+using a syntax similar to a [destructuring
+assignment][destructuring-assignment]:
+
+```js
+// Import specific exports from the utils.mjs file in the current directory
+*import { hello } from './utils.mjs';
+
+// Use the exported function
+hello('World');
+```
+
+It should still work:
+
+```bash
+$> node script.mjs
 Hello World!
 I am running on darwin
 ```
@@ -276,24 +297,24 @@ I am running on darwin
 
 ### Export properties
 
-You can attach whatever you want to the `exports` object:
+You can `export` whatever you want:
 
 ```js
-`exports.theMeaningOfLife` = 42;
+`export const theMeaningOfLife` = 42;
 ```
 
 And use it where it is required:
 
 ```js
-const utils = require('./utils');
-utils.hello('World');
-*console.log(\`The meaning of life is ${utils.theMeaningOfLife}`);
+import { hello`, theMeaningOfLife` } from './utils.mjs';
+hello('World');
+*console.log(\`The meaning of life is ${theMeaningOfLife}`);
 ```
 
 This will print:
 
 ```bash
-$> node script.js
+$> node script.mjs
 Hello World!
 I am running on darwin
 *The meaning of life is 42
@@ -304,24 +325,22 @@ I am running on darwin
 ### Function as the main export
 
 Some modules only export a function instead of an object with properties.
-Add a `doIt.js` file:
+Add a `doIt.mjs` file:
 
 ```js
-// Override module.exports to replace the whole exports object
-`module.exports =` function() {
+// Define a default export
+`export default` function() {
   console.log('Doing it');
 };
 ```
 
-> This is the ECMAScript equivalent to `export default function() {}`.
-
-Modify `script.js`:
+Modify `script.mjs`:
 
 ```js
-*const doIt = require('./doIt');
-const utils = require('./utils');
-utils.hello('World');
-console.log(\`The meaning of life is ${utils.theMeaningOfLife}`);
+*import doIt from './doIt.mjs';
+import { hello, theMeaningOfLife } from './utils.mjs';
+hello('World');
+console.log(\`The meaning of life is ${theMeaningOfLife}`);
 *doIt();
 ```
 
@@ -329,16 +348,17 @@ The additional text `Doing it` will be logged as well.
 
 
 
-### Require paths
+### Import syntax
 
 A short summary on how to require files:
 
-Statement                     | Effect
-:---                          | :---
-`require('coreModule')`       | Require the core module (or npm package, more on that later) named `coreModule`
-`require('./foo.js')`         | Require the `foo.js` file in the current directory (relative to the current file)
-`require('./foo/bar/baz.js')` | Require the `baz.js` file in the `foo/bar` directory (relative to the current file)
-`require('../../qux.js')`     | Require the `qux.js` file two directories above (relative to the current file)
+Statement                                  | Effect
+:----------------------------------------- | :---------------------------------------------------------------------------------------------------------
+`import core from 'coreModule'`            | Import the core module (or npm package, more on that later) named `coreModule`
+`import * as foo from './foo.mjs'`         | Import everything exported by the `foo.mjs` file in the current directory (relative to the current file)
+`import { a, b } from './foo.mjs'`         | Import specific exports from the `foo.mjs` file in the current directory (relative to the current file)
+`import * as baz from './foo/bar/baz.mjs'` | Import everything exported by the `baz.mjs` file in the `foo/bar` directory (relative to the current file)
+`import * as qux from '../../qux.mjs'`     | Import everything exported by the `qux.mjs` file two directories above (relative to the current file)
 
 
 
@@ -384,7 +404,7 @@ The call to `getRandomNumber()` blocks the thread until its execution is complet
 With asynchronous code, some operations are executed **in parallel**:
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 
 console.log('Hello');
 
@@ -402,7 +422,7 @@ Code execution is **not sequential**:
 ```txt
 Hello
 End of program
-Result: 0.581
+Files: file.txt, dir, other-file.txt
 Done
 ```
 
@@ -441,7 +461,7 @@ This is called **non-blocking I/O**, because all I/O operations are executed in 
 Although I/O operations are non-blocking, **your code always executes in a single thread**:
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 let fileCount = 0;
 
 fs.readdir('/', function(err, result) {
@@ -488,10 +508,10 @@ You've probably often encountered something that looks like this while programmi
 
 ```
 Error: Both arguments must be numbers
-    at add (/path/to/project/st-demo.js:3:11)
-    at compute (/path/to/project/st-demo.js:10:10)
-    at demo (/path/to/project/st-demo.js:14:17)
-    at Object.<anonymous> (/path/to/project/st-demo.js:18:1)
+    at add (/path/to/project/st-demo.mjs:3:11)
+    at compute (/path/to/project/st-demo.mjs:10:10)
+    at demo (/path/to/project/st-demo.mjs:14:17)
+    at Object.<anonymous> (/path/to/project/st-demo.mjs:18:1)
     at Module._compile (internal/modules/cjs/loader.js:689:30)
     at Object.Module._extensions..js (internal/modules/cjs/loader.js:700:10)
     at Module.load (internal/modules/cjs/loader.js:599:32)
@@ -506,13 +526,13 @@ What is this called and what does it mean?
 
 ```
 Error: Both arguments must be numbers
-    at `add` (/path/to/project/`st-demo.js:3`:11)
-    at `compute` (/path/to/project/`st-demo.js:10`:10)
-    at `demo` (/path/to/project/`st-demo.js:14`:17)
-    at Object.<anonymous> (/path/to/project/`st-demo.js:18`:1)
+    at `add` (/path/to/project/`st-demo.mjs:3`:11)
+    at `compute` (/path/to/project/`st-demo.mjs:10`:10)
+    at `demo` (/path/to/project/`st-demo.mjs:14`:17)
+    at Object.<anonymous> (/path/to/project/`st-demo.mjs:18`:1)
 ```
 
-Here's the `st-demo.js` file:
+Here's the `st-demo.mjs` file:
 
 ```js
 function add(a, b) {
@@ -700,7 +720,7 @@ There are two ways that the function can be called back by Node.js:
 You should never forget to check for errors:
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 fs.readFile('name.txt', 'utf-8', function(err, data) {
 * if (err) {
 *   return console.warn(\`Could not read the file because: ${err.message}`);
@@ -759,7 +779,7 @@ fs.promises.readdir('/').then(result => {
 What's wrong with this code?
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 
 // Save a salutation into hello.txt
 const newSalutation = 'Hello Bob!';
@@ -786,10 +806,10 @@ Save it to a file and run it with `node` to see the issue.
 
 #### Mistake 1 result
 
-If you save the script to `bug1.js` and execute it this is what will happen:
+If you save the script to `bug1.mjs` and execute it this is what will happen:
 
 ```bash
-$> node bug1.js
+$> node bug1.mjs
 undefined
 ```
 
@@ -847,7 +867,7 @@ That way, it will not be executed **until the first call is done** and Node.js h
 The `console.log()` must also be performed **inside the second callback**.
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 
 // Save a salutation into hello.txt
 const newSalutation = 'Hello Bob!';
@@ -876,7 +896,7 @@ the code. As we've seen, that is the case for [Node'js file system
 API](https://nodejs.org/api/fs.html#fs_fs_promises_api):
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 
 execute().catch(err => console.warn(\`An error occurred: ${err.message}`));
 
@@ -904,7 +924,7 @@ the text `Could not read file because: some error` should be printed,
 otherwise it should print the contents of the file in upper case.
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
@@ -921,17 +941,17 @@ What's wrong with this code?
 
 #### Mistake 2 result
 
-If you save this script in `bug2.js` and execute it, this is what will happen:
+If you save this script in `bug2.mjs` and execute it, this is what will happen:
 
 ```bash
-$> node bug2.js
+$> node bug2.mjs
 Could not read file because: ENOENT: no such file or directory, open 'file-...'
-/path/to/projects/node-demo/bug2.js:9
+/path/to/projects/node-demo/bug2.mjs:9
   console.log(text.toUpperCase());
                   ^
 
 TypeError: Cannot read property 'toUpperCase' of undefined
-    at ReadFileContext.callback (/path/to/projects/node-demo/bug2.js:9:19)
+    at ReadFileContext.callback (/path/to/projects/node-demo/bug2.mjs:9:19)
     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:365:13)
 ```
 
@@ -947,7 +967,7 @@ If an error occurs, **both the `console.warn` and the `console.log` calls will b
 This will cause a "null pointer exception":
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
@@ -965,7 +985,7 @@ fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
 You can add a `return` to solve the issue:
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   if (err) {
@@ -979,7 +999,7 @@ fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
 Or use an `if/else`:
 
 ```js
-const fs = require('fs');
+import fs from 'fs';
 // Read the contents of a file
 fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
   `if (err) {`
@@ -1033,12 +1053,12 @@ printUppercaseFile('file-that-does-not-exist.txt');
 
 ### Modern web language
 
-Node.js provides a ready-to-use HTTP server.
-Thanks to the event loop, this one small server can handle many clients concurrently.
+Node.js provides a ready-to-use HTTP server. Thanks to the event loop, this one
+small server can handle many clients concurrently.
 
 ```js
-// Require the HTTP module.
-const http = require('http');
+// Import the HTTP module.
+import http from 'http';
 
 // Define configuration properties.
 const hostname = '127.0.0.1';
@@ -1089,7 +1109,7 @@ server.on('request', function(message) {
 
 **Documentation**
 
-* [Core modules (16.x)][node-16-api]
+* [Core modules (18.x)][node-18-api]
 
 **Further reading**
 
@@ -1103,6 +1123,7 @@ server.on('request', function(message) {
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 [commonjs]: https://nodejs.org/docs/latest-v16.x/api/modules.html
+[destructuring-assigment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
 [event-loop-strongloop]: http://strongloop.com/strongblog/node-js-event-loop/
@@ -1111,12 +1132,12 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-16-api]: https://nodejs.org/dist/latest-v16.x/docs/api/
-[node-16-esm-enabling]: https://nodejs.org/docs/latest-v16.x/api/esm.html#esm_enabling
+[node-18-api]: https://nodejs.org/docs/latest-v18.x/api/n-api.html
+[node-18-esm-enabling]: https://nodejs.org/docs/latest-v18.x/api/packages.html#determining-module-system
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
-[node-module-os]: https://nodejs.org/dist/latest-v16.x/docs/api/os.html#os_os
+[node-module-os]: https://nodejs.org/docs/latest-v18.x/api/os.html#os
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org
