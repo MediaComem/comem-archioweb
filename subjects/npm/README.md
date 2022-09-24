@@ -40,12 +40,12 @@ Learn how to use [npm][npm], the most popular [Node.js][node] package manager, a
 - [Common mistakes](#common-mistakes)
   - [Missing `package.json` file](#missing-packagejson-file)
   - [Wrong directory](#wrong-directory)
-- [The behavior of `require()`](#the-behavior-of-require)
+- [The behavior of `import`](#the-behavior-of-import)
   - [Requiring your own modules](#requiring-your-own-modules)
   - [Requiring packages installed with npm](#requiring-packages-installed-with-npm)
     - [Global packages installed with npm](#global-packages-installed-with-npm)
-  - [Requiring core Node.js modules](#requiring-core-nodejs-modules)
-  - [Require summary](#require-summary)
+  - [Importing core Node.js modules](#importing-core-nodejs-modules)
+  - [Import summary](#import-summary)
 - [More complex packages](#more-complex-packages)
     - [Run a web app](#run-a-web-app)
 - [npm scripts](#npm-scripts)
@@ -359,8 +359,8 @@ This is the typical list of dependencies for a **barebones** Express web applica
 
 ### npm saves the dependencies to package.json
 
-npm automatically tracks the dependencies you install.
-There is a `--save` option that was required for that in earlier versions, but it's the default now.
+npm automatically tracks the dependencies you install. There is a `--save`
+option that was required for that in earlier versions, but it's the default now.
 
 When you ran `npm install`, a new `dependencies` section should have appeared in your `package.json` file:
 
@@ -535,7 +535,7 @@ npm WARN `saveError` ENOENT: no such file or directory,
 
 Npm will not know if you are in the **wrong directory**.
 It will simply **install packages there**.
-Of course, you will **NOT** be able to `require()` or `import` them from your project:
+Of course, you will **NOT** be able to `import` them from your project:
 
 <p class='center'><img src='images/npm-install-wrong-dir.png' class='w80'></p>
 
@@ -549,7 +549,7 @@ Of course, you will **NOT** be able to `require()` or `import` them from your pr
 
 ### Requiring your own modules
 
-You can require your own Node.js scripts with **relative file paths**:
+You can import your own Node.js scripts with **relative file paths**:
 
 <p class='center'><img src='images/import-relative-module.png' class='w65' /></p>
 
@@ -562,13 +562,13 @@ In this example, you should do one or the other, **not both**.
 
 ### Requiring packages installed with npm
 
-You can require packages you installed with npm **by their name**:
+You can import packages you installed with npm **using their name**:
 
 <p class='center'><img src='images/import-local-package.png' class='w60' /></p>
 
 #### Global packages installed with npm
 
-You **CANNOT** require packages you installed **globally** with npm.
+You **CANNOT** import packages you installed **globally** with npm.
 They provide **new commands** but cannot be used in code:
 
 <p class='center'><img src='images/import-global-package.png' class='w80' /></p>
@@ -586,7 +586,7 @@ modules** with that name:
 
 ### Import summary
 
-Statement                                | What is required
+Statement                                | What is imported
 :--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `import * as script from './script'`     | The `script.js` file in the current directory (relative to the file using `import`)
 `import * as script from './dir/script'` | The `script.js` file in the `dir` directory (relative to the file using `import`)
@@ -735,8 +735,8 @@ You should also set the `main` property:
 }
 ```
 
-When people `require` your module after installing it,
-they will get the same result as if they had required that file.
+When people `import` your module after installing it, they will get the same
+result as if they had imported that file.
 
 
 
@@ -759,7 +759,7 @@ Names are registered on a **first-come, first-serve** basis.
 
 Sometimes you write code that should not be published:
 
-* A website (something where using `require` makes no sense)
+* A website (something that makes no sense to `import`)
 * A private package with confidential information
 
 In these cases, you can set the `private` property of the `package.json` file:
