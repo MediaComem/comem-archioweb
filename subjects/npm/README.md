@@ -306,8 +306,8 @@ In your `package.json`, add the following property:
 type: "module"
 ```
 
-This will allow you to use ES modules without having to name your files with the
-`.mjs` extension. You can now rename it to `.js`.
+This will allow you to use ECMAScript modules without having to name your files
+with the `.mjs` extension. You can now rename it to `.js`.
 
 ```bash
 $> mv script.mjs script.js
@@ -551,7 +551,7 @@ Of course, you will **NOT** be able to `require()` or `import` them from your pr
 
 You can require your own Node.js scripts with **relative file paths**:
 
-<p class='center'><img src='images/import-relative-module.png' class='w70' /></p>
+<p class='center'><img src='images/import-relative-module.png' class='w65' /></p>
 
 <p class='center'><img src='images/import-parent-module.png' class='w60' /></p>
 
@@ -564,33 +564,34 @@ In this example, you should do one or the other, **not both**.
 
 You can require packages you installed with npm **by their name**:
 
-<p class='center'><img src='images/require-local-package.png' class='w60' /></p>
+<p class='center'><img src='images/import-local-package.png' class='w60' /></p>
 
 #### Global packages installed with npm
 
 You **CANNOT** require packages you installed **globally** with npm.
 They provide **new commands** but cannot be used in code:
 
-<p class='center'><img src='images/require-global-package.png' class='w80' /></p>
+<p class='center'><img src='images/import-global-package.png' class='w80' /></p>
 
 
 
-### Requiring core Node.js modules
+### Importing core Node.js modules
 
-When you give **a name** to `require()`, it will also look for a **core Node.js modules** with that name:
+When you give **a name** to `import`, it will also look for a **core Node.js
+modules** with that name:
 
-<p class='center'><img src='images/require-core-module.png' class='w70' /></p>
+<p class='center'><img src='images/import-core-module.png' class='w70' /></p>
 
 
 
-### Require summary
+### Import summary
 
-Statement                 | What is required
-:---                      | :---
-`require('./script')`     | The `script.js` file in the current directory (relative to the file using `require()`)
-`require('./dir/script')` | The `script.js` file in the `dir` directory (relative to the file using `require()`)
-`require('../script')`    | The `script.js` file in the parent directory (relative to the file using `require()`)
-`require('my-module')`    | The `my-module` npm package (if found in `node_modules` in the same directory *or any parent directory*)<br/>**OR**<br/>The core Node.js module with that name (if there is one)
+Statement                                | What is required
+:--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`import * as script from './script'`     | The `script.js` file in the current directory (relative to the file using `import`)
+`import * as script from './dir/script'` | The `script.js` file in the `dir` directory (relative to the file using `import`)
+`import * as script from '../script'`    | The `script.js` file in the parent directory (relative to the file using `import`)
+`import myModule from 'my-module'`       | The `my-module` npm package (if found in `node_modules` in the same directory *or any parent directory*)<br/>**OR**<br/>The core Node.js module with that name (if there is one)
 
 
 
@@ -606,7 +607,8 @@ $> npm install express
 Create a `server.js` file with the following content:
 
 ```js
-const express = require('express');
+import express from 'express';
+
 const app = express();
 
 app.get('/', function(req, res) {
