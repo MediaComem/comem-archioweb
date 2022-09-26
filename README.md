@@ -259,7 +259,7 @@ This course is structured in such a way that it will feel very heavy in new theo
 
 **Get in a team!**
 
-The term project will be built in groups of 2 or 3, so try and get together as early as possible. We also suggest you mix it up: try working with people you've never worked with before.
+The term project will be built in groups of 3 or 4, so try and get together as early as possible. We also suggest you mix it up: try working with people you've never worked with before.
 
 **Communicate!**
 

@@ -620,7 +620,7 @@ they are run by the underlying platform: the v8 engine for Node.js or the web br
 For example:
 
 * `readFile` (Node.js API)
-* `fetch` (Web API)
+* `fetch` (Experimental Node.js & Web API)
 * `setTimeout` (Node.js & Web API)
 
 <!-- slide-column -->
