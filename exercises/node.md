@@ -12,11 +12,11 @@
 
 ## Calculator
 
-Save the following contents to a file named `calculate.js`:
+Save the following contents to a file named `calculate.mjs`:
 
 ```js
-import { add, multiply } from './calculator/simple.js';
-import { pow } from './calculator/advanced.js';
+import { add, multiply } from './calculator/simple.mjs';
+import { pow } from './calculator/advanced.mjs';
 
 console.log(`2 added to 1 is: ${add(1, 2)}`);
 console.log(`2 multiplied by 3 is: ${multiply(2, 3)}`);
@@ -26,7 +26,7 @@ console.log(`2 to the power of 10 is: ${pow(2, 10)}`);
 Write the missing files so that the following command works:
 
 ```bash
-$> node calculate.js
+$> node calculate.mjs
 2 added to 1 is: 3
 2 multiplied by 3 is: 6
 2 to the power of 10 is: 1024
@@ -40,7 +40,7 @@ helpful.
 
 ## Yell
 
-Create a Node.js command line script named `yell.js` which:
+Create a Node.js command line script named `yell.mjs` which:
 
 * Takes one file name as an argument.
 * Reads the file with the UTF-8 encoding.
@@ -55,7 +55,7 @@ Somewhere over the rainbow
 Way up high
 ...
 
-$> node yell.js rainbow.txt
+$> node yell.mjs rainbow.txt
 SOMEWHERE OVER THE RAINBOW
 WAY UP HIGH
 ...
