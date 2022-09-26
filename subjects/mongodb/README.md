@@ -179,7 +179,6 @@ db.people.insertOne({
   "interests": [ "Pastry", "Kung fu" ],
   "phones": []
 })
-
 db.people.insertOne({
   "name": "John Smith",
   "birthDate": ISODate("1990-12-24T00:00:00Z"),
@@ -192,17 +191,13 @@ db.people.insertOne({
 })
 ```
 
-After each query, MongoDB should tell you that it has inserted a new document:
-
-```bash
-{
-  acknowledged: true,
-  insertedId: ObjectId("6311d422d2b0f4cf05594182")
-}
-```
+MongoDB should acknowledge each insertion by showing you the new `ObjectId` of
+the inserted object.
 
 ### Inserting multiple documents
-You can insert multiple documents at once by using the [`insertMany`][insertMany] method and passing it an array.
+
+You can insert multiple documents at once by using the
+[`insertMany`][mongodb-insert-many] method and passing it an array.
 
 ```bash
 db.people.insertMany([{
@@ -358,7 +353,7 @@ db.people.updateOne(
 )
 ```
 
-The [updateOne][updateOne] method takes 3 parameters:
+The [`updateOne`][mongodb-update-one] method takes 3 parameters:
 
 * A filter to match the documents to update
 * An update document to specify the modification to perform
@@ -368,7 +363,7 @@ Read the documention on [update operators][update-operators] to learn more about
 
 #### Updating multiple documents
 
-To update multiple documents, you must use the [`updateMany`][updateMany] method.
+To update multiple documents, you must use the [`updateMany`][mongodb-update-many] method.
 Otherwise, only the first matching document will be updated.
 
 #### Upserts
@@ -441,18 +436,18 @@ This means that:
 
 ### Replacing documents
 
-The [`replaceOne`][replaceOne] and [`replaceMany`][replaceMany] methods allow you to replace the entirety of a document.
+The [`replaceOne`][mongodb-replace-one] and [`replaceMany`][mongodb-replace-many] methods allow you to replace the entirety of a document.
 
 ```js
 > db.people.replaceOne(
-  {name: "Saul Goodman"}, 
+  {name: "Saul Goodman"},
   {
     name: "Gene",
     children: 0,
     address: "N/A"
   }
 )
- 
+
 > db.people.find({name: "Gene"})
 [
   {
@@ -466,7 +461,7 @@ The [`replaceOne`][replaceOne] and [`replaceMany`][replaceMany] methods allow yo
 
 ### Removing documents
 
-You can use [deleteMany][deleteMany] to remove documents from a collection:
+You can use [`deleteMany`][mongodb-delete-many] to remove documents from a collection:
 
 ```js
 // Remove all people
@@ -477,7 +472,7 @@ db.people.deleteMany({ "children": 5 })
 ```
 
 It removes all matching documents by default.
-Use the [`deleteOne`][deleteOne] mathod if you want to only remove the first matching document:
+Use the [`deleteOne`][mongodb-delete-one] mathod if you want to only remove the first matching document:
 
 ```js
 // Remove the first person found who likes chocolate
@@ -627,11 +622,11 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 
 * [Getting started with MongoDB][getting-started]
 * [db.collection.find][find] & [query operators][query-operators]
-* [db.collection.insertOne][insertOne] & [db.collection.insertMany][insertMany]
-* [db.collection.updateOne][updateOne] & [db.collection.updateOne][updateMany]
+* [db.collection.insertOne][mongodb-insert-one] & [db.collection.insertMany][mongodb-insert-many]
+* [db.collection.updateOne][mongodb-update-one] & [db.collection.updateOne][mongodb-update-many]
 * [update operators][update-operators]
-* [db.collection.replaceOne][replaceOne] & [db.collection.replaceMany][replaceMany]
-* [db.collection.deleteMany][deleteMany] & [db.collection.deleteOne][deleteOne]
+* [db.collection.replaceOne][mongodb-replace-one] & [db.collection.replaceMany][mongodb-replace-many]
+* [db.collection.deleteMany][mongodb-delete-many] & [db.collection.deleteOne][mongodb-delete-one]
 * [db.collection.createIndex][create-index]
 * [Indexes][indexes]
 * [SQL comparison][sql-comparison]
@@ -646,13 +641,13 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 [install]: https://github.com/MediaComem/comem-archioweb/guides/install-mongodb.md
 [query-operators]: https://docs.mongodb.com/manual/reference/operator/query/
 [mongodb]: https://www.mongodb.com
-[insertOne]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertOne/
-[insertMany]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/
-[deleteOne]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/
-[deleteMany]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteMany/
-[replaceOne]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/
-[replaceMany]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceMany/
-[updateOne]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/
-[updateMany]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany/
+[mongodb-insert-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertOne/
+[mongodb-insert-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/
+[mongodb-delete-one]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/
+[mongodb-delete-many]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteMany/
+[mongodb-replace-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/
+[mongodb-replace-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceMany/
+[mongodb-update-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/
+[mongodb-update-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany/
 [sql-comparison]: https://docs.mongodb.com/manual/reference/sql-comparison/
 [update-operators]: https://docs.mongodb.com/manual/reference/operator/update/
