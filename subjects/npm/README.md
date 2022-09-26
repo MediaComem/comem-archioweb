@@ -431,10 +431,10 @@ $> npm install
 
 <!-- slide-column -->
 
-Use the `--production` option to install **only production dependencies** (e.g. on a server, where you will only need to *run* your program and will not need your development tools):
+Use the `--omit=dev` flag to install **only production dependencies** (e.g. on a server, where you will only need to *run* your program and will not need your development tools):
 
 ```bash
-$> npm install --production
+$> npm install --omit=dev
 ```
 
 <img src='images/npm-install-prod.png' class='w100'>

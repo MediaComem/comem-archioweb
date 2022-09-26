@@ -1,5 +1,6 @@
 # TODO
 
+* Use top-level await for Node mistake example solutions.
 * Template: auto-replace relative links with full URLs (test in generated PDF)
 * Doctoc for specific subjects
 
