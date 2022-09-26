@@ -3,7 +3,7 @@
   <head>
     <title>npm (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/81b6d1ce22f46dc6adbe232a09d34327a96ad8eb/subjects/npm/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/770e73a052ae172ceb6f3ebe08d74591fbdc04e5/subjects/npm/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -272,17 +272,18 @@ lodash
 
 .breadcrumbs[<a href="#1">npm</a> > <a href="#12">npm install</a>]
 
-Any script that is in the same directory as `package.json` and `node_modules` can `require()` the installed packages:
+Any script that is in the same directory as `package.json` and `node_modules`
+can `import` the installed packages:
 
-Create a `script.js` file in the project and run it::
+Create a `script.mjs` file in the project and run it::
 
 .grid-60[
 
 ```js
-const lodash = require('lodash');
+import _ from 'lodash';
 
 let numbers = [ 1, 1, 2, 3, 2 ];
-console.log(lodash.uniq(numbers));
+console.log(_.uniq(numbers));
 ```
 
 
@@ -290,7 +291,7 @@ console.log(lodash.uniq(numbers));
 .grid-40[
 
 ```bash
-$> node script.js
+$> node script.mjs
 [ 1, 2, 3 ]
 ```
 
@@ -301,7 +302,7 @@ $> node script.js
 You have used the `uniq` function from the `lodash` package,
 which returns an array with its duplicate elements removed.
 
-<p class='center'><img src='images/npm-require.png' width='50%' /></p>
+<p class='center'><img src='images/npm-import.png' width='50%' /></p>
 
 
 ]
@@ -309,28 +310,24 @@ which returns an array with its duplicate elements removed.
 ### Importing ECMAScript Modules
 
 .breadcrumbs[<a href="#1">npm</a> > <a href="#12">npm install</a>]
-As was mentionned during the presentation on Node, we will be using ECMAScript modules during this course.
+
+As was mentionned during the presentation on Node, we will be using ECMAScript
+modules during this course.
 
 In your `package.json`, add the following property:
+
 ```json
 type: "module"
 ```
-This will allow you to use ES modules without having to name your files with the `.mjs` extension. It will however make it very difficult for you to use CommonJS imports and exports. You can now import `lodash` the ES way:
 
-```js
-import lodash from "lodash";
-```
+This will allow you to use ECMAScript modules without having to name your files
+with the `.mjs` extension. You can now rename it to `.js`.
 
-You could also use the `lodash-es` package, which will allow you to import only what you need (named imports) instead of the whole library:
 ```bash
-> npm remove lodash && npm install lodash-es
+$> mv script.mjs script.js
+$> node script.js
+[ 1, 2, 3 ]
 ```
-```js
-import { uniq } from "lodash-es"; 
-let numbers = [ 1, 1, 2, 3, 2 ];
-console.log(uniq(numbers));
-```
- 
 
 ---
 ### Tracking installed packages
@@ -351,14 +348,14 @@ node:internal/errors:464
     ErrorCaptureStackTrace(err);
     ^
 
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash-es' 
-Error: Cannot find module 'lodash-es'
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash'
+Error: Cannot find module 'lodash'
 ```
 
 Deleting the `node_modules` directory is not a common real-world scenario,
-
-However, it can get quite large, so most people have it in their `.gitignore` file in their Git repositories,
-since you just have to run `npm install` to get your dependencies back.
+However, it can get quite large, so most people have it in their `.gitignore`
+file in their Git repositories, since you just have to run `npm install` to get
+your dependencies back.
 
 That means that when **cloning** your project, your colleagues **won't** get the `node_modules` directory.
 
@@ -389,8 +386,8 @@ This is the typical list of dependencies for a **barebones** Express web applica
 
 .breadcrumbs[<a href="#1">npm</a> > <a href="#12">npm install</a>]
 
-npm automatically tracks the dependencies you install.
-There is a `--save` option that was required for that in earlier versions, but it's the default now.
+npm automatically tracks the dependencies you install. There is a `--save`
+option that was required for that in earlier versions, but it's the default now.
 
 When you ran `npm install`, a new `dependencies` section should have appeared in your `package.json` file:
 
@@ -609,7 +606,7 @@ npm WARN `saveError` ENOENT: no such file or directory,
 
 Npm will not know if you are in the **wrong directory**.
 It will simply **install packages there**.
-Of course, you will **NOT** be able to `require()` or `import` them from your project:
+Of course, you will **NOT** be able to `import` them from your project:
 
 <p class='center'><img src='images/npm-install-wrong-dir.png' class='w80'></p>
 
@@ -617,7 +614,7 @@ Of course, you will **NOT** be able to `require()` or `import` them from your pr
 
 ---
 class: center, middle
-## The behavior of `require()`
+## The behavior of `import`
 
 .breadcrumbs[<a href="#1">npm</a>]
 
@@ -628,74 +625,63 @@ class: center, middle
 ---
 ### Requiring your own modules
 
-.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `require()`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `import`</a>]
 
-You can require your own Node.js scripts with **relative file paths**:
+You can import your own Node.js scripts with **relative file paths**:
 
-.grid-50[
+<p class='center'><img src='images/import-relative-module.png' class='w65' /></p>
 
-<p class='center'><img src='images/require-relative-module.png' class='w100' /></p>
-
-
-]
-.grid-50[
-
-<p class='center'><img src='images/require-parent-module.png' class='w100' /></p>
-
-
-]
-.container[
+<p class='center'><img src='images/import-parent-module.png' class='w60' /></p>
 
 Beware of **circular dependencies**.
 In this example, you should do one or the other, **not both**.
 
 
 
-
-]
 ---
 ### Requiring packages installed with npm
 
-.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `require()`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `import`</a>]
 
-You can require packages you installed with npm **by their name**:
+You can import packages you installed with npm **using their name**:
 
-<p class='center'><img src='images/require-local-package.png' class='w60' /></p>
+<p class='center'><img src='images/import-local-package.png' class='w60' /></p>
 
 ---
 #### Global packages installed with npm
 
-.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `require()`</a> > <a href="#30">Requiring packages installed with npm</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `import`</a> > <a href="#30">Requiring packages installed with npm</a>]
 
-You **CANNOT** require packages you installed **globally** with npm.
+You **CANNOT** import packages you installed **globally** with npm.
 They provide **new commands** but cannot be used in code:
 
-<p class='center'><img src='images/require-global-package.png' class='w80' /></p>
+<p class='center'><img src='images/import-global-package.png' class='w80' /></p>
 
 
 
 ---
-### Requiring core Node.js modules
+### Importing core Node.js modules
 
-.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `require()`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `import`</a>]
 
-When you give **a name** to `require()`, it will also look for a **core Node.js modules** with that name:
+When you give **a name** to `import`, it will also look for a **core Node.js
+modules** with that name:
 
-<p class='center'><img src='images/require-core-module.png' class='w70' /></p>
+<p class='center'><img src='images/import-core-module.png' class='w70' /></p>
 
 
 
 ---
-### Require summary
+### Import summary
 
-.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `require()`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#28">The behavior of `import`</a>]
 
-Statement                 | What is required
-:---                      | :---
-`require('./script')`     | The `script.js` file in the current directory (relative to the file using `require()`)
-`require('./dir/script')` | The `script.js` file in the `dir` directory (relative to the file using `require()`)
-`require('../script')`    | The `script.js` file in the parent directory (relative to the file using `require()`)
-`require('my-module')`    | The `my-module` npm package (if found in `node_modules` in the same directory *or any parent directory*)<br/>**OR**<br/>The core Node.js module with that name (if there is one)
+Statement                                | What is imported
+:--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`import * as script from './script'`     | The `script.js` file in the current directory (relative to the file using `import`)
+`import * as script from './dir/script'` | The `script.js` file in the `dir` directory (relative to the file using `import`)
+`import * as script from '../script'`    | The `script.js` file in the parent directory (relative to the file using `import`)
+`import myModule from 'my-module'`       | The `my-module` npm package (if found in `node_modules` in the same directory *or any parent directory*)<br/>**OR**<br/>The core Node.js module with that name (if there is one)
 
 
 
@@ -714,7 +700,8 @@ $> npm install express
 Create a `server.js` file with the following content:
 
 ```js
-const express = require('express');
+import express from 'express';
+
 const app = express();
 
 app.get('/', function(req, res) {
@@ -870,8 +857,8 @@ You should also set the `main` property:
 }
 ```
 
-When people `require` your module after installing it,
-they will get the same result as if they had required that file.
+When people `import` your module after installing it, they will get the same
+result as if they had imported that file.
 
 
 
@@ -900,7 +887,7 @@ Names are registered on a **first-come, first-serve** basis.
 
 Sometimes you write code that should not be published:
 
-* A website (something where using `require` makes no sense)
+* A website (something that makes no sense to `import`)
 * A private package with confidential information
 
 In these cases, you can set the `private` property of the `package.json` file:
