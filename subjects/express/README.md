@@ -1078,7 +1078,7 @@ with that path as a **prefix**:
 
 <p class="center">
   <img src="images/routers.png" class="w80" />
-</p>;
+</p>
 
 
 <!-- slide-notes -->
