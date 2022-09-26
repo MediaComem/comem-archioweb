@@ -15,8 +15,8 @@
 Save the following contents to a file named `calculate.js`:
 
 ```js
-const { add, multiply } = require('./calculator/simple.js');
-const { pow } = require('./calculator/advanced.js');
+import { add, multiply } from './calculator/simple.js';
+import { pow } from './calculator/advanced.js';
 
 console.log(`2 added to 1 is: ${add(1, 2)}`);
 console.log(`2 multiplied by 3 is: ${multiply(2, 3)}`);
