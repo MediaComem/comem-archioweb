@@ -4,7 +4,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 **You will need**
 
-- [Node.js][node] 13.2+
+- [Node.js][node] 18+
 - [Google Chrome][chrome] (recommended, any browser with developer tools will do)
 - [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 
@@ -137,9 +137,10 @@ DEBUG=express-api:* npm start
 ### Run the app
 
 ```bash
+$> cd express-api
 $> DEBUG=express-api:* npm start
 
-> express-api@0.1.0 start 
+> express-api@0.1.0 start
 > node ./bin/start
 
   express-api:server Listening on port 3000 +0ms
@@ -165,7 +166,7 @@ GET / 200 2.050 ms - 17
 
 <!-- slide-front-matter class: center, middle -->
 
-<img src="images/structure.jpg" class="w70" />;
+<img src="images/structure.jpg" class="w70" />
 
 What goes where
 
