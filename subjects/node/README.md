@@ -224,7 +224,7 @@ function hello(name) {
 hello('World');
 ```
 
-> Since ECMAScript modules are now [natively supported][node-imports], we will
+> Since ECMAScript modules are now [natively supported][node-18-esm], we will
 > use them rather than the obsolete `require`.
 
 
@@ -1134,6 +1134,7 @@ server.on('request', function(message) {
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
 [node-18-api]: https://nodejs.org/docs/latest-v18.x/api/n-api.html
+[node-18-esm]: https://nodejs.org/api/esm.html#modules-ecmascript-modules
 [node-18-esm-enabling]: https://nodejs.org/docs/latest-v18.x/api/packages.html#determining-module-system
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
