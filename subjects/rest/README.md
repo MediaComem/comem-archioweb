@@ -1114,7 +1114,7 @@ Collection errors                                                               
 [http-teapot]: https://tools.ietf.org/html/rfc2324
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
 [internet-draft]: https://en.wikipedia.org/wiki/Internet_Draft
-[location]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30
+[location]: https://www.rfc-editor.org/rfc/rfc9110.html#name-location
 [osi-application]: https://en.wikipedia.org/wiki/Application_layer
 [patch]: https://tools.ietf.org/html/rfc5789#section-2
 [patch-rfc]: https://tools.ietf.org/html/rfc5789

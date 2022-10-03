@@ -542,12 +542,12 @@ You can do it after some asynchronous calls:
 ```js
 app.use(function(req, res, next) {
   `fs.readFile`("data.txt", "utf-8", `function(err, data)` {
-  if (err) {
+    if (err) {
       return next(err);
     }
     req.myData = data;
-    `next();
-  }`);
+    `next();`
+  });
 });
 ```
 
