@@ -1,4 +1,4 @@
-# JavaScript exercises
+# JavaScript exercises solutions
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -37,8 +37,8 @@ function multiply(a, b) {
 
 // Define a function that takes two numbers
 // and a function to apply to those numbers.
-function compute(/* TODO: give me some arguments! */) {
-  // TODO: implement me!
+function compute(a, b, func) {
+  return func(a, b);
 }
 
 // Call compute with "add".
@@ -50,15 +50,14 @@ value = compute(2, 4, multiply);
 console.log(value); // 8
 ```
 
- 
 ### Dynamically create functions
 
 [Open in CodePen](https://codepen.io/AlphaHydrae/pen/xxVzxYe?editors=0011)
 
 ```js
 // Implement this function in a way that makes the rest of the code work.
-function createMultiplier(/* TODO: give me some arguments! */) {
-  // TODO: implement me!
+function createMultiplier(factor) {
+  return number => number * factor;
 }
 
 const multiplyByTwo = createMultiplier(2);
@@ -84,6 +83,7 @@ const personJson = '{"first":"James","last":"Bond"}';
 
 // Extract the person's first and last names to new variables
 // to make this code work, without modifying the rest of the code.
+const { first, last } = JSON.parse(personJson);
 
 console.log(`My name is ${last}, ${first}, ${last}`);
 ```
@@ -91,8 +91,6 @@ console.log(`My name is ${last}, ${first}, ${last}`);
 
 
 ## ECMAScript 2015+
-
-Learn how to use the modern JavaScript syntax.
 
 ### [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
 
@@ -103,7 +101,7 @@ const firstName = 'John';
 const lastName = 'Doe';
 
 // Use a template literal instead of string concatenation.
-console.log('Hello, I am ' + firstName + ' ' + lastName + '!');
+console.log(`Hello, I am ${firstName} ${lastName}!`);
 ```
 
 ### [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
@@ -118,9 +116,7 @@ const people = [
 ];
 
 // Convert this function to an arrow function and save 2 lines.
-const lastNames = people.map(function(person) {
-  return person.last;
-});
+const lastNames = people.map(person => person.last);
 
 console.log(lastNames); // [ "Doe", "Martin", "Krauss" ]
 ```
@@ -133,8 +129,7 @@ console.log(lastNames); // [ "Doe", "Martin", "Krauss" ]
 let fruits = [ 'apple', 'pear', 'lemon' ];
 
 // Use a for...of loop instead of iterating with an index.
-for (let i = 0; i < fruits.length; i++) {
-  const fruit = fruits[i];
+for (let fruit of fruits) {
   console.log(`${fruit} is a fruit`);
 }
 ```
@@ -148,8 +143,7 @@ const values = [ 23, 61, 42, 51, 12 ];
 
 // Use a destructuring assignment to convert the next 2 lines
 // to a single expression without modifying the rest of the code.
-const firstValue = values[0];
-const otherValues = values.slice(1);
+const [ firstValue, ...otherValues ] = values;
 
 console.log(`The first value is ${firstValue}`);
 console.log(`The other values are ${otherValues.join(', ')}`);
@@ -170,11 +164,9 @@ const person = {
   }
 };
 
-function logHabitation(person) {
+function logHabitation({ first, address: { city }}) {
   // Use a destructuring assignment in the function's argument to
   // remove the next 2 lines, without modifying the console.log statement.
-  const first = person.first;
-  const city = person.address.city;
   console.log(`${first} lives in ${city}`);
 }
 
@@ -208,21 +200,7 @@ const chuck = {
 // Simplify this function using optional chaining and the nullish coalescing
 // operator.
 function whereDoTheyLive(person) {
-  if (!person) {
-    return 'Unknown';
-  }
-
-  const address = person.address;
-  if (!address) {
-    return 'Unknown';
-  }
-
-  const city = address.city;
-  if (!city) {
-    return 'Unknown';
-  }
-
-  return city;
+  return person?.address?.city ?? 'Unknown';
 }
 
 console.log(whereDoTheyLive(bob));    // "Unknown"
@@ -238,9 +216,9 @@ console.log(whereDoTheyLive(chuck));  // "Dallas"
 advise();
 
 // Get rid of the .then calls and callback functions by using async/await.
-function advise() {
-  fetch('https://api.adviceslip.com/advice')
-    .then(res => res.json())
-    .then(({ slip: { advice } }) => console.log(advice));
+async function advise() {
+  const res = await fetch('https://api.adviceslip.com/advice');
+  const { slip: { advice } } = await res.json();
+  console.log(advice);
 }
 ```
