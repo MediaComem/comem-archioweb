@@ -11,7 +11,7 @@ the documentation][installation-instructions].
   - [Prerequisites](#prerequisites)
   - [Installing MongoDB](#installing-mongodb)
   - [Run the MongoDB server on macOS](#run-the-mongodb-server-on-macos)
-  - [What you should see](#what-you-should-see)
+  - [Checking the server's logs](#checking-the-servers-logs)
   - [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos)
 - [MongoDB on Windows](#mongodb-on-windows)
   - [Install the MongoDB shell on Windows](#install-the-mongodb-shell-on-windows)
@@ -120,10 +120,19 @@ process and is not interactive). There are **two ways** you can run MongoDB: as 
 > - Select the _Security_ and _Privacy_ pane.
 > - Under the General tab, click the button to the right of the message about `mongod`, labelled either Open Anyway or Allow Anyway depending on your version of macOS.
 
-### What you should see
+### Checking the server's logs
 
-When you run [`mongod`][mongod], it should take over the CLI and show you the MongoDB
-server logs. They should look something like this (abridged output):
+MongoDB runs in the background, but you can display the contents of its logfile
+to see if it's running correctly:
+
+```bash
+# For Intel Processors
+$> cat /usr/local/var/log/mongodb/mongo.log
+# For Apple Silicon (M1, M2)
+$> cat /opt/homebrew/var/log/mongodb/mongo.log
+```
+
+The logs should look something like this (abridged output):
 
 ```bash
 ...
@@ -202,7 +211,7 @@ From the Command Prompt, you may start MongoDB by entering:
 The MongoDB Server (MongoDB) service was started successfully.
 ```
 
-And stop it by entering: 
+And stop it by entering:
 
 ```bash
 > net stop MongoDB
@@ -212,7 +221,7 @@ The MongoDB Server (MongoDB) service was stopped successfully.
 
 ### Install the MongoDB shell on Windows
 
-Download and install [MongoDB Shell][mongosh-download]. 
+Download and install [MongoDB Shell][mongosh-download].
 
 You run the MongoDB shell by calling `mongosh` in the Command Prompt.
 
