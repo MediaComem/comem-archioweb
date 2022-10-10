@@ -40,7 +40,7 @@ deploy in different environments. You may also uninentionally expose sensitive
 data such as secret keys.
 
 [Environment variables][node-process-env] are a suitable alternative. There is
-already an example in a freshly generated Express application in the `bin/www`
+already an example in a freshly generated Express application in the `bin/start.js`
 file:
 
 ```js
@@ -105,7 +105,7 @@ needed:
 
 ```js
 // File: some other file
-import config from '../path/to/config';
+import import * as config from '../path/to/config.js';
 server.listen(config.port);
 ```
 
