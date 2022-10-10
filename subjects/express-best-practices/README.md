@@ -105,7 +105,7 @@ needed:
 
 ```js
 // File: some other file
-import import * as config from '../path/to/config.js';
+import * as config from '../path/to/config.js';
 server.listen(config.port);
 ```
 
