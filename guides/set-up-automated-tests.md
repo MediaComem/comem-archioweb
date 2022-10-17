@@ -86,12 +86,12 @@ test('should work', function() {
 
 To run these tests, you can use the `jest` command which comes with the npm
 package. The most convenient way to do it is to define a new `test` script in
-the `scripts` section of your `package.json`. Unfortunately, we need to add a `--experimental-vm-modules` in order to use Jest with ES Modules. 
+the `scripts` section of your `package.json`. Unfortunately, we need to add a `--experimental-vm-modules` in order to use Jest with ES Modules.
 
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "--experimental-vm-modules node_modules/.bin/jest"
+  "test": "node --experimental-vm-modules node_modules/.bin/jest"
 }
 ```
 
@@ -113,6 +113,15 @@ Time:        0.152 s, estimated 1 s
 Ran all test suites.
 ```
 
+If you are on Windows and are receiving unexpected errors, try editing the Jest path in your `package.json` script:
+
+
+```json
+"scripts": {
+  "...": "<PREVIOUS SCRIPTS HERE...>",
+  "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+}
+```
 
 ## Your domain model & API
 
@@ -386,7 +395,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 ```
 
-Jest automatically sets our `NODE_ENV` environment variable to `test`. 
+Jest automatically sets our `NODE_ENV` environment variable to `test`.
 
 
 ## Add a unicity constraint to your model
@@ -507,7 +516,7 @@ expect(res.body).toEqual(
 
 ## Add some matchers to Jest with jest-extended
 
-Jest has [many matchers][jest-matchers]. However, as you can see, checking an object's keys can be a bit convoluted. Fortunately, we can use the [jest-extended][jest-extended] package to add plenty of cleaner methods to our test suite. 
+Jest has [many matchers][jest-matchers]. However, as you can see, checking an object's keys can be a bit convoluted. Fortunately, we can use the [jest-extended][jest-extended] package to add plenty of cleaner methods to our test suite.
 
 Install jest-extended:
 ```bash
@@ -676,7 +685,7 @@ describe('GET /users', function() {
 });
 ```
 
-If the `GET /users` route requires authentication, first import the `generateValidJwt` function from your `utils.js` file: 
+If the `GET /users` route requires authentication, first import the `generateValidJwt` function from your `utils.js` file:
 
 ```js
 import { cleanUpDatabase, generateValidJwt } from "./utils.js"
@@ -702,7 +711,7 @@ has 2 users:
 
 ```bash
 $> npm test
-> express-api@0.0.0 test 
+> express-api@0.0.0 test
  FAIL  spec/users.spec.js
   POST /users
     ✓ should create a user (121 ms)
