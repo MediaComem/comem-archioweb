@@ -233,7 +233,7 @@ evaluation if implemented correctly. Here are some examples:
 
 * Implement a level 3 hypermedia API using a standard format such as
   [JSON:API][json-api] or [HAL+JSON][hal].
-* Implement "full" (90-100%) test coverage with automated tests.
+* Implement "full" (80-100%) test coverage with automated tests.
 
   Note that test coverage alone is useless. The tests must also make meaningful
   assertions.
