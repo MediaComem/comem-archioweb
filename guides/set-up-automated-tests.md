@@ -571,8 +571,8 @@ check important headers, check the response body.
 
 ## Write a second test
 
-Let's test the application's other route. **Modify the `it('should retrieve the
-list of users')` call** to add the test function. It should look like this:
+Let's test the application's other route. **Modify the `test('should retrieve
+the list of users')` call** to add the test function. It should look like this:
 
 ```js
 describe('GET /users', function() {
@@ -610,8 +610,8 @@ route during this course's previous tutorials, the test will fail because the
 request is not properly authenticated. You must send a valid bearer token in the
 `Authorization` header.
 
-Add this function somewhere in the test file outside the `describe` blocks. You
-can use it later to generate a valid token. You can add the following function in `spec/utils.js`:
+Here's a function you will be able to use later to generate a valid token. You
+can add it to `spec/utils.js`:
 
 ```js
 import jwt from "jsonwebtoken"
