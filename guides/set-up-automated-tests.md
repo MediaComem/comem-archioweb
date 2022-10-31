@@ -857,8 +857,8 @@ Jest command to instruct it to run all tests sequentially (i.e. one by one):
 > **transactional testing**, where each test is wrapped in a transaction so that
 > it only sees its own changes. Then the transaction is rolled back at the end
 > of the test so that no changes are actually persisted that can affect other
-> tests. Frameworks such as [Ruby on Rails for
-> Ruby](https://guides.rubyonrails.org/testing.html#testing-parallel-transactions)
+> tests. Frameworks such as [Ruby on
+> Rails](https://guides.rubyonrails.org/testing.html#testing-parallel-transactions)
 > or [Ecto for Elixir](https://hexdocs.pm/ecto/testing-with-ecto.html) offer
 > this feature.
 
