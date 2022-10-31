@@ -503,22 +503,23 @@ Add the following assertions to your test after the SuperTest call chain:
 
 ```js
 // Check that the response body is a JSON object with exactly the properties we expect.
-expect(typeof res.body).toEqual('object');
-expect(typeof res.body._id).toEqual('string');
-expect(res.body.name).toEqual('John Doe');
 expect(res.body).toEqual(
   expect.objectContaining({
     _id: expect.any(String),
-    name: expect.any(String)
+    name: 'John Doe'
   })
 );
 ```
 
 ## Add some matchers to Jest with jest-extended
 
-Jest has [many matchers][jest-matchers]. However, as you can see, checking an object's keys can be a bit convoluted. Fortunately, we can use the [jest-extended][jest-extended] package to add plenty of cleaner methods to our test suite.
+Jest has [many matchers][jest-matchers]. However, as you can see, checking an
+object's keys can be a bit convoluted. Fortunately, we can use the
+[jest-extended][jest-extended] package to add plenty of cleaner methods to our
+test suite.
 
 Install jest-extended:
+
 ```bash
 npm install --save-dev jest-extended
 ```
@@ -550,7 +551,7 @@ check important headers, check the response body.
 > further, you could check the exact format of that ID with
 > `expect(res.body._id).toMatch(/^[0-9a-f]{24}$/)` (for MongoDB IDs).
 >
-> Also note the `expect(res.body).toContainAllKeys('_id', 'name')` assertion.
+> Also note the `expect(res.body).toContainAllKeys(['_id', 'name'])` assertion.
 > You have an assertion to check the ID and another to check the name, but it's
 > also important to check that the body does not contain other properties you
 > were not expecting. That way, when you add more properties to your schema, the
@@ -667,16 +668,14 @@ Here's how it should look like:
 
 ```js
 describe('GET /users', function() {
-  let user;
+  let johnDoe;
+  let janeDoe;
   beforeEach(async function() {
     // Create 2 users before retrieving the list.
-    const users = await Promise.all([
+    [ johnDoe, janeDoe ] = await Promise.all([
       User.create({ name: 'John Doe' }),
       User.create({ name: 'Jane Doe' })
     ]);
-
-    // Retrieve a user to authenticate as.
-    user = users[0];
   });
 
   test('should retrieve the list of users', async function() {
@@ -695,7 +694,7 @@ include a valid `Authorization` header with SuperTest's `set` method:
 
 
 ```js
-const token = await generateValidJwt(user);
+const token = await generateValidJwt(johnDoe);
 const res = await supertest(app)
   .get('/users')
   .set('Authorization', `Bearer ${token}`)
@@ -742,12 +741,12 @@ expect:
 
 ```js
 expect(res.body[0]).toBeObject();
-expect(res.body[0]._id).toBeString();
+expect(res.body[0]._id).toEqual(janeDoe.id);
 expect(res.body[0].name).toEqual('Jane Doe');
 expect(res.body[0]).toContainAllKeys(['_id', 'name']);
 
 expect(res.body[1]).toBeObject();
-expect(res.body[1]._id).toBeString();
+expect(res.body[1]._id).toEqual(johnDoe.id);
 expect(res.body[1].name).toEqual('John Doe');
 expect(res.body[1]).toContainAllKeys(['_id', 'name']);
 ```
@@ -800,7 +799,7 @@ right after the `jest` command:
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env LOCAL_MONGODB_URI=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage"
+  "test": "cross-env DATABASE_URL=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage"
 }
 ```
 
