@@ -91,7 +91,7 @@ the `scripts` section of your `package.json`. Unfortunately, we need to add a `-
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "--experimental-vm-modules node_modules/.bin/jest"
+  "test": "node --experimental-vm-modules node_modules/.bin/jest"
 }
 ```
 
@@ -113,6 +113,15 @@ Time:        0.152 s, estimated 1 s
 Ran all test suites.
 ```
 
+If you are on Windows and are receiving unexpected errors, try editing the Jest path in your `package.json` script:
+
+
+```json
+"scripts": {
+  "...": "<PREVIOUS SCRIPTS HERE...>",
+  "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+}
+```
 
 ## Your domain model & API
 
