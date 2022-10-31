@@ -86,7 +86,7 @@ test('should work', function() {
 
 To run these tests, you can use the `jest` command which comes with the npm
 package. The most convenient way to do it is to define a new `test` script in
-the `scripts` section of your `package.json`. Unfortunately, we need to add a `--experimental-vm-modules` in order to use Jest with ES Modules. 
+the `scripts` section of your `package.json`. Unfortunately, we need to add a `--experimental-vm-modules` in order to use Jest with ES Modules.
 
 ```json
 "scripts": {
@@ -386,7 +386,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 ```
 
-Jest automatically sets our `NODE_ENV` environment variable to `test`. 
+Jest automatically sets our `NODE_ENV` environment variable to `test`.
 
 
 ## Add a unicity constraint to your model
@@ -507,7 +507,7 @@ expect(res.body).toEqual(
 
 ## Add some matchers to Jest with jest-extended
 
-Jest has [many matchers][jest-matchers]. However, as you can see, checking an object's keys can be a bit convoluted. Fortunately, we can use the [jest-extended][jest-extended] package to add plenty of cleaner methods to our test suite. 
+Jest has [many matchers][jest-matchers]. However, as you can see, checking an object's keys can be a bit convoluted. Fortunately, we can use the [jest-extended][jest-extended] package to add plenty of cleaner methods to our test suite.
 
 Install jest-extended:
 ```bash
@@ -554,7 +554,7 @@ check important headers, check the response body.
 > or modify the assertions in your test to take it into account.
 >
 > If you wanted to go further, you could also check that the created user has
-> actually been saved to the database. There could conceivable be a bug where
+> actually been saved to the database. There could conceivably be a bug where
 > the API gives you the correct answer even though it saved something slightly
 > different to the database (or did not save it at all).
 
@@ -676,7 +676,7 @@ describe('GET /users', function() {
 });
 ```
 
-If the `GET /users` route requires authentication, first import the `generateValidJwt` function from your `utils.js` file: 
+If the `GET /users` route requires authentication, first import the `generateValidJwt` function from your `utils.js` file:
 
 ```js
 import { cleanUpDatabase, generateValidJwt } from "./utils.js"
@@ -702,7 +702,7 @@ has 2 users:
 
 ```bash
 $> npm test
-> express-api@0.0.0 test 
+> express-api@0.0.0 test
  FAIL  spec/users.spec.js
   POST /users
     ✓ should create a user (121 ms)
