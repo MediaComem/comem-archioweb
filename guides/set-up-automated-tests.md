@@ -38,6 +38,7 @@ the following tools:
 - [Test fixtures](#test-fixtures)
 - [Am I testing every possible scenario?](#am-i-testing-every-possible-scenario)
 - [Optional: check your test coverage](#optional-check-your-test-coverage)
+- [Avoid problems with parallelism](#avoid-problems-with-parallelism)
 - [Tip](#tip)
 - [Documentation](#documentation)
 
@@ -818,6 +819,51 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 
 
 
+## Avoid problems with parallelism
+
+Once you start writing multiple test files, you may run into parallelism issues.
+Some of your tests may become
+["flaky"](https://docs.gitlab.com/ee/development/testing_guide/flaky_tests.html),
+i.e. they sometimes pass, sometimes fail, due to no apparent reason.
+
+By default, Jest runs the tests in one file sequentially (i.e. one by one), but
+[it runs multiple test files in
+parallel](https://freecontent.manning.com/the-value-of-concurrency-in-tests/).
+
+This is a problem since we decided to wipe the database clean before every test.
+This means that a test in file A might clean the database at the same time a
+test in file B is executing, deleting B's test fixtures.
+
+To avoid this problem, add [the `--runInBand` option][jest-run-in-band] to the
+Jest command to instruct it to run all tests sequentially (i.e. one by one):
+
+```json
+"scripts": {
+  "...": "<PREVIOUS SCRIPTS HERE...>",
+  "test": "cross-env DATABASE_URL=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage --runInBand"
+}
+```
+
+> Note that this will have the effect of slowing down your test suite, since
+> tests which were running in parallel before will now have to execute one by
+> one.
+>
+> In you have a very large test suite in a real-world project, it may become too
+> slow, and you may have to switch to the other solution, i.e. generating random
+> data for each test to avoid collisions instead of wiping the database. That
+> way you can remove the `--runInBand` option and run tests in parallel again.
+>
+> Some test frameworks also provide an alternative solution called
+> **transactional testing**, where each test is wrapped in a transaction so that
+> it only sees its own changes. Then the transaction is rolled back at the end
+> of the test so that no changes are actually persisted that can affect other
+> tests. Frameworks such as [Ruby on Rails for
+> Ruby](https://guides.rubyonrails.org/testing.html#testing-parallel-transactions)
+> or [Ecto for Elixir](https://hexdocs.pm/ecto/testing-with-ecto.html) offer
+> this feature.
+
+
+
 ## Tip
 * You can make negative assertions with `.not`:
 
@@ -860,7 +906,8 @@ your coverage, the better chance you have of catching bugs or breaking changes.
 [jest-matchers]: https://jestjs.io/docs/expect
 [jest-extended]: https://jest-extended.jestcommunity.dev/docs/matchers/
 [jest-test]: https://jestjs.io/docs/api#testname-fn-timeout
-[jest-hooks]:https://jestjs.io/docs/setup-teardown
+[jest-hooks]: https://jestjs.io/docs/setup-teardown
+[jest-run-in-band]: https://jestjs.io/docs/cli#--runinband
 [mongo]: https://www.mongodb.com
 [mongoose]: https://mongoosejs.com
 [node]: https://nodejs.org
