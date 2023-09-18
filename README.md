@@ -61,7 +61,7 @@ This course is a [COMEM+][comem] web development course taught at
 
 * Creating a REST API
   * [REST in depth](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Exercises*](./exercises/rest.md)
+    * [*Exercises*](./exercises/unrest.md)
   * [Express best practices](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
   * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
