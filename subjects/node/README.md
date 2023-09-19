@@ -90,10 +90,11 @@ run on your local machine or server.
 
 <p class='center'><img src='images/lts-schedule.png' width='75%' /></p>
 
-* Odd-numbered versions (e.g. v11, v13, v15,v 17) are **unstable** releases with
-  the latest features, and will **no longer be supported after 6-9 months**.
-* Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18) have [**long term
-  support (LTS)**][node-lts]. They are actively developed for 6 months, but
+* Odd-numbered versions (e.g. v11, v13, v15, v17, v19) are **unstable** releases
+  with the latest features, and will **no longer be supported after 6-9
+  months**.
+* Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20) have [**long
+  term support (LTS)**][node-lts]. They are actively developed for 6 months, but
   maintained for a total of 30 months (e.g. security fixes). Production
   applications should use LTS releases.
 
