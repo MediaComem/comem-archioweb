@@ -33,51 +33,51 @@ This course is a [COMEM+][comem] web development course taught at
 
 ## Plan
 
-* [Introduction](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
+* [Introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Basics
-  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/javascript.md)
-    * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Node.js](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
+    * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Node.js](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
     * [*Exercises*](./exercises/node.md)
-  * [npm](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
-  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [npm](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
+  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Creating a web service
-  * [Express](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
+  * [Express](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
     * [*Exercises*](./exercises/express.md)
-  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
+  * [MongoDB](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
-  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
+  * [Mongoose](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
     * [*Guide:* store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 * Deploying your web service
   * [*Guide:* deploy an Express.js application with Render & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
 
 * Creating a REST API
-  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [REST in depth](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/unrest.md)
-  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
-  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
-  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Express best practices](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Utilizing Mongoose](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme) in Express (filtering, pagination, aggregation)
+  * [Express Authentication](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Documenting and testing a REST API
   * [*Guide:* document a REST API](./guides/api-documentation.md)
-  * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 
 * Real-time communication
-  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
     * [*Guide:* add a WebSocket server to an Express.js application](./guides/express-wss.md)
 
 * *Extras*
-  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2022-2023/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
   * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 

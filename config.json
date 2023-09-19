@@ -1,6 +1,6 @@
 {
   "title": "Media Engineering Web-Oriented Architecture",
-  "version": "2022-2023",
+  "version": "2023-2024",
   "repoUrl": "https://github.com/MediaComem/comem-archioweb",
   "remark": {
     "highlightLines": true,
@@ -12,6 +12,6 @@
     "gitUrl": "git@github.com:MediaComem/comem-archioweb.git",
     "baseUrl": "https://mediacomem.github.io/comem-archioweb",
     "branch": "gh-pages",
-    "version": "2022-2023"
+    "version": "2023-2024"
   }
 }
