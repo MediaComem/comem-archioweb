@@ -4,8 +4,22 @@ The goal of this exercise is to use a real-world REST API to better understand
 how you communicate with REST APIs in general. Here you will use the GitHub REST
 API to create repository issues.
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Create a GitHub repository](#create-a-github-repository)
+  - [Enable repository issues](#enable-repository-issues)
+- [Create an issue by hand](#create-an-issue-by-hand)
+  - [Go to the repository issues](#go-to-the-repository-issues)
+  - [Create an issue](#create-an-issue)
+  - [Show the issue](#show-the-issue)
+  - [List all issues](#list-all-issues)
+- [Do the same thing with the GitHub REST API](#do-the-same-thing-with-the-github-rest-api)
+  - [Authenticating](#authenticating)
+  - [Create a personal access token](#create-a-personal-access-token)
+  - [Use the API](#use-the-api)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 
 
