@@ -1,6 +1,6 @@
 # Express.js exercises
 
-Implement routes in an Express.js application.
+Implement routes in an Express.js application and use these routes with Postman.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -50,6 +50,8 @@ Content-Type: text/plain
 Hello, Bob!
 ```
 
+Make this request with Postman.
+
 
 
 ## That does not compute
@@ -80,6 +82,8 @@ Content-Type: application/json
   "total": 24
 }
 ```
+
+Make this request with Postman.
 
 
 
@@ -123,3 +127,5 @@ GET /books/4 HTTP/1.1
 ```http
 HTTP/1.1 404 Not Found
 ```
+
+Make these request with Postman.
