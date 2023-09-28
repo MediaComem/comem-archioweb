@@ -47,6 +47,7 @@ This course is a [COMEM+][comem] web development course taught at
     * [*Exercises*](./exercises/node.md)
   * [npm](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Exercises*](./exercises/rest.md)
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
