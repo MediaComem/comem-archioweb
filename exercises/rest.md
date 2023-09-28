@@ -92,6 +92,9 @@ goal of this exercise is to do the same thing with the GitHub REST API:
 * Close the issue.
 * List all issues of the repository.
 
+Except that you won't be using the web interface, you'll be communicating with
+the API in JSON.
+
 Read the [GitHub REST API documentation](https://docs.github.com/en/rest) and
 perform these actions with your new favorite tool: Postman.
 
@@ -119,10 +122,10 @@ Request the generation of a new token. You can set it to expire soon since you
 won't be using it any more after this exercise.
 
 You can limit Repository access to just the repository you created, or allow
-access to all repositories as you choose.
+access to all repositories, as you prefer. Either way works for this exercise.
 
 Don't create the token right away: you also need to set the appropriate
-permissions:
+permissions.
 
 ![Create a personal access token](../images/rest-10-create-access-token.png)
 
@@ -135,11 +138,13 @@ Verify that your token has the correct permissions and create it:
 
 ![Verify and create the token](../images/rest-12-verify-and-create-access-token.png)
 
-Make sure to **copy the access token** as soon as you've generated it. The token
-is not saved by GitHub, so once you close the page, you won't be able to get it
-back.
+:warning: Make sure to **copy the access token** as soon as you've generated it:
 
 ![Copy the access token](../images/rest-13-copy-access-token.png)
+
+> The token is not saved by GitHub, so once you close the page, you won't be
+> able to get it back. If you forgot to copy it, delete it and create another
+> one.
 
 ### Use the API
 
@@ -157,18 +162,18 @@ For example, that's the cURL example for the request to create a repository:
 
 ![cURL example](../images/rest-14-api-docs.png)
 
-> The [`curl` (**C**lient **URL**) command](https://curl.se/docs/manpage.html)
-> is a command line tool that can be used, among other things, to make HTTP
-> requests.
+> :books: The [`curl` (**C**lient **URL**)
+> command](https://curl.se/docs/manpage.html) is a command line tool that can be
+> used, among other things, to make HTTP requests.
 
-It indicates:
+You have everything you need to put in Postman:
 
-* The request method to use with the `-X` option, in this case `POST`.
-* The required request headers with the `-H` option, in this case `Accept`,
-  `Authorization` and `GitHub-Api-Version`.
+* The `-X` option indicates the request method, in this case `POST`.
+* The various `-H` options indicate the required request headers, in this case
+  `Accept`, `Authorization` and `GitHub-Api-Version`.
 * The request URL, in this case `https://api.github.com/user/repos`.
-* The JSON to send in the request body with the `-d` option.
+* The `-d` option indicates the JSON to send in the request body.
 
-It should be easy to adapt this example to Postman. It is recommended that you
+It should be easy to adapt this example for Postman. It is recommended that you
 perform this exercise with Postman since this will help you understand how to
 make requests to your own API later.
