@@ -785,7 +785,8 @@ The API allows us to **create a person** by making a `POST` request with a
 **JSON representation** of the person. This is the request we want to make:
 
 ```http
-POST https://demo.archioweb.ch/api/people HTTP/1.1
+POST /api/people HTTP/1.1
+Location: demo.archioweb.ch
 Content-type: application/json
 
 { "name": "Your Name", "gender": "male" }
@@ -846,7 +847,8 @@ time we need a simple `GET` request to the path given to us in the **Location**
 header of the previous response:
 
 ```http
-GET https://demo.archioweb.ch/api/people/5f5...037 HTTP/1.1
+GET /api/people/5f5...037 HTTP/1.1
+Location: demo.archioweb.ch
 ```
 
 Configure that request in Postman:
@@ -887,7 +889,8 @@ Let's make a `GET` request to **read** that.
 We simply have to remove the person's ID from the URL path:
 
 ```http
-GET https://demo.archioweb.ch/api/people HTTP/1.1
+GET /api/people HTTP/1.1
+Location: demo.archioweb.ch
 ```
 
 Configure that request in Postman:
@@ -913,7 +916,8 @@ person's resource with a **JSON representation** of the updated person. Let's
 make a request to add your birthdate:
 
 ```http
-PUT https://demo.archioweb.ch/api/people/5f5...037 HTTP/1.1
+PUT /api/people/5f5...037 HTTP/1.1
+Location: demo.archioweb.ch
 Content-type: application/json
 
 { "name": "Your Name", "gender": "female", "birthDate": "2000-01-01" }
@@ -953,7 +957,9 @@ The server is responding with the status code [`422 Unprocessable Entity`][422]
 and telling you that the person representation you sent is invalid because it is
 missing the gender property:
 
-<img src='images/postman-update-failed-response.png' width='100%' />
+<p class="center">
+  <img src='images/postman-update-failed-response.png' width='85%' />
+</p>
 
 According to the HTTP specification, the `PUT` method is used to store the
 **entire representation** you are sending as the **new state of the resource**,
@@ -967,7 +973,8 @@ The `PATCH` method was later added to the HTTP specification to support
 update your birthdate:
 
 ```http
-PATCH https://demo.archioweb.ch/api/people/5f5...037 HTTP/1.1
+PATCH /api/people/5f5...037 HTTP/1.1
+Location: demo.archioweb.ch
 Content-type: application/json
 
 { "birthDate": "2001-02-03" }
@@ -1002,7 +1009,8 @@ Finally, let's **delete** the person. We simply need to make a `DELETE` request
 with no request body:
 
 ```http
-DELETE https://demo.archioweb.ch/api/people/5f5...037 HTTP/1.1
+DELETE /api/people/5f5...037 HTTP/1.1
+Location: demo.archioweb.ch
 ```
 
 Configure that request with Postman:
