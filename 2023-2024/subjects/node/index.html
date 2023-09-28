@@ -3,7 +3,7 @@
   <head>
     <title>Node.js Introduction (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/6faa750f92648a0cd076a400d7de12dc7d5664ce/subjects/node/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/e3ba24830463a06d6dd2f89fe899e965d0d1f459/subjects/node/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -79,7 +79,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v18.9.0
+v20.7.0
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -144,7 +144,7 @@ Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
 String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
 Utilities, V8, VM, WASI, Worker threads, Zlib.
 
-> Refer to the [documentation][node-18-api] for more information.
+> Refer to the [documentation][node-20-api] for more information.
 
 
 
@@ -191,7 +191,7 @@ standardized. At the time, there were many module systems in the wild like
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
-Node.js to treat your code as ECMAScript modules][node-18-esm-enabling] by
+Node.js to treat your code as ECMAScript modules][node-20-esm-enabling] by
 naming your files with the `.mjs` extension instead of `.js`. If you have a
 `package.json` file (we'll learn more about these later), you can also set the
 `type` property to `module`.
@@ -209,7 +209,7 @@ function hello(name) {
 hello('World');
 ```
 
-> Since ECMAScript modules are now [natively supported][node-18-esm], we will
+> Since ECMAScript modules are now [natively supported][node-20-esm], we will
 > use them rather than the obsolete `require`.
 
 
@@ -1228,7 +1228,7 @@ server.on('request', function(message) {
 
 **Documentation**
 
-* [Core modules (18.x)][node-18-api]
+* [Core modules (20.x)][node-20-api]
 
 **Further reading**
 
@@ -1241,7 +1241,7 @@ server.on('request', function(message) {
 
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-[commonjs]: https://nodejs.org/docs/latest-v16.x/api/modules.html
+[commonjs]: https://nodejs.org/docs/latest-v20.x/api/modules.html
 [destructuring-assigment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
@@ -1251,13 +1251,13 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-18-api]: https://nodejs.org/docs/latest-v18.x/api/n-api.html
-[node-18-esm]: https://nodejs.org/api/esm.html#modules-ecmascript-modules
-[node-18-esm-enabling]: https://nodejs.org/docs/latest-v18.x/api/packages.html#determining-module-system
+[node-20-api]: https://nodejs.org/docs/latest-v20.x/api/n-api.html
+[node-20-esm]: https://nodejs.org/api/esm.html#modules-ecmascript-modules
+[node-20-esm-enabling]: https://nodejs.org/docs/latest-v20.x/api/packages.html#determining-module-system
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
-[node-module-os]: https://nodejs.org/docs/latest-v18.x/api/os.html#os
+[node-module-os]: https://nodejs.org/docs/latest-v20.x/api/os.html#os
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org
