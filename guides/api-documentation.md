@@ -306,8 +306,8 @@ time you modify an apiDoc comment.
 [apiary]: https://apiary.io
 [apidoc]: http://apidocjs.com
 [apidoc-params]: https://apidocjs.com/#params
-[example-apidoc]: https://comem-rest-demo.herokuapp.com
-[example-openapi]: https://comem-rest-demo.herokuapp.com/swagger/
+[example-apidoc]: https://demo.archioweb.ch
+[example-openapi]: https://demo.archioweb.ch/swagger/
 [express-static]: https://expressjs.com/en/starter/static-files.html
 [js-yaml]: https://www.npmjs.com/package/js-yaml
 [json]: https://www.json.org

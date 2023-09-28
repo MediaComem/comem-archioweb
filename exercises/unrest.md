@@ -41,7 +41,7 @@ The following request allows you to create a person:
 ```http
 POST /unrest/people/create HTTP/1.1
 Content-Type: application/json
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 
 {
   "firstName": "John",
@@ -60,14 +60,14 @@ Make the following request to retrieve a person:
 
 ```http
 GET /unrest/person/7 HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 ```
 
 Then make the following request to modify the person's first name:
 
 ```http
 GET /unrest/person/7?updateFirstName=Bob HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 ```
 
 What's not RESTful or could be improved in the request and/or the response?
@@ -80,7 +80,7 @@ Make the following request to attempt to create a thing:
 
 ```http
 POST /unrest/things HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 
 {}
 ```
@@ -89,7 +89,7 @@ Then make the following correct request:
 
 ```http
 POST /unrest/things HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 
 {
   "name": "Some thing"
@@ -106,28 +106,28 @@ The following request allows you to retrieve a list of people:
 
 ```http
 GET /unrest/people HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 ```
 
 You can then filter this list by first name:
 
 ```http
 GET /unrest/people/byFirstName/John HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 ```
 
 By last name:
 
 ```http
 GET /unrest/people/byLastName/McDeere HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 ```
 
 Or by age:
 
 ```http
 GET /unrest/people/byAge/35 HTTP/1.1
-Location: comem-rest-demo.herokuapp.com
+Location: demo.archioweb.ch
 ```
 
 What could be improved in these requests?

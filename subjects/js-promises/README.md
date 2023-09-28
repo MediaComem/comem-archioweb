@@ -1041,7 +1041,7 @@ The following functions will be called:
 
 ```js
 const request = require('request-promise-native'), peer = require('request');
-const apiUrl = 'https://comem-rest-demo.herokuapp.com/api';
+const apiUrl = 'https://demo.archioweb.ch/api';
 const now = new Date().getTime();
 
 function `createDirector`() {
@@ -1072,7 +1072,7 @@ console.log('Doing all the things... please wait...');
 
 ```js
 const request = require('request-promise-native'), peer = require('request');
-const apiUrl = 'https://comem-rest-demo.herokuapp.com/api';
+const apiUrl = 'https://demo.archioweb.ch/api';
 const now = new Date().getTime();
 
 function createDirector() {
