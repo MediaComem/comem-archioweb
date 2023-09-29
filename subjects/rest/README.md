@@ -786,7 +786,7 @@ The API allows us to **create a person** by making a `POST` request with a
 
 ```http
 POST /api/people HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 Content-type: application/json
 
 { "name": "Your Name", "gender": "male" }
@@ -848,7 +848,7 @@ header of the previous response:
 
 ```http
 GET /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 ```
 
 Configure that request in Postman:
@@ -890,7 +890,7 @@ We simply have to remove the person's ID from the URL path:
 
 ```http
 GET /api/people HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 ```
 
 Configure that request in Postman:
@@ -917,7 +917,7 @@ make a request to add your birthdate:
 
 ```http
 PUT /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 Content-type: application/json
 
 { "name": "Your Name", "gender": "female", "birthDate": "2000-01-01" }
@@ -974,7 +974,7 @@ update your birthdate:
 
 ```http
 PATCH /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 Content-type: application/json
 
 { "birthDate": "2001-02-03" }
@@ -1010,7 +1010,7 @@ with no request body:
 
 ```http
 DELETE /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 ```
 
 Configure that request with Postman:
