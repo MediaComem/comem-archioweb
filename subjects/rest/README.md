@@ -275,7 +275,7 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
   > which **maintains high-level compatibility with HTTP/1.1** (for example with
   > methods, status codes, URIs, and most header fields). It is now supported by
   > virtually all web browsers and major web servers.
-* [HTTP/3.0][http3] ([Internet Draft][internet-draft]) - [Draft 29][http3-draft]
+* [HTTP/3.0][http3] (2022) - [RFC 9144][http3-rfc]
 
   > HTTP/3 is the proposed successor to HTTP/2, which is already in use on the
   > web, using [UDP][udp] instead of [TCP][tcp] for the underlying transport
@@ -1106,7 +1106,7 @@ Collection errors                                                               
 [http2]: https://en.wikipedia.org/wiki/HTTP/2
 [http2-rfc]: https://tools.ietf.org/html/rfc7540
 [http3]: https://en.wikipedia.org/wiki/HTTP/3
-[http3-draft]: https://tools.ietf.org/html/draft-ietf-quic-http-29
+[http3-rfc]: https://tools.ietf.org/html/rfc9144
 [http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 [http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
@@ -1121,7 +1121,6 @@ Collection errors                                                               
 [http-status-codes-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes
 [http-teapot]: https://tools.ietf.org/html/rfc2324
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
-[internet-draft]: https://en.wikipedia.org/wiki/Internet_Draft
 [location]: https://www.rfc-editor.org/rfc/rfc9110.html#name-location
 [osi-application]: https://en.wikipedia.org/wiki/Application_layer
 [patch]: https://tools.ietf.org/html/rfc5789#section-2
