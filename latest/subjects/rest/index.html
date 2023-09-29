@@ -3,7 +3,7 @@
   <head>
     <title>REST Introduction &amp; HTTP (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/e3ba24830463a06d6dd2f89fe899e965d0d1f459/subjects/rest/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/47cbc934d5c7e2b8acd75c6aaca6f5ed36ebd58b/subjects/rest/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -279,7 +279,7 @@ class: center, middle
   > which **maintains high-level compatibility with HTTP/1.1** (for example with
   > methods, status codes, URIs, and most header fields). It is now supported by
   > virtually all web browsers and major web servers.
-* [HTTP/3.0][http3] ([Internet Draft][internet-draft]) - [Draft 29][http3-draft]
+* [HTTP/3.0][http3] (2022) - [RFC 9144][http3-rfc]
 
   > HTTP/3 is the proposed successor to HTTP/2, which is already in use on the
   > web, using [UDP][udp] instead of [TCP][tcp] for the underlying transport
@@ -881,7 +881,7 @@ The API allows us to **create a person** by making a `POST` request with a
 
 ```http
 POST /api/people HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 Content-type: application/json
 
 { "name": "Your Name", "gender": "male" }
@@ -955,7 +955,7 @@ header of the previous response:
 
 ```http
 GET /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 ```
 
 Configure that request in Postman:
@@ -1006,7 +1006,7 @@ We simply have to remove the person's ID from the URL path:
 
 ```http
 GET /api/people HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 ```
 
 Configure that request in Postman:
@@ -1039,7 +1039,7 @@ make a request to add your birthdate:
 
 ```http
 PUT /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 Content-type: application/json
 
 { "name": "Your Name", "gender": "female", "birthDate": "2000-01-01" }
@@ -1108,7 +1108,7 @@ update your birthdate:
 
 ```http
 PATCH /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 Content-type: application/json
 
 { "birthDate": "2001-02-03" }
@@ -1150,7 +1150,7 @@ with no request body:
 
 ```http
 DELETE /api/people/5f5...037 HTTP/1.1
-Location: demo.archioweb.ch
+Host: demo.archioweb.ch
 ```
 
 Configure that request with Postman:
@@ -1260,7 +1260,7 @@ Collection errors                                                               
 [http2]: https://en.wikipedia.org/wiki/HTTP/2
 [http2-rfc]: https://tools.ietf.org/html/rfc7540
 [http3]: https://en.wikipedia.org/wiki/HTTP/3
-[http3-draft]: https://tools.ietf.org/html/draft-ietf-quic-http-29
+[http3-rfc]: https://tools.ietf.org/html/rfc9144
 [http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
 [http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
@@ -1275,7 +1275,6 @@ Collection errors                                                               
 [http-status-codes-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes
 [http-teapot]: https://tools.ietf.org/html/rfc2324
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
-[internet-draft]: https://en.wikipedia.org/wiki/Internet_Draft
 [location]: https://www.rfc-editor.org/rfc/rfc9110.html#name-location
 [osi-application]: https://en.wikipedia.org/wiki/Application_layer
 [patch]: https://tools.ietf.org/html/rfc5789#section-2
