@@ -277,27 +277,33 @@ You often end up with **code duplication in routes**:
 
 ```js
 router.get('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec(function(err, person) {
-*   if (err) { return next(err); }
-*   else if (!person) { return res.sendStatus(404); }
-    // Send person here...
-* });
+* Person.findById(req.params.id)
+*   .exec()
+*   .then(person => {
+*     if (!person) return res.sendStatus(404);
+      // Send user here
+*   })
+*   .catch(err =>  next(err));
 });
 
 router.patch('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec(function(err, person) {
-*   if (err) { return next(err); }
-*   else if (!person) { return res.sendStatus(404); }
-    // Update & send person here...
-* });
+* Person.findById(req.params.id)
+*   .exec()
+*   .then(person => {
+*     if (!person) return res.sendStatus(404);
+      // Update and send user here
+*   })
+*   .catch(err =>  next(err));
 });
 
 router.delete('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec(function(err, person) {
-*   if (err) { return next(err); }
-*   else if (!person) { return res.sendStatus(404); }
-    // Delete person here...
-* });
+* Person.findById(req.params.id)
+*   .exec()
+*   .then(person => {
+*     if (!person) return res.sendStatus(404);
+      // Delete user here
+*   })
+*   .catch(err =>  next(err));
 });
 ```
 
