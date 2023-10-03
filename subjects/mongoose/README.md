@@ -434,9 +434,9 @@ You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoos
 ```js
 * Person.find({
 *  name: /arnold/i,
-*  "address.city": "Los Angeles",
+*  'address.city': 'Los Angeles',
 *  age: { $gt: 17, $lt: 80 },
-*  interests: { $in: ["shooting", "talking"] }
+*  interests: { $in: ['shooting', 'talking'] }
 * })
   .limit(10)
   .sort({ name: -1 })
@@ -623,7 +623,7 @@ const router = express.Router();
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 * User.find()
-*   .sort("name")
+*   .sort('name')
 *   .exec()
 *   .then(users => {
 *     res.send(users);
