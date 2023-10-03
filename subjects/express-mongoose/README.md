@@ -172,12 +172,9 @@ router.get('/', function(req, res, next) {
   }
 
   // Execute the query
-  `query.exec`(function(err, movies) {
-    if (err) {
-      return next(err);
-    }
-    res.send(movies);
-  });
+  `query.exec()`
+    .then((movies) => res.send(movies))
+    .catch((err) => next(err));
 });
 ```
 
