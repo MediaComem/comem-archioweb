@@ -3,7 +3,7 @@
   <head>
     <title>Using Mongoose with Express (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1a2c7d62c7e727dd29edf6960e4efd8032791ee4/subjects/express-mongoose/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/8ff744214cc5d35cb5b35c40177093b9593fb4c5/subjects/express-mongoose/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -96,9 +96,11 @@ which references another document:
 ```js
 Movie
   .findOne({ title: 'Casino Royale' })
-  .exec(function(err, movie) {
+  .exec()
+  .then(movie => {
     console.log(movie.director); // ObjectId("5f7a3e74576b3d75acea6c7d")
-  });
+  })
+  .catch(err => next(err));
 ```
 
 When calling [`populate`][mongoose-population], the reference is replaced by the
@@ -109,9 +111,11 @@ in the schema:
 Movie
   .findOne({ title: 'Casino Royale' })
 * .populate('director')
-  .exec(function (err, movie) {
+  .exec()
+  .then(movie => {
     console.log(movie.director.name); // "Martin Campbell"
-  });
+  })
+  .catch(err => next(err));
 ```
 
 
@@ -169,12 +173,9 @@ router.get('/', function(req, res, next) {
   }
 
   // Execute the query
-  `query.exec`(function(err, movies) {
-    if (err) {
-      return next(err);
-    }
-    res.send(movies);
-  });
+  `query.exec()`
+    .then((movies) => res.send(movies))
+    .catch((err) => next(err));
 });
 ```
 
@@ -281,21 +282,17 @@ To include information about getting more elements in the response,
 you will need to know **how many elements there are in total**,
 either to give that information directly to the client or to build hyperlinks.
 
-You can do that easily using a Mongoose model's `count()` function:
+You can do that easily using a Mongoose model's `countDocuments()` function:
 
 ```js
-router.get('/', function(req, res, next) {
-  `Movie.find().count(function(err, total) {`
-    if (err) {
-      return next(err);
-    }
-
-    let query = Movie.find();
-
-    // Apply pagination here (code from previous example)...
-
-    // Send response (including total/links) here...
-  `})`;
+router.get('/', function (req, res, next) {
+  `Movie.find().countDocuments()`
+    .then(total => {
+        let query = Movie.find();
+        // Apply pagination here (code from previous example)...
+        // Send response (including total/links) here...
+    })
+    .catch(err => next(err));
 });
 ```
 
@@ -344,29 +341,30 @@ if (Object.keys(links).length >= 1) {
 To implement this solution, you simply have to set the headers before sending the response:
 
 ```js
-router.get('/', function(req, res, next) {
-  Movie.find().count(function(err, `total`) {
-    if (err) { return next(err); };
-    let query = Movie.find();
-
-    // Parse the "page" param (default to 1 if invalid)
-    let `page` = parseInt(req.query.page, 10);
-    if (isNaN(page) || page < 1) { /* ... */ }
-
-    // Parse the "pageSize" param (default to 100 if invalid)
-    let `pageSize` = parseInt(req.query.pageSize, 10);
-    if (isNaN(pageSize) || pageSize < 0 || pageSize > 100) { /* ... */ }
-
-    // Apply skip and limit to select the correct page of elements
-    query = query.skip((page - 1) * pageSize).limit(pageSize);
-
-    `res.set('Pagination-Page', page);`
-    `res.set('Pagination-PageSize', pageSize);`
-    `res.set('Pagination-Total', total);`
-
-    // ...
-  });
+router.get('/', function (req, res, next) {
+  Movie.find()
+    .countDocuments()
+    .then(total => {
+      let query = Movie.find();
+      // Parse the "page" param (default to 1 if invalid)
+      let page = parseInt(req.query.page, 10);
+      if (isNaN(page) || page < 1) {
+        /* ... */
+      }
+      // Parse the "pageSize" param (default to 100 if invalid)
+      let pageSize = parseInt(req.query.pageSize, 10);
+      if (isNaN(pageSize) || pageSize < 0 || pageSize > 100) {
+        /* ... */
+      }
+      // Apply skip and limit to select the correct page of elements
+      query = query.skip((page - 1) * pageSize).limit(pageSize);
+      res.set('Pagination-Page', page);
+      res.set('Pagination-PageSize', pageSize);
+      res.set('Pagination-Total', total);
+    })
+    .catch(err => next(err));
 });
+
 ```
 
 
@@ -380,26 +378,28 @@ Instead of setting headers, you simply have to build and pass your envelope to `
 
 ```js
 router.get('/', function(req, res, next) {
-  Movie.find().count(function(err, `total`) {
-    if (err) { return next(err); };
+    Movie.find().countDocuments()
+      .then(total => {
+        let query = Movie.find();
+        // Parse query parameters and apply pagination here...
 
-    let query = Movie.find();
-
-    // Parse query parameters and apply pagination here...
-
-    query.exec(function(err, `movies`) {
-      if (err) { return next(err); }
-
-      // Send JSON envelope with data
-*     res.send({
-*       page: page,
-*       pageSize: pageSize,
-*       total: total,
-*       data: movies
-*     });
-    });
+        return query.exec().then(movies => {
+          return {total, movies};
+        });
+      })
+      .then(({total, movies}) => {
+        // Assuming page and pageSize are defined somewhere in your function or middleware
+        res.send({
+          page: page,
+          pageSize: pageSize,
+          total: total,
+          data: movies
+        });
+      })
+      .catch(err => {
+        next(err);
+      });
   });
-});
 ```
 
 
@@ -650,12 +650,15 @@ the [`aggregate` method][mongoose-aggregate] on models:
 ```js
 import Person from '../models/person';
 
-Person.aggregate([
-  { stage1... },
-  { stage2... }
-], function(err, results) {
-  // TODO: handle error or process results...
-});
+import Person from "../models/person";
+Person.aggregate([{ stage1...}, { stage2... }])
+  .then((results) => {
+    // process results
+  })
+  .catch((err) => {
+    // handle error
+  });
+
 ```
 
 Note that the `results` array returned by Mongoose contains **plain objects, NOT

@@ -3,7 +3,7 @@
   <head>
     <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1a2c7d62c7e727dd29edf6960e4efd8032791ee4/subjects/express-best-practices/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/8ff744214cc5d35cb5b35c40177093b9593fb4c5/subjects/express-best-practices/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -278,8 +278,8 @@ then `import` them in `app.js`:
 ```js
 import express from 'express';
 
-import `peopleApiRouter` from './routes/people';
-import `moviesApiRouter` from './routes/movies';
+import `peopleApiRouter` from './routes/people.js';
+import `moviesApiRouter` from './routes/movies.js';
 
 const app = express();
 
@@ -301,27 +301,33 @@ You often end up with **code duplication in routes**:
 
 ```js
 router.get('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec(function(err, person) {
-*   if (err) { return next(err); }
-*   else if (!person) { return res.sendStatus(404); }
-    // Send person here...
-* });
+* Person.findById(req.params.id)
+*   .exec()
+*   .then(person => {
+*     if (!person) return res.sendStatus(404);
+      // Send user here
+*   })
+*   .catch(err => next(err));
 });
 
 router.patch('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec(function(err, person) {
-*   if (err) { return next(err); }
-*   else if (!person) { return res.sendStatus(404); }
-    // Update & send person here...
-* });
+* Person.findById(req.params.id)
+*   .exec()
+*   .then(person => {
+*     if (!person) return res.sendStatus(404);
+      // Update and send user here
+*   })
+*   .catch(err => next(err));
 });
 
 router.delete('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec(function(err, person) {
-*   if (err) { return next(err); }
-*   else if (!person) { return res.sendStatus(404); }
-    // Delete person here...
-* });
+* Person.findById(req.params.id)
+*   .exec()
+*   .then(person => {
+*     if (!person) return res.sendStatus(404);
+      // Delete user here
+*   })
+*   .catch(err => next(err));
 });
 ```
 
@@ -334,16 +340,16 @@ You can write a **middleware function** that performs only this task and **attac
 
 ```js
 function loadPersonFromParams(req, res, next) {
-  Person.findById(req.params.id).exec(function(err, person) {
-    if (err) {
-      return next(err);
-    } else if (!person) {
-      return res.status(404).send('No person found with ID ' + req.params.id);
-    }
-
-*   req.person = person;
-*   next();
-  });
+  Person.findById(req.params.id)
+    .exec()
+    .then(person => {
+      if (!person) {
+        return res.status(404).send(`No person found with ID ${req.params.id}`);
+      }
+      req.person = person;
+      next();
+    })
+    .catch(err => next(err));
 }
 ```
 
@@ -356,23 +362,25 @@ You can plug this function into the routes that need it.
 Your handler functions can then simply use `req.person`, as it will have been **loaded before they are executed**:
 
 ```js
-router.get('/:id', `loadPersonFromParams`, function(req, res, next) {
- res.send(`req.person`);
+router.get("/:id", `loadPersonFromParams`, function (req, res, next) {
+  res.send(`req.person`);
 });
 
-router.patch('/:id', `loadPersonFromParams`, function(req, res, next) {
-  // Update req.person here...
-  `req.person`.save(function(err, updatedPerson) {
-    if (err) { return next(err); }
-    res.send(updatedPerson);
-  });
+router.patch("/:id", `loadPersonFromParams`, function (req, res, next) {
+  // Update req.person here
+  `req.person`
+    .save()
+    .then((updatedPerson) => {
+      res.send(updatedPerson);
+    })
+    .catch((err) => next(err));
 });
 
-router.delete('/:id', `loadPersonFromParams`, function(req, res, next) {
-  `req.person`.remove(function(err) {
-    if (err) { return next(err); }
-    res.sendStatus(204);
-  });
+router.delete("/:id", `loadPersonFromParams`, function (req, res, next) {
+  `req.person`
+    .deleteOne()
+    .then(res.sendStatus(204))
+    .catch((err) => next(err));
 });
 ```
 
