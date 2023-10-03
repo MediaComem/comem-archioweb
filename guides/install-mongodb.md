@@ -183,8 +183,8 @@ You run the MongoDB shell by launching the `mongosh` executable.
 $> mongosh
 Current Mongosh Log ID:	6310b4b33ec62956119c999a
 Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
-Using MongoDB:		6.0.1
-Using Mongosh:		1.5.4
+Using MongoDB:		7.0.0
+Using Mongosh:		2.0.1
 ...
 test>
 ```
@@ -197,10 +197,10 @@ You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
 ## MongoDB on Windows
 
-Download and install [MongoDB Community Edition][mongodb-download]. Choose the **Windows Service** option during installation.
+Download and install [MongoDB Community Edition][mongodb-download]. Choose the **Run service as Network Service user** option during installation.
 
 
-For MongoDB on Windws, you **SHOULD use the Windows command line** (not a Unix
+For MongoDB on Windows, you **SHOULD use the Windows command line** (not a Unix
 shell like Git Bash), otherwise you may have problems. Open the **Launch menu**, type `cmd` and select "Run as administrator".
 
 From the Command Prompt, you may start MongoDB by entering:
@@ -399,8 +399,8 @@ Then try running `mongod.exe` again in that shell and see if it fixes the issue.
 [brew]: https://brew.sh
 [mongod]: https://www.mongodb.com/docs/manual/reference/program/mongod/#mongodb-binary-bin.mongod
 [mongosh]: https://www.mongodb.com/docs/mongodb-shell/
-[mongosh-download]:https://downloads.mongodb.com/compass/mongosh-1.5.4-x64.msi
+[mongosh-download]:https://downloads.mongodb.com/compass/mongosh-2.0.1-x64.msi
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
-[mongodb-download]: https://www.mongodb.com/download-center/community
+[mongodb-download]: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.2-signed.msi
 [installation-instructions]: https://docs.mongodb.com/manual/installation/
