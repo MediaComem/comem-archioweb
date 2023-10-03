@@ -336,7 +336,7 @@ const personSchema = new Schema({
   },
   honorific: {
     type: String,
-    `enum: [ 'Mr', 'Mrs', 'Ms', 'Dr' ]` // Limit valid values
+    `enum: [ 'Mr', 'Mrs', 'Mx', 'Dr' ]` // Limit valid values
   },
   age: {
     type: Number,
