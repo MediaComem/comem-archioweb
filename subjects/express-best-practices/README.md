@@ -283,7 +283,7 @@ router.get('/:id', function(req, res, next) {
 *     if (!person) return res.sendStatus(404);
       // Send user here
 *   })
-*   .catch(err =>  next(err));
+*   .catch(err => next(err));
 });
 
 router.patch('/:id', function(req, res, next) {
@@ -293,7 +293,7 @@ router.patch('/:id', function(req, res, next) {
 *     if (!person) return res.sendStatus(404);
       // Update and send user here
 *   })
-*   .catch(err =>  next(err));
+*   .catch(err => next(err));
 });
 
 router.delete('/:id', function(req, res, next) {
@@ -303,7 +303,7 @@ router.delete('/:id', function(req, res, next) {
 *     if (!person) return res.sendStatus(404);
       // Delete user here
 *   })
-*   .catch(err =>  next(err));
+*   .catch(err => next(err));
 });
 ```
 
@@ -313,16 +313,16 @@ You can write a **middleware function** that performs only this task and **attac
 
 ```js
 function loadPersonFromParams(req, res, next) {
-  Person.findById(req.params.id).exec(function(err, person) {
-    if (err) {
-      return next(err);
-    } else if (!person) {
-      return res.status(404).send('No person found with ID ' + req.params.id);
-    }
-
-*   req.person = person;
-*   next();
-  });
+  Person.findById(req.params.id)
+    .exec()
+    .then(person => {
+      if (!person) {
+        return res.status(404).send(`No person found with ID ${req.params.id}`);
+      }
+      req.person = person;
+      next();
+    })
+    .catch(err => next(err));
 }
 ```
 
@@ -332,23 +332,25 @@ You can plug this function into the routes that need it.
 Your handler functions can then simply use `req.person`, as it will have been **loaded before they are executed**:
 
 ```js
-router.get('/:id', `loadPersonFromParams`, function(req, res, next) {
- res.send(`req.person`);
+router.get("/:id", `loadPersonFromParams`, function (req, res, next) {
+  res.send(`req.person`);
 });
 
-router.patch('/:id', `loadPersonFromParams`, function(req, res, next) {
-  // Update req.person here...
-  `req.person`.save(function(err, updatedPerson) {
-    if (err) { return next(err); }
-    res.send(updatedPerson);
-  });
+router.patch("/:id", `loadPersonFromParams`, function (req, res, next) {
+  // Update req.person here
+  `req.person`
+    .save()
+    .then((updatedPerson) => {
+      res.send(updatedPerson);
+    })
+    .catch((err) => next(err));
 });
 
-router.delete('/:id', `loadPersonFromParams`, function(req, res, next) {
-  `req.person`.remove(function(err) {
-    if (err) { return next(err); }
-    res.sendStatus(204);
-  });
+router.delete("/:id", `loadPersonFromParams`, function (req, res, next) {
+  `req.person`
+    .deleteOne()
+    .then(res.sendStatus(204))
+    .catch((err) => next(err));
 });
 ```
 
