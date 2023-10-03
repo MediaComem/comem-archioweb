@@ -433,21 +433,21 @@ You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoos
 
 ```js
 Person
-* .find({
-*   name: /arnold/i,
-*   'address.city': 'Los Angeles',
-*   age: { $gt: 17, $lt: 80 },
-*   interests: { $in: ['shooting', 'talking'] }
+* Person.find({
+*  name: /arnold/i,
+*  "address.city": "Los Angeles",
+*  age: { $gt: 17, $lt: 80 },
+*  interests: { $in: ["shooting", "talking"] }
 * })
   .limit(10)
   .sort({ name: -1 })
   .select({ name: 1, address: 1 })
-  .exec(function(err, people) {
-    if (err) {
-      return console.warn('Could not find people because: ' + err.message);
-    }
-
-    console.log('Found ' + people.length + ' people');
+* .exec()
+  .then((people) => {
+    console.log("Found " + people.length + " people");
+  })
+  .catch((err) => {
+    console.warn("Could not find people because: " + err.message);
   });
 ```
 
@@ -456,41 +456,39 @@ Person
 You can also use chainable query methods:
 
 ```js
-Person
-  .find()
-* .where('name', /arnold/i)
+  Person.find()
+* .where('name').equals(/arnold/i)
 * .where('address.city').equals('Los Angeles')
 * .where('age').gt(17).lt(80)
 * .where('interests').in(['shooting', 'talking'])
   .limit(10)
   .sort('-name')
   .select('name address')
-  .exec(function(err, people) {
-    if (err) {
-      return console.warn('Could not find people because: ' + err.message);
-    }
-
+* .exec()
+  .then(people => {
     console.log('Found ' + people.length + ' people');
+  })
+  .catch(err => {
+    console.warn('Could not find people because: ' + err.message);
   });
 ```
 
 #### Counting documents
 
-Use `count()` instead of `exec()` at the end of your query builder to count the matching documents:
+Use `countDocuments()` instead of `exec()` at the end of your query builder to count the matching documents:
 
 ```js
-Person
-  .find()
-  .where('name', /arnold/i)
+Person.find()
+  .where('name').equals(/arnold/i)
   .where('address.city').equals('Los Angeles')
   .where('age').gt(17).lt(80)
   .where('interests').in(['shooting', 'talking'])
-  `.count`(function(err, total) {
-    if (err) {
-      return console.warn('Could not count people because: ' + err.message);
-    }
-
+  .countDocuments()
+  .then(total => {
     console.log('There are ' + total + ' people matching the criteria');
+  })
+  .catch(err => {
+    console.warn('Could not count people because: ' + err.message);
   });
 ```
 
@@ -575,7 +573,7 @@ $> cd /path/to/projects/my-app
 
 $> npm install --save mongoose
 my-app@0.0.0 /path/to/projects/my-app
-└─┬ mongoose@4.8.5
+└─┬ mongoose@7.5.3
 ...
 ```
 
@@ -583,7 +581,6 @@ Open `app.js` and add these three lines below the first calls to `import`:
 
 ```js
 import mongoose from 'mongoose';
-mongoose.Promise = Promise;
 mongoose.connect('mongodb://localhost/my-database-name');
 ```
 
@@ -620,19 +617,21 @@ Add the following code to `routes/users.js`:
 
 ```js
 import express from 'express';
-import User from '../models/user';
+import User from '../models/user.js';
 
 const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-* User.find().sort('name').exec(function(err, users) {
-*   if (err) {
-*     return next(err);
-*   }
-*
-*   res.send(users);
-* });
+* User.find()
+*   .sort("name")
+*   .exec()
+*   .then((users) => {
+*     res.send(users);
+*   })
+*   .catch((err) => {
+*     next(err);
+*   });
 });
 
 export default router;
@@ -668,20 +667,19 @@ Add this route to `routes/users.js` (above or below the existing route):
 
 ```js
 /* POST new user */
-router.post('/', function(req, res, next) {
-
+router.post('/', (req, res, next) => {
   // Create a new document from the JSON in the request body
   const newUser = new User(req.body);
 
   // Save that document
-  newUser.save(function(err, savedUser) {
-    if (err) {
-      return next(err);
-    }
-
-    // Send the saved document in the response
-    res.send(savedUser);
-  });
+  newUser.save()
+    .then(savedUser => {
+      // Send the saved document in the response
+      res.send(savedUser);
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 ```
 
