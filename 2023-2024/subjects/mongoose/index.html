@@ -3,7 +3,7 @@
   <head>
     <title>Mongoose (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/47cbc934d5c7e2b8acd75c6aaca6f5ed36ebd58b/subjects/mongoose/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1a2c7d62c7e727dd29edf6960e4efd8032791ee4/subjects/mongoose/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -312,22 +312,21 @@ let blog = new Blog({
   // ...
 });
 
-`blog.save`(function(err) { // This will insert a new document
-  if (err) {
-    return console.warn('Could not save blog because: ' + err.message);
-  }
-  console.log('Saved blog');
+`blog.save()`
+  .then(savedBlog => {
+    console.log("Saved blog");
+    // Update something
+    blog.meta.votes = 5;
 
-  blog.meta.votes = 5; // Update something
-
-  `blog.save`(function(err, updatedBlog) { // This will update the document
-    if (err) {
-      return console.warn('Could not save blog because: ' + err.message);
-    }
-
-    console.log('Updated blog');
+    // This will update the document
+    return `blog.save()`;
+  })
+  .then(updatedBlog => {
+    console.log("Updated blog");
+  })
+  .catch(err => {
+    console.warn("Could not save blog because: " + err.message);
   });
-});
 ```
 
 The first time, your blog document has no `_id` so Mongoose will **insert** it.
@@ -375,7 +374,7 @@ const personSchema = new Schema({
 
 .breadcrumbs[<a href="#1">Mongoose</a> > <a href="#7">What is Mongoose?</a> > <a href="#14">Mongoose validations</a>]
 
-The callback passed to `save()` will receive an error if validations fail:
+The promise returned by `save()` will be rejected if validations fail
 
 ```js
 let person = new Person({
@@ -384,23 +383,24 @@ let person = new Person({
   honorific: 'Great'
 });
 
-person.save(function(err) {
-  if (err) {
-*   if (err.name == 'ValidationError') {
-*     console.log(err.errors);
-*     // {
-*     //   "honorific": { "message": "'Great' is not a valid enum value" },
-*     //   "age": { "message": "Path 'age' (-4) is less than minimum" },
-*     //   "name": { "message": "Name is too short" }
-*     // }
-*     return console.warn('Person is invalid');
-    } else {
-      return console.warn('Could not save person because: ' + err.message);
-    }
-  }
 
-  console.log('Person is valid');
-});
+person.save()
+  .then(savedPerson => {
+    console.log('Person is valid');
+  })
+  .catch(err => {
+*    if (err.name === 'ValidationError') {
+*      console.log(err.errors);
+*      // {
+*      //   "honorific": { "message": "'Great' is not a valid enum value" },
+*      //   "age": { "message": "Path 'age' (-4) is less than minimum" },
+*      //   "name": { "message": "Name is too short" }
+*      // }
+*      console.warn('Person is invalid');
+    } else {
+      console.warn('Could not save person because: ' + err.message);
+    }
+  });
 ```
 
 ---
@@ -467,21 +467,21 @@ You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoos
 
 ```js
 Person
-* .find({
-*   name: /arnold/i,
-*   'address.city': 'Los Angeles',
-*   age: { $gt: 17, $lt: 80 },
-*   interests: { $in: ['shooting', 'talking'] }
+* Person.find({
+*  name: /arnold/i,
+*  "address.city": "Los Angeles",
+*  age: { $gt: 17, $lt: 80 },
+*  interests: { $in: ["shooting", "talking"] }
 * })
   .limit(10)
   .sort({ name: -1 })
   .select({ name: 1, address: 1 })
-  .exec(function(err, people) {
-    if (err) {
-      return console.warn('Could not find people because: ' + err.message);
-    }
-
-    console.log('Found ' + people.length + ' people');
+* .exec()
+  .then(people => {
+    console.log("Found " + people.length + " people");
+  })
+  .catch(err => {
+    console.warn("Could not find people because: " + err.message);
   });
 ```
 
@@ -493,21 +493,20 @@ Person
 You can also use chainable query methods:
 
 ```js
-Person
-  .find()
-* .where('name', /arnold/i)
+  Person.find()
+* .where('name').equals(/arnold/i)
 * .where('address.city').equals('Los Angeles')
 * .where('age').gt(17).lt(80)
 * .where('interests').in(['shooting', 'talking'])
   .limit(10)
   .sort('-name')
   .select('name address')
-  .exec(function(err, people) {
-    if (err) {
-      return console.warn('Could not find people because: ' + err.message);
-    }
-
+* .exec()
+  .then(people => {
     console.log('Found ' + people.length + ' people');
+  })
+  .catch(err => {
+    console.warn('Could not find people because: ' + err.message);
   });
 ```
 
@@ -516,21 +515,20 @@ Person
 
 .breadcrumbs[<a href="#1">Mongoose</a> > <a href="#7">What is Mongoose?</a> > <a href="#18">Mongoose queries</a>]
 
-Use `count()` instead of `exec()` at the end of your query builder to count the matching documents:
+Use `countDocuments()` instead of `exec()` at the end of your query builder to count the matching documents:
 
 ```js
-Person
-  .find()
-  .where('name', /arnold/i)
+Person.find()
+  .where('name').equals(/arnold/i)
   .where('address.city').equals('Los Angeles')
   .where('age').gt(17).lt(80)
   .where('interests').in(['shooting', 'talking'])
-  `.count`(function(err, total) {
-    if (err) {
-      return console.warn('Could not count people because: ' + err.message);
-    }
-
+  .countDocuments()
+  .then(total => {
     console.log('There are ' + total + ' people matching the criteria');
+  })
+  .catch(err => {
+    console.warn('Could not count people because: ' + err.message);
   });
 ```
 
@@ -634,7 +632,7 @@ $> cd /path/to/projects/my-app
 
 $> npm install --save mongoose
 my-app@0.0.0 /path/to/projects/my-app
-└─┬ mongoose@4.8.5
+└─┬ mongoose@7.5.3
 ...
 ```
 
@@ -642,7 +640,6 @@ Open `app.js` and add these three lines below the first calls to `import`:
 
 ```js
 import mongoose from 'mongoose';
-mongoose.Promise = Promise;
 mongoose.connect('mongodb://localhost/my-database-name');
 ```
 
@@ -685,19 +682,21 @@ Add the following code to `routes/users.js`:
 
 ```js
 import express from 'express';
-import User from '../models/user';
+import User from '../models/user.js';
 
 const router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-* User.find().sort('name').exec(function(err, users) {
-*   if (err) {
-*     return next(err);
-*   }
-*
-*   res.send(users);
-* });
+* User.find()
+*   .sort("name")
+*   .exec()
+*   .then(users => {
+*     res.send(users);
+*   })
+*   .catch(err => {
+*     next(err);
+*   });
 });
 
 export default router;
@@ -739,20 +738,19 @@ Add this route to `routes/users.js` (above or below the existing route):
 
 ```js
 /* POST new user */
-router.post('/', function(req, res, next) {
-
+router.post('/', (req, res, next) => {
   // Create a new document from the JSON in the request body
   const newUser = new User(req.body);
 
   // Save that document
-  newUser.save(function(err, savedUser) {
-    if (err) {
-      return next(err);
-    }
-
-    // Send the saved document in the response
-    res.send(savedUser);
-  });
+  newUser.save()
+    .then(savedUser => {
+      // Send the saved document in the response
+      res.send(savedUser);
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 ```
 
