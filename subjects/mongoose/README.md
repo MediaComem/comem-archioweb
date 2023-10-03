@@ -77,7 +77,7 @@ const url = 'mongodb://localhost:27017/myproject';
 // Use connect method to connect to the Server
 MongoClient.connect(url, function(err, db) {
   if (err) {
-    console.warn(`Could not connect to database because:  ${err.message}`);
+    console.warn(\`Could not connect to database because:  ${err.message}`);
   } else {
     console.log('Connected to MongoDB');
 
@@ -112,9 +112,9 @@ const person = {
 
 db.collection('people').insertOne(person, function(err, commandResult) {
   if (err) {
-    console.warn(`Could not insert person: ${err.message}`);
+    console.warn(\`Could not insert person: ${err.message}`);
   } else {
-    console.log(`Inserted ${commandResult.insertedCount} person`);
+    console.log(\`Inserted ${commandResult.insertedCount} person`);
     db.close();
   }
 });
@@ -132,9 +132,9 @@ db.collection('people')
   .project({ 'name': 1 })
   .toArray(function(err, people) {
     if (err) {
-      console.warn(`Could not fetch people because: ${err.message}`);
+      console.warn(\`Could not fetch people because: ${err.message}`);
     } else {
-      console.log(`Found ${people.length} people`);
+      console.log(\`Found ${people.length} people`);
       db.close();
     }
   })
@@ -306,7 +306,7 @@ let blog = new Blog({
     console.log('Updated blog');
   })
   .catch(err => {
-    console.warn(`Could not save blog because: ${err.message}`);
+    console.warn(\`Could not save blog because: ${err.message}`);
   });
 ```
 
@@ -373,7 +373,7 @@ person.save()
 *      // }
 *      console.warn('Person is invalid');
     } else {
-      console.warn(`Could not save person because: ${err.message}`);
+      console.warn(\`Could not save person because: ${err.message}`);
     }
   });
 ```
@@ -443,10 +443,10 @@ You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoos
   .select({ name: 1, address: 1 })
 * .exec()
   .then(people => {
-    console.log(`Found ${people.length} people`);
+    console.log(\`Found ${people.length} people`);
   })
   .catch(err => {
-    console.warn(`Could not find people because: ${err.message}`);
+    console.warn(\`Could not find people because: ${err.message}`);
   });
 ```
 
@@ -465,10 +465,10 @@ You can also use chainable query methods:
   .select('name address')
 * .exec()
   .then(people => {
-    console.log(`Found ${people.length} people`);
+    console.log(\`Found ${people.length} people`);
   })
   .catch(err => {
-    console.warn(`Could not find people because: ${err.message}`);
+    console.warn(\`Could not find people because: ${err.message}`);
   });
 ```
 
@@ -484,10 +484,10 @@ Person.find()
   .where('interests').in(['shooting', 'talking'])
   .countDocuments()
   .then(total => {
-    console.log(`There are ${total} people matching the criteria`);
+    console.log(\`There are ${total} people matching the criteria`);
   })
   .catch(err => {
-    console.warn(`Could not count people because: ${err.message}`);
+    console.warn(\`Could not count people because: ${err.message}`);
   });
 ```
 
@@ -544,10 +544,10 @@ const Blog = mongoose.model('Blog');
 
 Blog.collection.insertOne({ foo: 'bar' }, function(err, commandResult) {
   if (err) {
-    return console.warn(`Could not insert blog because: ${err.message}`);
+    return console.warn(\`Could not insert blog because: ${err.message}`);
   }
 
-  console.log(`${commandResult.insertedCount} documents inserted`);
+  console.log(\`${commandResult.insertedCount} documents inserted`);
 });
 ```
 
