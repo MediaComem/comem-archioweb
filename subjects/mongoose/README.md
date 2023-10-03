@@ -294,7 +294,7 @@ let blog = new Blog({
 });
 
 `blog.save()`
-  .then((savedBlog) => {
+  .then(savedBlog => {
     console.log("Saved blog");
     // Update something
     blog.meta.votes = 5;
@@ -302,10 +302,10 @@ let blog = new Blog({
     // This will update the document
     return `blog.save()`;
   })
-  .then((updatedBlog) => {
+  .then(updatedBlog => {
     console.log("Updated blog");
   })
-  .catch((err) => {
+  .catch(err => {
     console.warn("Could not save blog because: " + err.message);
   });
 ```
@@ -443,10 +443,10 @@ Person
   .sort({ name: -1 })
   .select({ name: 1, address: 1 })
 * .exec()
-  .then((people) => {
+  .then(people => {
     console.log("Found " + people.length + " people");
   })
-  .catch((err) => {
+  .catch(err => {
     console.warn("Could not find people because: " + err.message);
   });
 ```
@@ -626,10 +626,10 @@ router.get('/', function(req, res, next) {
 * User.find()
 *   .sort("name")
 *   .exec()
-*   .then((users) => {
+*   .then(users => {
 *     res.send(users);
 *   })
-*   .catch((err) => {
+*   .catch(err => {
 *     next(err);
 *   });
 });
