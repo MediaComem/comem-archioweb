@@ -432,7 +432,6 @@ To create a unique index on **multiple fields**, use `index()` on the schema:
 You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoose models:
 
 ```js
-Person
 * Person.find({
 *  name: /arnold/i,
 *  "address.city": "Los Angeles",
