@@ -265,21 +265,17 @@ To include information about getting more elements in the response,
 you will need to know **how many elements there are in total**,
 either to give that information directly to the client or to build hyperlinks.
 
-You can do that easily using a Mongoose model's `count()` function:
+You can do that easily using a Mongoose model's `countDocuments()` function:
 
 ```js
-router.get('/', function(req, res, next) {
-  `Movie.find().count(function(err, total) {`
-    if (err) {
-      return next(err);
-    }
-
-    let query = Movie.find();
-
-    // Apply pagination here (code from previous example)...
-
-    // Send response (including total/links) here...
-  `})`;
+router.get('/', function (req, res, next) {
+  `Movie.find().countDocuments()`
+    .then(total => {
+        let query = Movie.find();
+        // Apply pagination here (code from previous example)...
+        // Send response (including total/links) here...
+    })
+    .catch(err => next(err));
 });
 ```
 
