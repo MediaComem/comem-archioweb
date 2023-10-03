@@ -580,7 +580,7 @@ Open `app.js` and add these three lines below the first calls to `import`:
 
 ```js
 import mongoose from 'mongoose';
-mongoose.connect('mongodb://localhost/my-database-name');
+mongoose.connect('mongodb://127.0.0.1/my-database-name');
 ```
 
 Your Express application is now connected to MongoDB (to the `my-database-name` database)!
