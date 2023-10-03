@@ -105,9 +105,11 @@ which references another document:
 ```js
 Movie
   .findOne({ title: 'Casino Royale' })
-  .exec(function(err, movie) {
+  .exec()
+  .then(movie => {
     console.log(movie.director); // ObjectId("5f7a3e74576b3d75acea6c7d")
-  });
+  })
+  .catch(err => next(err));
 ```
 
 When calling [`populate`][mongoose-population], the reference is replaced by the
@@ -118,9 +120,11 @@ in the schema:
 Movie
   .findOne({ title: 'Casino Royale' })
 * .populate('director')
-  .exec(function (err, movie) {
+  .exec()
+  .then(movie => {
     console.log(movie.director.name); // "Martin Campbell"
-  });
+  })
+  .catch(err => next(err));
 ```
 
 
