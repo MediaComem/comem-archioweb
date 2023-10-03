@@ -318,29 +318,30 @@ if (Object.keys(links).length >= 1) {
 To implement this solution, you simply have to set the headers before sending the response:
 
 ```js
-router.get('/', function(req, res, next) {
-  Movie.find().count(function(err, `total`) {
-    if (err) { return next(err); };
-    let query = Movie.find();
-
-    // Parse the "page" param (default to 1 if invalid)
-    let `page` = parseInt(req.query.page, 10);
-    if (isNaN(page) || page < 1) { /* ... */ }
-
-    // Parse the "pageSize" param (default to 100 if invalid)
-    let `pageSize` = parseInt(req.query.pageSize, 10);
-    if (isNaN(pageSize) || pageSize < 0 || pageSize > 100) { /* ... */ }
-
-    // Apply skip and limit to select the correct page of elements
-    query = query.skip((page - 1) * pageSize).limit(pageSize);
-
-    `res.set('Pagination-Page', page);`
-    `res.set('Pagination-PageSize', pageSize);`
-    `res.set('Pagination-Total', total);`
-
-    // ...
-  });
+router.get('/', function (req, res, next) {
+  Movie.find()
+    .countDocuments()
+    .then(total => {
+      let query = Movie.find();
+      // Parse the "page" param (default to 1 if invalid)
+      let page = parseInt(req.query.page, 10);
+      if (isNaN(page) || page < 1) {
+        /* ... */
+      }
+      // Parse the "pageSize" param (default to 100 if invalid)
+      let pageSize = parseInt(req.query.pageSize, 10);
+      if (isNaN(pageSize) || pageSize < 0 || pageSize > 100) {
+        /* ... */
+      }
+      // Apply skip and limit to select the correct page of elements
+      query = query.skip((page - 1) * pageSize).limit(pageSize);
+      res.set('Pagination-Page', page);
+      res.set('Pagination-PageSize', pageSize);
+      res.set('Pagination-Total', total);
+    })
+    .catch(err => next(err));
 });
+
 ```
 
 
@@ -351,26 +352,28 @@ Instead of setting headers, you simply have to build and pass your envelope to `
 
 ```js
 router.get('/', function(req, res, next) {
-  Movie.find().count(function(err, `total`) {
-    if (err) { return next(err); };
+    Movie.find().countDocuments()
+      .then(total => {
+        let query = Movie.find();
+        // Parse query parameters and apply pagination here...
 
-    let query = Movie.find();
-
-    // Parse query parameters and apply pagination here...
-
-    query.exec(function(err, `movies`) {
-      if (err) { return next(err); }
-
-      // Send JSON envelope with data
-*     res.send({
-*       page: page,
-*       pageSize: pageSize,
-*       total: total,
-*       data: movies
-*     });
-    });
+        return query.exec().then(movies => {
+          return {total, movies};
+        });
+      })
+      .then(({total, movies}) => {
+        // Assuming page and pageSize are defined somewhere in your function or middleware
+        res.send({
+          page: page,
+          pageSize: pageSize,
+          total: total,
+          data: movies
+        });
+      })
+      .catch(err => {
+        next(err);
+      });
   });
-});
 ```
 
 
@@ -578,12 +581,15 @@ the [`aggregate` method][mongoose-aggregate] on models:
 ```js
 import Person from '../models/person';
 
-Person.aggregate([
-  { stage1... },
-  { stage2... }
-], function(err, results) {
-  // TODO: handle error or process results...
-});
+import Person from "../models/person";
+Person.aggregate([{ stage1...}, { stage2... }])
+  .then((results) => {
+    // process results
+  })
+  .catch((err) => {
+    // handle error
+  });
+
 ```
 
 Note that the `results` array returned by Mongoose contains **plain objects, NOT
