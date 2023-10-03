@@ -293,22 +293,21 @@ let blog = new Blog({
   // ...
 });
 
-`blog.save`(function(err) { // This will insert a new document
-  if (err) {
-    return console.warn('Could not save blog because: ' + err.message);
-  }
-  console.log('Saved blog');
+`blog.save()`
+  .then((savedBlog) => {
+    console.log("Saved blog");
+    // Update something
+    blog.meta.votes = 5;
 
-  blog.meta.votes = 5; // Update something
-
-  `blog.save`(function(err, updatedBlog) { // This will update the document
-    if (err) {
-      return console.warn('Could not save blog because: ' + err.message);
-    }
-
-    console.log('Updated blog');
+    // This will update the document
+    return `blog.save()`;
+  })
+  .then((updatedBlog) => {
+    console.log("Updated blog");
+  })
+  .catch((err) => {
+    console.warn("Could not save blog because: " + err.message);
   });
-});
 ```
 
 The first time, your blog document has no `_id` so Mongoose will **insert** it.
@@ -350,7 +349,7 @@ const personSchema = new Schema({
 
 #### Handling validations
 
-The callback passed to `save()` will receive an error if validations fail:
+The promise returned by `save()` will be rejected if validations fail
 
 ```js
 let person = new Person({
@@ -359,23 +358,24 @@ let person = new Person({
   honorific: 'Great'
 });
 
-person.save(function(err) {
-  if (err) {
-*   if (err.name == 'ValidationError') {
-*     console.log(err.errors);
-*     // {
-*     //   "honorific": { "message": "'Great' is not a valid enum value" },
-*     //   "age": { "message": "Path 'age' (-4) is less than minimum" },
-*     //   "name": { "message": "Name is too short" }
-*     // }
-*     return console.warn('Person is invalid');
-    } else {
-      return console.warn('Could not save person because: ' + err.message);
-    }
-  }
 
-  console.log('Person is valid');
-});
+person.save()
+  .then(savedPerson => {
+    console.log('Person is valid');
+  })
+  .catch(err => {
+*    if (err.name === 'ValidationError') {
+*      console.log(err.errors);
+*      // {
+*      //   "honorific": { "message": "'Great' is not a valid enum value" },
+*      //   "age": { "message": "Path 'age' (-4) is less than minimum" },
+*      //   "name": { "message": "Name is too short" }
+*      // }
+*      console.warn('Person is invalid');
+    } else {
+      console.warn('Could not save person because: ' + err.message);
+    }
+  });
 ```
 
 #### Custom validations
