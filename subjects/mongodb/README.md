@@ -144,7 +144,7 @@ Inserting, querying, updating and removing documents.
 Connect to the MongoDB shell from your CLI and you should have a **new prompt**, indicating that you can now type MongoDB commands and queries:
 
 ```bash
-$> mongo
+$> mongosh
 Connecting to:		mongodb://127.0.0.1:27017/
 Using MongoDB:		7.0.0
 Using Mongosh:		2.0.1
