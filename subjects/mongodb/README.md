@@ -146,8 +146,8 @@ Connect to the MongoDB shell from your CLI and you should have a **new prompt**,
 ```bash
 $> mongo
 Connecting to:		mongodb://127.0.0.1:27017/
-Using MongoDB:		6.0.1
-Using Mongosh:		1.5.4
+Using MongoDB:		7.0.0
+Using Mongosh:		2.0.1
 ...
 test>
 ```
@@ -517,8 +517,8 @@ The `COLLSCAN` value in the `winningPlan` object tells us that a collection scan
 db.people.find({ name: "John A. Smith" }).explain()
 
 {
+  "explainVersion" : 2,
   "queryPlanner" : {
-    "plannerVersion" : 1,
     "namespace" : "test.people",
     "indexFilterSet" : false,
     "parsedQuery" : {
@@ -547,12 +547,7 @@ Use [createIndex][create-index] to add an index:
 // Add a simple index for queries on the "name" field
 db.people.createIndex( { "name": 1 } )
 
-{
-  "createdCollectionAutomatically" : false,
-  "numIndexesBefore" : 1,
-  "numIndexesAfter" : 2,
-  "ok" : 1
-}
+name_1
 ```
 
 ### Index scan
@@ -563,8 +558,8 @@ Run `explain` again to confirm that your index will be applied (you should see `
 db.people.find({ name: "John A. Smith" }).explain()
 
 {
+  explainVersion: '2',
   "queryPlanner" : {
-    "plannerVersion" : 1,
     "namespace" : "demo.people",
     "indexFilterSet" : false,
     "parsedQuery" : {
@@ -638,7 +633,7 @@ db.people.find({}).sort({ "birthDate": 1, "name": 1 })
 [find]: https://docs.mongodb.com/manual/reference/method/db.collection.find/
 [getting-started]: https://docs.mongodb.com/getting-started/shell/
 [indexes]: https://docs.mongodb.com/manual/indexes/
-[install]: https://github.com/MediaComem/comem-archioweb/guides/install-mongodb.md
+[install]: https://github.com/MediaComem/comem-archioweb/blob/main/guides/install-mongodb.md
 [query-operators]: https://docs.mongodb.com/manual/reference/operator/query/
 [mongodb]: https://www.mongodb.com
 [mongodb-insert-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertOne/

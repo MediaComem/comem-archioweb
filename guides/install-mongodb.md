@@ -68,7 +68,7 @@ Follow these steps to install MongoDB Community Edition using Homebrew's brew pa
    ```
 3. To install MongoDB, run the following command in your macOS Terminal application:
    ```bash
-   $> brew install mongodb-community@6.0
+   $> brew install mongodb-community@7.0
    ```
 
 The installation includes the following binaries:
@@ -93,13 +93,13 @@ process and is not interactive). There are **two ways** you can run MongoDB: as 
 - To run MongoDB (i.e. the mongod process) as a **macOS service**, run:
 
   ```bash
-  $> brew services start mongodb-community@6.0
+  $> brew services start mongodb-community@7.0
   ```
 
   To stop `mongod` running as a macOS service, use the following command as needed:
 
   ```bash
-  $> brew services stop mongodb-community@6.0
+  $> brew services stop mongodb-community@7.0
   ```
 
 - **Or,** to run MongoDB (i.e. the `mongod` process) **manually as a background process**, run:
@@ -232,8 +232,8 @@ commands**.
 ```bash
 $> mongosh
 connecting to: mongodb://127.0.0.1:27017
-Using MongoDB: 6.0.1
-Using Mongosh: 1.5.4
+Using MongoDB: 7.0.0
+Using Mongosh: 2.0.1
 ...
 test>
 ```
