@@ -257,8 +257,8 @@ then `import` them in `app.js`:
 ```js
 import express from 'express';
 
-import `peopleApiRouter` from './routes/people';
-import `moviesApiRouter` from './routes/movies';
+import `peopleApiRouter` from './routes/people.js';
+import `moviesApiRouter` from './routes/movies.js';
 
 const app = express();
 
