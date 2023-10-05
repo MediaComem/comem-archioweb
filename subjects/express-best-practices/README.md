@@ -351,7 +351,59 @@ router.delete("/:id", `loadPersonFromParams`, function (req, res, next) {
 });
 ```
 
+### Handling Promises using chainable methods
+So far, all of our examples have used chainable methods (`.then()` and `.catch()`) to handle Promises returned by Mongoose.
 
+```js
+router.get('/user/:id', (req, res, next) => {
+  User.findById(req.params.id)
+*   .then(user => res.json(user))
+*   .catch(err => next(err));
+});
+```
+
+This is absolutely, but you might be more comfortable using `async/await`.
+
+### Handling Promises using `async/await`
+
+In that case, you may write your Express functions like this:
+
+```js
+router.get('/user/:id', `async` (req, res, next) => {
+  try {
+    const user = `await` User.findById(req.params.id);
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+});
+```
+
+However, you will need to wrap every callback in those annoying `try/catch` blocks in order to handle errors. This leads to a lot of unnecesary repetition. Could we do better?
+
+### Async Handler Middleware
+
+We can create a wrapper function that automatically catches errors and passes them to the next middleware in Express.
+
+```js
+const asyncHandler = fn => (req, res, next) =>
+  Promise
+    .resolve(fn(req, res, next))
+    .catch(next);
+```
+
+`asyncHandler` is a higher-order function that takes an async function (`fn`) and returns a new function. The returned function, when called, runs `fn` and catches any unhandled errors, passing them to next() (i.e., the next middleware, which might be an error handler).
+
+### Using `asyncHandler` Middleware
+
+You can now use this wrapper as middleware in your Express chain. Errors will be automatically caught.
+
+```js
+router.get('/user/:id', `asyncHandler`(`async` (req, res) => {
+  const user = await User.findById(req.params.id);
+  res.json(user);
+}));
+```
 
 ## TODO
 
