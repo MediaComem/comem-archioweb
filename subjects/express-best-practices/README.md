@@ -420,13 +420,13 @@ app.use(function (`err`, req, res, next) {
 });
 ```
 
-This **middleware function** is an specifically designed to handle errors. We can know this because the callback takes **four arguments, the first of which being the `err` object.** When an error is passed to next() function or thrown in a synchronous function in an Express app, it will be caught by this error-handling middleware. This works fine for Express errors, but **we also need to handle errors thrown by MongoDB.**
+This **middleware function** is specifically designed to handle errors. We can know this because the callback takes **four arguments, the first of which being the `err` object.** When an error is passed to the `next()`` function or thrown in a synchronous function, it will be caught by this error-handling middleware. This works fine for Express errors, but **we also need to handle errors thrown by MongoDB.**
 
 ### MongoDB errors
-Imagine the following scenario: one of your Mongoose models specifies that a Users must have unique emails. Someone using your API make a `POST` request to `/user`, trying to create a new user with an email that has already been previously registered. If this happens, an **ugly error message and generic status code will be sent to the user**:
+Imagine the following scenario: one of your Mongoose models specifies that a Users must have unique emails. Someone using your API make a `POST` request to `/user`, trying to create a new user with an email that has already been registered. If this happens, an **ugly error message and generic status code will be sent to the user**:
 
 ```txt
-E11000 duplicate key error collection
+500: E11000 duplicate key error collection
 ```
 
 ### Handling specific errors
@@ -437,7 +437,7 @@ app.use(function (`err`, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
-* if (err.name === 'MongoError' && err.code === 11000) {
+* if (err.code === 11000) {
 *   res.status(409).send('Email already registered.');
 * } else {
   // Send the error status
