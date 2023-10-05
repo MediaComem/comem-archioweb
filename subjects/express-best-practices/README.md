@@ -277,8 +277,7 @@ You often end up with **code duplication in routes**:
 
 ```js
 router.get('/:id', function(req, res, next) {
-* Person.findById(req.params.id)
-*   .exec()
+* Person.findById(req.params.id).exec()
 *   .then(person => {
 *     if (!person) return res.sendStatus(404);
       // Send user here
@@ -287,8 +286,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.patch('/:id', function(req, res, next) {
-* Person.findById(req.params.id)
-*   .exec()
+* Person.findById(req.params.id).exec()
 *   .then(person => {
 *     if (!person) return res.sendStatus(404);
       // Update and send user here
@@ -297,8 +295,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-* Person.findById(req.params.id)
-*   .exec()
+* Person.findById(req.params.id).exec()
 *   .then(person => {
 *     if (!person) return res.sendStatus(404);
       // Delete user here
@@ -317,7 +314,7 @@ function loadPersonFromParams(req, res, next) {
     .exec()
     .then(person => {
       if (!person) {
-        return res.status(404).send(`No person found with ID ${req.params.id}`);
+        return res.status(404).send(\`No person found with ID ${req.params.id}`);
       }
       req.person = person;
       next();
@@ -332,11 +329,11 @@ You can plug this function into the routes that need it.
 Your handler functions can then simply use `req.person`, as it will have been **loaded before they are executed**:
 
 ```js
-router.get("/:id", `loadPersonFromParams`, function (req, res, next) {
+router.get('/:id', `loadPersonFromParams`, function (req, res, next) {
   res.send(`req.person`);
 });
 
-router.patch("/:id", `loadPersonFromParams`, function (req, res, next) {
+router.patch('/:id', `loadPersonFromParams`, function (req, res, next) {
   // Update req.person here
   `req.person`
     .save()
