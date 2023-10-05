@@ -362,7 +362,7 @@ router.get('/user/:id', (req, res, next) => {
 });
 ```
 
-This is absolutely, but you might be more comfortable using `async/await`.
+This is absolutely fine, but **you might be more comfortable using `async/await`**.
 
 ### Handling Promises using `async/await`
 
@@ -379,11 +379,11 @@ router.get('/user/:id', `async` (req, res, next) => {
 });
 ```
 
-However, you will need to wrap every callback in those annoying `try/catch` blocks in order to handle errors. This leads to a lot of unnecesary repetition. Could we do better?
+However, you will need to wrap every callback in those **annoying `try/catch` blocks** in order to handle errors. This leads to a lot of unnecesary repetition. **Could we do better?**
 
 ### Async Handler Middleware
 
-We can create a wrapper function that automatically catches errors and passes them to the next middleware in Express.
+We can create a **wrapper function** that automatically catches errors and passes them to the next Express middleware.
 
 ```js
 const asyncHandler = fn => (req, res, next) =>
@@ -392,7 +392,7 @@ const asyncHandler = fn => (req, res, next) =>
     .catch(next);
 ```
 
-`asyncHandler` is a higher-order function that takes an async function (`fn`) and returns a new function. The returned function, when called, runs `fn` and catches any unhandled errors, passing them to next() (i.e., the next middleware, which might be an error handler).
+`asyncHandler` is a **higher-order function** that takes an async function (`fn`) and **returns a new function**. The returned function, when called, runs `fn` and catches any unhandled errors, **passing them to next()** (i.e., the next middleware).
 
 ### Using `asyncHandler` Middleware
 
