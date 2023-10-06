@@ -197,9 +197,13 @@ import bcrypt from "bcrypt";
 const plainPassword = "changeme";
 const costFactor = 10;
 
-bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
-  // Store the hashed password in your database.
-});
+bcrypt.hash(plainPassword, costFactor)
+  .then(hashedPassword => {
+    // Store the hashed password in your database.
+  })
+  .catch(err => {
+    // Deal with hashing error
+  })
 ```
 
 > Creating a password hash is a costly operation, especially if the cost factor of the bcrypt algorithm is high (more than 10).
@@ -211,30 +215,24 @@ bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
 Here's an example of how to use bcrypt in an Express application using Mongoose for database access.
 
 ```js
-import bcrypt from "bcrypt";
-import User from "../models/user";
-
 router.post("/", function(req, res, next) {
-
   const plainPassword = req.body.password;
   const costFactor = 10;
 
-* bcrypt.hash(plainPassword, costFactor, function(err, hashedPassword) {
-    if (err) {
-      return next(err);
-    }
-
-    const newUser = new User(req.body);
-    `newUser.password = hashedPassword;`
-    newUser.save(function(err, savedUser) {
-      if (err) {
-        return next(err);
-      }
-
+* bcrypt.hash(plainPassword, costFactor)
+    .then(hashedPassword => {
+      const newUser = new User(req.body);
+*     newUser.password = hashedPassword;
+      return newUser.save();
+    })
+    .then(savedUser => {
       res.send(savedUser);
+    })
+    .catch(err => {
+      next(err);
     });
-* });
 });
+
 ```
 
 #### Hiding the password hash from API responses
@@ -272,9 +270,13 @@ The `compare` function takes the following arguments:
 The asynchronous callback will be called with **a boolean indicating whether the password matches**.
 
 ```js
-`bcrypt.compare(plainPassword, hashedPassword`, function(err, `valid`) {
-  // Handle error and password validity...
-});
+  bcrypt.compare(plainPassword, hashedPassword)
+    .then((valid) => {
+      // Do something depending on password validity
+    })
+    .catch((err) => {
+      // Handle Promise rejection
+    });
 ```
 
 #### Verifying a password with Express and Mongoose
@@ -284,27 +286,22 @@ Express application using Mongoose:
 
 ```js
 import bcrypt from "bcrypt";
-import User from "../models/user";
+import User from "../models/user.js";
 
-router.post("/login", function(req, res, next) {
-  `User.findOne`({ name: req.body.name }).exec(function(err, user) {
-    if (err) {
-      return next(err);
-    } else if (!user) {
-      return res.sendStatus(401);
-    }
-
-    `bcrypt.compare(req.body.password, user.password`, function(err, valid) {
-      if (err) {
-        return next(err);
-      } else if (!valid) {
-        return res.sendStatus(401);
-      }
-
-      // Login is valid...
-      res.send(\`Welcome ${user.name}!`);
+router.post("/login", function (req, res, next) {
+  `User.findOne`({ name: req.body.name })
+    .exec()
+    .then((user) => {
+      if (!user) return res.sendStatus(401); // Unauthorized
+      return `bcrypt.compare(req.body.password, user.password)`.then((valid) => {
+        if (!valid) return res.sendStatus(401); // Unauthorized
+        // Login is valid...
+        res.send(\`Welcome ${user.name}!`);
+      });
+    })
+    .catch((err) => {
+      next(err);
     });
-  })
 });
 ```
 

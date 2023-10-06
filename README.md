@@ -321,7 +321,7 @@ For example, a task like *Implement authentication* could be divided in the foll
 
 You can be as granular as you want in the way you divide and define tasks. You can then assign tasks to people in your team.
 
-**Weeks 4 to 7 will be almost wholly dedicated to the developement of your API.**
+**Weeks 4 to 10 will be almost wholly dedicated to the developement of your API.**
 
 ## References
 
