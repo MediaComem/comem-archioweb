@@ -3,7 +3,7 @@
   <head>
     <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/06526c87dc8670a2a904534ae2befcf7c97eaa16/subjects/express-best-practices/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/3c9bf77790f8662fd68e39d79367a8b3ff5f66d1/subjects/express-best-practices/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -463,7 +463,7 @@ app.use(function (`err`, req, res, next) {
 });
 ```
 
-This **middleware function** is specifically designed to handle errors. We can know this because the callback takes **four arguments, the first of which being the `err` object.** When an error is passed to the `next()`` function or thrown in a synchronous function, it will be caught by this error-handling middleware. This works fine for Express errors, but **we also need to handle errors thrown by MongoDB.**
+This **middleware function** is specifically designed to handle errors. We can know this because the callback takes **four arguments, the first of which being the `err` object.** When an error is passed to the `next()` function or thrown in a synchronous function, it will be caught by this error-handling middleware. This works fine for Express errors, but **we also need to handle errors thrown by MongoDB.**
 
 ---
 ### MongoDB errors
