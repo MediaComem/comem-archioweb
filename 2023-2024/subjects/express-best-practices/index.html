@@ -3,7 +3,7 @@
   <head>
     <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/ee144edd33287645780470819aac94cd37539841/subjects/express-best-practices/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/06526c87dc8670a2a904534ae2befcf7c97eaa16/subjects/express-best-practices/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -301,8 +301,7 @@ You often end up with **code duplication in routes**:
 
 ```js
 router.get('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec()
-*   .then(person => {
+* Person.findById(req.params.id).exec().then(person => {
 *     if (!person) return res.sendStatus(404);
       // Send user here
 *   })
@@ -310,8 +309,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.patch('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec()
-*   .then(person => {
+* Person.findById(req.params.id).exec().then(person => {
 *     if (!person) return res.sendStatus(404);
       // Update and send user here
 *   })
@@ -319,8 +317,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec()
-*   .then(person => {
+* Person.findById(req.params.id).exec().then(person => {
 *     if (!person) return res.sendStatus(404);
       // Delete user here
 *   })
@@ -382,15 +379,15 @@ router.delete("/:id", `loadPersonFromParams`, function (req, res, next) {
 ```
 
 ---
-### Handling Promises using chainable methods
+## Handling Promises
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
 So far, all of our examples have used chainable methods (`.then()` and `.catch()`) to handle Promises returned by Mongoose.
 
 ```js
-router.get('/user/:id', (req, res, next) => {
-  User.findById(req.params.id)
-*   .then(user => res.json(user))
+router.get('/person/:id', (req, res, next) => {
+  Person.findById(req.params.id)
+*   .then(person => res.json(user))
 *   .catch(err => next(err));
 });
 ```
@@ -400,14 +397,14 @@ This is absolutely fine, but **you might be more comfortable using `async/await`
 ---
 ### Handling Promises using `async/await`
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Handling Promises</a>]
 
 In that case, you may write your Express functions like this:
 
 ```js
-router.get('/user/:id', `async` (req, res, next) => {
+router.get('/person/:id', `async` (req, res, next) => {
   try {
-    const user = `await` User.findById(req.params.id);
+    const user = `await` Person.findById(req.params.id);
     res.json(user);
   } catch (err) {
     next(err);
@@ -418,9 +415,9 @@ router.get('/user/:id', `async` (req, res, next) => {
 However, you will need to wrap every callback in those **annoying `try/catch` blocks** in order to handle errors. This leads to a lot of unnecesary repetition. **Could we do better?**
 
 ---
-### Async Handler Middleware
+### Async Handler wrapper function
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Handling Promises</a>]
 
 We can create a **wrapper function** that automatically catches errors and passes them to the next Express middleware.
 
@@ -434,9 +431,9 @@ const asyncHandler = fn => (req, res, next) =>
 `asyncHandler` is a **higher-order function** that takes an async function (`fn`) and **returns a new function**. The returned function, when called, runs `fn` and catches any unhandled errors, **passing them to next()** (i.e., the next middleware).
 
 ---
-### Using `asyncHandler` Middleware
+### Using `asyncHandler` wrapper function
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Handling Promises</a>]
 
 You can now use this wrapper as middleware in your Express chain. Errors will be automatically caught.
 
@@ -448,9 +445,10 @@ router.get('/user/:id', `asyncHandler`(`async` (req, res) => {
 ```
 
 ---
-### Default error handler
+## Error Handling
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a>]
+
 The code generated by the express-api-es-generator deals with error handling in a very basic manner.
 
 ```js
@@ -470,17 +468,19 @@ This **middleware function** is specifically designed to handle errors. We can k
 ---
 ### MongoDB errors
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
-Imagine the following scenario: one of your Mongoose models specifies that a Users must have unique emails. Someone using your API make a `POST` request to `/user`, trying to create a new user with an email that has already been registered. If this happens, an **ugly error message and generic status code will be sent to the user**:
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#19">Error Handling</a>]
+
+Imagine the following scenario: one of your Mongoose models specifies that a `Person` must have a unique email. Someone using your API make a `POST` request to `/person`, trying to create a new person with an email that has already been registered. If this happens, an **ugly error message and generic status code will be sent to the user**:
 
 ```txt
-500: E11000 duplicate key error collection
+E11000 duplicate key error collection
 ```
 
 ---
 ### Handling specific errors
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#12">Avoid repetition with middleware</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#19">Error Handling</a>]
+
 In order to get a **meaningful status code and prettier error message**, we could adjust the error handling middleware to **check for this specific case**:
 
 ```js
@@ -497,15 +497,6 @@ app.use(function (`err`, req, res, next) {
   }
 });
 ```
-
----
-## TODO
-
-.breadcrumbs[<a href="#1">Express Best Practices</a>]
-
-* Express conventions: separate routes & controllers
-
-
 
 [bunyan]: https://github.com/trentm/node-bunyan
 [debug]: https://www.npmjs.com/package/debug
