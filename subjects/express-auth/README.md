@@ -409,9 +409,7 @@ const secretKey = process.env.SECRET_KEY || "changeme";
 *});
 ```
 
-
-
-
+You will have probably noticed that the `jsonwebtoken` library uses callbacks instead of Promises. Many libraries retain their callback APIs for backward compatibility and to avoid breaking changes. You can look into [`util.promisify`][util.promisify] if you absolutely want `jwt.verify` or `jwt.sign` to return a Promise.
 
 ## Authentication flow
 
@@ -463,36 +461,52 @@ A little help.
 ```js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../models/user";
+import User from "../models/user.js";
+
 const secretKey = process.env.SECRET_KEY || "changeme";
 
-router.post("/login", function(req, res, next) {
-  // Find the user by name.
-  User.findOne({ name: req.body.name }).exec(function(err, `user`) {
-    if (err) { return next(err); }
-    else if (!user) { return res.sendStatus(401); }
+router.post("/login", function (req, res, next) {
 
-    // Validate the password.
-    bcrypt.compare(req.body.password, user.password, function(err, `valid`) {
-      if (err) { return next(err); }
-      else if (`!valid`) { return res.sendStatus(401); }
+  // Attempt to find a user with the provided name
+  User.findOne({ name: req.body.name })
+    .exec()
+    .then((`user`) => {
+      // If the user cannot be found, respond with 401 Unauthorized status code
+      if (!user) return res.sendStatus(401);
 
-      // Generate a valid JWT which expires in 7 days.
-      const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
-      const payload = { sub: `user._id.toString()`, exp: exp };
-      jwt.sign(payload, secretKey, function(err, token) {
-        if (err) { return next(err); }
-        res.send({ token: token }); // Send the token to the client.
-      });
+      // Compare the provided password with the stored hashed password
+      return bcrypt.compare(req.body.password, user.password)
+        .then((`valid`) => {
+          // If the password comparison fails, respond with 401 Unauthorized status code
+          if (!valid) return res.sendStatus(401);
+
+          // Define JWT expiration: current timestamp + 1 week (in seconds)
+          const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
+          // Create the payload for the JWT, including the user ID and expiration
+          const payload = { sub: `user._id.toString()`, exp: exp };
+
+          // Sign the JWT and send it to the client
+          jwt.sign(payload, secretKey, function (err, token) {
+            // If an error occurs, pass the error to the next middleware
+            if (err) {
+              return next(err);
+            }
+            // Send the signed JWT to the client as part of the response
+            res.send({ token: token });
+          });
+        });
+    })
+    // If an error occurs, pass the error to the next middleware
+    .catch((err) => {
+      next(err);
     });
-  })
 });
 ```
 
 ### Sample Express JWT authentication middleware
 
 ```js
-import User from "../models/user";
+import User from "../models/user.js";
 const secretKey = process.env.SECRET_KEY || "changeme";
 
 function authenticate(req, res, next) {
@@ -563,21 +577,19 @@ Here's an example of how you could do that:
 
 ```js
 router.put("/things/:id", `authenticate`, function(req, res, next) {
-
   // Get the thing.
-  Thing.findById(req.params.id).exec(function(err, thing) {
-    if (err) {
-      return next(err);
-    }
-
-    // Check authorization: was this thing created by the authenticated
-    // user (good), or by another user (bad)?
-    if (`req.currentUserId !== thing.user.toString()`) {
-      return res.status(403).send("Please mind your own business.")
-    }
-
-    // Do what needs to be done...
-  });
+  Thing.findById(req.params.id).exec()
+    .then((thing) => {
+      // Check authorization: was this thing created by the authenticated
+      // user (good), or by another user (bad)?
+      if (`req.currentUserId !== thing.user.toString()`) {
+        return res.status(403).send("Please mind your own business.");
+      }
+      // Do what needs to be done...
+    })
+    .catch(err => {
+      next(err);
+    });
 });
 ```
 
@@ -748,5 +760,6 @@ router.put("/things/:id", `authenticate`, function(req, res, next) {
 [jwt-claims]: https://www.iana.org/assignments/jwt/jwt.xhtml
 [jwt-scope]: https://tools.ietf.org/html/rfc8693#section-4.2
 [mongoose]: https://mongoosejs.com
+[util.promisify]: https://nodejs.org/dist/latest-v8.x/docs/api/util.html#util_util_promisify_original
 [rainbow-table]: https://en.wikipedia.org/wiki/Rainbow_table
 [salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)
