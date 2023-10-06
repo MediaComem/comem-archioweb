@@ -704,46 +704,32 @@ but maybe an administrator is allowed to:
 
 ```js
 // All authenticated users can access this route.
-router.put("/things/:id", `authenticate`, function(req, res, next) {
+router.put("/things/:id", `authenticate`, function (req, res, next) {
   // Get the thing.
-  Thing.findById(req.params.id).exec(function(err, thing) {
-    if (err) {
-      return next(err);
-    }
-
-*   // The user is authorized to edit the thing only if he or she is
-*   // the owner of the thing, or if he or she is an administrator.
-*   const authorized =
-*     req.currentUserPermissions.includes("admin") ||
-*     req.currentUserId === thing.user.toString();
+  Thing.findById(req.params.id)
+    .exec()
+    .then((thing) => {
+*     // The user is authorized to edit the thing only if he or she is
+*     // the owner of the thing, or if he or she is an administrator.
+*     const authorized =
+*       req.currentUserPermissions.includes("admin") ||
+*       req.currentUserId === thing.user.toString();
 *
-*   if (!authorized) {
-*     return res.status(403).send("Please mind your own things.")
-*   }
+*     if (!authorized) {
+*       return res.status(403).send("Please mind your own things.");
+*     }
 
-    // Do what needs to be done...
-  });
+      // Do what needs to be done...
+    })
+    .catch((err) => next(err));
 });
 ```
-
-
 
 ## References
 
 * [Token-based authentication made easy](https://auth0.com/learn/token-based-authentication-made-easy/)
 * [JWT introduction](https://jwt.io/introduction/)
 * [We’re under attack! 23+ Node.js security best practices](https://medium.com/@nodepractices/were-under-attack-23-node-js-security-best-practices-e33c146cb87d)
-
-
-
-
-
-## TODO
-
-* bcrypt cost factor
-* PBKDF2 alternative
-
-
 
 
 
