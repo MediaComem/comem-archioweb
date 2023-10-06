@@ -418,7 +418,7 @@ app.use(function (`err`, req, res, next) {
 });
 ```
 
-This **middleware function** is specifically designed to handle errors. We can know this because the callback takes **four arguments, the first of which being the `err` object.** When an error is passed to the `next()`` function or thrown in a synchronous function, it will be caught by this error-handling middleware. This works fine for Express errors, but **we also need to handle errors thrown by MongoDB.**
+This **middleware function** is specifically designed to handle errors. We can know this because the callback takes **four arguments, the first of which being the `err` object.** When an error is passed to the `next()` function or thrown in a synchronous function, it will be caught by this error-handling middleware. This works fine for Express errors, but **we also need to handle errors thrown by MongoDB.**
 
 ### MongoDB errors
 
