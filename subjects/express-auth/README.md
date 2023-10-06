@@ -382,7 +382,10 @@ For example, a very simple token might only contain `sub` to indicate the authen
 Generating a JWT is trivial with the `jsonwebtoken` npm package:
 
 ```js
+import { promisify } from "util";
 import jwt from "jsonwebtoken";
+
+const signJwt = promisify(jwt.sign);
 
 // Retrieve the secret key from your configuration.
 const secretKey = process.env.SECRET_KEY || "changeme";
@@ -390,27 +393,35 @@ const secretKey = process.env.SECRET_KEY || "changeme";
 const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
 
 // Create and sign a token.
-*jwt.sign({ sub: "userId42", exp: exp }, secretKey, function(err, token) {
+*signJwt({ sub: "userId42", exp: exp }, secretKey).then(token => {
 * // Use the signed token...
 *});
 ```
 
+> The `jsonwebtoken` library uses callbacks instead of Promises. Many libraries
+> retain their callback APIs for backward compatibility and to avoid breaking
+> changes. You can look into [`util.promisify`][util.promisify] if you
+> absolutely want `jwt.verify` or `jwt.sign` to return a Promise.
+
+
+#### Verifying a JWT
+
 Verifying it is just as easy:
 
 ```js
+import { promisify } from "util";
 import jwt from "jsonwebtoken";
+
+const verifyJwt = promisify(jwt.verify);
 
 // Retrieve the secret key from your configuration.
 const secretKey = process.env.SECRET_KEY || "changeme";
 
 // Create and sign a token.
-*jwt.verify(token, secretKey, function(err, payload) {
+*verifyJwt(token, secretKey).then(payload => {
 * // Use the signed token...
 *});
 ```
-
-You will have probably noticed that the `jsonwebtoken` library uses callbacks instead of Promises. Many libraries retain their callback APIs for backward compatibility and to avoid breaking changes. You can look into [`util.promisify`][util.promisify] if you absolutely want `jwt.verify` or `jwt.sign` to return a Promise.
-
 ## Authentication flow
 
 <!-- slide-front-matter class: center, middle -->
@@ -461,45 +472,32 @@ A little help.
 ```js
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { promisify } from "util";
 import User from "../models/user.js";
 
 const secretKey = process.env.SECRET_KEY || "changeme";
+const signJwt = promisify(jwt.sign);
 
 router.post("/login", function (req, res, next) {
-
   // Attempt to find a user with the provided name
-  User.findOne({ name: req.body.name })
-    .exec()
-    .then((`user`) => {
-      // If the user cannot be found, respond with 401 Unauthorized status code
-      if (!user) return res.sendStatus(401);
+  User.findOne({ name: req.body.name }).exec().then(`user` => {
+    if (!user) return res.sendStatus(401); // user not found
 
-      // Compare the provided password with the stored hashed password
-      return bcrypt.compare(req.body.password, user.password)
-        .then((`valid`) => {
-          // If the password comparison fails, respond with 401 Unauthorized status code
-          if (!valid) return res.sendStatus(401);
+    // Compare the provided password with the stored hashed password
+    return bcrypt.compare(req.body.password, user.password).then(`valid` => {
+      if (!valid) return res.sendStatus(401); // wrong password
 
-          // Define JWT expiration: current timestamp + 1 week (in seconds)
-          const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
-          // Create the payload for the JWT, including the user ID and expiration
-          const payload = { sub: `user._id.toString()`, exp: exp };
+      // Define JWT expiration: current timestamp + 1 week (in seconds)
+      const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
+      // Create the payload for the JWT, including the user ID and expiration
+      const payload = { sub: `user._id.toString()`, exp: exp };
 
-          // Sign the JWT and send it to the client
-          jwt.sign(payload, secretKey, function (err, token) {
-            // If an error occurs, pass the error to the next middleware
-            if (err) {
-              return next(err);
-            }
-            // Send the signed JWT to the client as part of the response
-            res.send({ token: token });
-          });
-        });
-    })
-    // If an error occurs, pass the error to the next middleware
-    .catch((err) => {
-      next(err);
+      // Sign the JWT and send it to the client
+      return signJwt(payload, secretKey).then(token => {
+        res.send({ token: token });
+      });
     });
+  }).catch(next);
 });
 ```
 
