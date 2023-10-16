@@ -228,9 +228,7 @@ router.post("/", function(req, res, next) {
     .then(savedUser => {
       res.send(savedUser);
     })
-    .catch(err => {
-      next(err);
-    });
+    .catch(next);
 });
 
 ```
@@ -271,10 +269,10 @@ The asynchronous callback will be called with **a boolean indicating whether the
 
 ```js
   bcrypt.compare(plainPassword, hashedPassword)
-    .then((valid) => {
+    .then(valid => {
       // Do something depending on password validity
     })
-    .catch((err) => {
+    .catch(err => {
       // Handle Promise rejection
     });
 ```
@@ -291,17 +289,15 @@ import User from "../models/user.js";
 router.post("/login", function (req, res, next) {
   `User.findOne`({ name: req.body.name })
     .exec()
-    .then((user) => {
+    .then(user => {
       if (!user) return res.sendStatus(401); // Unauthorized
-      return `bcrypt.compare(req.body.password, user.password)`.then((valid) => {
+      return `bcrypt.compare(req.body.password, user.password)`.then(valid => {
         if (!valid) return res.sendStatus(401); // Unauthorized
         // Login is valid...
         res.send(\`Welcome ${user.name}!`);
       });
     })
-    .catch((err) => {
-      next(err);
-    });
+    .catch(next);
 });
 ```
 
@@ -382,7 +378,10 @@ For example, a very simple token might only contain `sub` to indicate the authen
 Generating a JWT is trivial with the `jsonwebtoken` npm package:
 
 ```js
+import { promisify } from "util";
 import jwt from "jsonwebtoken";
+
+const signJwt = promisify(jwt.sign);
 
 // Retrieve the secret key from your configuration.
 const secretKey = process.env.SECRET_KEY || "changeme";
@@ -390,27 +389,35 @@ const secretKey = process.env.SECRET_KEY || "changeme";
 const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
 
 // Create and sign a token.
-*jwt.sign({ sub: "userId42", exp: exp }, secretKey, function(err, token) {
+*signJwt({ sub: "userId42", exp: exp }, secretKey).then(token => {
 * // Use the signed token...
 *});
 ```
 
+> The `jsonwebtoken` library uses callbacks instead of Promises. Many libraries
+> retain their callback APIs for backward compatibility and to avoid breaking
+> changes. Use [`util.promisify`][util.promisify] to convert `jwt.sign` and
+> `jwt.verify` to return Promises.
+
+
+#### Verifying a JWT
+
 Verifying it is just as easy:
 
 ```js
+import { promisify } from "util";
 import jwt from "jsonwebtoken";
+
+const verifyJwt = promisify(jwt.verify);
 
 // Retrieve the secret key from your configuration.
 const secretKey = process.env.SECRET_KEY || "changeme";
 
 // Create and sign a token.
-*jwt.verify(token, secretKey, function(err, payload) {
+*verifyJwt(token, secretKey).then(payload => {
 * // Use the signed token...
 *});
 ```
-
-You will have probably noticed that the `jsonwebtoken` library uses callbacks instead of Promises. Many libraries retain their callback APIs for backward compatibility and to avoid breaking changes. You can look into [`util.promisify`][util.promisify] if you absolutely want `jwt.verify` or `jwt.sign` to return a Promise.
-
 ## Authentication flow
 
 <!-- slide-front-matter class: center, middle -->
@@ -459,55 +466,44 @@ A little help.
 ### Sample login route
 
 ```js
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import User from "../models/user.js";
+import bcrypt from "bcrypt"; import jwt from "jsonwebtoken";
+import { promisify } from "util"; import User from "../models/user.js";
 
+const signJwt = promisify(jwt.sign);
 const secretKey = process.env.SECRET_KEY || "changeme";
 
 router.post("/login", function (req, res, next) {
-
   // Attempt to find a user with the provided name
-  User.findOne({ name: req.body.name })
-    .exec()
-    .then((`user`) => {
-      // If the user cannot be found, respond with 401 Unauthorized status code
-      if (!user) return res.sendStatus(401);
+  User.findOne({ name: req.body.name }).exec().then(`user` => {
+    if (!user) return res.sendStatus(401); // user not found
 
-      // Compare the provided password with the stored hashed password
-      return bcrypt.compare(req.body.password, user.password)
-        .then((`valid`) => {
-          // If the password comparison fails, respond with 401 Unauthorized status code
-          if (!valid) return res.sendStatus(401);
+    // Compare the provided password with the stored hashed password
+    return bcrypt.compare(req.body.password, user.password).then(`valid` => {
+      if (!valid) return res.sendStatus(401); // wrong password
 
-          // Define JWT expiration: current timestamp + 1 week (in seconds)
-          const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
-          // Create the payload for the JWT, including the user ID and expiration
-          const payload = { sub: `user._id.toString()`, exp: exp };
+      // Define JWT expiration: current time + 1 week (in seconds)
+      const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
+      // Create the payload for the JWT including the user ID and expiration
+      const payload = { sub: `user._id.toString()`, exp: exp };
 
-          // Sign the JWT and send it to the client
-          jwt.sign(payload, secretKey, function (err, token) {
-            // If an error occurs, pass the error to the next middleware
-            if (err) {
-              return next(err);
-            }
-            // Send the signed JWT to the client as part of the response
-            res.send({ token: token });
-          });
-        });
-    })
-    // If an error occurs, pass the error to the next middleware
-    .catch((err) => {
-      next(err);
+      // Sign the JWT and send it to the client
+      return signJwt(payload, secretKey).then(token => {
+        res.send({ token });
+      });
     });
+  }).catch(next);
 });
 ```
 
 ### Sample Express JWT authentication middleware
 
 ```js
+import jwt from "jsonwebtoken";
+import { promisify } from "util";
 import User from "../models/user.js";
+
 const secretKey = process.env.SECRET_KEY || "changeme";
+const verifyJwt = promisify(jwt.verify);
 
 function authenticate(req, res, next) {
   // Ensure the header is present.
@@ -522,13 +518,11 @@ function authenticate(req, res, next) {
   }
   // Extract and verify the JWT.
   const token = match[1];
-  jwt.verify(token, secretKey, function(err, payload) {
-    if (err) {
-      return res.status(401).send("Your token is invalid or has expired");
-    } else {
-      req.currentUserId = payload.sub;
-      next(); // Pass the ID of the authenticated user to the next middleware.
-    }
+  verifyJwt(token, secretKey).then(payload => {
+    req.currentUserId = payload.sub;
+    next(); // Pass the ID of the authenticated user to the next middleware.
+  }).catch(() => {
+    res.status(401).send("Your token is invalid or has expired");
   });
 }
 ```
@@ -579,7 +573,7 @@ Here's an example of how you could do that:
 router.put("/things/:id", `authenticate`, function(req, res, next) {
   // Get the thing.
   Thing.findById(req.params.id).exec()
-    .then((thing) => {
+    .then(thing => {
       // Check authorization: was this thing created by the authenticated
       // user (good), or by another user (bad)?
       if (`req.currentUserId !== thing.user.toString()`) {
@@ -587,9 +581,7 @@ router.put("/things/:id", `authenticate`, function(req, res, next) {
       }
       // Do what needs to be done...
     })
-    .catch(err => {
-      next(err);
-    });
+    .catch(next);
 });
 ```
 
@@ -610,10 +602,9 @@ const payload = {
 * scope: "admin" // Include permissions in the payload.
 };
 
-jwt.sign(payload, secretKey, function(err, token) {
-  if (err) { return next(err); }
-  res.send({ token: token }); // Send the token to the client.
-});
+signJwt(payload, secretKey).then(token => {
+  res.send({ token }); // Send the token to the client.
+}).catch(next);
 ```
 
 > The `scope` claim is an officially [registered claim][jwt-claims] which was
@@ -628,21 +619,17 @@ the subject. You could modify the `authenticate` middleware to do this:
 ```js
 // Extract and verify the JWT.
 const token = match[1];
-jwt.verify(token, secretKey, function(err, payload) {
-  if (err) {
-    return res.status(401).send("Your token is invalid or has expired");
-  } else {
+verifyJwt(token, secretKey).then(payload => {
+  // Attach authentication information to the request for the next middleware.
+  req.currentUserId = payload.sub;
 
-    // Attach authentication information to the
-    // request for the next middleware.
-    req.currentUserId = payload.sub;
+* // Obtain the list of permissions from the "scope" claim.
+* const scope = payload.scope;
+* req.currentUserPermissions = scope ? scope.split(" ") : [];
 
-*   // Obtain the list of permissions from the "scope" claim.
-*   const scope = payload.scope;
-*   req.currentUserPermissions = scope ? scope.split(" ") : [];
-
-    next();
-  }
+  next();
+}).catch(() => {
+  res.status(401).send("Your token is invalid or has expired");
 });
 ```
 
@@ -708,7 +695,7 @@ router.put("/things/:id", `authenticate`, function (req, res, next) {
   // Get the thing.
   Thing.findById(req.params.id)
     .exec()
-    .then((thing) => {
+    .then(thing => {
 *     // The user is authorized to edit the thing only if he or she is
 *     // the owner of the thing, or if he or she is an administrator.
 *     const authorized =
@@ -721,7 +708,7 @@ router.put("/things/:id", `authenticate`, function (req, res, next) {
 
       // Do what needs to be done...
     })
-    .catch((err) => next(err));
+    .catch(next);
 });
 ```
 
