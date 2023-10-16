@@ -152,11 +152,11 @@ routes:
 
 ```js
 describe('POST /users', function() {
-  test('should create a user');
+  test.todo('should create a user');
 });
 
 describe('GET /users', function() {
-  test('should retrieve the list of users');
+  test.todo('should retrieve the list of users');
 });
 ```
 
