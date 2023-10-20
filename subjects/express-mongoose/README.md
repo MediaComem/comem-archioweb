@@ -632,7 +632,7 @@ Operator   | Description
 
 
 [demo]: https://github.com/MediaComem/comem-rest-demo
-[demo-doc]: https://mediacomem.github.io/comem-rest-demo/
+[demo-doc]: https://demo.archioweb.ch
 [demo-res]: https://github.com/MediaComem/comem-rest-demo#resources
 [express]: https://expressjs.com
 [format-link-header]: https://www.npmjs.com/package/format-link-header
