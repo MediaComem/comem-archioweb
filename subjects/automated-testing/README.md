@@ -284,8 +284,10 @@ Unit tests may **reduce uncertainty** in the units themselves.
 #### Disadvantages of unit tests
 
 Unit tests **will not catch every error in the program**, because they cannot
-evaluate every execution path in any but the most trivial programs. They will
-not catch integration errors or broader system-level errors.
+evaluate every execution path in any but the most trivial programs. [They will
+not catch integration
+errors](https://www.wovenware.com/blog/2020/11/unit-integration-testing/) or
+broader system-level errors.
 
 Software testing is a combinatorial problem. For every logical branch (true or
 false), a test case must be written, which is quite time-consuming and might not
