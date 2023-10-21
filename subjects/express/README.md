@@ -292,7 +292,7 @@ and memory. You can make it watch **only relevant files** by adding a
     "watch": [
       "app.js",
       "bin/start.js",
-      "roujtes/**/*"
+      "routes/**/*"
     ]
 }
 ```
