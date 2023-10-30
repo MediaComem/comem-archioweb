@@ -225,7 +225,7 @@ like this:
 
 ```json
 "scripts": {
-  "test": "cross-env LOCAL_MONGODB_URI=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest"
+  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test node --experimental-vm-modules node_modules/.bin/jest"
 }
 ```
 
@@ -257,9 +257,9 @@ top:
 import supertest from "supertest"
 ```
 
-You will also import your Express.js application, which presumably is exported from the
-`app.js` file at the root of your repository. Add the following line to import
-it:
+You will also import your Express.js application, which presumably is exported
+from the `app.js` file at the root of your repository. Add the following line to
+import it:
 
 ```js
 import app from "../app.js"
@@ -600,7 +600,7 @@ Make some assertions on the request body:
 
 ```js
 expect(res.body).toBeArray();
-expect(res.body).toHaveLengthOf(0);
+expect(res.body).toHaveLength(0);
 ```
 
 
@@ -617,23 +617,28 @@ can add it to `spec/utils.js`:
 
 ```js
 import jwt from "jsonwebtoken"
+import { promisify } from "util";
+import { jwtSecret } from "../config.js;
+
+const signJwt = promisify(jwt.sign);
+
 // ...
 export function generateValidJwt(user) {
   // Generate a valid JWT which expires in 7 days.
   const exp = (new Date().getTime() + 7 * 24 * 3600 * 1000) / 1000;
   const claims = { sub: user._id.toString(), exp: exp };
-  return new Promise((resolve, reject) => {
-    jwt.sign(claims, process.env.SECRET_KEY, function(err, token) {
-      if (err) {
-        return reject(err);
-      }
-      resolve(token);
-    });
-  });
+  return signJwt(claims, jwtSecret);
 }
 ```
 
-But you need a pre-existing user in the database before you can generate a token. And the database is currently empty when the test runs since it is cleaned before each test runs.
+> Note that this code assumes that you have a `config.js` file from which you
+> export a `jwtSecret` variable with which JWTs are signed.
+
+But you need a pre-existing user in the database before you can generate a
+token. And the database is currently empty when the test runs since it is
+cleaned before each test runs.
+
+
 
 ## Test fixtures
 
