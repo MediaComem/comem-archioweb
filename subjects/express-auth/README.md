@@ -34,6 +34,7 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
     - [JWT claims](#jwt-claims)
     - [JWT best practices](#jwt-best-practices)
   - [The `jsonwebtoken` package](#the-jsonwebtoken-package)
+    - [Verifying a JWT](#verifying-a-jwt)
 - [Authentication flow](#authentication-flow)
     - [Unauthorized client](#unauthorized-client)
     - [Login](#login)
@@ -52,7 +53,6 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
     - [Enforcing roles](#enforcing-roles)
     - [Augmenting permissions](#augmenting-permissions)
 - [References](#references)
-- [TODO](#todo)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

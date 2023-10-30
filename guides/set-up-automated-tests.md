@@ -237,6 +237,10 @@ will modify a separate database without touching your development data.
 > You could normally use `mongodb://localhost/my-app-test` for the database
 > URL, but it does not seem to work on Windows for some reason.
 
+> If your application needs any other environment variable, such as a secret to
+> sign JWTs, you may provide as many variables as you need with `cross-env`, for
+> example: `cross-env DATABASE_URL=... JWT_SECRET=... command...`.
+
 
 
 ## Write your first test

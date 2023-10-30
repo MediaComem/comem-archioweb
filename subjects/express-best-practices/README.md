@@ -27,7 +27,13 @@ Learn best development practices for [Express][express] web applications.
 - [Avoid repetition with middleware](#avoid-repetition-with-middleware)
   - [Writing middleware functions for common tasks](#writing-middleware-functions-for-common-tasks)
   - [Plugging your middleware function into routes](#plugging-your-middleware-function-into-routes)
-- [TODO](#todo)
+- [Handling Promises](#handling-promises)
+  - [Handling Promises using `async/await`](#handling-promises-using-asyncawait)
+  - [Async Handler wrapper function](#async-handler-wrapper-function)
+  - [Using `asyncHandler` wrapper function](#using-asynchandler-wrapper-function)
+- [Error Handling](#error-handling)
+  - [MongoDB errors](#mongodb-errors)
+  - [Handling specific errors](#handling-specific-errors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
