@@ -84,9 +84,9 @@ function onMessageReceived(ws, message) {
 
 ## Create the WebSocket server
 
-You should import the WebSocket file in `bin/www.js` since that is where the HTTP
-server is created. Adding the following code will plug the WebSocket server into
-the HTTP server:
+You should import the WebSocket file in `bin/start.js` since that is where the
+HTTP server is created. Adding the following code will plug the WebSocket server
+into the HTTP server:
 
 ```js
 import { createWebSocketServer } from '../messaging.js';
