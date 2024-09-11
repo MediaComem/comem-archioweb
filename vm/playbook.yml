@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: true
+
+  vars:
+    server_name: archioweb.ch
+
+  roles:
+    - role: docker
+
+  tasks:
+    - name: Set hostname
+      hostname:
+        name: '{{ server_name }}'
