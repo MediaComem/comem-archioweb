@@ -37,3 +37,4 @@
 
 - name: Make sure Docker works
   command: docker run --rm hello-world
+  changed_when: false

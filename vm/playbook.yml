@@ -21,3 +21,20 @@
         group: root
         mode: 0755
       tags: [motd]
+
+    - name: Create Docker Compose directory
+      file:
+        path: /srv/archioweb
+        owner: root
+        group: root
+        mode: 0750
+        state: directory
+      tags: [archioweb]
+
+    - name: Copy Docker Compose configuration
+      copy:
+        src: compose.yml
+        dest: /srv/archioweb/compose.yml
+        owner: root
+        group: root
+      tags: [archioweb]
