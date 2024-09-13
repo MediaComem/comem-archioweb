@@ -84,6 +84,7 @@ pre:first-child, blockquote:first-child {
 
 blockquote {
   font-style: italic;
+  font-size: 0.9em;
   border-left: 5px solid khaki;
   margin-left: 0;
   padding-left: 35px;

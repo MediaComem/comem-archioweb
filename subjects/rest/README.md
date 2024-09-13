@@ -814,14 +814,13 @@ You should see the response below the request:
 
 <img src='images/postman-create-response.png' width='100%' />
 
-> "The [**POST** method][post] is used to request that the origin server accept
-> the entity enclosed in the request as a **new subordinate** of the resource
-> identified by the Request-URI in the Request-Line."
-
-> "If a resource has been **created** on the origin server, the response SHOULD
-> be [`201 Created`][201] and contain an entity which describes the status of
-> the request and refers to the new resource, and a [`Location`
-> header][location]."
+> The [**POST** method][post] can be used to create a new resource that has yet
+> to be identified by the origin server. If one or more resources has been
+> **created** on the origin server as a result of successfully processing a POST
+> request, the origin server SHOULD send a [`201 Created`][201] response
+> containing a [`Location` header][location] field that provides an identifier
+> for the primary resource created and a representation that describes the
+> status of the request while referring to the new resource(s).
 
 In other words: the server tells us that **a new person has been created** by
 responding with the status code `201 Created` and the person's data.
@@ -832,9 +831,10 @@ You can also see the response headers in the **Headers** tab:
 
 <img src='images/postman-create-response-headers.png' width='100%' />
 
-> "If a resource has been **created** [...] the response SHOULD [...] contain a
-> **Location header**. For 201 Created responses, the Location is that of the
-> new resource which was created by the request."
+> If one or more resources has been **created** on the origin server as a result
+> of successfully processing a POST request, the origin server SHOULD send a
+> [`201 Created`][201] response containing a [**`Location` header**][location]
+> field that provides an identifier for the primary resource created.
 
 The server tells us where to find the new resource in the **Location** header.
 
@@ -861,8 +861,12 @@ Press **Send** and you should retrieve the person in the response:
 
 <img src='images/postman-read-single-response.png' width='100%' />
 
-> "The [**GET** method][get] means retrieve whatever information (in the form of
-> an entity) is identified by the Request-URI."
+> The [**GET** method][get] requests transfer of a current selected
+> representation for the target resource. [...] Retrieving identifiable
+> information via HTTP is usually performed by making a GET request on an
+> identifier associated with the potential for providing that information in a
+> [`200 OK`][200] response. GET is the primary mechanism of information
+> retrieval.
 
 Basically, the server is sending us the **JSON representation** of the
 `/api/people/5f5...037` resource. The [`200 OK`][200] status code indicates that
@@ -933,14 +937,13 @@ Press **Send** and you should receive the updated person in the response:
 
 <img src='images/postman-update-response.png' width='100%' />
 
-> "The [**PUT** method][put] requests that the enclosed **entity** be stored
-> under the supplied Request-URI. If the Request-URI refers to an **already
-> existing resource**, the enclosed entity SHOULD be considered as a **modified
-> version** of the one residing on the origin server."
-
-> "If an existing resource is modified, either the [`200 OK`][200] or [`204 No
-> Content`][204] response codes SHOULD be sent to indicate successful completion
-> of the request."
+> The [**PUT** method][put] requests that the state of the target resource be
+> **created or replaced** with the state defined by the representation enclosed
+> in the request message content. [...] If the target resource does have a
+> current representation and that representation is successfully modified in
+> accordance with the state of the enclosed representation, then the origin
+> server MUST send either a [`200 OK`][200] or a [`204 No Content`][204]
+> response to indicate successful completion of the request.
 
 Basically, we **replaced** the person's data with the representation we sent.
 Since no new resource was created, the server simply responds with `200 OK`.
@@ -1024,13 +1027,13 @@ body:
 
 <img src='images/postman-delete-response.png' width='100%' />
 
-> "The [`DELETE` method][delete] requests that the origin server **delete the
-> resource** identified by the Request-URI."
-
-> "A successful response SHOULD be [`200 OK`][200] if the response includes an
-> entity describing the status, [`202 Accepted`][202] if the action has not yet
-> been enacted, or [**`204 No Content`**][204] if the action has been enacted
-> but **the response does not include an entity**."
+> The [`DELETE` method][delete] [...] expresses a deletion operation [...]. If
+> the method is successfully applied, the origin server SHOULD send a [`202
+> Accepted`][202] status code if the action will likely succeed but has not yet
+> been enacted, a [`204 No Content`][204] status code if the action has been
+> enacted and **no further information is to be supplied**, or a [`200 OK`][200]
+> status code if the action has been enacted and the response message includes a
+> representation describing the status.
 
 The server has **successfully deleted the person resource** and is not sending
 us any additional data as indicated by the `204 No Content` status code.
