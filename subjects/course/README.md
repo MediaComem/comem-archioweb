@@ -7,7 +7,6 @@ will:
 * Learn the **core principles** of the REST architectural style.
 * Learn how to **implement** a RESTful API in JavaScript with Node.js.
 * **Deploy** your REST API on a cloud application platform.
-* Add a **real-time** component to your REST API with WebSockets.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->

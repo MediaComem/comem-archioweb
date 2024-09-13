@@ -7,7 +7,6 @@ will:
 * Learn the **core principles** of the REST architectural style.
 * Learn how to **implement** a REST API in JavaScript with Node.js.
 * **Deploy** your REST API on a cloud application platform.
-* Add a **real-time** component to your REST API with WebSockets.
 * Write **documentation** and **automated tests** for your REST API.
 
 This course is a [COMEM+][comem] web development course taught at
@@ -72,13 +71,7 @@ This course is a [COMEM+][comem] web development course taught at
   * [Automated Testing](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Guide:* set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
 
-* Real-time communication
-  * [WebSockets](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/ws?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Exercise:* implement real-time communication in a tic-tac-toe web game][tictactoe]
-    * [*Guide:* add a WebSocket server to an Express.js application](./guides/express-wss.md)
-
 * *Extras*
-  * [Web Application Messaging Protocol (WAMP)](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/wamp?home=MediaComem%2Fcomem-archioweb%23readme)
   * [*Guide:* the many worlds of asynchronous JavaScript](./guides/async-js.md)
 
 
@@ -93,7 +86,6 @@ This course is a [COMEM+][comem] web development course taught at
 * [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 * [MongoDB][mongodb]
 * A free [Render][render] account
-* [A WebSocket web client][msg-central]
 
 
 
@@ -156,27 +148,6 @@ Your REST API must be developed with the [Express][express] framework and use a
 
       There must be at least one operation in the API which limits the
       permissions of authenticated users.
-
-**Real-time API**
-
-The API must have a real-time component:
-
-* *One or the other* of the following must be provided:
-  * A `ws://` or `wss://` endpoint to which a plain WebSockets client can
-    connect to receive real-time messages.
-  * A WAMP topic or topics to which a Subscriber can subscribe to receive
-    real-time messages.
-* The WebSockets endpoint or WAMP topic must send real-time messages
-  containing relevant data for the application. The data contained in the
-  messages must be structured (e.g. JSON), not plain text.
-
-  For example, a chat application may notify its clients in real-time of the
-  number of channels, messages, etc, to display activity on the home page.
-* The API must send at least two types of real-time messages (e.g. information
-  about two different resources, or different operations on the same
-  resource).
-* The WebSockets endpoint or WAMP topic may be unprotected (i.e. implementing
-  authentication or authorization is not mandatory).
 
 **Infrastructure**
 
@@ -375,7 +346,5 @@ the end of each subject.
 [jwt]: https://jwt.io/
 [mongodb]: https://www.mongodb.com
 [mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
-[msg-central]: https://msg-central.herokuapp.com
 [node]: https://nodejs.org/
 [postman]: https://www.getpostman.com
-[tictactoe]: https://github.com/MediaComem/comem-archioweb-tictactoe
