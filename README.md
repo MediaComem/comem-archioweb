@@ -166,11 +166,6 @@ Your REST API must be developed with the [Express][express] framework and use a
 
   You may but do not have to document the 500 Internal Server Error response,
   which is considered to always be a possible response to any request.
-* The real-time component of your API must be documented (not necessarily in the
-  same format as the REST API documentation).
-
-  By reading the documentation, the user must know how to connect to the
-  real-time endpoint(s), what data will be sent through and when.
 
 **Automated testing**
 
