@@ -1,5 +1,5 @@
 production:
   hosts:
     archioweb:
-      ansible_host: 192.168.64.3
+      ansible_host: 192.168.65.7
       ansible_user: ubuntu

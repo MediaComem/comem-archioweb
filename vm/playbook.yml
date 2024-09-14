@@ -7,6 +7,7 @@
 
   roles:
     - role: docker
+    - role: ufw
 
   tasks:
     - name: Set hostname

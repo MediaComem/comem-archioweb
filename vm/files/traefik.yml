@@ -1,0 +1,19 @@
+accessLog: {}
+
+api: {}
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: simon.oulevay@heig-vd.ch
+      storage: /var/lib/traefik/acme.json
+      tlsChallenge: {}
+
+entryPoints:
+  public-http:
+    address: ':80'
+  public-https:
+    address: ':443'
+
+log:
+  level: INFO
