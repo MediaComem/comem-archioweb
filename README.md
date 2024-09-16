@@ -37,7 +37,7 @@ This course is a [COMEM+][comem] web development course taught at
 * Basics
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercise*](./exercises/rest.md)
-  * [JavaScript](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
+  * [*Extra:* JavaScript](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/javascript.md)
     * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
