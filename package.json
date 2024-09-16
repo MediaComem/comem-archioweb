@@ -4,11 +4,11 @@
   "version": "1.0.0",
   "description": "Materials for the COMEM+ web-oriented architecture course",
   "scripts": {
-    "build": "courses-md build",
-    "deploy": "courses-md publish",
+    "build": "cross-env DEBUG=courses-md:* courses-md build",
+    "deploy": "cross-env DEBUG=courses-md:* courses-md publish",
     "doctoc": "doctoc --notitle --github README.md CONTRIBUTING.md exercises/*.md guides/*.md subjects/*/*.md",
-    "start": "courses-md",
-    "watch": "courses-md watch"
+    "start": "cross-env DEBUG=courses-md:* courses-md",
+    "watch": "cross-env DEBUG=courses-md:* courses-md watch"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/MediaComem/comem-archioweb#readme",
   "dependencies": {
     "courses-md": "~0.7.5",
+    "cross-env": "^7.0.3",
     "doctoc": "^2.0.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",
