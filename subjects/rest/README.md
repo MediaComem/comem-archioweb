@@ -682,7 +682,7 @@ Code                    | What the server is telling you
 
 ### Common client error response [status codes][http-status-codes]
 
-<!-- slide-front-matter class: compact-table -->
+<!-- slide-front-matter class: ultra-compact-table -->
 
 Code                         | What the server is telling you
 :---                         | :---

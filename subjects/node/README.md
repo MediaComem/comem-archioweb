@@ -82,21 +82,21 @@ run on your local machine or server.
 
 ### Installation
 
-<p class='center'><img src='images/installation.png' width='80%' /></p>
+<p class='center'><img src='images/installation.png' width='100%' /></p>
 
 
 
 ### Which Node.js version to choose?
 
-<p class='center'><img src='images/lts-schedule.png' width='75%' /></p>
+<p class='center'><img src='images/lts-schedule.svg' width='75%' /></p>
 
-* Odd-numbered versions (e.g. v11, v13, v15, v17, v19) are **unstable** releases
-  with the latest features, and will **no longer be supported after 6-9
+* Odd-numbered versions (e.g. v11, v13, v15, v17, v19, v21) are **unstable**
+  releases with the latest features, and will **no longer be supported after 6-9
   months**.
-* Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20) have [**long
-  term support (LTS)**][node-lts]. They are actively developed for 6 months, but
-  maintained for a total of 30 months (e.g. security fixes). Production
-  applications should use LTS releases.
+* Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20, v22) have (or
+  will have) [**l**ong **t**erm **s**upport (LTS)][node-lts]. They are actively
+  developed for 6 months, but maintained for a total of 30 months (e.g. security
+  fixes). Production applications should use LTS releases.
 
 
 
@@ -107,7 +107,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v20.7.0
+v22.8.0
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -166,7 +166,7 @@ Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
 String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
 Utilities, V8, VM, WASI, Worker threads, Zlib.
 
-> Refer to the [documentation][node-20-api] for more information.
+> Refer to the [documentation][node-22-api] for more information.
 
 
 
@@ -207,7 +207,7 @@ standardized. At the time, there were many module systems in the wild like
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
-Node.js to treat your code as ECMAScript modules][node-20-esm-enabling] by
+Node.js to treat your code as ECMAScript modules][node-22-esm-enabling] by
 naming your files with the `.mjs` extension instead of `.js`. If you have a
 `package.json` file (we'll learn more about these later), you can also set the
 `type` property to `module`.
@@ -225,7 +225,7 @@ function hello(name) {
 hello('World');
 ```
 
-> Since ECMAScript modules are now [natively supported][node-20-esm], we will
+> Since ECMAScript modules are now [natively supported][node-22-esm], we will
 > use them rather than the obsolete `require`.
 
 
@@ -1111,7 +1111,7 @@ server.on('request', function(message) {
 
 **Documentation**
 
-* [Core modules (20.x)][node-20-api]
+* [Core modules (20.x)][node-22-api]
 
 **Further reading**
 
@@ -1124,7 +1124,7 @@ server.on('request', function(message) {
 
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-[commonjs]: https://nodejs.org/docs/latest-v20.x/api/modules.html
+[commonjs]: https://nodejs.org/docs/latest-v22.x/api/modules.html
 [destructuring-assigment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
@@ -1134,13 +1134,13 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-20-api]: https://nodejs.org/docs/latest-v20.x/api/n-api.html
-[node-20-esm]: https://nodejs.org/api/esm.html#modules-ecmascript-modules
-[node-20-esm-enabling]: https://nodejs.org/docs/latest-v20.x/api/packages.html#determining-module-system
+[node-22-api]: https://nodejs.org/docs/latest-v22.x/api/documentation.html
+[node-22-esm]: https://nodejs.org/docs/latest-v22.x/api/esm.html#modules-ecmascript-modules
+[node-22-esm-enabling]: https://nodejs.org/docs/latest-v22.x/api/esm.html#enabling
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
-[node-module-os]: https://nodejs.org/docs/latest-v20.x/api/os.html#os
+[node-module-os]: https://nodejs.org/docs/latest-v22.x/api/os.html
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org
