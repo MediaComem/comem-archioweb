@@ -35,6 +35,8 @@ This course is a [COMEM+][comem] web development course taught at
 * [Introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
 
 * Basics
+  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
+    * [*Exercise*](./exercises/rest.md)
   * [JavaScript](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercises*](./exercises/javascript.md)
     * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -45,8 +47,6 @@ This course is a [COMEM+][comem] web development course taught at
   * [Node.js](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
     * [*Exercises*](./exercises/node.md)
   * [npm](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
-  * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Exercise*](./exercises/rest.md)
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
