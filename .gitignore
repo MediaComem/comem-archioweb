@@ -6,3 +6,5 @@
 /npm-debug.log
 /tmp
 /subjects/**/node_modules
+/.vault-password
+/vm/inventory.*.yml

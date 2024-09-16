@@ -1,6 +1,7 @@
 accessLog: {}
 
-api: {}
+api:
+  dashboard: true
 
 certificatesResolvers:
   letsencrypt:
@@ -16,4 +17,8 @@ entryPoints:
     address: ':443'
 
 log:
-  level: INFO
+  level: DEBUG
+
+providers:
+  docker:
+    exposedByDefault: false

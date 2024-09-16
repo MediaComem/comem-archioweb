@@ -5,16 +5,13 @@
     state: present
   tags: [ufw]
 
-- name: Configure UFW
+- name: Configure UFW TCP ports
   ufw:
     rule: allow
-    port: '{{ item }}'
-    proto: tcp
+    port: '{{ item.port }}'
+    proto: '{{ item.proto }}'
     state: enabled
-  with_items:
-    - 22
-    - 80
-    - 443
+  with_items: '{{ ufw_allow }}'
   tags: [ufw]
 
 - name: Enable UFW

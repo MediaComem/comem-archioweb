@@ -4,10 +4,20 @@
 
   vars:
     server_name: archioweb.ch
+  vars_files:
+    - vars/secrets.vault
 
   roles:
-    - role: docker
     - role: ufw
+      vars:
+        ufw_allow:
+          - proto: tcp
+            port: '{{ server_ssh_port }}'
+          - proto: tcp
+            port: 80
+          - proto: tcp
+            port: 443
+    - role: archioweb
 
   tasks:
     - name: Set hostname
@@ -22,20 +32,3 @@
         group: root
         mode: 0755
       tags: [motd]
-
-    - name: Create Docker Compose directory
-      file:
-        path: /srv/archioweb
-        owner: root
-        group: root
-        mode: 0750
-        state: directory
-      tags: [archioweb]
-
-    - name: Copy Docker Compose configuration
-      copy:
-        src: compose.yml
-        dest: /srv/archioweb/compose.yml
-        owner: root
-        group: root
-      tags: [archioweb]

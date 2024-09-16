@@ -1,0 +1,57 @@
+---
+- name: Create ArchiOWeb directories
+  file:
+    path: '{{ item }}'
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+  with_items:
+    - /srv/archioweb
+    - /srv/archioweb/rp
+  tags: [archioweb]
+
+- name: Copy ArchiOWeb Docker Compose file
+  copy:
+    src: compose.yml
+    dest: /srv/archioweb/compose.yml
+    owner: root
+    group: root
+  tags: [archioweb]
+
+- name: Set up ArchiOWeb environment file
+  template:
+    src: .env
+    dest: /srv/archioweb/.env
+    mode: 0640
+    owner: root
+    group: root
+  tags: [archioweb]
+
+- name: Copy ArchiOWeb reverse proxy service configuration files
+  copy:
+    src: 'rp/{{ item }}'
+    dest: '/srv/archioweb/rp/{{ item }}'
+    owner: root
+    group: root
+  with_items:
+    - traefik.yml
+  tags: [archioweb]
+
+- name: Copy ArchiOWeb reverse proxy service password file
+  copy:
+    content: '{{ archioweb_rp_htpasswd }}'
+    dest: '/srv/archioweb/rp/htpasswd'
+    mode: 0640
+    owner: root
+    group: root
+  with_items:
+    - traefik.yml
+  tags: [archioweb]
+
+- name: Deploy ArchiOWeb services
+  community.docker.docker_compose_v2:
+    project_src: /srv/archioweb
+    remove_orphans: true
+    state: present
+  tags: [archioweb]

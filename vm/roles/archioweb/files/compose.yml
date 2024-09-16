@@ -1,0 +1,76 @@
+name: archioweb
+
+services:
+  rp:
+    image: 'traefik:v3.1'
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.rp-dashboard.entrypoints=public-https'
+      - 'traefik.http.routers.rp-dashboard.rule=Host(`rp.archioweb.ch`)'
+      - 'traefik.http.routers.rp-dashboard.middlewares=rp-dashboard-auth'
+      - 'traefik.http.routers.rp-dashboard.service=api@internal'
+      - 'traefik.http.routers.rp-dashboard.tls=true'
+      - 'traefik.http.routers.rp-dashboard.tls.certresolver=letsencrypt'
+      - 'traefik.http.middlewares.rp-dashboard-auth.basicauth.usersFile=/etc/traefik/htpasswd'
+      - 'traefik.http.middlewares.rp-dashboard-auth.basicauth.realm=Protected'
+      # Dummy service for Swarm port detection. The port can be any valid
+      # integer value.
+      - 'traefik.http.services.rp-dashboard.loadbalancer.server.port=9999'
+    networks:
+      - demo-web
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: unless-stopped
+    volumes:
+      - 'rp-data:/var/lib/traefik:rw'
+      - '/srv/archioweb/rp/htpasswd:/etc/traefik/htpasswd:ro'
+      - '/srv/archioweb/rp/traefik.yml:/etc/traefik/traefik.yml:ro'
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+
+  demo-app:
+    image: 'ghcr.io/mediacomem/comem-rest-demo:2.0.2'
+    depends_on:
+      - demo-db
+    environment:
+      - AUTH_TOKEN
+      - BASE_URL=https://demo.archioweb.ch
+      - DATABASE_URL=mongodb://demo-db:27017/demo
+      - DEBUG=demo:*
+    init: true
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=archioweb_demo-web'
+
+      - 'traefik.http.routers.archioweb-demo-insecure.entrypoints=public-http'
+      - 'traefik.http.routers.archioweb-demo-insecure.rule=Host(`demo.archioweb.ch`)'
+      - 'traefik.http.routers.archioweb-demo-insecure.middlewares=archioweb-demo-insecure-redirect'
+      - 'traefik.http.middlewares.archioweb-demo-insecure-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.archioweb-demo-insecure-redirect.redirectscheme.permanent=true'
+
+      - 'traefik.http.routers.archioweb-demo.entrypoints=public-https'
+      - 'traefik.http.routers.archioweb-demo.rule=Host(`demo.archioweb.ch`)'
+      - 'traefik.http.routers.archioweb-demo.tls=true'
+      - 'traefik.http.routers.archioweb-demo.tls.certresolver=letsencrypt'
+    networks:
+      - demo-db
+      - demo-web
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+
+  demo-db:
+    image: mongo:7.0.14
+    networks:
+      - demo-db
+    restart: unless-stopped
+    volumes:
+      - demo-db-data:/data/db
+
+networks:
+  demo-db:
+  demo-web:
+
+volumes:
+  demo-db-data:
+  rp-data:
