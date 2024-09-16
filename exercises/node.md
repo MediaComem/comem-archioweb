@@ -126,7 +126,7 @@ You may find the following documentation useful:
 * [Lodash](https://lodash.com)
 * [Lodash's documentation](https://lodash.com/docs/4.17.15)
 * [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
-* [Theory on npm](https://mediacomem.github.io/comem-archioweb/2023-2024/subjects/npm/?home=MediaComem%2Fcomem-archioweb%23readme#1)
+* [Theory on npm](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/npm/?home=MediaComem%2Fcomem-archioweb%23readme#1)
 
 
 
