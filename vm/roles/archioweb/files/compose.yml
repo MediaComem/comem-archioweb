@@ -29,7 +29,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
 
   demo-app:
-    image: 'ghcr.io/mediacomem/comem-rest-demo:2.0.2'
+    image: 'ghcr.io/mediacomem/comem-rest-demo:2.1.0'
     depends_on:
       - demo-db
     environment:
