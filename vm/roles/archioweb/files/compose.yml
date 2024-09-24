@@ -18,6 +18,7 @@ services:
       - 'traefik.http.services.rp-dashboard.loadbalancer.server.port=9999'
     networks:
       - demo-web
+      - express-exercise-web
     ports:
       - '80:80'
       - '443:443'
@@ -65,9 +66,33 @@ services:
     volumes:
       - demo-db-data:/data/db
 
+  express-exercise:
+    image: 'ghcr.io/mediacomem/comem-archioweb-express-exercise:1.0.1'
+    environment:
+      - DEBUG=archioweb:express:*
+    init: true
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=archioweb_express-exercise-web'
+
+      - 'traefik.http.routers.archioweb-express-exercise-insecure.entrypoints=public-http'
+      - 'traefik.http.routers.archioweb-express-exercise-insecure.rule=Host(`express.archioweb.ch`)'
+      - 'traefik.http.routers.archioweb-express-exercise-insecure.middlewares=archioweb-express-exercise-insecure-redirect'
+      - 'traefik.http.middlewares.archioweb-express-exercise-insecure-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.archioweb-express-exercise-insecure-redirect.redirectscheme.permanent=true'
+
+      - 'traefik.http.routers.archioweb-express-exercise.entrypoints=public-https'
+      - 'traefik.http.routers.archioweb-express-exercise.rule=Host(`express.archioweb.ch`)'
+      - 'traefik.http.routers.archioweb-express-exercise.tls=true'
+      - 'traefik.http.routers.archioweb-express-exercise.tls.certresolver=letsencrypt'
+    networks:
+      - express-exercise-web
+    restart: unless-stopped
+
 networks:
   demo-db:
   demo-web:
+  express-exercise-web:
 
 volumes:
   demo-db-data:
