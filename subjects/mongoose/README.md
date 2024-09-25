@@ -576,7 +576,7 @@ my-app@0.0.0 /path/to/projects/my-app
 ...
 ```
 
-Open `app.js` and add these three lines below the first calls to `import`:
+Open `app.js` and add these two lines below the first calls to `import`:
 
 ```js
 import mongoose from 'mongoose';
