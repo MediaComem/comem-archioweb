@@ -1,0 +1,17 @@
+pane_frames false
+
+layout {
+  pane split_direction="vertical" {
+    pane size="60%"
+
+    pane split_direction="horizontal" {
+      pane command="npm" {
+        args "start"
+      }
+
+      pane command="npm" start_suspended=true {
+        args "run" "doctoc"
+      }
+    }
+  }
+}
