@@ -183,8 +183,8 @@ You run the MongoDB shell by launching the `mongosh` executable.
 $> mongosh
 Current Mongosh Log ID:	6310b4b33ec62956119c999a
 Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
-Using MongoDB:		7.0.0
-Using Mongosh:		2.0.1
+Using MongoDB:		7.0.14
+Using Mongosh:		2.3.1
 ...
 test>
 ```
@@ -232,8 +232,8 @@ commands**.
 ```bash
 $> mongosh
 connecting to: mongodb://127.0.0.1:27017
-Using MongoDB: 7.0.0
-Using Mongosh: 2.0.1
+Using MongoDB: 7.0.14
+Using Mongosh: 2.3.1
 ...
 test>
 ```
@@ -399,8 +399,8 @@ Then try running `mongod.exe` again in that shell and see if it fixes the issue.
 [brew]: https://brew.sh
 [mongod]: https://www.mongodb.com/docs/manual/reference/program/mongod/#mongodb-binary-bin.mongod
 [mongosh]: https://www.mongodb.com/docs/mongodb-shell/
-[mongosh-download]:https://downloads.mongodb.com/compass/mongosh-2.0.1-x64.msi
+[mongosh-download]: https://downloads.mongodb.com/compass/mongosh-2.3.1-x64.msi
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
-[mongodb-download]: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.2-signed.msi
+[mongodb-download]: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-7.0.14-signed.msi
 [installation-instructions]: https://docs.mongodb.com/manual/installation/
