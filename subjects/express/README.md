@@ -4,7 +4,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 **You will need**
 
-- [Node.js][node] 18+
+- [Node.js][node] 20+
 - [Google Chrome][chrome] (recommended, any browser with developer tools will do)
 - [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 
