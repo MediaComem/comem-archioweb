@@ -67,7 +67,7 @@ services:
       - demo-db-data:/data/db
 
   express-exercise:
-    image: 'ghcr.io/mediacomem/comem-archioweb-express-exercise:1.0.1'
+    image: 'ghcr.io/mediacomem/comem-archioweb-express-exercise:1.0.2'
     environment:
       - DEBUG=archioweb:express:*
     init: true
