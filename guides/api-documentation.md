@@ -56,7 +56,7 @@ specification. Here's a short sample document which defines one API route (in
 the YAML format):
 
 ```yml
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   description: "This API is awesome."
   version: "1.0.0"
