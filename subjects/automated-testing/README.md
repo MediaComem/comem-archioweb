@@ -420,10 +420,10 @@ Automated tests provide a sort of **living documentation** of the system:
 Having a good automated test suite **prevents
 [regression][regression-testing]**.
 
-Imagine you had a [magic button](https://youtu.be/OrsT94FJOQc) which you can
-push to check whether everything in the system is still working. It might help
-someone who is not familiar with the code (**that could be you in 6 months**)
-to know that they have not broken the system after making a change.
+Imagine you had a [magic button](https://youtu.be/GZL8-Ywq9qg?feature=shared)
+which you can push to check whether everything in the system is still working.
+It might help someone who is not familiar with the code (**that could be you in
+6 months**) to know that they have not broken the system after making a change.
 
 **Having a good test suite removes fear:** the fear of breaking your system. It
 enables you to move forward and to clean your code whenever you choose, thereby
