@@ -473,8 +473,8 @@ Continue this process until the feature is finalized.
 
 Imagine that you are always working with this process. **At any given point in
 time, virtually all your code is covered by automated tests.** The only code
-that may not yet be fully tested is the one you have been during since the last
-15 minutes.
+that may not yet be fully tested is the one you have been writing during since
+the last 15 minutes.
 
 You will end up with a very high-quality test suite for your project.
 
