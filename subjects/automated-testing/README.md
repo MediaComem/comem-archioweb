@@ -415,6 +415,17 @@ Automated tests provide a sort of **living documentation** of the system:
 
 > Looking at a program's tests can give a basic understanding of its interface.
 
+When you’re in it for the long haul, the effort of implementation will
+eventually be insignificant compared to the cumulated effort of maintenance.
+Therefore:
+
+> "It is more important to reduce the effort of maintenance than it is to reduce
+> the effort of implementation." – [Code
+> Simplicity](https://www.oreilly.com/library/view/code-simplicity/9781449314750/)
+
+Tests help you **ensure your system keeps working over time**, especially when
+making changes.
+
 ### All green!
 
 Having a good automated test suite **prevents
