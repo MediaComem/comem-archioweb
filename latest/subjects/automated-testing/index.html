@@ -3,7 +3,7 @@
   <head>
     <title>Automated Testing (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/03658115c1e3444276d040f43fb93e5072fc3a16/subjects/automated-testing/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/471480479adb803cd76022152e27ab1dd89fa40e/subjects/automated-testing/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -492,6 +492,17 @@ Automated tests provide a sort of **living documentation** of the system:
 
 > Looking at a program's tests can give a basic understanding of its interface.
 
+When you’re in it for the long haul, the effort of implementation will
+eventually be insignificant compared to the cumulated effort of maintenance.
+Therefore:
+
+> "It is more important to reduce the effort of maintenance than it is to reduce
+> the effort of implementation." – [Code
+> Simplicity](https://www.oreilly.com/library/view/code-simplicity/9781449314750/)
+
+Tests help you **ensure your system keeps working over time**, especially when
+making changes.
+
 ---
 ### All green!
 
@@ -500,10 +511,10 @@ Automated tests provide a sort of **living documentation** of the system:
 Having a good automated test suite **prevents
 [regression][regression-testing]**.
 
-Imagine you had a [magic button](https://youtu.be/OrsT94FJOQc) which you can
-push to check whether everything in the system is still working. It might help
-someone who is not familiar with the code (**that could be you in 6 months**)
-to know that they have not broken the system after making a change.
+Imagine you had a [magic button](https://youtu.be/GZL8-Ywq9qg?feature=shared)
+which you can push to check whether everything in the system is still working.
+It might help someone who is not familiar with the code (**that could be you in
+6 months**) to know that they have not broken the system after making a change.
 
 **Having a good test suite removes fear:** the fear of breaking your system. It
 enables you to move forward and to clean your code whenever you choose, thereby
