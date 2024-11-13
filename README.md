@@ -212,8 +212,8 @@ evaluation if implemented correctly. Here are some examples:
 
 ### Delivery
 
-Send an e-mail *no later than __December 1st 2023 at 23:59:59.999 CET__* to
-Simon Oulevay with:
+Send an e-mail *no later than __January 17th 2025 at 23:59:59.999 CET__* to
+Simon Oulevay & Loris Gavillet with:
 
 * The list of group members.
 * The link to your source code repository on GitHub.
@@ -287,7 +287,7 @@ For example, a task like *Implement authentication* could be divided in the foll
 
 You can be as granular as you want in the way you divide and define tasks. You can then assign tasks to people in your team.
 
-**Weeks 4 to 10 will be almost wholly dedicated to the developement of your API.**
+**Week 4 and the following weeks will be almost wholly dedicated to the developement of your API.**
 
 ## References
 
