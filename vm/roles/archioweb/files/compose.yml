@@ -91,7 +91,7 @@ services:
     restart: unless-stopped
 
   qimg-app:
-    image: 'ghcr.io/mediacomem/comem-qimg:2.0.0'
+    image: 'ghcr.io/mediacomem/comem-qimg:2.1.0'
     depends_on:
       - qimg-db
     environment:
