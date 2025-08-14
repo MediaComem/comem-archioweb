@@ -2,10 +2,6 @@
 
 Learn about the various kinds of automated tests.
 
-**Going further**
-
-* [Set up automated testing for an Express.js REST API](https://github.com/MediaComem/comem-archioweb/blob/main/guides/set-up-automated-tests.md)
-
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -42,8 +38,6 @@ Learn about the various kinds of automated tests.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## What is automated testing?
 
 <!-- slide-front-matter class: center, middle -->
@@ -72,10 +66,10 @@ has certain disadvantages:
 
 <!-- slide-column -->
 
-* It is **time-consuming**. Testing a large software application manually can
+- It is **time-consuming**. Testing a large software application manually can
   take hours or even days. You might skip some tests to save time, allowing bugs
   to stay hidden.
-* It is **boring** and **repetitive**. This makes it more likely that you will
+- It is **boring** and **repetitive**. This makes it more likely that you will
   make a mistake while testing and miss a bug.
 
 <!-- slide-column 30 -->
@@ -87,8 +81,8 @@ has certain disadvantages:
 <!-- slide-column -->
 
 Running functions, making HTTP calls or clicking on specific buttons does not
-have to be done by a human being. A program can do it just as well, *and it will
-never get bored doing it*.
+have to be done by a human being. A program can do it just as well, _and it will
+never get bored doing it_.
 
 <!-- slide-column 35 -->
 
@@ -99,9 +93,9 @@ never get bored doing it*.
 [**Test automation**][automated-tests] is the use of special **testing
 software**:
 
-* The test software is **separate from the software being tested**.
-* It **executes tests automatically** instead of manually.
-* It compares **actual outcomes** (what actually happens) versus **expected**
+- The test software is **separate from the software being tested**.
+- It **executes tests automatically** instead of manually.
+- It compares **actual outcomes** (what actually happens) versus **expected**
   outcomes (what you expected to happen when writing the test).
 
 ### Automated vs. manual
@@ -125,19 +119,19 @@ finding ways to break your application.
 There are many test frameworks written in various languages. These are all
 **test runners**, i.e. they can be used to write and execute tests:
 
-Frameworks                                                                             | Tests written in
-:------------------------------------------------------------------------------------- | :------------------
-[Mocha][mocha], [Jasmine][jasmine], [Jest][jest], [SuperTest][supertest], [Tape][tape] | [JavaScript][js]
-[JUnit][junit], [JMeter][jmeter], [Robotium][robotium]                                 | [Java][java]
-[PHPUnit][phpunit]                                                                     | [PHP][php]
-[RSpec][rspec], [test-unit][ruby-test-unit]                                            | [Ruby][ruby]
-[doctest][doctest], [unittest][python-unittest]                                        | [Python][python]
-[Go Test][go-test]                                                                     | [Go][go]
-[Quick][quick]                                                                         | [Swift][swift]
-[kotlin.test][kotlin.test]                                                             | [Kotlin][kotlin]
-[Mix Test][mix-test]                                                                   | [Elixir][elixir]
-[Elm Test][elm-test]                                                                   | [Elm][elm]
-[Apium][appium], [Cucumber][cucumber], [Selenium WebDriver][selenium-webdriver]        | *Various languages*
+| Frameworks                                                                             | Tests written in    |
+| :------------------------------------------------------------------------------------- | :------------------ |
+| [Mocha][mocha], [Jasmine][jasmine], [Jest][jest], [SuperTest][supertest], [Tape][tape] | [JavaScript][js]    |
+| [JUnit][junit], [JMeter][jmeter], [Robotium][robotium]                                 | [Java][java]        |
+| [PHPUnit][phpunit]                                                                     | [PHP][php]          |
+| [RSpec][rspec], [test-unit][ruby-test-unit]                                            | [Ruby][ruby]        |
+| [doctest][doctest], [unittest][python-unittest]                                        | [Python][python]    |
+| [Go Test][go-test]                                                                     | [Go][go]            |
+| [Quick][quick]                                                                         | [Swift][swift]      |
+| [kotlin.test][kotlin.test]                                                             | [Kotlin][kotlin]    |
+| [Mix Test][mix-test]                                                                   | [Elixir][elixir]    |
+| [Elm Test][elm-test]                                                                   | [Elm][elm]          |
+| [Apium][appium], [Cucumber][cucumber], [Selenium WebDriver][selenium-webdriver]        | _Various languages_ |
 
 #### Which test framework should I use?
 
@@ -153,10 +147,10 @@ as long as it can make the required HTTP calls or click on the correct buttons.
 
 For example:
 
-* [SuperTest][supertest] is a JavaScript tool to test APIs. It could be used to
+- [SuperTest][supertest] is a JavaScript tool to test APIs. It could be used to
   test an API implemented in PHP with Laravel, or with any other language or
   framework.
-* [Selenium WebDriver][selenium-webdriver] is a tool to automate browser tests.
+- [Selenium WebDriver][selenium-webdriver] is a tool to automate browser tests.
   It can test any web application or site, regardless of the language or
   framework used to implement that application or site.
 
@@ -181,19 +175,17 @@ everybody agrees how they should be called:
 
 This is one way to look at the different types of tests:
 
-Type                                     | What is tested                                                                               | Properties
-:--------------------------------------- | :------------------------------------------------------------------------------------------- | :----------------------------
-[Unit tests][unit-testing]               | Things in isolation.                                                                         | Fastest, easiest to maintain.
-[Integration tests][integration-testing] | A number of things plugged together.                                                         |
-[System tests][system-testing]           | Whole system from the user's perspective, often through the GUI; also known as "end-to-end". | Slower, harder to maintain.
+| Type                                     | What is tested                                                                              | Properties                   |
+| :--------------------------------------- | :------------------------------------------------------------------------------------------ | :--------------------------- |
+| [Unit tests][unit-testing]               | Things in isolation                                                                         | Fastest, easiest to maintain |
+| [Integration tests][integration-testing] | A number of things plugged together                                                         |                              |
+| [System tests][system-testing]           | Whole system from the user's perspective, often through the GUI; also known as "end-to-end" | Slower, harder to maintain   |
 
 > There are also other specialized types of tests, like [API tests][api-testing]
 > which are used to test REST APIs; or [performance tests][performance-testing]
 > which can be used to test the response time or scalability of software and
 > infrastructure. You could consider they are a subtype of integration and
 > system tests.
-
-
 
 ## Unit tests
 
@@ -222,8 +214,8 @@ function add(a, b) {
 When writing a unit test for a piece of code, you want to identify the
 **inputs** and **outputs** (or side effects) of that code. In this case:
 
-* There are **two numbers as inputs**, `a` and `b`.
-* There is **one number as output**.
+- There are **two numbers as inputs**, `a` and `b`.
+- There is **one number as output**.
 
 ### Assertions
 
@@ -239,9 +231,9 @@ function add(a, b) {
 Assertions are the outputs you expect for specific inputs.
 For example:
 
-* For inputs 2 and 3, the **expected** output is 5.
-* For inputs -3 and 4, the **expected** output is 1.
-* For inputs 10 and -12, the **expected** output is -2.
+- For inputs 2 and 3, the **expected** output is 5.
+- For inputs -3 and 4, the **expected** output is 1.
+- For inputs 10 and -12, the **expected** output is -2.
 
 When implementing unit tests, you will execute the code and use assertions to
 compare the **actual** output value with the **expected** one.
@@ -298,8 +290,6 @@ throughout the software development process. You must keep track of which tests
 have been written already, which are missing, and ensure that failures are
 reviewed and addressed immediately.
 
-
-
 ## Integration tests
 
 When doing integration tests, individual software **units are combined and
@@ -312,18 +302,18 @@ only individually as tested by unit tests.
 
 **Advantages**
 
-* Integration tests help **discover interfacing problems** between components.
-* Integration tests **catch system-level issues**, such as miscommunication,
+- Integration tests help **discover interfacing problems** between components.
+- Integration tests **catch system-level issues**, such as miscommunication,
   broken database schema, mistaken cache integration, and so on, which might be
   difficult to identify with unit tests.
 
 **Disadvantages**
 
-* **Finding bugs is more difficult** than with unit tests. When an integration
+- **Finding bugs is more difficult** than with unit tests. When an integration
   test fails, since multiple components are combined, it may be unclear which
   one is causing the bug.
-
-
+- Integration tests are **more complex and harder to write** than unit tests by
+  definition, since they combine multiple components.
 
 ## API tests
 
@@ -346,12 +336,12 @@ testing a REST API, you will need to make HTTP requests somehow.
 
 But the basic principle is the same as for unit tests:
 
-* Think about the inputs (HTTP request) and outputs (HTTP response, database
+- Think about the inputs (HTTP request) and outputs (HTTP response, database
   changes, etc) of an API operation. In other words, define the **expected**
   result of the operation.
-* Perform that API operation (make the HTTP request and retrieve the response).
+- Perform that API operation (make the HTTP request and retrieve the response).
   In other words, get the **actual** result.
-* Make **assertions** to check that the actual result is as expected.
+- Make **assertions** to check that the actual result is as expected.
 
 ### Benefits of API tests
 
@@ -361,8 +351,6 @@ also more difficult to maintain with the short release cycles and frequent
 changes commonly used with iterative software development.
 
 <p class='center'><img class='w80' src='images/api-test-exec.jpg' /></p>
-
-
 
 ## System tests
 
@@ -380,18 +368,18 @@ forms, clicking buttons, etc.
 
 **Advantages**
 
-* System tests are the only type of test that check that **your entire system
+- System tests are the only type of test that check that **your entire system
   works as expected**.
+- System tests are the tests that **correspond the most to what your users are
+  actually doing**.
 
 **Disadvantages**
 
-* System tests tend to be **complex** in that they require the whole system to
+- System tests tend to be **complex** in that they require the whole system to
   be properly set up for each test. Also, when an error occurs, it might not be
   clear where exactly in the system it originated from.
-* Since system tests are often performed through the GUI, they also tend to be
+- Since system tests are often performed through the GUI, they also tend to be
   **brittle**: they may break easily due to minor UI changes.
-
-
 
 ## Ok, but...
 
@@ -440,8 +428,6 @@ It might help someone who is not familiar with the code (**that could be you in
 enables you to move forward and to clean your code whenever you choose, thereby
 improving quality, because you can easily check that everything still works.
 
-
-
 ## Test-Driven Development (TDD)
 
 <!-- slide-front-matter class: center, middle -->
@@ -450,19 +436,22 @@ improving quality, because you can easily check that everything still works.
 
 ### What is test-driven development?
 
-As the name implies, [test-driven development][tdd] is **driven by tests**. When
-you want to add a new feature to your software, instead of developing your code
-first, then writing your tests, you use this process:
+As the name implies, [**t**est-**d**riven **d**evelopment (TDD)][tdd] is
+**driven by tests**. When you want to add a new feature to your software,
+instead of developing your code first, then writing your tests, you use this
+process:
 
 1. First, **write a failing test** for the feature.
 
    > The test will always fail at first because the feature does not exist yet.
    > You do not have to write a complete test either. Just enough to make it
    > fail.
+
 1. Then, **implement the necessary code** until your test succeeds.
 
-  > You do not have to implement the complete feature. Just enough to make your
-  > test pass.
+> You do not have to implement the complete feature. Just enough to make your
+> test pass.
+
 1. Finally, **refactor your code** to improve it if possible and if necessary.
 
 Continue this process until the feature is finalized.
@@ -473,39 +462,39 @@ Continue this process until the feature is finalized.
 
 Imagine that you are always working with this process. **At any given point in
 time, virtually all your code is covered by automated tests.** The only code
-that may not yet be fully tested is the one you have been writing during since
-the last 15 minutes.
+that may not yet be fully tested is the one you have been working on during the
+last 15 minutes.
 
 You will end up with a very high-quality test suite for your project.
 
-In other words, TDD will help you get *the magic button*. The one that allows to
+In other words, TDD will help you get _the magic button_. The one that allows to
 check that everything works whenever you want.
 
 <!-- slide-column 45 -->
 
 <img class='w100' src='images/the-three-laws-of-tdd.jpg' />
 
+## Going further
 
+- [Set up automated testing for an Express.js REST API](https://github.com/MediaComem/comem-archioweb/blob/main/guides/set-up-automated-tests.md)
 
 ## References
 
-* [Test Automation][automated-tests]
-  * [Unit Testing][unit-testing]
-  * [Integration Testing][integration-testing]
-  * [System Testing][system-testing]
-  * [API Testing][api-testing]
-  * [GUI Testing][gui-testing]
-  * [Performance Testing][performance-testing]
-* [Smartbear - Automated Testing](https://smartbear.com/learn/automated-testing/)
-* [The 3 Types of Automated Tests](https://learn.techbeacon.com/units/3-types-automated-tests)
-* [Atlassian CI/CD - Types of Software Testing](https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing)
-* [I Don't Write Unit Tests Because... The Excuses](https://edwardthienhoang.wordpress.com/2014/10/29/i-dont-write-unit-tests-because-the-excuses/)
-* [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development)
-  * [*YouTube:* Expecting Profesionnalism – Robert C. Martin](https://youtu.be/BSaAMQVq01E)
-  * [*YouTube:* GOTO 2017 – The Scribe's Oath – Robert C. Martin](https://youtu.be/Tng6Fox8EfI)
-  * [*YouTube:* The Future of Programming – Robert C. Martin](https://youtu.be/ecIWPzGEbFc)
-
-
+- [Test Automation][automated-tests]
+  - [Unit Testing][unit-testing]
+  - [Integration Testing][integration-testing]
+  - [System Testing][system-testing]
+  - [API Testing][api-testing]
+  - [GUI Testing][gui-testing]
+  - [Performance Testing][performance-testing]
+- [Smartbear - Automated Testing](https://smartbear.com/learn/automated-testing/)
+- [The 3 Types of Automated Tests](https://learn.techbeacon.com/units/3-types-automated-tests)
+- [Atlassian CI/CD - Types of Software Testing](https://www.atlassian.com/continuous-delivery/software-testing/types-of-software-testing)
+- [I Don't Write Unit Tests Because... The Excuses](https://edwardthienhoang.wordpress.com/2014/10/29/i-dont-write-unit-tests-because-the-excuses/)
+- [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development)
+  - [_YouTube:_ Expecting Professionalism – Robert C. Martin](https://youtu.be/BSaAMQVq01E)
+  - [_YouTube:_ GOTO 2017 – The Scribe's Oath – Robert C. Martin](https://youtu.be/Tng6Fox8EfI)
+  - [_YouTube:_ The Future of Programming – Robert C. Martin](https://youtu.be/ecIWPzGEbFc)
 
 [api-testing]: https://en.wikipedia.org/wiki/API_testing
 [appium]: https://appium.io
