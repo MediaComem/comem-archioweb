@@ -38,19 +38,19 @@ This course is a [COMEM+][comem] web development course taught at
   * [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Exercise*](./exercises/rest.md)
   * [*Extra:* JavaScript](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
-    * [*Exercises*](./exercises/javascript.md) ([**solutions**](./exercises/javascript-solutions.md))
+    * [*Exercises*](./exercises/javascript.md)
     * [*Extra:* promises](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* prototypes](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* classes](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* modules](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
     * [*Extra:* closures](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
   * [Node.js](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
-    * [*Exercises*](./exercises/node.md) ([**solutions**](./exercises/node-solutions))
+    * [*Exercises*](./exercises/node.md)
   * [npm](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
 
 * Creating a web service
   * [Express](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
-    * [*Exercises*](https://express.archioweb.ch) ([**solutions**](./exercises/express-solutions))
+    * [*Exercises*](https://express.archioweb.ch)
   * [MongoDB](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     * [*Guide:* install MongoDB](./guides/install-mongodb.md)
   * [Mongoose](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
