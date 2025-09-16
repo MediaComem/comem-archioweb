@@ -82,9 +82,9 @@ This course is a [COMEM+][comem] web development course taught at
 * [Git][git-downloads]
 * A free [GitHub][github] account
 * [Google Chrome][chrome] (recommended, any browser with developer tools will do)
-* [Node.js][node] 13.2+
+* [Node.js][node] 24.x
 * [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
-* [MongoDB][mongodb]
+* [MongoDB][mongodb] 8
 * A free [Render][render] account
 
 

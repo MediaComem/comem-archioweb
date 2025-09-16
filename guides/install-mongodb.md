@@ -68,7 +68,7 @@ Follow these steps to install MongoDB Community Edition using Homebrew's brew pa
    ```
 3. To install MongoDB, run the following command in your macOS Terminal application:
    ```bash
-   $> brew install mongodb-community@7.0
+   $> brew install mongodb-community@8.0
    ```
 
 The installation includes the following binaries:
@@ -93,13 +93,13 @@ process and is not interactive). There are **two ways** you can run MongoDB: as 
 - To run MongoDB (i.e. the mongod process) as a **macOS service**, run:
 
   ```bash
-  $> brew services start mongodb-community@7.0
+  $> brew services start mongodb-community@8.0
   ```
 
   To stop `mongod` running as a macOS service, use the following command as needed:
 
   ```bash
-  $> brew services stop mongodb-community@7.0
+  $> brew services stop mongodb-community@8.0
   ```
 
 - **Or,** to run MongoDB (i.e. the `mongod` process) **manually as a background process**, run:
@@ -151,7 +151,7 @@ like this (abridged output):
 ```bash
 $> mongod
 2019-09-25T... [initandlisten] MongoDB starting ...
-2019-09-25T... [initandlisten] db version v4.2.1
+2019-09-25T... [initandlisten] db version v8.0.13
 2019-09-25T... [initandlisten] ...
 2019-09-25T... [initandlisten] ** WARNING: Access control is not enabled
 2019-09-25T... [initandlisten] **          for the database. Read and write
@@ -183,8 +183,8 @@ You run the MongoDB shell by launching the `mongosh` executable.
 $> mongosh
 Current Mongosh Log ID:	6310b4b33ec62956119c999a
 Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.5.4
-Using MongoDB:		7.0.14
-Using Mongosh:		2.3.1
+Using MongoDB:		8.0.13
+Using Mongosh:		2.5.7
 ...
 test>
 ```
@@ -232,8 +232,8 @@ commands**.
 ```bash
 $> mongosh
 connecting to: mongodb://127.0.0.1:27017
-Using MongoDB: 7.0.14
-Using Mongosh: 2.3.1
+Using MongoDB: 8.0.13
+Using Mongosh: 2.5.7
 ...
 test>
 ```
@@ -288,7 +288,7 @@ If you see an error like this:
 mongod
 2017-02-27T10:00 I CONTROL  [init...] MongoDB starting :
 2017-02-27T10:00 I CONTROL  [init...]   pid=2975 port=27017 dbpath=/data/db ...
-2017-02-27T10:00 I CONTROL  [init...] db version v3.4.2
+2017-02-27T10:00 I CONTROL  [init...] db version v8.0.13
 2017-02-27T10:00 I CONTROL  [init...] ...
 2017-02-27T10:00 I STORAGE  [init...] exception in initAndListen:
 2017-02-27T10:00 I STORAGE  [init...]   29 `Data directory /data/db not found.`,
@@ -309,7 +309,7 @@ If you see an error like this:
 ```
 2017-02-27T10:01 I CONTROL  [init...] MongoDB starting :
 2017-02-27T10:01 I CONTROL  [init...]   pid=3017 port=27017 dbpath=/data/db ...
-2017-02-27T10:01 I CONTROL  [init...] db version v3.4.2
+2017-02-27T10:01 I CONTROL  [init...] db version v8.0.13
 2017-02-27T10:01 I CONTROL  [init...] ...
 2017-02-27T10:01 I STORAGE  [init...] exception in initAndListen:
 2017-02-27T10:01 I STORAGE  [init...]   20 `Attempted to create a lock file`
