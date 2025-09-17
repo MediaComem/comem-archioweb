@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>COMEM+ Web Development</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400i,700i);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400i);
+
+      body {
+        font-family: 'Droid Serif';
+      }
+
+      h1, h2, h3, h4 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+
+      li ul {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+<h1 id="comem-web-oriented-architecture-course">COMEM+ Web-Oriented Architecture Course</h1>
+<p>The goal of this course is to learn about the generic concept of <strong>web
+service</strong>, focusing on <strong>REST</strong>ful APIs as one way to expose such a service. You
+will:</p>
+<ul>
+<li>Learn the <strong>core principles</strong> of the REST architectural style.</li>
+<li>Learn how to <strong>implement</strong> a REST API in JavaScript with Node.js.</li>
+<li><strong>Deploy</strong> your REST API on a cloud application platform.</li>
+<li>Write <strong>documentation</strong> and <strong>automated tests</strong> for your REST API.</li>
+</ul>
+<p>This course is a <a href="http://www.heig-vd.ch/comem">COMEM+</a> web development course taught at
+<a href="http://www.heig-vd.ch">HEIG-VD</a>.</p>
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+<ul>
+<li><a href="#plan">Plan</a></li>
+<li><a href="#what-you-will-need">What you will need</a></li>
+<li><a href="#useful-links">Useful links</a></li>
+<li><a href="#evaluation">Evaluation</a><ul>
+<li><a href="#delivery">Delivery</a></li>
+</ul>
+</li>
+<li><a href="#project-roadmap">Project Roadmap</a><ul>
+<li><a href="#week-1">Week 1</a></li>
+<li><a href="#week-2">Week 2</a></li>
+<li><a href="#week-3">Week 3</a></li>
+</ul>
+</li>
+<li><a href="#references">References</a></li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+
+
+<h2 id="plan">Plan</h2>
+<ul>
+<li><p><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme">Introduction</a></p>
+</li>
+<li><p>Basics</p>
+<ul>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme">HTTP &amp; REST introduction</a><ul>
+<li><a href="./exercises/rest.md"><em>Exercise</em></a></li>
+</ul>
+</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> JavaScript</a><ul>
+<li><a href="./exercises/javascript.md"><em>Exercises</em></a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> promises</a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> prototypes</a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> classes</a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> modules</a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> closures</a></li>
+</ul>
+</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme">Node.js</a> JavaScript runtime<ul>
+<li><a href="./exercises/node.md"><em>Exercises</em></a></li>
+</ul>
+</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme">npm</a> Node.js package manager</li>
+</ul>
+</li>
+<li><p>Creating a web service</p>
+<ul>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme">Express</a> web framework<ul>
+<li><a href="https://express.archioweb.ch"><em>Exercises</em></a></li>
+</ul>
+</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme">MongoDB</a> document-oriented database<ul>
+<li><a href="./guides/install-mongodb.md"><em>Guide:</em> install MongoDB</a></li>
+</ul>
+</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme">Mongoose</a> Object-Document Mapper<ul>
+<li><a href="./guides/store-geospatial-data.md"><em>Guide:</em> store geospatial data with Mongoose</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Deploying your web service</p>
+<ul>
+<li><a href="./guides/deploy-in-the-cloud.md"><em>Guide:</em> deploy an Express.js application with Render &amp; MongoDB Atlas</a></li>
+</ul>
+</li>
+<li><p>Creating a REST API</p>
+<ul>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme">REST in depth</a><ul>
+<li><a href="./exercises/unrest.md"><em>Exercises</em></a></li>
+</ul>
+</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme">Express best practices</a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/express-mongoose?home=MediaComem%2Fcomem-archioweb%23readme">Utilizing Mongoose</a> in Express (filtering, pagination, aggregation)</li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme">Express Authentication</a></li>
+</ul>
+</li>
+<li><p>Documenting and testing a REST API</p>
+<ul>
+<li><a href="./guides/api-documentation.md"><em>Guide:</em> document a REST API</a></li>
+<li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme">Automated Testing</a><ul>
+<li><a href="./guides/set-up-automated-tests.md"><em>Guide:</em> set up automated tests for an Express.js REST API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><em>Extras</em></p>
+<ul>
+<li><a href="./guides/async-js.md"><em>Guide:</em> the many worlds of asynchronous JavaScript</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="what-you-will-need">What you will need</h2>
+<ul>
+<li>A Unix CLI (Git Bash is included with Git on Windows)</li>
+<li><a href="https://git-scm.com/downloads">Git</a></li>
+<li>A free <a href="https://github.com">GitHub</a> account</li>
+<li><a href="https://www.google.com/chrome/">Google Chrome</a> (recommended, any browser with developer tools will do)</li>
+<li><a href="https://nodejs.org/">Node.js</a> 24.x</li>
+<li><a href="https://www.getpostman.com">Postman</a> (recommended, any tool that makes raw HTTP requests will do)</li>
+<li><a href="https://www.mongodb.com">MongoDB</a> 8</li>
+<li>A free <a href="https://www.render.com">Render</a> account</li>
+</ul>
+<h2 id="useful-links">Useful links</h2>
+<p><strong>Documentation</strong></p>
+<ul>
+<li><a href="diagrams.pdf">Architecture &amp; source code management diagrams</a></li>
+<li><a href="https://github.com/MediaComem/comem-rest-demo">Demonstration REST API implemented with Express</a> (<a href="https://demo.archioweb.ch/docs/openapi">OpenAPI documentation</a>, <a href="https://demo.archioweb.ch/docs/apidoc">apiDoc documentation</a>)</li>
+<li><a href="https://github.com/MediaComem/comem-archioweb-2024-2025-express-api">Express API example written during class</a></li>
+<li><a href="PROJECTS.md">Project suggestions</a></li>
+</ul>
+<p><strong>Other</strong></p>
+<ul>
+<li><a href="https://github.com/MediaComem/comem-archidep/blob/main/CLI-CHEATSHEET.md">Command line cheatsheet</a></li>
+<li><a href="https://github.com/MediaComem/comem-webdev/blob/main/GIT-CHEATSHEET.md">Git cheatsheet</a></li>
+</ul>
+<h2 id="evaluation">Evaluation</h2>
+<p><strong>REST API</strong></p>
+<p>Your REST API must be developed with the <a href="https://expressjs.com">Express</a> framework and use a
+<a href="https://www.mongodb.com">MongoDB</a> database. It must provide (at least):</p>
+<ul>
+<li>The API must provide <strong>user management</strong>:<ul>
+<li>New users must be able to <strong>register</strong>.</li>
+<li>Existing users must be able to <strong>authenticate</strong> (to allow users to log in).</li>
+</ul>
+</li>
+<li>The API must provide at least <strong>2 other types</strong> of resources:<ul>
+<li>Both types must be linked together (e.g. aggregation or composition).</li>
+<li>At least one of the types must be linked to users.</li>
+<li>The API must provide minimal CRUD operations to manage and use those types
+in a mobile application.</li>
+</ul>
+</li>
+<li>The API must use the knowledge learned during the course:<ul>
+<li>At least one resource must be a <strong>paginated list</strong>.</li>
+<li>At least one resource must be a <strong>list with optional filters</strong>.</li>
+<li>At least one resource must provide <strong>aggregated data</strong> from other resources
+using a <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">MongoDB aggregation pipeline</a> (e.g. the number
+of items created by a user).</li>
+<li>The API must be developed as a backend to a mobile application using at
+least 2 <a href="https://cordova.apache.org/docs/en/latest/#plugin-apis"><strong>mobile hardware features</strong></a>, for example:<ul>
+<li><p>At least one resource must be <strong>geolocated</strong>.</p>
+<p>See <a href="./guides/store-geospatial-data.md">Store geospatial data with
+Mongoose</a> for information on how to
+store this data.</p>
+</li>
+<li><p>At least one resource must have one or multiple <strong>pictures</strong>.</p>
+<p>It is sufficient to store a picture URL or URLs in the database.</p>
+</li>
+</ul>
+</li>
+<li>Sensitive operations must be protected by requiring valid
+<strong>authentication</strong> and performing <strong>authorization</strong>:<ul>
+<li><p>Authentication must be provided in the form of a <a href="https://jwt.io/">JWT token</a> or an
+equivalent mechanism.</p>
+</li>
+<li><p>You must define who is authorized to perform which operations on which
+resources, and enforce these permissions. These restrictions must make
+sense in the context of your domain model. For example, a user may not be
+authorized to update a resource created by another user, even when
+authenticated.</p>
+<p>There must be at least one operation in the API which limits the
+permissions of authenticated users.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Infrastructure</strong></p>
+<ul>
+<li>The source code of your REST API must be in a repository on GitHub.</li>
+<li>Your REST API must be deployed on Render.</li>
+</ul>
+<p><strong>Documentation</strong></p>
+<ul>
+<li><p>Your REST API must be documented.</p>
+<p>By reading the documentation, a user must know in advance (before testing the
+API) which requests can be made, what can be sent in each request (URL path
+parameters, headers and/or body, and their validation constraints, if any),
+and what responses can be expected from the API (status code, headers and/or
+body).</p>
+<p>You may but do not have to document the 500 Internal Server Error response,
+which is considered to always be a possible response to any request.</p>
+</li>
+</ul>
+<p><strong>Automated testing</strong></p>
+<ul>
+<li>You must implement <strong>automated tests</strong> to test your REST API:<ul>
+<li><p>You must write tests for <strong>at least 4 separate REST operations</strong> in your API
+(for example: create thing, update thing, list things, delete thing). You
+must write <strong>at least 10 tests</strong> in total.</p>
+<blockquote>
+<p>A test for a <code>GET</code> request that retrieves an empty list does not count in
+the minimal number of tests you must write unless you also write a test
+for the non-empty list.</p>
+</blockquote>
+</li>
+<li><p>Your tests must be <strong>reproducible</strong> (running <code>npm test</code> several times in a
+row should always produce the same result).</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Quality of the implementation</strong></p>
+<ul>
+<li>You must follow REST best practices:<ul>
+<li>Your REST resources must use appropriate HTTP methods, headers and status
+codes.</li>
+<li>Your REST resources must have an appropriate and consistent URL hierarchy
+and/or naming structure.</li>
+</ul>
+</li>
+<li>Your asynchronous code must be correct.</li>
+<li>Your Express routes must handle asynchronous operation errors.</li>
+<li>You must avoid excessive code duplication (e.g. using Express middleware).</li>
+<li>Your API must have basic validations on user input (e.g. using Mongoose
+validations).</li>
+<li>Your API must validate the existence of linked resources (e.g. when creating
+an item linked to a user).</li>
+</ul>
+<p><strong>Bonus</strong></p>
+<p>Doing more than is required <strong>MAY</strong> earn you some bonus points in the
+evaluation if implemented correctly. Here are some examples:</p>
+<ul>
+<li><p>Implement a level 3 hypermedia API using a standard format such as
+<a href="https://jsonapi.org">JSON:API</a> or <a href="https://en.wikipedia.org/wiki/Hypertext_Application_Language">HAL+JSON</a>.</p>
+</li>
+<li><p>Implement &quot;full&quot; (80-100%) test coverage with automated tests.</p>
+<p>Note that test coverage alone is useless. The tests must also make meaningful
+assertions.</p>
+</li>
+<li><p>Implement role-based authorization, i.e. users may have different roles with
+fewer or more permissions. For example, an admin user may be authorized to
+update resources that do not belong to them, whereas a regular user may not.</p>
+</li>
+</ul>
+<h3 id="delivery">Delivery</h3>
+<p>Send an e-mail <em>no later than <strong>January 17th 2025 at 23:59:59.999 CET</strong></em> to
+Simon Oulevay &amp; Loris Gavillet with:</p>
+<ul>
+<li>The list of group members.</li>
+<li>The link to your source code repository on GitHub.</li>
+<li>The link to your deployed REST API on Render.</li>
+</ul>
+<h2 id="project-roadmap">Project Roadmap</h2>
+<p>This course is structured in such a way that it will feel very heavy in new theory during the first month. Indeed, there are plenty of concepts which you will need to grasp before fully commiting to the term project. Nevertheless, this is first and foremost a practical course. Our goal is for you to be able to <strong>apply</strong> the concepts which we will discuss in class. In order to avoid losing sight of this fact during these first few weeks of the semester, we suggest you get going immediately with the project.</p>
+<h3 id="week-1">Week 1</h3>
+<p><strong>Get in a team!</strong></p>
+<p>The term project will be built in groups of 3 or 4, so try and get together as early as possible. We also suggest you mix it up: try working with people you&#39;ve never worked with before.</p>
+<p><strong>Communicate!</strong></p>
+<p>Team formation is your responsibility. Be friendly and respectful during the process. If you feel dissapointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure every team member feels heard by – for example – setting a list of each and everyone&#39;s needs:</p>
+<ul>
+<li>Anna: <em>I need to be able to talk. Please do not interrupt me</em>.</li>
+<li>Bijan: <em>I feel insecure about my code. Please be extra gentle when you are reviewing it</em>.</li>
+<li>Charlene: <em>I need to use sarcasm, it&#39;s my way of communicating. Please do your best to not feel offended, it&#39;s nothing personal.</em></li>
+</ul>
+<p><strong>Brainstorm</strong></p>
+<p>By the end of the first class, you should have a rough idea of what an API is and what we are looking for in your projects. On this basis, start having discussions about what could be interesting, useful or fun. Nothing is set in stone at this point, but having a few ideas in the back of your mind will help you add context to the lectures.</p>
+<h3 id="week-2">Week 2</h3>
+<p><strong>JavaScript reviews</strong></p>
+<p>Make sure you do the assigned exercises. Help each other out so that everyone in your group has these basics covered. Everyone must code!</p>
+<p><strong>Consume APIs</strong></p>
+<p>To get a better grasp of how APIs work and why they are useful, it&#39;s a good idea to try to consume them. There are many open APIs, so explore the <a href="https://github.com/public-apis/public-apis">Public APIs List</a> and try getting data back from a couple different sources. To do so, you can already get going with <a href="https://www.postman.com/">Postman</a>, an API testing tool we will be discussing later in the semester. They have an excellent set of video tutorials. You could also use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API</a> which you might have seen in ProgWeb.</p>
+<p>The list is huge, so you might stumble onto something that is broken or poorly designed. If you can&#39;t make it work, try again. If that still doesn&#39;t work, move on.</p>
+<h3 id="week-3">Week 3</h3>
+<p><strong>Decision Time</strong></p>
+<p>Now is a good time to really decide what the team&#39;s project will be. Remember, the API you design in this course will almost certainly be the foundation for your front-end project in DevMobil, so every team member should feel some ownership for the idea.</p>
+<p><strong>Get Specific</strong></p>
+<p>A good way to transition from ideation to development is to write down an intention document for the project. This document will serve as a foundation for your work and should address the following:</p>
+<ul>
+<li>General questions<ul>
+<li>What are we building, <strong>in one sentence</strong>?</li>
+<li>Why are we building it?</li>
+<li>Who will use it?</li>
+<li>What is it called?</li>
+</ul>
+</li>
+<li>Specific questions<ul>
+<li>How will we build it?</li>
+<li>How will our team operate? Are there specific roles?</li>
+<li>What are our different ressources?</li>
+<li>What endpoints are we going to use?</li>
+</ul>
+</li>
+</ul>
+<p><strong>Divide and conquer</strong></p>
+<p>Even if you can&#39;t anticipate everything that you will need to complete for the project to work, try dividing the work into manageable tasks.</p>
+<p>For example, a task like <em>Implement authentication</em> could be divided in the following way:</p>
+<ul>
+<li>Design the endpoints</li>
+<li>Add password hashing to the user model</li>
+<li>Implement token-generating endpoint</li>
+<li>Implement token-based authorization middleware</li>
+<li>Write tests</li>
+<li>Refactor</li>
+</ul>
+<p>You can be as granular as you want in the way you divide and define tasks. You can then assign tasks to people in your team.</p>
+<p><strong>Week 4 and the following weeks will be almost wholly dedicated to the developement of your API.</strong></p>
+<h2 id="references">References</h2>
+<p>These are the main references used throughout this course. More detailed and
+additional links to various online articles and documentation can be found at
+the end of each subject.</p>
+<ul>
+<li><a href="https://developer.mozilla.org">Mozilla Developer Network</a><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">JavaScript</a><ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript">A Re-Introduction to JavaScript</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">Inheritance and the Prototype Chain</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects">Introducing JavaScript Objects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://nodejs.dev/learn">Learn Node</a></li>
+<li><a href="https://docs.npmjs.com/cli-documentation/">npm CLI Documentation</a></li>
+<li><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">Architectural Styles and the Design of Network-based Software Architectures - Roy Thomas Fielding</a></li>
+<li><a href="https://www.ietf.org">Internet Engineering Task Force</a><ul>
+<li><a href="https://tools.ietf.org/html/rfc2616">RFC 2616 - Hypertext Transfer Protocol - HTTP/1.1</a></li>
+<li><a href="https://tools.ietf.org/html/rfc5789">RFC 5789 - PATCH Method for HTTP</a></li>
+<li><a href="https://tools.ietf.org/html/rfc8288">RFC 8288 - Web Linking</a></li>
+</ul>
+</li>
+<li><a href="https://httpstatuses.com">HTTP Status Codes</a></li>
+<li><a href="http://expressjs.com">Express Documentation</a></li>
+<li><a href="https://pragprog.com/titles/d-jmexpress/functional-design-patterns-for-express-js/">Functional Design Patterns for Express.js - Jonathan Lee Martin</a></li>
+<li><a href="https://standards.rest">Standards.REST</a></li>
+<li><a href="https://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model - Leonard Richardson, Martin Fowler</a></li>
+<li><a href="https://docs.mongodb.com">MongoDB Documentation</a></li>
+<li><a href="https://mongoosejs.com/docs/index.html">Mongoose Documentation</a></li>
+<li><a href="https://auth0.com">Auth0</a><ul>
+<li><a href="https://jwt.io/introduction/">Introduction to JSON Web Tokens</a></li>
+<li><a href="https://auth0.com/learn/token-based-authentication-made-easy/">Token Based Authentication Made Easy</a></li>
+</ul>
+</li>
+<li><a href="https://render.com/docs">Render Documentation</a></li>
+</ul>
+
+    </div>
+    
+  </body>
+</html>

@@ -1213,7 +1213,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
-/******/ 		__webpack_require__.p = "https://mediacomem.github.io/comem-archioweb/2024-2025/";
+/******/ 		__webpack_require__.p = "https://mediacomem.github.io/comem-archioweb/2025-2026/";
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
