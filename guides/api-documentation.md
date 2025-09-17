@@ -2,19 +2,20 @@
 
 Your REST APIs should always be documented. Your users need to know:
 
-* The purpose of your API and each operation in it.
-* What HTTP requests can be made, including which parameters can be sent in the
+- The purpose of your API and each operation in it.
+- What HTTP requests can be made, including which parameters can be sent in the
   URL path, URL query parameters, headers and the request body. Parameter
   constraints, e.g. validations, should also be documented.
-* What HTTP responses they will receive, including the status code and headers
+- What HTTP responses they will receive, including the status code and headers
   the response may have, and what will be in the response body.
 
 They should know this by reading your documentation before ever having to test
 your API. This will greatly improve their experience and understanding.
 
-This guide suggests two ways to document a REST API: [OpenAPI/Swagger](#openapi)
-and [apiDoc](#apidoc). These are [not the only ways](#alternatives), but they
-are popular tools.
+We require that you document your API with [OpenAPI/Swagger](#openapi), the
+standard for documenting REST APIs. This is [not the only
+solution](#alternatives), but it is the standard and most popular tool for this
+purpose.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -24,18 +25,9 @@ are popular tools.
   - [Setup](#setup)
   - [Usage](#usage)
     - [Tips](#tips)
-- [apiDoc](#apidoc)
-  - [What it looks like](#what-it-looks-like-1)
-  - [Setup](#setup-1)
-    - [Using a configuration file](#using-a-configuration-file)
-    - [Using apiDoc as a development dependency](#using-apidoc-as-a-development-dependency)
-  - [Usage](#usage-1)
-    - [Tips](#tips-1)
 - [Alternatives](#alternatives)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-
 
 ## OpenAPI
 
@@ -58,9 +50,9 @@ the YAML format):
 ```yml
 openapi: 3.1.0
 info:
-  description: "This API is awesome."
-  version: "1.0.0"
-  title: "Awesome API"
+  description: 'This API is awesome.'
+  version: '1.0.0'
+  title: 'Awesome API'
 paths:
   /users/{id}:
     get:
@@ -105,12 +97,14 @@ $> cd /path/to/projects/my-project
 $> npm install swagger-ui-express js-yaml
 ```
 
-Add the following code in the imports section  of your `app.js` file:
+Add the following code in the imports section of your `app.js` file:
+
 ```js
 import fs from 'fs';
 import yaml from 'js-yaml';
 import swaggerUi from 'swagger-ui-express';
 ```
+
 And the following code somewhere under the `const app =
 express();` line:
 
@@ -121,7 +115,8 @@ const openApiDocument = yaml.load(fs.readFileSync('./openapi.yml'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 ```
 
-You should now be able to access your documentation through the Swagger UI at `localhost:3000/api-docs`
+You should now be able to access your documentation through the Swagger UI at
+`localhost:3000/api-docs`
 
 ### Usage
 
@@ -142,171 +137,25 @@ you launch your Express application.
 
 #### Tips
 
-* Use [components][openapi-components] to **avoid repeating yourself** if you
+- Use [components][openapi-components] to **avoid repeating yourself** if you
   have a chunk of your documentation that is the same for several routes.
-* Document **validation constraints** by including [JSON schemas][json-schema]
+- Document **validation constraints** by including [JSON schemas][json-schema]
   in your OpenAPI document. A JSON schema is a standard way of validating a JSON
   document. Use the [JSON Schema Reference][json-schema-reference] and the [JSON
   Schema Validation draft][json-schema-validation] as your references.
-* The [swagger-jsdoc][swagger-jsdoc] package allows you to put each route's
+- The [swagger-jsdoc][swagger-jsdoc] package allows you to put each route's
   documentation in a comment next to the route if that's your thing.
-
-
-
-## apiDoc
-
-[apiDoc][apiDoc] creates a user-friendly documentation page from API annotations
-in your source code.
-
-### What it looks like
-
-Put comments such as this in your code:
-
-```js
-/**
- * @api {get} /users/:id Request a user's information
- * @apiName GetUser
- * @apiGroup User
- *
- * @apiParam {Number} id Unique identifier of the user
- *
- * @apiSuccess {String} firstName First name of the user
- * @apiSuccess {String} lastName  Last name of the user
- */
-```
-
-The `apidoc` command-line tool will parse these comments and use them to
-generate a [user-friendly HTML documentation][example-apidoc].
-
-### Setup
-
-Install apiDoc globally with:
-
-```bash
-$> npm install -g apidoc
-```
-
-Move into your project's directory and run apiDoc with two options:
-
-* The `-i` option should be followed by the **directory containing your
-  documented API routes**
-* The `-o` option should be followed by the **directory where you want the
-  generated documentation to be saved**
-
-```bash
-$> cd /path/to/projects/my-project
-$> apidoc -i routes -o docs
-warn: Please create an apidoc.json configuration file.
-info: Done.
-```
-
-Open the generated `docs/index.html` file in your browser to see the result.
-
-You can make your application serve this documentation by using the
-[`express.static` middleware][express-static]:
-
-```js
-// Serve the apiDoc documentation.
-app.use('/apidoc', express.static(path.join(__dirname, 'docs')));
-```
-
-#### Using a configuration file
-
-It's good practice to create an `apidoc.json` file in your project's directory
-to configure some documentation properties:
-
-```json
-{
-  "name": "My project",
-  "version": "1.0.0",
-  "description": "It is awesome",
-  "title": "My project",
-  "url" : "https://example.com"
-}
-```
-
-This will get rid of the `Please create an apidoc.json configuration file`
-warning when you run apiDoc.
-
-#### Using apiDoc as a development dependency
-
-You can also install and run apiDoc as a development dependency:
-
-```bash
-$> npm install --save-dev apidoc
-```
-
-Add an `apidoc` script to your `package.json` file:
-
-```json
-{
-  "name": "my-project",
-  "scripts": {
-    "apidoc": "apidoc -i routes -o docs",
-    "...": "..."
-  },
-  "...": "..."
-}
-```
-
-You and your teammates can now generate the documentation this way,
-without having to install the module globally on each machine:
-
-```bash
-$> npm run apidoc
-```
-
-### Usage
-
-Read the apiDoc documentation, namely the [parameters][apidoc-params] you can
-use to document each route.
-
-You will have to run the `apidoc` command or your `npm run apidoc` script every
-time you modify an apiDoc comment.
-
-#### Tips
-
-* It is customary to put an apiDoc comment next to the route it documents, but
-  you can actually put it anywhere in your project.
-* Use `@apiGroup` to **group routes together** in the left-side menu.
-* Use `@apiDefine` and `@apiUse` to **avoid repeating yourself** if you have a
-  chunk of documentation that is the same for several routes.
-* Document **validation constraints** with the `@apiParam` parameter:
-
-  ```js
-  /**
-   * @apiParam (URL query parameters) {Number{1..}} [page] The page to retrieve
-   * @apiParam (Request body) {String{3..50}} title The movie's title
-   * @apiParam (Request body) {Number{0..10}} [rating] The movie's rating
-   * @apiParam (Request body) {String="male","female"} gender The person's gender
-   */
-  ```
-* Specify a category in parenthese when using the `@apiParam` parameter in order
-  to group request/response parameters together. For example:
-
-  ```js
-  /**
-   * @apiParam (URL path parameters) {String} id The movie's unique identifier
-   * @apiParam (URL query parameters) {Number} page The page to retrieve
-   * @apiParam (Request body) {String} title The movie's title
-   * @apiParam (Request body) {Number} rating The movie's rating
-   */
-  ```
-
-
 
 ## Alternatives
 
-* Plain [Markdown][markdown]
-* [Slate][slate] (Markdown)
-* [RAML][raml] (YAML)
+OpenAPI has become the standard so we require you to write your documentation
+with it, but for your information, there are alternatives:
 
-
+- Plain [Markdown][markdown]
+- [Slate][slate] (Markdown)
+- [RAML][raml] (YAML)
 
 [apiary]: https://apiary.io
-[apidoc]: http://apidocjs.com
-[apidoc-params]: https://apidocjs.com/#params
-[example-apidoc]: https://demo.archioweb.ch/docs/apidoc
 [example-openapi]: https://demo.archioweb.ch/docs/openapi
 [express-static]: https://expressjs.com/en/starter/static-files.html
 [js-yaml]: https://www.npmjs.com/package/js-yaml

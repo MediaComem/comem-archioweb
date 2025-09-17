@@ -34,6 +34,7 @@ Learn about the various kinds of automated tests.
 - [Test-Driven Development (TDD)](#test-driven-development-tdd)
   - [What is test-driven development?](#what-is-test-driven-development)
   - [Why on earth would I do that?](#why-on-earth-would-i-do-that)
+- [Going further](#going-further)
 - [References](#references)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

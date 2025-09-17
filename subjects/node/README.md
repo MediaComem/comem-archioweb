@@ -45,6 +45,7 @@ run on your local machine or server.
 - [Node.js callback convention](#nodejs-callback-convention)
   - [**Always** check for errors](#always-check-for-errors)
   - [A note on Node.js and callbacks](#a-note-on-nodejs-and-callbacks)
+    - [Node.js and promises](#nodejs-and-promises)
 - [Spot the mistake](#spot-the-mistake)
   - [Mistake 1](#mistake-1)
     - [Mistake 1 result](#mistake-1-result)
