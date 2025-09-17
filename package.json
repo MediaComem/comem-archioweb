@@ -26,7 +26,7 @@
   "homepage": "https://github.com/MediaComem/comem-archioweb#readme",
   "dependencies": {
     "courses-md": "~0.7.5",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "doctoc": "^2.0.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.4",

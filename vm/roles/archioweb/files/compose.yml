@@ -2,7 +2,7 @@ name: archioweb
 
 services:
   rp:
-    image: 'traefik:v3.1'
+    image: 'traefik:v3.5.2'
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.rp-dashboard.entrypoints=public-https'
@@ -31,7 +31,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
 
   demo-app:
-    image: 'ghcr.io/mediacomem/comem-rest-demo:2.1.0'
+    image: 'ghcr.io/mediacomem/comem-rest-demo:3.0.0'
     depends_on:
       - demo-db
     environment:
@@ -60,7 +60,7 @@ services:
     restart: unless-stopped
 
   demo-db:
-    image: mongo:7.0.14
+    image: mongo:8.0.13
     networks:
       - demo-db
     restart: unless-stopped
@@ -122,7 +122,7 @@ services:
     restart: unless-stopped
 
   qimg-db:
-    image: postgres:17.2-alpine
+    image: postgres:17.6-alpine
     environment:
       POSTGRES_PASSWORD: ${QIMG_DATABASE_PASSWORD}
       POSTGRES_USER: qimg

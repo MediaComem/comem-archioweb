@@ -1,5 +1,3 @@
-pane_frames false
-
 layout {
   pane split_direction="vertical" {
     pane size="60%"
