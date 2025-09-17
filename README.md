@@ -327,14 +327,14 @@ the end of each subject.
 - [Render Documentation](https://render.com/docs)
 
 [chrome]: https://www.google.com/chrome/
-[cli-cheatsheet]: https://github.com/MediaComem/comem-archidep/blob/main/CLI-CHEATSHEET.md
+[cli-cheatsheet]: https://archidep.ch/cheatsheets/command-line/
 [comem]: http://www.heig-vd.ch/comem
 [cordova-plugins]: https://cordova.apache.org/docs/en/latest/#plugin-apis
 [demo-api]: https://github.com/MediaComem/comem-rest-demo
 [demo-api-openapi]: https://demo.archioweb.ch/docs/openapi
 [diagrams]: diagrams.pdf
 [express]: https://expressjs.com
-[git-cheatsheet]: https://github.com/MediaComem/comem-webdev/blob/main/GIT-CHEATSHEET.md
+[git-cheatsheet]: https://archidep.ch/cheatsheets/git/
 [git-downloads]: https://git-scm.com/downloads
 [github]: https://github.com
 [hal]: https://en.wikipedia.org/wiki/Hypertext_Application_Language
