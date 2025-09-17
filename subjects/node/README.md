@@ -5,12 +5,12 @@ run on your local machine or server.
 
 **You will need**
 
-* A Unix CLI
+- A Unix CLI
 
 **Recommended reading**
 
-* [Command line](../cli/)
-* [JavaScript](../js/)
+- [Command line](../cli/)
+- [JavaScript](../js/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -64,8 +64,6 @@ run on your local machine or server.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## What is [Node.js][node]?
 
 <!-- slide-front-matter class: center, middle, image-header -->
@@ -78,27 +76,21 @@ run on your local machine or server.
 
 > "Node.js is used on servers to develop fast, scalable web applications."
 
-
-
 ### Installation
 
 <p class='center'><img src='images/installation.png' width='100%' /></p>
-
-
 
 ### Which Node.js version to choose?
 
 <p class='center'><img src='images/lts-schedule.svg' width='75%' /></p>
 
-* Odd-numbered versions (e.g. v11, v13, v15, v17, v19, v21) are **unstable**
+- Odd-numbered versions (e.g. v11, v13, v15, v17, v19, v21) are **unstable**
   releases with the latest features, and will **no longer be supported after 6-9
   months**.
-* Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20, v22) have (or
+- Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20, v22) have (or
   will have) [**l**ong **t**erm **s**upport (LTS)][node-lts]. They are actively
   developed for 6 months, but maintained for a total of 30 months (e.g. security
   fixes). Production applications should use LTS releases.
-
-
 
 ### Install Node.js and make sure it works
 
@@ -107,7 +99,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v22.8.0
+v24.8.0
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -121,8 +113,6 @@ $> node
 ```
 
 Type `.exit` or press `Ctrl-C` twice to exit.
-
-
 
 ### Create and execute a Node.js file
 
@@ -148,8 +138,6 @@ Hello World!
 Originally, JavaScript was only executable in web browsers,
 but here you are running JavaScript code **locally with Node.js**, like you would other scripting languages (e.g. PHP, Ruby or Python).
 
-
-
 ### Node.js modules
 
 Node.js code is organized in **modules**. These are the core modules available
@@ -166,9 +154,7 @@ Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
 String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
 Utilities, V8, VM, WASI, Worker threads, Zlib.
 
-> Refer to the [documentation][node-22-api] for more information.
-
-
+> Refer to the [documentation][node-24-api] for more information.
 
 ### Requiring core modules
 
@@ -197,8 +183,6 @@ Hello World!
 I am running on darwin
 ```
 
-
-
 ### A note on Node.js and CommonJS modules
 
 Node.js was first released in 2009, before [ECMAScript 2015's modules][esm] were
@@ -207,7 +191,7 @@ standardized. At the time, there were many module systems in the wild like
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
-Node.js to treat your code as ECMAScript modules][node-22-esm-enabling] by
+Node.js to treat your code as ECMAScript modules][node-24-esm-enabling] by
 naming your files with the `.mjs` extension instead of `.js`. If you have a
 `package.json` file (we'll learn more about these later), you can also set the
 `type` property to `module`.
@@ -225,9 +209,8 @@ function hello(name) {
 hello('World');
 ```
 
-> Since ECMAScript modules are now [natively supported][node-22-esm], we will
+> Since ECMAScript modules are now [natively supported][node-24-esm], we will
 > use them rather than the obsolete `require`.
-
 
 ### Writing your own module
 
@@ -246,8 +229,6 @@ export function hello(name) {
 ```
 
 `export`-ing things is what allow you to `import` them from other files.
-
-
 
 ### Importing local modules
 
@@ -271,8 +252,6 @@ Hello World!
 I am running on darwin
 ```
 
-
-
 ### Importing specific exports
 
 You don't have to import everything. You can also import only what you need
@@ -294,8 +273,6 @@ $> node script.mjs
 Hello World!
 I am running on darwin
 ```
-
-
 
 ### Export properties
 
@@ -322,8 +299,6 @@ I am running on darwin
 *The meaning of life is 42
 ```
 
-
-
 ### Function as the main export
 
 Some modules only export a function instead of an object with properties.
@@ -348,27 +323,21 @@ console.log(\`The meaning of life is ${theMeaningOfLife}`);
 
 The additional text `Doing it` will be logged as well.
 
-
-
 ### Import syntax
 
 A short summary on how to require files:
 
-Statement                                  | Effect
-:----------------------------------------- | :---------------------------------------------------------------------------------------------------------
-`import core from 'coreModule'`            | Import the core module (or npm package, more on that later) named `coreModule`
-`import * as foo from './foo.mjs'`         | Import everything exported by the `foo.mjs` file in the current directory (relative to the current file)
-`import { a, b } from './foo.mjs'`         | Import specific exports from the `foo.mjs` file in the current directory (relative to the current file)
-`import * as baz from './foo/bar/baz.mjs'` | Import everything exported by the `baz.mjs` file in the `foo/bar` directory (relative to the current file)
-`import * as qux from '../../qux.mjs'`     | Import everything exported by the `qux.mjs` file two directories above (relative to the current file)
-
-
+| Statement                                  | Effect                                                                                                     |
+| :----------------------------------------- | :--------------------------------------------------------------------------------------------------------- |
+| `import core from 'coreModule'`            | Import the core module (or npm package, more on that later) named `coreModule`                             |
+| `import * as foo from './foo.mjs'`         | Import everything exported by the `foo.mjs` file in the current directory (relative to the current file)   |
+| `import { a, b } from './foo.mjs'`         | Import specific exports from the `foo.mjs` file in the current directory (relative to the current file)    |
+| `import * as baz from './foo/bar/baz.mjs'` | Import everything exported by the `baz.mjs` file in the `foo/bar` directory (relative to the current file) |
+| `import * as qux from '../../qux.mjs'`     | Import everything exported by the `qux.mjs` file two directories above (relative to the current file)      |
 
 ## Synchronous vs. Asynchronous
 
 <!-- slide-front-matter class: center, middle -->
-
-
 
 ### Synchronous code
 
@@ -399,8 +368,6 @@ End of program
 
 The call to `getRandomNumber()` blocks the thread until its execution is complete.
 
-
-
 ### Asynchronous code
 
 With asynchronous code, some operations are executed **in parallel**:
@@ -430,8 +397,6 @@ Done
 
 How does this work?
 
-
-
 ### Non-blocking I/O
 
 The signature of `fs.readFile` is:
@@ -442,8 +407,8 @@ The signature of `fs.readFile` is:
 
 The third argument is a **callback function**:
 
-* With synchronous code, the call blocks the thread until it is done
-* With asynchronous code, the rest of the code **keeps executing**;
+- With synchronous code, the call blocks the thread until it is done
+- With asynchronous code, the rest of the code **keeps executing**;
   you pass a function to `fs.readFile` and Node.js will **call you back** when it is done
 
 Under the hood, Node.js will read the file in a separate thread,
@@ -451,12 +416,10 @@ then execute your callback function when it's ready.
 
 This is called **non-blocking I/O**, because all I/O operations are executed in separate threads and are therefore non-blocking:
 
-* Database access
-* File system access
-* HTTP requests
-* Etc.
-
-
+- Database access
+- File system access
+- HTTP requests
+- Etc.
 
 ### Your Node.js code is single-threaded
 
@@ -476,14 +439,10 @@ console.log(\`End of program: ${fileCount}`);
 
 This will **always** log `End of program: 0` first, then `Files listed: N`.
 
-Even if the operating system is very fast and the directory is listed *instantaneously*,
+Even if the operating system is very fast and the directory is listed _instantaneously_,
 Node.js **guarantees** that the last line, `console.log('End of program:', fileCount)`, will be executed first.
 
 Callback functions will always wait for **blocking code** to finish executing.
-
-
-
-
 
 ## The event loop
 
@@ -494,11 +453,11 @@ and is what produces the behavior described in the previous slides.
 
 <!-- slide-notes -->
 
-* Event loop:
-  * Run the initial script (which will register callbacks)
-  * Get the next event in the queue
-  * Invoke the registered callbacks in sequence
-  * Delegate I/O operations to the Node platform (in separate, non-blocking threads)
+- Event loop:
+  - Run the initial script (which will register callbacks)
+  - Get the next event in the queue
+  - Invoke the registered callbacks in sequence
+  - Delegate I/O operations to the Node platform (in separate, non-blocking threads)
 
 ### A short reminder
 
@@ -557,15 +516,13 @@ function demo() {
 *demo();
 ```
 
-
-
 ### The call stack
 
 The [**call stack**][stack] is a mechanism for the JavaScript interpreter to keep track of its place in a script that calls multiple functions: what function is being run, which should be called next, etc.
 
-* When called, a function is added to the top of the stack.
-* Functions called by that function are added to the stack further up.
-* When a function finishes, the interpreter takes it off the stack and resumes where it left off in the last stack item.
+- When called, a function is added to the top of the stack.
+- Functions called by that function are added to the stack further up.
+- When a function finishes, the interpreter takes it off the stack and resumes where it left off in the last stack item.
 
 <!-- slide-column -->
 
@@ -592,8 +549,6 @@ function printSquare(a) {
 printSquare(4);
 ```
 
-
-
 ### Stack overflow
 
 Taking into account the fact that the call stack has a limited size
@@ -610,8 +565,6 @@ eagerlyMultiply();
 
 [Check it out with Loupe](http://latentflip.com/loupe/?code=ZnVuY3Rpb24gZWFnZXJseU11bHRpcGx5KGEpIHsKICByZXR1cm4gYSAqIGVhZ2VybHlNdWx0aXBseShhKTsKfQoKZWFnZXJseU11bHRpcGx5KCk7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
 
-
-
 ### Platform APIs
 
 The **JavaScript runtime** (whether in Node.js or a web browser) **can only run one thing at a time**.
@@ -620,9 +573,9 @@ But some functions are not run by the Node.js runtime;
 they are run by the underlying platform: the v8 engine for Node.js or the web browser for a website.
 For example:
 
-* `readFile` (Node.js API)
-* `fetch` (Experimental Node.js & Web API)
-* `setTimeout` (Node.js & Web API)
+- `readFile` (Node.js API)
+- `fetch` (Experimental Node.js & Web API)
+- `setTimeout` (Node.js & Web API)
 
 <!-- slide-column -->
 
@@ -675,19 +628,15 @@ function program() {
 program();
 ```
 
-
-
 ### Other event-driven, non-blocking I/O architectures
 
 Node.js is not the only tool to use an event-driven architecture with an event loop.
 Similar mechanisms are used in other frameworks and tools:
 
-* JavaScript running in the browser also runs on an event loop
-* [Event Machine][event-machine] (Ruby event-processing library)
-* [nginx][nginx] (web server written in C with an event-driven architecture)
-* [Twisted][twisted] (Python event-driven networking engine)
-
-
+- JavaScript running in the browser also runs on an event loop
+- [Event Machine][event-machine] (Ruby event-processing library)
+- [nginx][nginx] (web server written in C with an event-driven architecture)
+- [Twisted][twisted] (Python event-driven networking engine)
 
 ## Node.js callback convention
 
@@ -700,22 +649,22 @@ Node.js callback functions usually have this signature:
 Like the previous example:
 
 ```js
-fs.readdir('/', `function(err, result) {`
-  // ...
-`}`);
+fs.readdir(
+  '/',
+  `function(err, result) {` // ...
+  `}`
+);
 ```
 
-There are two ways that the function can be called back by Node.js:
+1. Either the operation **failed**:
 
-1. The operation **failed**:
-  * `err` contains an **error** describing the problem
-  * `result` is `null` or `undefined`
+- `err` contains an **error** describing the problem
+- `result` is `null` or `undefined`
 
-2. The operation **succeeded**:
-  * `err` is `null` or `undefined`
-  * `result` contains the **result** of the operation
+2. Or the operation **succeeded**:
 
-
+- `err` is `null` or `undefined`
+- `result` contains the **result** of the operation
 
 ### **Always** check for errors
 
@@ -736,8 +685,6 @@ If you forget to check `err`, this code could log `Hello undefined` if the opera
 
 Do not forget the `return` either, or use `else`, to ensure that your "success" code is not run when an error occurs.
 
-
-
 ### A note on Node.js and callbacks
 
 Similarly to ECMAScript modules, [Promises][promise] were not yet part of
@@ -746,10 +693,12 @@ operations was built on callback functions, as we've seen:
 
 ```js
 // List the files at the root of the file system
-fs.readdir('/', function(err, result) {
+fs.readdir('/', function (err, result) {
   // handle error or result
 });
 ```
+
+#### Node.js and promises
 
 Today many Node.js libraries, and some Node.js core modules, also support
 promises. For example, the File System module provides an [alternative Promises
@@ -758,23 +707,22 @@ with `fs.promises`:
 
 ```js
 // List the files at the root of the file system
-fs.promises.readdir('/').then(result => {
-  // handle result
-}, err => {
-  // handle error
-});
+fs.promises.readdir('/').then(
+  result => {
+    // handle result
+  },
+  err => {
+    // handle error
+  }
+);
 ```
 
 > Since you can use promies, that means you can also write your Node.js code
 > with [`async/await`][async] if you wish.
 
-
-
 ## Spot the mistake
 
 <!-- slide-front-matter class: center, middle -->
-
-
 
 ### Mistake 1
 
@@ -846,9 +794,9 @@ const salutation = `fs.readFile`('hello.txt', 'utf-8', function(err, data) {
 
 Second, even if there was no asynchronous issue, the assignment of `const salutation` would still be `undefined`:
 
-* You are calling `fs.readFile()`, which **always** returns `undefined`, and that is what is stored in the `salutation` variable.
-* **When** Node.js is done reading the file in a separate thread, **it will call your callback function (later)**.
-* The `return data;` of your callback function is **not going anywhere**.
+- You are calling `fs.readFile()`, which **always** returns `undefined`, and that is what is stored in the `salutation` variable.
+- **When** Node.js is done reading the file in a separate thread, **it will call your callback function (later)**.
+- The `return data;` of your callback function is **not going anywhere**.
 
 ```js
 // Read the salutation from hello.txt
@@ -914,8 +862,6 @@ execute().catch(err => console.warn(\`An error occurred: ${err.message}`));
   console.log(salutations);
 }
 ```
-
-
 
 ### Mistake 2
 
@@ -1045,13 +991,9 @@ async function printUppercaseFile(file) {
 printUppercaseFile('file-that-does-not-exist.txt');
 ```
 
-
-
 ## The HTTP module
 
 <!-- slide-front-matter class: center, middle -->
-
-
 
 ### Modern web language
 
@@ -1082,8 +1024,6 @@ server.listen(port, hostname, function() {
 });
 ```
 
-
-
 ### Event emitters
 
 Many Node.js objects are [event emitters][node-event-emitter].
@@ -1105,23 +1045,19 @@ server.on('request', function(message) {
 });
 ```
 
-
-
 ## Resources
 
 **Documentation**
 
-* [Core modules (20.x)][node-22-api]
+- [Core modules (24.x)][node-24-api]
 
 **Further reading**
 
-* [What is Node.js][mixu-node-book]
-* [JavaScript Concurrency Model and Event Loop][event-loop]
-* [Understanding the Node.js Event Loop][event-loop-strongloop]
-* [Philip Roberts: What the heck is the event loop anyway? (YouTube)][event-loop-wth]
-* [Node.js Explained (video)][node-explained-video]
-
-
+- [What is Node.js][mixu-node-book]
+- [JavaScript Concurrency Model and Event Loop][event-loop]
+- [Understanding the Node.js Event Loop][event-loop-strongloop]
+- [Philip Roberts: What the heck is the event loop anyway? (YouTube)][event-loop-wth]
+- [Node.js Explained (video)][node-explained-video]
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 [commonjs]: https://nodejs.org/docs/latest-v22.x/api/modules.html
@@ -1134,9 +1070,9 @@ server.on('request', function(message) {
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-22-api]: https://nodejs.org/docs/latest-v22.x/api/documentation.html
-[node-22-esm]: https://nodejs.org/docs/latest-v22.x/api/esm.html#modules-ecmascript-modules
-[node-22-esm-enabling]: https://nodejs.org/docs/latest-v22.x/api/esm.html#enabling
+[node-24-api]: https://nodejs.org/docs/latest-v24.x/api/documentation.html
+[node-24-esm]: https://nodejs.org/docs/latest-v24.x/api/esm.html#modules-ecmascript-modules
+[node-24-esm-enabling]: https://nodejs.org/docs/latest-v24.x/api/esm.html#enabling
 [node-event-emitter]: https://nodejs.org/api/events.html
 [node-explained-video]: http://kunkle.org/talks/
 [node-lts]: https://nodejs.org/en/about/releases
