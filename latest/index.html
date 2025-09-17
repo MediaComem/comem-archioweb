@@ -81,7 +81,7 @@ will:</p>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> JavaScript</a><ul>
-<li><a href="./exercises/javascript.md"><em>Exercises</em></a> (<a href="./exercises/javascript-solutions.md"><strong>solutions</strong></a>)</li>
+<li><a href="./exercises/javascript.md"><em>Exercises</em></a></li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> promises</a></li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> prototypes</a></li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> classes</a></li>
@@ -90,7 +90,7 @@ will:</p>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme">Node.js</a> JavaScript runtime<ul>
-<li><a href="./exercises/node.md"><em>Exercises</em></a> (<a href="./exercises/node-solutions"><strong>solutions</strong></a>)</li>
+<li><a href="./exercises/node.md"><em>Exercises</em></a></li>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme">npm</a> Node.js package manager</li>
@@ -99,7 +99,7 @@ will:</p>
 <li><p>Creating a web service</p>
 <ul>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme">Express</a> web framework<ul>
-<li><a href="https://express.archioweb.ch"><em>Exercises</em></a> (<a href="./exercises/express-solutions"><strong>solutions</strong></a>)</li>
+<li><a href="https://express.archioweb.ch"><em>Exercises</em></a></li>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme">MongoDB</a> document-oriented database<ul>
@@ -149,9 +149,9 @@ will:</p>
 <li><a href="https://git-scm.com/downloads">Git</a></li>
 <li>A free <a href="https://github.com">GitHub</a> account</li>
 <li><a href="https://www.google.com/chrome/">Google Chrome</a> (recommended, any browser with developer tools will do)</li>
-<li><a href="https://nodejs.org/">Node.js</a> 13.2+</li>
+<li><a href="https://nodejs.org/">Node.js</a> 24.x</li>
 <li><a href="https://www.getpostman.com">Postman</a> (recommended, any tool that makes raw HTTP requests will do)</li>
-<li><a href="https://www.mongodb.com">MongoDB</a></li>
+<li><a href="https://www.mongodb.com">MongoDB</a> 8</li>
 <li>A free <a href="https://www.render.com">Render</a> account</li>
 </ul>
 <h2 id="useful-links">Useful links</h2>
@@ -159,6 +159,7 @@ will:</p>
 <ul>
 <li><a href="diagrams.pdf">Architecture &amp; source code management diagrams</a></li>
 <li><a href="https://github.com/MediaComem/comem-rest-demo">Demonstration REST API implemented with Express</a> (<a href="https://demo.archioweb.ch/docs/openapi">OpenAPI documentation</a>, <a href="https://demo.archioweb.ch/docs/apidoc">apiDoc documentation</a>)</li>
+<li><a href="https://github.com/MediaComem/comem-archioweb-2024-2025-express-api">Express API example written during class</a></li>
 <li><a href="PROJECTS.md">Project suggestions</a></li>
 </ul>
 <p><strong>Other</strong></p>
@@ -240,11 +241,12 @@ which is considered to always be a possible response to any request.</p>
 <ul>
 <li>You must implement <strong>automated tests</strong> to test your REST API:<ul>
 <li><p>You must write tests for <strong>at least 4 separate REST operations</strong> in your API
-(for example: create thing, update thing, list things, delete thing). One
-test for each operation is enough.</p>
+(for example: create thing, update thing, list things, delete thing). You
+must write <strong>at least 10 tests</strong> in total.</p>
 <blockquote>
 <p>A test for a <code>GET</code> request that retrieves an empty list does not count in
-the minimal number of tests you must write.</p>
+the minimal number of tests you must write unless you also write a test
+for the non-empty list.</p>
 </blockquote>
 </li>
 <li><p>Your tests must be <strong>reproducible</strong> (running <code>npm test</code> several times in a
@@ -287,8 +289,8 @@ update resources that do not belong to them, whereas a regular user may not.</p>
 </li>
 </ul>
 <h3 id="delivery">Delivery</h3>
-<p>Send an e-mail <em>no later than <strong>December 1st 2023 at 23:59:59.999 CET</strong></em> to
-Simon Oulevay with:</p>
+<p>Send an e-mail <em>no later than <strong>January 17th 2025 at 23:59:59.999 CET</strong></em> to
+Simon Oulevay &amp; Loris Gavillet with:</p>
 <ul>
 <li>The list of group members.</li>
 <li>The link to your source code repository on GitHub.</li>
@@ -347,7 +349,7 @@ Simon Oulevay with:</p>
 <li>Refactor</li>
 </ul>
 <p>You can be as granular as you want in the way you divide and define tasks. You can then assign tasks to people in your team.</p>
-<p><strong>Weeks 4 to 10 will be almost wholly dedicated to the developement of your API.</strong></p>
+<p><strong>Week 4 and the following weeks will be almost wholly dedicated to the developement of your API.</strong></p>
 <h2 id="references">References</h2>
 <p>These are the main references used throughout this course. More detailed and
 additional links to various online articles and documentation can be found at
