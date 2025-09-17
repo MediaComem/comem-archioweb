@@ -236,7 +236,7 @@ The term project will be built in groups of 3 or 4, so try and get together as e
 
 **Communicate!**
 
-Team formation is your responsibility. Be friendly and respectful during the process. If you feel dissapointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure every team member feels heard by – for example – setting a list of each and everyone's needs:
+Team formation is your responsibility. Be friendly and respectful during the process. If you feel disappointed, talk it out with your partners. The best way to resolve conflicts is to avoid them in the first place. A good place to start is to set ground rules. Make sure every team member feels heard by – for example – setting a list of each and everyone's needs:
 
 - Anna: _I need to be able to talk. Please do not interrupt me_.
 - Bijan: _I feel insecure about my code. Please be extra gentle when you are reviewing it_.
