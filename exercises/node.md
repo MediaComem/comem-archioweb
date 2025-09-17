@@ -11,8 +11,6 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## Show the current time
 
 Write a `now.mjs` script that prints the current date and time to your console
@@ -22,8 +20,6 @@ when executed:
 $> node now.mjs
 Tue Sep 15 2022 11:00:31 GMT+0200 (Central European Summer Time)
 ```
-
-
 
 ## List the current directory
 
@@ -56,8 +52,6 @@ some-file.txt
 > **Hint:** if you don't have any directory with hidden files, you can easily
 > create an empty hidden file with the command `touch .hidden-file`.
 
-
-
 ## Calculator
 
 Save the following contents to a file named `calculate.mjs`:
@@ -83,8 +77,6 @@ $> node calculate.mjs
 You may find the [`Math.pow`
 function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/pow)
 helpful.
-
-
 
 ## Notoriously psychedelic modules
 
@@ -117,27 +109,25 @@ Alice
 
 To complete this exercise:
 
-* Install Lodash.
-* Find the appropriate Lodash function.
-* Write your script.
+- Install Lodash.
+- Find the appropriate Lodash function.
+- Write your script.
 
 You may find the following documentation useful:
 
-* [Lodash](https://lodash.com)
-* [Lodash's documentation](https://lodash.com/docs/4.17.15)
-* [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
-* [Theory on npm](https://mediacomem.github.io/comem-archioweb/2024-2025/subjects/npm/?home=MediaComem%2Fcomem-archioweb%23readme#1)
-
-
+- [Lodash](https://lodash.com)
+- [Lodash's documentation](https://lodash.com/docs/4.17.15)
+- [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
+- [Theory on npm](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/npm/?home=MediaComem%2Fcomem-archioweb%23readme#1)
 
 ## Yell
 
 Create a Node.js command line script named `yell.mjs` which:
 
-* Takes one file name as an argument.
-* Reads the file with the UTF-8 encoding.
-* Converts the contents of the file to uppercase.
-* Outputs the converted contents.
+- Takes one file name as an argument.
+- Reads the file with the UTF-8 encoding.
+- Converts the contents of the file to uppercase.
+- Outputs the converted contents.
 
 The expected behavior should be:
 
@@ -185,6 +175,6 @@ Why, oh why can't I?
 
 You may find the following documentation useful:
 
-* [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
-* [`fs.readFile`](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback)
-* [`String.prototype.toUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
+- [`process.argv`](https://nodejs.org/api/process.html#process_process_argv)
+- [`fs.readFile`](https://nodejs.org/api/fs.html#fs_fs_readfile_path_options_callback)
+- [`String.prototype.toUpperCase`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase)
