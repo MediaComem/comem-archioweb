@@ -107,7 +107,7 @@ process and is not interactive). There are **two ways** you can run MongoDB: as 
     ```bash
     $> mongod --config /usr/local/etc/mongod.conf --fork
     ```
-  - For macOS running Intel processors:
+  - For macOS running M1+ processors:
     ```bash
     $> mongod --config /opt/homebrew/etc/mongod.conf --fork
     ```
