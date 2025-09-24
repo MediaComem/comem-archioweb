@@ -4,7 +4,7 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
 
 **You will need**
 
-- [Node.js][node] 20+
+- [Node.js][node] 22+
 - [Google Chrome][chrome] (recommended, any browser with developer tools will do)
 - [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 
@@ -154,7 +154,6 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser and you sho
   <img src="images/express-running.png" width="100%" />
 </p>;
 
-
 In the CLI where you're running the app, you should also see that your request was **logged**:
 
 ```txt
@@ -213,7 +212,6 @@ Let's take a look at the generated `package.json`:
     "morgan": "~1.9.1"
   }
 }
-
 ```
 
 - There is a **start script** configured to launch the app with `npm start`
@@ -289,11 +287,7 @@ and memory. You can make it watch **only relevant files** by adding a
 
 ```json
 {
-    "watch": [
-      "app.js",
-      "bin/start.js",
-      "routes/**/*"
-    ]
+  "watch": ["app.js", "bin/start.js", "routes/**/*"]
 }
 ```
 
@@ -323,7 +317,7 @@ This is an example of a middleware function:
 
 ```js
 function myMiddleware(req, res, next) {
-  console.log("Hello World!");
+  console.log('Hello World!');
   next();
 }
 ```
@@ -343,13 +337,13 @@ Open `app.js`:
 ```js
 const app = express();
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 ```
 
 Middleware functions are **plugged into your application** by passing them to `app.use()`.
@@ -363,7 +357,7 @@ Add your new middleware function just below the creation of the Express applicat
 const app = express();
 
 app.use(function myMiddleware(req, res, next) {
-  console.log("Hello World!");
+  console.log('Hello World!');
   next();
 });
 ```
@@ -382,16 +376,16 @@ Hello World
 You can use a middleware only for HTTP requests on a specific path:
 
 ```js
-app.use("/hello", function hello(req, res, next) {
-  res.send("world");
+app.use('/hello', function hello(req, res, next) {
+  res.send('world');
 });
 ```
 
 Express also provides `.get`, `.post`, `.put`, etc to apply a middleware only for requests made with that HTTP method:
 
 ```js
-app.post("/ping", function ping(req, res, next) {
-  res.send("pong");
+app.post('/ping', function ping(req, res, next) {
+  res.send('pong');
 });
 ```
 
@@ -403,7 +397,7 @@ Remove the call to `next()` in your first middleware function:
 
 ```js
 app.use(function myMiddleware(req, res, next) {
-  console.log("Hello World!");
+  console.log('Hello World!');
 });
 ```
 
@@ -420,8 +414,8 @@ Update your middleware again, this time to send a response to the client:
 
 ```js
 app.use(function myMiddleware(req, res, next) {
-  console.log("Hello World!");
-  res.send("Hello World!");
+  console.log('Hello World!');
+  res.send('Hello World!');
 });
 ```
 
@@ -436,8 +430,8 @@ Put the call to `next()` back in:
 
 ```js
 app.use(function myMiddleware(req, res, next) {
-  console.log("Hello World!");
-  res.send("Hello World!");
+  console.log('Hello World!');
+  res.send('Hello World!');
   next();
 });
 ```
@@ -516,7 +510,7 @@ You can attach data to the request object:
 
 ```js
 app.use(function (req, res, next) {
-  req.hello = "World";
+  req.hello = 'World';
   next();
 });
 ```
@@ -525,7 +519,7 @@ Then use that in the next middleware:
 
 ```js
 app.use(function (req, res, next) {
-  console.log("Hello " + req.hello); // "Hello World"
+  console.log('Hello ' + req.hello); // "Hello World"
   next();
 });
 ```
@@ -540,6 +534,20 @@ You don't have to call `next()` right away.
 You can do it after some asynchronous calls:
 
 ```js
+app.use(`async function`(req, res, next) {
+  req.myData = `await fs.promises.readFile`("data.txt", "utf-8");
+  `next();`
+});
+```
+
+The middleware chain will not proceed until you call `next()`.
+
+#### Using Node.js callbacks
+
+You can also make callback-based asynchronous calls. Just call `next()` when
+you're done:
+
+```js
 app.use(function(req, res, next) {
   `fs.readFile`("data.txt", "utf-8", `function(err, data)` {
     if (err) {
@@ -551,23 +559,6 @@ app.use(function(req, res, next) {
 });
 ```
 
-The middleware chain will not proceed until you call `next()`.
-
-#### Using promises
-
-If your asynchronous call returns a promise, you can also use `async/await`:
-
-```js
-app.use(`async function`(req, res, next) {
-  try {
-    req.myData = `await fs.promises.readFile`("data.txt", "utf-8");
-    `next();`
-  } catch (err) {
-    next(err);
-  }
-});
-```
-
 ### How to deal with errors in middlewares
 
 Sometimes things go wrong:
@@ -575,7 +566,20 @@ Sometimes things go wrong:
 - The user sends invalid data
 - A database query fails (invalid query, connection issue, etc)
 
-In that case, the proper thing to do with Express is to give the error to `next()`:
+If you are using `async/await`, rejected promises will automatically be given to
+Express (just remember to `await` them):
+
+```js
+app.use(async function (req, res, next) {
+  req.myData = await fs.promises.readFile('data.txt', 'utf-8');
+  next();
+});
+```
+
+#### Error-handling with callbacks
+
+If you are making a callback-based asynchronous call, the proper thing to do
+with Express in case of error is to give it to `next()`:
 
 ```js
 app.use(function(req, res, next) {
@@ -590,22 +594,6 @@ app.use(function(req, res, next) {
 });
 ```
 
-#### Error-handling with promises
-
-If you are using `async/await`, remember to wrap your code in a `try/catch` to
-catch any error that might occur, and give it to Express:
-
-```js
-app.use(async function(req, res, next) {
-* try {
-    req.myData = await fs.promises.readFile("data.txt", "utf-8");
-    next();
-* } catch (err) {
-*   next(err);
-* }
-});
-```
-
 #### Error-handling middleware
 
 When you pass an error to `next()`, the following "normal" middleware functions are **not called**.
@@ -615,7 +603,7 @@ Compared to normal middleware functions, an error-handling middleware takes a fo
 
 ```js
 app.use(function (err, req, res, next) {
-  res.send("Your request failed because: " + err.message);
+  res.send('Your request failed because: ' + err.message);
 });
 ```
 
@@ -649,11 +637,11 @@ One error-handling middleware has already been plugged in for you:
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
 });
 ```
 
@@ -695,7 +683,7 @@ POST /test/a/b?page=3&select=foo&select=bar HTTP/1.1
 This is how to get the different parts:
 
 ```js
-app.all("/test/:param1/:param2", function (req, res, next) {
+app.all('/test/:param1/:param2', function (req, res, next) {
   console.log(req.method); // "POST"
   console.log(req.path); // "/test/a/b"
   console.log(req.params); // { param1: "a", param2: "b" }
@@ -717,7 +705,7 @@ Authorization: Basic Zm9vOmJhcgo=
 You can get the **normalized** headers (all in lower case):
 
 ```js
-app.all("/test/:param1/:param2", function (req, res, next) {
+app.all('/test/:param1/:param2', function (req, res, next) {
   console.log(req.headers);
   // {
   //   "content-type": "application/json",
@@ -730,9 +718,9 @@ app.all("/test/:param1/:param2", function (req, res, next) {
 Or you can use `req.get()` to retrieve them in a case-insensitive manner:
 
 ```js
-app.all("/test/:param1/:param2", function (req, res, next) {
-  console.log(req.get("content-type")); // "application/json"
-  console.log(req.get("Content-Type")); // "application/json"
+app.all('/test/:param1/:param2', function (req, res, next) {
+  console.log(req.get('content-type')); // "application/json"
+  console.log(req.get('Content-Type')); // "application/json"
 });
 ```
 
@@ -753,7 +741,7 @@ Finally, let's get the request body:
 As long as you have the `express.json()` middleware in your chain, it's as simple as this:
 
 ```js
-app.all("/test/:param1/:param2", function (req, res, next) {
+app.all('/test/:param1/:param2', function (req, res, next) {
   console.log(req.body);
   // {
   //   "age": "24",
@@ -779,7 +767,7 @@ It will automatically determine the type of content your are sending and set the
 <!-- slide-column 45 -->
 
 ```js
-res.send("Some text");
+res.send('Some text');
 ```
 
 <!-- slide-column -->
@@ -797,7 +785,7 @@ Some text
 
 ```js
 res.send({
-  some: "object",
+  some: 'object'
 });
 ```
 
@@ -817,7 +805,7 @@ Content-Type: application/json
 <!-- slide-column 45 -->
 
 ```js
-res.send(Buffer.from("0101"));
+res.send(Buffer.from('0101'));
 ```
 
 <!-- slide-column -->
@@ -837,7 +825,7 @@ Use `res.status()` to set the status code:
 
 ```js
 res.status(201).send({
-  some: "object",
+  some: 'object'
 });
 ```
 
@@ -875,10 +863,10 @@ Use `res.set()` to set headers:
 <!-- slide-column -->
 
 ```js
-res.set("Header-1", "foo");
-res.set("Total-Books", 2);
+res.set('Header-1', 'foo');
+res.set('Total-Books', 2);
 
-res.send(["Catch-22", "Fahrenheit 451"]);
+res.send(['Catch-22', 'Fahrenheit 451']);
 ```
 
 <!-- slide-column -->
@@ -903,13 +891,13 @@ Setting headers does not send the response, so you can do it in **multiple middl
 
 ```js
 app.use(function (req, res, next) {
-  res.set("Header-1", "foo");
+  res.set('Header-1', 'foo');
   next();
 });
 
 app.use(function (req, res, next) {
-  res.set("Header-2", "bar");
-  res.send("Some text");
+  res.set('Header-2', 'bar');
+  res.send('Some text');
 });
 ```
 
@@ -931,7 +919,7 @@ You can also chain all the previous methods together:
 <!-- slide-column -->
 
 ```js
-res.set("Header-1", "foo").status(201).send("Some text");
+res.set('Header-1', 'foo').status(201).send('Some text');
 ```
 
 <!-- slide-column -->
@@ -959,17 +947,17 @@ Mapping HTTP methods and URLs to handler functions
 As we've seen, basic routing can be applied to middleware by using `.get`, `.post`, etc and passing a path:
 
 ```js
-app.get("/hello", function () {
-  res.send("World");
+app.get('/hello', function () {
+  res.send('World');
 });
 ```
 
 You can also have dynamic parameters in your URLs:
 
 ```js
-app.get("/authors/`:authorId`/books/`:bookId`", function (req, res, next) {
+app.get('/authors/`:authorId`/books/`:bookId`', function (req, res, next) {
   res.send(
-    "Getting book " + `req.params.bookId` + " by " + `req.params.authorId`
+    'Getting book ' + `req.params.bookId` + ' by ' + `req.params.authorId`
   );
 });
 ```
@@ -1068,9 +1056,8 @@ A router behaves like a middleware function, so you can simply plug it into your
 
 ```js
 // Import the books router from the routes directory
-import booksRouter from "./routes/books.js";
-app.use("/books", booksRouter);
-
+import booksRouter from './routes/books.js';
+app.use('/books', booksRouter);
 ```
 
 Any request where the path starts with `/books` will be handled by that router,
@@ -1079,7 +1066,6 @@ with that path as a **prefix**:
 <p class="center">
   <img src="images/routers.png" class="w80" />
 </p>
-
 
 <!-- slide-notes -->
 
