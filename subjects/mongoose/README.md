@@ -5,12 +5,12 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
 
 **You will need**
 
-* A running [MongoDB][mongodb] database
+- A running [MongoDB][mongodb] database
 
 **Recommended reading**
 
-* [MongoDB](../mongodb/)
-* [npm](../npm/) and [Express](../express/) (for the integration example)
+- [MongoDB](../mongodb/)
+- [npm](../npm/) and [Express](../express/) (for the integration example)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -48,15 +48,11 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## MongoDB Node.js driver
 
 <!-- slide-front-matter class: center, middle -->
 
 The [official MongoDB driver][mongodb-node-driver] for Node.js
-
-
 
 ### Usage
 
@@ -88,18 +84,16 @@ MongoClient.connect(url, function(err, db) {
 });
 ```
 
-
-
 ### MongoDB client API
 
 This client provides a [similar API][collection-api] to the MongoDB shell:
 
 ```js
-collection.insertOne(document, options, callback)
-collection.find(query)
-collection.updateMany(query, update, options, callback)
-collection.deleteOne(query, options, callback)
-collection.createIndex(fields, options, callback)
+collection.insertOne(document, options, callback);
+collection.find(query);
+collection.updateMany(query, update, options, callback);
+collection.deleteOne(query, options, callback);
+collection.createIndex(fields, options, callback);
 ```
 
 For example, to insert a document:
@@ -140,35 +134,31 @@ db.collection('people')
   })
 ```
 
-
-
 ### Should I use it?
 
 <!-- slide-column -->
 
 **Advantages**
 
-* Similar API to MongoDB (the names are almost the same, e.g. `insert` vs `insertOne/insertMany`)
-* You use the MongoDB query language directly
+- Similar API to MongoDB (the names are almost the same, e.g. `insert` vs `insertOne/insertMany`)
+- You use the MongoDB query language directly
 
 <!-- slide-column -->
 
 **Disadvantages**
 
-* Very low level
-  * No serialization and deserialization of objects
-  * No validation
-* No connection abstraction (you must manage the connections yourself; no pool)
+- Very low level
+  - No serialization and deserialization of objects
+  - No validation
+- No connection abstraction (you must manage the connections yourself; no pool)
 
 <!-- slide-container -->
 
 **Alternatives**
 
-* [Camo][alt-camo]: a class-based ES6 ODM for Mongo-like databases
-* [Mongoose][mongoose]: elegant MongoDB object modeling for Node.js
-* [Waterline][alt-waterline]: an adapter-based ORM for Node.js with support for MySQL, MongoDB, Postgres, Redis, and more
-
-
+- [Camo][alt-camo]: a class-based ES6 ODM for Mongo-like databases
+- [Mongoose][mongoose]: elegant MongoDB object modeling for Node.js
+- [Waterline][alt-waterline]: an adapter-based ORM for Node.js with support for MySQL, MongoDB, Postgres, Redis, and more
 
 ## What is Mongoose?
 
@@ -178,18 +168,16 @@ db.collection('people')
 
 > "Mongoose provides a straight-forward, **schema-based** solution to **model** your application data. It includes built-in **type casting, validation, query building**, business logic hooks and more, out of the box."
 
-
-
 ### Object-Document Mapper (ODM)
 
 Mongoose **maps JavaScript objects to MongoDB documents**, much like an Object-Relational Mapper (ORM) maps objects to relational database tables.
 
 <p class='center'><img src='images/schema-model-document.png' width='60%' /></p>
 
-* Everything in Mongoose starts with a [Schema][mongoose-guide]:
+- Everything in Mongoose starts with a [Schema][mongoose-guide]:
   each schema maps to a MongoDB collection and defines the **shape of the documents** within that collection
-* [Models][mongoose-model] are fancy **constructors** compiled from our Schema definitions
-* Mongoose [Documents][mongoose-document] represent a one-to-one mapping to **documents** as stored in MongoDB:
+- [Models][mongoose-model] are fancy **constructors** compiled from our Schema definitions
+- Mongoose [Documents][mongoose-document] represent a one-to-one mapping to **documents** as stored in MongoDB:
   each document is an instance of its Model
 
 <!-- slide-notes -->
@@ -293,28 +281,24 @@ let blog = new Blog({
   // ...
 });
 
-`blog.save()`
-  .then(savedBlog => {
-    console.log('Saved blog');
-    // Update something
-    blog.meta.votes = 5;
+try {
+  const savedBlog = await `blog.save()`;
+  console.log('Saved blog');
 
-    // This will update the document
-    return `blog.save()`;
-  })
-  .then(updatedBlog => {
-    console.log('Updated blog');
-  })
-  .catch(err => {
-    console.warn(\`Could not save blog because: ${err.message}`);
-  });
+  // Update something
+  blog.meta.votes = 5;
+
+  // This will update the document
+  const updatedBlog = await `blog.save()`;
+  console.log('Updated blog');
+} catch (err) {
+  console.warn(\`Could not save blog because: ${err.message}`);
+}
 ```
 
 The first time, your blog document has no `_id` so Mongoose will **insert** it.
 The second time, Mongoose has added the `_id` to the document object, so it
 knows that it exists and should be **updated** instead.
-
-
 
 ### Mongoose validations
 
@@ -359,23 +343,21 @@ let person = new Person({
 });
 
 
-person.save()
-  .then(savedPerson => {
-    console.log('Person is valid');
-  })
-  .catch(err => {
-*    if (err.name === 'ValidationError') {
-*      console.log(err.errors);
-*      // {
-*      //   "honorific": { "message": "'Great' is not a valid enum value" },
-*      //   "age": { "message": "Path 'age' (-4) is less than minimum" },
-*      //   "name": { "message": "Name is too short" }
-*      // }
-*      console.warn('Person is invalid');
-    } else {
-      console.warn(\`Could not save person because: ${err.message}`);
-    }
-  });
+try {
+  await person.save();
+} catch (err) {
+* if (err.name === 'ValidationError') {
+*   console.log(err.errors);
+*   // {
+*   //   "honorific": { "message": "'Great' is not a valid enum value" },
+*   //   "age": { "message": "Path 'age' (-4) is less than minimum" },
+*   //   "name": { "message": "Name is too short" }
+*   // }
+*   console.warn('Person is invalid');
+  } else {
+    console.warn(\`Could not save person because: ${err.message}`);
+  }
+}
 ```
 
 #### Custom validations
@@ -400,8 +382,6 @@ const userSchema = new Schema({
 });
 ```
 
-
-
 ### Unique constraints
 
 Simply add the `unique: true` property to the schema property you want to be unique:
@@ -422,10 +402,8 @@ const personSchema = new Schema({
 To create a unique index on **multiple fields**, use `index()` on the schema:
 
 ```js
-`personSchema.index`({ name: 1, age: 1  }, { unique: true });
+`personSchema.index`({ name: 1, age: 1 }, { unique: true });
 ```
-
-
 
 ### Mongoose queries
 
@@ -491,8 +469,6 @@ Person.find()
   });
 ```
 
-
-
 ### Debugging
 
 Sometimes you want to see the queries Mongoose is sending to the database:
@@ -516,24 +492,22 @@ Mongoose: people.find({
 })
 ```
 
-
-
 ### Should I use it?
 
 <!-- slide-column -->
 
 **Advantages**
 
-* Schemas
-* Validations
-* Complex query building
-* Connection pooling
+- Schemas
+- Validations
+- Complex query building
+- Connection pooling
 
 <!-- slide-column -->
 
 **Disadvantages**
 
-* Additional abstraction layer between you and the database
+- Additional abstraction layer between you and the database
 
 <!-- slide-container -->
 
@@ -551,16 +525,12 @@ Blog.collection.insertOne({ foo: 'bar' }, function(err, commandResult) {
 });
 ```
 
-
-
 ## Integrating Mongoose into Express
 
 <!-- slide-front-matter class: center, middle -->
 
 A typical Mongoose usage example with Express,
 one of the most popular Node.js web framework.
-
-
 
 ### Install and connect Mongoose
 
@@ -588,8 +558,6 @@ Your Express application is now connected to MongoDB (to the `my-database-name` 
 The default generated application includes a `GET /users` resource that is not implemented in `routes/users.js`.
 Let's do that!
 
-
-
 ### Create a schema and model
 
 We'll need a Mongoose model for users.
@@ -608,8 +576,6 @@ const userSchema = new Schema({
 export default mongoose.model('User', userSchema);
 ```
 
-
-
 ### Implement the `GET /users` route
 
 Add the following code to `routes/users.js`:
@@ -621,16 +587,9 @@ import User from '../models/user.js';
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-* User.find()
-*   .sort('name')
-*   .exec()
-*   .then(users => {
-*     res.send(users);
-*   })
-*   .catch(err => {
-*     next(err);
-*   });
+router.get('/', async function(req, res, next) {
+* const users = await User.find().sort('name').exec();
+* res.send(users);
 });
 
 export default router;
@@ -658,27 +617,21 @@ Content-Type: application/json
 Great!
 Now how about we create some users?
 
-
-
 ### Implement the `POST /users` route
 
 Add this route to `routes/users.js` (above or below the existing route):
 
 ```js
 /* POST new user */
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   // Create a new document from the JSON in the request body
   const newUser = new User(req.body);
 
   // Save that document
-  newUser.save()
-    .then(savedUser => {
-      // Send the saved document in the response
-      res.send(savedUser);
-    })
-    .catch(err => {
-      next(err);
-    });
+  const savedUser = await newUser.save();
+
+  // Send the saved document in the response
+  res.send(savedUser);
 });
 ```
 
@@ -734,20 +687,16 @@ Content-Type: application/json
 ]
 ```
 
-
-
 ## Resources
 
 **Documentation**
 
-* [Official MongoDB Node.js driver][mongodb-node-driver]
-  * [Collection API][collection-api]
-* [Mongoose][mongoose]
-  * [Getting started][mongoose-getting-started]
-  * [Guide][mongoose-guide]
-  * [API documentation][mongoose-api]
-
-
+- [Official MongoDB Node.js driver][mongodb-node-driver]
+  - [Collection API][collection-api]
+- [Mongoose][mongoose]
+  - [Getting started][mongoose-getting-started]
+  - [Guide][mongoose-guide]
+  - [API documentation][mongoose-api]
 
 [alt-camo]: https://www.npmjs.com/package/camo
 [alt-waterline]: https://github.com/balderdashy/waterline
