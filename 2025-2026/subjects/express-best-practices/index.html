@@ -3,7 +3,7 @@
   <head>
     <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/03d7fc9b38e4a54185ca63eba16af8100905bc50/subjects/express-best-practices/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/6f817bcd5de7f189081462ceca8eb74467509764/subjects/express-best-practices/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -13,14 +13,12 @@ Learn best development practices for [Express][express] web applications.
 
 **You will need**
 
-* A working [Express][express] application
+- A working [Express][express] application
 
 **Recommended reading**
 
-* [Express](../express/)
-* [Mongoose](../mongoose/)
-
-
+- [Express](../express/)
+- [Mongoose](../mongoose/)
 
 
 
@@ -184,8 +182,8 @@ you retrieve configuration from environment variables):
 
 ```js
 // Load environment variables from the .env file.
-* import * as dotenv from 'dotenv'
-* dotenv.config()
+*import * as dotenv from 'dotenv'
+*dotenv.config()
 
 // Retrieve configuration from environment variables.
 const port = process.env.PORT || 3000;
@@ -196,8 +194,6 @@ const port = process.env.PORT || 3000;
 > accessing any environment variable in `process.env`**, otherwise it will be
 > too late. You'll be fine if you use a centralized configuration file and put
 > that code at the top.
-
-
 
 ---
 ## The `debug` package
@@ -259,12 +255,10 @@ $> DEBUG=app:* npm start
 The `debug` package is a minimalistic logging solution. For more features, use a
 more advanced library such as:
 
-* [bunyan]
-* [log4js]
-* [nightingale]
-* [winston]
-
-
+- [bunyan]
+- [log4js]
+- [nightingale]
+- [winston]
 
 ---
 ## Use routers
@@ -289,8 +283,6 @@ app.use('/api/people', `peopleApiRouter`);
 app.use('/api/movies', `moviesApiRouter`);
 ```
 
-
-
 ---
 ## Avoid repetition with middleware
 
@@ -298,30 +290,29 @@ app.use('/api/movies', `moviesApiRouter`);
 
 You often end up with **code duplication in routes**:
 
-
 ```js
-router.get('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec().then(person => {
-*     if (!person) return res.sendStatus(404);
-      // Send user here
-*   })
-*   .catch(err => next(err));
+router.get('/:id', async function(req, res, next) {
+* const person = await Person.findById(req.params.id).exec();
+* if (!person) {
+*   return res.sendStatus(404);
+* }
+  // Send user here
 });
 
-router.patch('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec().then(person => {
-*     if (!person) return res.sendStatus(404);
-      // Update and send user here
-*   })
-*   .catch(err => next(err));
+router.patch('/:id', async function(req, res, next) {
+* const person = await Person.findById(req.params.id).exec();
+* if (!person) {
+*   return res.sendStatus(404);
+* }
+  // Update and send user here
 });
 
-router.delete('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec().then(person => {
-*     if (!person) return res.sendStatus(404);
-      // Delete user here
-*   })
-*   .catch(err => next(err));
+router.delete('/:id', async function(req, res, next) {
+* const person = await Person.findById(req.params.id).exec();
+* if (!person) {
+*   return res.sendStatus(404);
+* }
+  // Delete user here
 });
 ```
 
@@ -333,17 +324,14 @@ router.delete('/:id', function(req, res, next) {
 You can write a **middleware function** that performs only this task and **attaches the Person document to the `req` object**:
 
 ```js
-function loadPersonFromParams(req, res, next) {
-  Person.findById(req.params.id)
-    .exec()
-    .then(person => {
-      if (!person) {
-        return res.status(404).send(\`No person found with ID ${req.params.id}`);
-      }
-      req.person = person;
-      next();
-    })
-    .catch(err => next(err));
+async function loadPersonFromParams(req, res, next) {
+  const person = await Person.findById(req.params.id).exec();
+  if (!person) {
+    return res.status(404).send(\`No person found with ID ${req.params.id}`);
+  }
+
+  req.person = person;
+  next();
 }
 ```
 
@@ -360,88 +348,15 @@ router.get('/:id', `loadPersonFromParams`, function (req, res, next) {
   res.send(`req.person`);
 });
 
-router.patch('/:id', `loadPersonFromParams`, function (req, res, next) {
-  // Update req.person here
-  `req.person`
-    .save()
-    .then((updatedPerson) => {
-      res.send(updatedPerson);
-    })
-    .catch((err) => next(err));
+router.patch('/:id', `loadPersonFromParams`, async function (req, res, next) {
+  const updatedPerson = await `req.person`.save();
+  res.send(updatedPerson);
 });
 
-router.delete("/:id", `loadPersonFromParams`, function (req, res, next) {
-  `req.person`
-    .deleteOne()
-    .then(res.sendStatus(204))
-    .catch((err) => next(err));
+router.delete('/:id', `loadPersonFromParams`, async function (req, res, next) {
+  await `req.person`.deleteOne();
+  res.sendStatus(204);
 });
-```
-
----
-## Handling Promises
-
-.breadcrumbs[<a href="#1">Express Best Practices</a>]
-So far, all of our examples have used chainable methods (`.then()` and `.catch()`) to handle Promises returned by Mongoose.
-
-```js
-router.get('/person/:id', (req, res, next) => {
-  Person.findById(req.params.id)
-*   .then(person => res.json(user))
-*   .catch(err => next(err));
-});
-```
-
-This is absolutely fine, but **you might be more comfortable using `async/await`**.
-
----
-### Handling Promises using `async/await`
-
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Handling Promises</a>]
-
-In that case, you may write your Express functions like this:
-
-```js
-router.get('/person/:id', `async` (req, res, next) => {
-  try {
-    const user = `await` Person.findById(req.params.id);
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-});
-```
-
-However, you will need to wrap every callback in those **annoying `try/catch` blocks** in order to handle errors. This leads to a lot of unnecesary repetition. **Could we do better?**
-
----
-### Async Handler wrapper function
-
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Handling Promises</a>]
-
-We can create a **wrapper function** that automatically catches errors and passes them to the next Express middleware.
-
-```js
-const asyncHandler = fn => (req, res, next) =>
-  Promise
-    .resolve(fn(req, res, next))
-    .catch(next);
-```
-
-`asyncHandler` is a **higher-order function** that takes an async function (`fn`) and **returns a new function**. The returned function, when called, runs `fn` and catches any unhandled errors, **passing them to next()** (i.e., the next middleware).
-
----
-### Using `asyncHandler` wrapper function
-
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Handling Promises</a>]
-
-You can now use this wrapper as middleware in your Express chain. Errors will be automatically caught.
-
-```js
-router.get('/user/:id', `asyncHandler`(`async` (req, res) => {
-  const user = await User.findById(req.params.id);
-  res.json(user);
-}));
 ```
 
 ---
@@ -468,7 +383,7 @@ This **middleware function** is specifically designed to handle errors. We can k
 ---
 ### MongoDB errors
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#19">Error Handling</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Error Handling</a>]
 
 Imagine the following scenario: one of your Mongoose models specifies that a `Person` must have a unique email. Someone using your API make a `POST` request to `/person`, trying to create a new person with an email that has already been registered. If this happens, an **ugly error message and generic status code will be sent to the user**:
 
@@ -479,7 +394,7 @@ E11000 duplicate key error collection
 ---
 ### Handling specific errors
 
-.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#19">Error Handling</a>]
+.breadcrumbs[<a href="#1">Express Best Practices</a> > <a href="#15">Error Handling</a>]
 
 In order to get a **meaningful status code and prettier error message**, we could adjust the error handling middleware to **check for this specific case**:
 

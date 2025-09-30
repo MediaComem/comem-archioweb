@@ -3,7 +3,7 @@
   <head>
     <title>REST In Depth (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/03d7fc9b38e4a54185ca63eba16af8100905bc50/subjects/rest-advanced/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/6f817bcd5de7f189081462ceca8eb74467509764/subjects/rest-advanced/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -15,9 +15,7 @@ various ways REST APIs are implemented in the wild, from "practical REST" to
 
 **Recommended reading**
 
-* [REST introduction & HTTP](../rest/)
-
-
+- [REST introduction & HTTP](../rest/)
 
 
 
@@ -113,13 +111,13 @@ Real-world example: [Flickr API][flickr-api].
 
 HTTP introduces [standardized methods][http-methods] (or verbs):
 
-Method   | Description
-:------- | :-------------------------------------------
-`GET`    | Retrieve a resource at an URL.
-`POST`   | Create a new resource subordinate to an URL.
-`PUT`    | Replace (modify) the resource at an URL.
-`PATCH`  | Partially modify a resource at an URL.
-`DELETE` | Delete the resource identified by an URL.
+| Method   | Description                                  |
+| :------- | :------------------------------------------- |
+| `GET`    | Retrieve a resource at an URL.               |
+| `POST`   | Create a new resource subordinate to an URL. |
+| `PUT`    | Replace (modify) the resource at an URL.     |
+| `PATCH`  | Partially modify a resource at an URL.       |
+| `DELETE` | Delete the resource identified by an URL.    |
 
 You do not have to reinvent the wheel for the most common operations on
 resources: creating, reading, updating and deleting ([CRUD][crud]).
@@ -171,13 +169,13 @@ navigate?
 An HTML page provided by a server, such as a web page, contains 2 kinds of
 hypermedia: [hyperlinks][hyperlink] and [forms][html-form]:
 
-* **Hyperlinks** tell the client **where other resources are**.
-* **Forms** tell the client **what it can do to the resources**.
+- **Hyperlinks** tell the client **where other resources are**.
+- **Forms** tell the client **what it can do to the resources**.
 
 To use a website, the client (i.e. the browser) only needs to:
 
-* Know the entry point (e.g. `http://example.com`).
-* Understand the HTML format (the `text/html` [media type][media-type]): not
+- Know the entry point (e.g. `http://example.com`).
+- Understand the HTML format (the `text/html` [media type][media-type]): not
   only how to display it, but also that it contains `<a>` tags that can be
   followed, and `<form>` tags that describe how to modify data.
 
@@ -223,8 +221,8 @@ Each link looks like this:
 
 It contains:
 
-* The **target URL** between `<>`
-* One or more **parameters** preceded by `;`:
+- The **target URL** between `<>`
+- One or more **parameters** preceded by `;`:
 
 The `rel` (or "relation") parameter is mandatory, as it indicates **what kind of
 link it is**. There is a [registry of official relation
@@ -280,12 +278,12 @@ resource **can be modified** (because you can use the `PUT` method).
 
 There are hypermedia formats similar to HTML but meant for APIs:
 
-* [JSON:API][json-api]
-* [Collection+JSON][collection-json]
-* [Hypertext Application Language (HAL)][hal] - [(Draft RFC)][hal-rfc]
-* [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec]
-* [JSON Hyper-Schema (RFC Draft)][json-hyper-schema]
-* [Siren][siren]
+- [JSON:API][json-api]
+- [Collection+JSON][collection-json]
+- [Hypertext Application Language (HAL)][hal] - [(Draft RFC)][hal-rfc]
+- [JSON for Linking Data (JSON-LD)][json-ld] - [(W3C Spec)][json-ld-spec]
+- [JSON Hyper-Schema (RFC Draft)][json-hyper-schema]
+- [Siren][siren]
 
 For example, HAL+JSON defines a standard way of representing hyperlinks in JSON
 (it also uses the standard IANA link relations):
@@ -368,10 +366,8 @@ Hypermedia is not a silver bullet: clients must still know your domain.
 ]
 .container[
 
-Real-world examples: [GitHub v3 API (custom media type)][github-api], [Flapjack
-REST API (JSON:API)][flapjack-api], [Foxy REST API (HAL+JSON)][foxy-api].
-
-
+Real-world examples: [GitHub v3 API (custom media type)][github-api], [Foxy REST
+API (HAL+JSON)][foxy-api].
 
 
 ]
@@ -382,9 +378,9 @@ REST API (JSON:API)][flapjack-api], [Foxy REST API (HAL+JSON)][foxy-api].
 
 Resources often have relationships:
 
-* A resource which represents a **collection** has items (e.g. users/user).
-* Blog **posts** have **comments**.
-* **Courses** are taught by **professors**.
+- A resource which represents a **collection** has items (e.g. users/user).
+- Blog **posts** have **comments**.
+- **Courses** are taught by **professors**.
 
 How should we define the URLs to retrieve those resources?
 
@@ -419,14 +415,14 @@ structure and HTTP:
   http://blog.example.com/users/2  (item in the collection)
 ```
 
-* `/users/2` expresses that user number `2` is somehow contained within the
+- `/users/2` expresses that user number `2` is somehow contained within the
   `users` collection. The URL expresses the **hierarchical relationship**
   between the two resources.
-* When creating a user with a `POST /users` request, the HTTP specification
+- When creating a user with a `POST /users` request, the HTTP specification
   states that the created resource should be a **subordinate** of the resource
   identified by the request, so it makes sense to reflect that relationship in
   the URL.
-* Many prefer to use `users` in both the collection and item URL so you do not
+- Many prefer to use `users` in both the collection and item URL so you do not
   have to worry about switching between singular and plural (e.g.
   `people/person`).
 
@@ -447,7 +443,7 @@ The URL can be **nested** and mirror the **hierarchical structure** between the 
   http://blog.example.com`/posts`/892`/comments`
 ```
 
-Or it can be **flat** (only one path level) and have *query parameters* like this:
+Or it can be **flat** (only one path level) and have _query parameters_ like this:
 
 ```
   http://blog.example.com`/comments`?postId=892
@@ -455,8 +451,8 @@ Or it can be **flat** (only one path level) and have *query parameters* like thi
 
 In this case, the **nested** or **hierarchical** version probably makes more sense if you assume that:
 
-* A post comment **cannot exist** outside of a post
-* You'll probably **never want to display all comments** across posts,
+- A post comment **cannot exist** outside of a post
+- You'll probably **never want to display all comments** across posts,
   only the comments of a specific post
 
 ---
@@ -480,16 +476,16 @@ Or it could be **flat**:
 
 In this case, the **flat** version probably makes more sense because:
 
-* The existence of the course **does not depend** on the existence of the professor
+- The existence of the course **does not depend** on the existence of the professor
   (if you murder Arnold, someone else will take over the course)
-* You'll probably want to be able to **list all courses** on a page somewhere
+- You'll probably want to be able to **list all courses** on a page somewhere
 
 ---
 ### Nested vs. flat URLs
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#15">URL structure</a>]
 
-There is no *right or wrong* answer.
+There is no _right or wrong_ answer.
 You will find both styles in popular REST APIs.
 When defining your API's URLs, you should ask yourself:
 
@@ -513,8 +509,8 @@ It's also possible to define **multiple collections** for the same resource at *
   GET /professors/arnold/courses
 ```
 
-* The first collection (`/courses`) can be used to list **all courses**
-* The second collection (`/professors/arnold/courses`) can be used to list **the courses taught by professor arnold**
+- The first collection (`/courses`) can be used to list **all courses**
+- The second collection (`/professors/arnold/courses`) can be used to list **the courses taught by professor arnold**
 
 These two collections both produce a list of resources of the same type (courses), but **they are different collections**.
 Their contents will vary over time, and most of the time the two collections will not produce the same result (there are courses taught by other professors).
@@ -567,8 +563,6 @@ requests are lists of employees.
 Always prefer query parameters to
 filter collections.
 
-
-
 ---
 ## Resources vs. actions
 
@@ -577,19 +571,19 @@ filter collections.
 Fundamental to the REST architectural style is the idea that you are performing
 actions on resources. In the context of the web this usually means:
 
-* The **HTTP method** is the **action**: `GET`, `POST`, `PUT`, etc.
-* The **URL** identifies the **resource**, i.e. the thing being manipulated.
+- The **HTTP method** is the **action**: `GET`, `POST`, `PUT`, etc.
+- The **URL** identifies the **resource**, i.e. the thing being manipulated.
 
 Which ones of these HTTP requests do you think are RESTful?
 
-* `GET /api/comments`
-* `POST /api/users`
-* `PUT /api/users/:id`
-* `POST /api/users/:id/enable`
-* `POST /api/users/:id/disable`
-* `POST /api/users/:id/follow`
-* `POST /api/comments/:id/star`
-* `POST /api/comments/:id/unstar`
+- `GET /api/comments`
+- `POST /api/users`
+- `PUT /api/users/:id`
+- `POST /api/users/:id/enable`
+- `POST /api/users/:id/disable`
+- `POST /api/users/:id/follow`
+- `POST /api/comments/:id/star`
+- `POST /api/comments/:id/unstar`
 
 ---
 ### Modeling actions with REST
@@ -598,12 +592,12 @@ Which ones of these HTTP requests do you think are RESTful?
 
 The last 5 requests are technically **not RESTful**, for example:
 
-* `POST /api/users/:id/enable`
+- `POST /api/users/:id/enable`
 
 The URL ends with **a verb instead of a noun**, therefore:
 
-* The URL represents an action (verb) instead of a resource (noun).
-* There are 2 actions: the HTTP method, `POST`, and the one in the URL,
+- The URL represents an action (verb) instead of a resource (noun).
+- There are 2 actions: the HTTP method, `POST`, and the one in the URL,
   `enable`.
 
 In theory, the only action should be the HTTP method, and the URL should always
@@ -616,8 +610,8 @@ represent the "thing" being acted upon, not an action.
 
 Take the following non-RESTful actions:
 
-* `POST /api/users/:id/enable`
-* `POST /api/users/:id/disable`
+- `POST /api/users/:id/enable`
+- `POST /api/users/:id/disable`
 
 They could be modeled as a user property instead:
 
@@ -645,18 +639,18 @@ Content-Type: application/json
 
 Take the following non-RESTful action:
 
-* `POST /api/users/:id/follow`
+- `POST /api/users/:id/follow`
 
 It's very likely that at some point you'll be needing the list of a user's
 followers. This should really be a collection resource that you can add
 followers to:
 
-* `POST /api/users/:id/followers`
+- `POST /api/users/:id/followers`
 
 That way, you can simply implement this call in the future to list a user's
 followers:
 
-* `GET /api/users/:id/followers`
+- `GET /api/users/:id/followers`
 
 ---
 ### REST actions as a sub-resource
@@ -665,15 +659,15 @@ followers:
 
 Take the following non-RESTful action:
 
-* `POST /api/comments/:id/star`
-* `POST /api/comments/:id/unstar`
+- `POST /api/comments/:id/star`
+- `POST /api/comments/:id/unstar`
 
 If you assume that you can only only star/unstar a comment (i.e. there is only
 one star, not a range from 1 to 5), you can model it as a single sub-resource of
 each comment:
 
-* `PUT /api/comments/:id/star`
-* `DELETE /api/comments/:id/star`
+- `PUT /api/comments/:id/star`
+- `DELETE /api/comments/:id/star`
 
 > The first version uses the **verb** "star", while the second version uses the
 > **noun** "star", with the HTTP method indicating the action. Also note that
@@ -686,8 +680,8 @@ each comment:
 
 Take the following non-RESTful actions:
 
-* `POST /api/users/:id/enable`
-* `POST /api/users/:id/disable`
+- `POST /api/users/:id/enable`
+- `POST /api/users/:id/disable`
 
 We already described one way of modeling these as a property.
 
@@ -699,8 +693,8 @@ might see if someone else obtained access to your account and did something bad.
 In that case, you might want to have a collection resource that represents the
 actions taken on a given user:
 
-* `POST /api/users/:id/actions`
-* `GET /api/users/:id/actions`
+- `POST /api/users/:id/actions`
+- `GET /api/users/:id/actions`
 
 ---
 #### Using a collection of actions
@@ -735,8 +729,6 @@ Content-Type: application/json
 ```
 
 Now you have all the data you need for that audit/security page.
-
-
 
 ---
 ## Linked resources
@@ -774,9 +766,9 @@ The director can be **embedded** into the movie's data:
 }
 ```
 
-* *Advantage:* it **reduces chattiness**: fewer requests have to be made to the
+- _Advantage:_ it **reduces chattiness**: fewer requests have to be made to the
   server to retrieve both the movie's and the director's data.
-* *Disadvantage:* **more data** is exchanged between client and server **that
+- _Disadvantage:_ **more data** is exchanged between client and server **that
   the client might not always need**.
 
 ---
@@ -794,12 +786,13 @@ To save bandwidth, only a unique identifier for the director could be included:
 }
 ```
 
-* *Advantages:*
-  * **Smaller JSON payloads**.
-* *Disadvantages:*
-  * It **increases chattiness**: the client has to make two requests to retrieve
+- _Advantages:_
+  - **Smaller JSON payloads**.
+- _Disadvantages:_
+
+  - It **increases chattiness**: the client has to make two requests to retrieve
     both the movie's and the director's data.
-  * The client **must know how to build the URL** to the director resource,
+  - The client **must know how to build the URL** to the director resource,
     which is not always obvious (e.g. you could think it's `/directors/la09sld`
     but it could be `/people/la09sld`).
 
@@ -825,10 +818,10 @@ Instead of just the ID, you could include a hyperlink to the director's resource
 }
 ```
 
-* *Advantage:* **decouples** the client from your API through **hypermedia**:
+- _Advantage:_ **decouples** the client from your API through **hypermedia**:
   the client can browse the API without knowing your URLs in advance
   ([HATEOAS][hateoas]).
-* *Disadvantages:* it **increases chattiness**. It requires **more requests by
+- _Disadvantages:_ it **increases chattiness**. It requires **more requests by
   the client** to follow link relations instead of accessing URLs directly.
 
 > This would be REST maturity level 3. If you use this solution, you should use an appropriate media type instead of
@@ -840,7 +833,7 @@ Instead of just the ID, you could include a hyperlink to the director's resource
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
 
-Again, there's no *right or wrong* answer: it depends on your use case. By
+Again, there's no _right or wrong_ answer: it depends on your use case. By
 spending a little more time on your server's implementation, it's also possible
 to **combine** some of these patterns:
 
@@ -905,14 +898,14 @@ You can ask yourself the same questions for **one-to-many** or **many-to-many** 
 ```json
 {
   "name": "John Doe",
-  "addresses" : [
+  "addresses": [
     {
-      "street" : "8785 Windfall St.",
-      "city" : "Whitehall, PA 18052"
+      "street": "8785 Windfall St.",
+      "city": "Whitehall, PA 18052"
     },
     {
-      "street" : "1 N. Cactus Ave.",
-      "city" : "Green Bay, WI 54302"
+      "street": "1 N. Cactus Ave.",
+      "city": "Green Bay, WI 54302"
     }
   ]
 }
@@ -925,16 +918,16 @@ You can ask yourself the same questions for **one-to-many** or **many-to-many** 
 ```json
 {
   "name": "Apple",
-  "employees" : [
+  "employees": [
     {
-      "firstName" : "Tim",
-      "lastName" : "Cook",
-      "title" : "CEO"
+      "firstName": "Tim",
+      "lastName": "Cook",
+      "title": "CEO"
     },
     {
-      "firstName" : "Jony",
-      "lastName" : "Ive",
-      "title" : "CDO"
+      "firstName": "Jony",
+      "lastName": "Ive",
+      "title": "CDO"
     }
   ]
 }
@@ -960,14 +953,14 @@ You can also use identifiers or hypermedia for links to multiple resources:
 ```json
 {
   "name": "John Doe",
-  "addresses" : [ 412, 633 ]
+  "addresses": [412, 633]
 }
 ```
 
 ```json
 {
   "title": "Die Hard With a Vengance",
-  "_embedded" : [
+  "_embedded": [
     {
       "_links": { "href": "https://example.com/api/people/0a9duvx" }
     },
@@ -980,8 +973,6 @@ You can also use identifiers or hypermedia for links to multiple resources:
   ]
 }
 ```
-
-
 
 ---
 ## Pagination
@@ -1002,8 +993,8 @@ Host: world-phonebook.com
 
 Some collections can grow to a point where it is not possible to get all of its elements in a single HTTP request:
 
-* It would be **too slow**
-* In some cases, the server might not even have enough CPU or memory **capacity** to retrieve the data
+- It would be **too slow**
+- In some cases, the server might not even have enough CPU or memory **capacity** to retrieve the data
 
 You want to be able to **successively retrieve pages** of the collection:
 
@@ -1016,8 +1007,8 @@ You want to be able to **successively retrieve pages** of the collection:
 
 There are two main requirements to be able to implement pagination:
 
-* The client must be able to tell the server **which elements** of the collection it wants
-* The server must give the client enough information to be able to **access the other elements**
+- The client must be able to tell the server **which elements** of the collection it wants
+- The server must give the client enough information to be able to **access the other elements**
 
 The most common way for clients to ask for a page is to add **URL query parameters** which the server can use to select only part of the collection:
 
@@ -1033,9 +1024,9 @@ The most common way for clients to ask for a page is to add **URL query paramete
 There are many different ways popular APIs tell the client how to get more elements.
 Here are a few:
 
-* The `Link` header
-* Custom headers
-* Using a JSON *envelope* or *wrapper*
+- The `Link` header
+- Custom headers
+- Using a JSON _envelope_ or _wrapper_
 
 ---
 ### The `Link` header (solution 1)
@@ -1050,11 +1041,11 @@ having to build new URLs** ([HATEOAS][hateoas]).
 
 The server can indicate where to find:
 
-* The first page
-* The previous page
-* The next page
-* The last page
-* *(Other variants if necessary)*
+- The first page
+- The previous page
+- The next page
+- The last page
+- _(Other variants if necessary)_
 
 ---
 #### Pagination with the `Link` header
@@ -1100,9 +1091,9 @@ no standard link relations for that.
 HTTP does not forbid you from using non-standard headers,
 so you could decide to use these **custom headers** to send the client the additional information it needs:
 
-* A `Pagination-Page` header to tell the client which page is being served
-* A `Pagination-Page-Size` header to tell the client what is the current page size
-* A `Pagination-Total` header to tell the client how many elements there are in the collection
+- A `Pagination-Page` header to tell the client which page is being served
+- A `Pagination-Page-Size` header to tell the client what is the current page size
+- A `Pagination-Total` header to tell the client how many elements there are in the collection
 
 ---
 #### Custom headers in the response
@@ -1188,28 +1179,24 @@ Content-Type: application/hal+json; charset=utf-8
 }
 ```
 
-
-
 ---
 ## Resources
 
 .breadcrumbs[<a href="#1">REST In Depth</a>]
 
-* [HTTP methods][http-methods], [Web Linking][web-linking]
-* APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Flapjack][flapjack-api] (L3), [Foxy][foxy-api] (L3)
-* [JSON:API][json-api], [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
-* [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
+- [HTTP methods][http-methods], [Web Linking][web-linking]
+- APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Foxy][foxy-api] (L3)
+- [JSON:API][json-api], [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
+- [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
 
 **Further reading**
 
-* [Architectural Styles and the Design of Network-based Software Architectures (Roy Fielding)][roy-fielding-thesis]
-* [The Maturity Heuristic (Leonard Richardson)][rest-maturity] - [Richardson Maturity Model (Martin Fowler)][rest-maturity-fowler] - [4 Maturity Levels Of REST API Design (Guy Levin)][rest-maturity-levin]
-* [How to GET a Cup of Coffee][get-coffee]
-* [Best Practices for Designing a Pragmatic RESTful API][pragmatic-rest]
-* [REST with Hypermedia - Hot or Not?][rest-with-hypermedia]
-* [Haters Gonna HATEOAS][haters-gonna-hateoas]
-
-
+- [Architectural Styles and the Design of Network-based Software Architectures (Roy Fielding)][roy-fielding-thesis]
+- [The Maturity Heuristic (Leonard Richardson)][rest-maturity] - [Richardson Maturity Model (Martin Fowler)][rest-maturity-fowler] - [4 Maturity Levels Of REST API Design (Guy Levin)][rest-maturity-levin]
+- [How to GET a Cup of Coffee][get-coffee]
+- [Best Practices for Designing a Pragmatic RESTful API][pragmatic-rest]
+- [REST with Hypermedia - Hot or Not?][rest-with-hypermedia]
+- [Haters Gonna HATEOAS][haters-gonna-hateoas]
 
 ---
 ## Alternatives to REST
@@ -1225,21 +1212,18 @@ constraints. REST might not always be the best fit for all use cases.
 
 **Alternatives**
 
-* Plain old RPC: [gRPC][grpc]
-* Newcomer: [GraphQL][graphql] (see the [Facebook API][facebook-api])
-* Microservices messaging for complex distributed applications: [Apache Kafka][kafka], [RabbitMQ][rabbitmq], [WAMP][wamp]
+- Plain old RPC: [gRPC][grpc]
+- Newcomer: [GraphQL][graphql] (see the [Facebook API][facebook-api])
+- Microservices messaging for complex distributed applications: [Apache Kafka][kafka], [RabbitMQ][rabbitmq], [WAMP][wamp]
 
 **Further reading**
 
-* [Is REST still a relevant API style?][rest-still-relevant]
-* [Microservices messaging: why REST isn't always the best choice][microservices-messaging]
-
-
+- [Is REST still a relevant API style?][rest-still-relevant]
+- [Microservices messaging: why REST isn't always the best choice][microservices-messaging]
 
 [collection-json]: https://github.com/collection-json/spec
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
 [facebook-api]: https://developers.facebook.com/docs/graph-api/
-[flapjack-api]: https://flapjack.io/docs/1.0/jsonapi/
 [flickr-api]: https://www.flickr.com/services/api/
 [foxy-api]: https://api.foxycart.com/docs
 [get-coffee]: https://www.infoq.com/articles/webber-rest-workflow/
@@ -1257,7 +1241,7 @@ constraints. REST might not always be the best fit for all use cases.
 [http-conditional]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
 [http-get]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET
 [http-idempotence]: https://developer.mozilla.org/en-US/docs/Glossary/Idempotent
-[http-methods]: https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
+[http-methods]: https://www.rfc-editor.org/rfc/rfc9110.html#name-methods
 [http-options]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS
 [http-partial]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
 [http-safe]: https://developer.mozilla.org/en-US/docs/Glossary/Safe
@@ -1267,7 +1251,7 @@ constraints. REST might not always be the best fit for all use cases.
 [iana-link-relations]: https://www.iana.org/assignments/link-relations/link-relations.xhtml
 [iana-media-types]: https://www.iana.org/assignments/media-types/media-types.xhtml
 [json-api]: https://jsonapi.org
-[json-hyper-schema]: https://json-schema.org/latest/json-schema-hypermedia.html
+[json-hyper-schema]: https://datatracker.ietf.org/doc/draft-handrews-json-schema-hyperschema/
 [json-ld]: https://json-ld.org
 [json-ld-spec]: https://www.w3.org/2018/jsonld-cg-reports/json-ld/
 [kafka]: https://kafka.apache.org
