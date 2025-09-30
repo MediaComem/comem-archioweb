@@ -4,15 +4,15 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
 
 **You will need**
 
-* A running [MongoDB][mongodb] database
-* A running [Express][express] application with [Mongoose][mongoose] plugged in
+- A running [MongoDB][mongodb] database
+- A running [Express][express] application with [Mongoose][mongoose] plugged in
 
 **Recommended reading**
 
-* [REST introduction & HTTP](../rest/)
-* [REST in depth](../rest-advanced/)
-* [Express](../express/)
-* [Mongoose](../mongoose/)
+- [REST introduction & HTTP](../rest/)
+- [REST in depth](../rest-advanced/)
+- [Express](../express/)
+- [Mongoose](../mongoose/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -47,8 +47,6 @@ Learn how to implement advanced RESTful API operations in [Express][express] wit
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## Demonstration RESTful API
 
 The examples in this tutorial are taken from a RESTful API developed to demonstrate how to implement REST concepts.
@@ -58,8 +56,6 @@ The API is also deployed on [Heroku][heroku] (follow the instructions in the doc
 
 You should read about the [resources][demo-res] that you can manipulate with this API before moving on.
 
-
-
 ## Relationships
 
 <!-- slide-front-matter class: center, middle -->
@@ -67,8 +63,6 @@ You should read about the [resources][demo-res] that you can manipulate with thi
 <p class='center'><img class='w60' src='images/relationships.jpg' /></p>
 
 How do I link stuff together?
-
-
 
 ### Mongoose references
 
@@ -95,21 +89,15 @@ const movieSchema = new Schema({
 });
 ```
 
-
-
 ### Mongoose population
 
 Let's assume you have a movie document. Its `director` property is a MongoDB ID
 which references another document:
 
 ```js
-Movie
-  .findOne({ title: 'Casino Royale' })
-  .exec()
-  .then(movie => {
-    console.log(movie.director); // ObjectId("5f7a3e74576b3d75acea6c7d")
-  })
-  .catch(err => next(err));
+const movie = await Movie.findOne({ title: 'Casino Royale' }).exec();
+
+console.log(movie.director); // ObjectId("5f7a3e74576b3d75acea6c7d")
 ```
 
 When calling [`populate`][mongoose-population], the reference is replaced by the
@@ -117,17 +105,13 @@ target document itself, loaded using the model defined with the `ref` property
 in the schema:
 
 ```js
-Movie
+const movie = await Movie
   .findOne({ title: 'Casino Royale' })
 * .populate('director')
   .exec()
-  .then(movie => {
-    console.log(movie.director.name); // "Martin Campbell"
-  })
-  .catch(err => next(err));
+
+console.log(movie.director.name); // "Martin Campbell"
 ```
-
-
 
 ## Filtering
 
@@ -137,8 +121,6 @@ Movie
 
 How do I get only the right stuff?
 
-
-
 ### Limiting collections
 
 Often when clients make requests on a RESTful API's **collection** resource,
@@ -146,11 +128,9 @@ they don't need the whole thing; they need **only the items they are interested 
 
 For example, you might want to display:
 
-* The list of movies directed by someone
-* The list of movies with a rating greater than or equal to 8
-* The list of movies directed by either of your two favorite directors
-
-
+- The list of movies directed by someone
+- The list of movies with a rating greater than or equal to 8
+- The list of movies directed by either of your two favorite directors
 
 ### Simple filters
 
@@ -159,7 +139,8 @@ and Mongoose offers a chainable **query builder**; they're very easy to plug tog
 
 ```js
 // GET /api/movies
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
+  // Create a query, do not execute it yet
   let `query` = Movie.find();
 
   // Filter movies by director
@@ -172,13 +153,10 @@ router.get('/', function(req, res, next) {
   }
 
   // Execute the query
-  `query.exec()`
-    .then((movies) => res.send(movies))
-    .catch((err) => next(err));
+  const movies = await `query.exec()`;
+  res.send(movies);
 });
 ```
-
-
 
 ### Dynamic filters
 
@@ -188,7 +166,7 @@ Yes we can:
 
 ```js
 // GET /api/movies
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   let `query` = Movie.find();
 
   // Filter movies by director
@@ -205,8 +183,6 @@ router.get('/', function(req, res, next) {
 });
 ```
 
-
-
 ## Pagination
 
 <!-- slide-front-matter class: center, middle -->
@@ -214,8 +190,6 @@ router.get('/', function(req, res, next) {
 <p class='center'><img src='images/pagination.png' /></p>
 
 How do I get a reasonable amount of stuff?
-
-
 
 ### Paginating collections
 
@@ -227,15 +201,13 @@ The following examples assume that you have read [REST in
 Depth](../rest-advanced/) which explains different ways to expose pagination in
 a RESTful API.
 
-
-
 ### Using query parameters to select a page
 
 In principle, pagination is a **specialized filter**. The client uses **URL query parameters** to tell the server which chunk of the collection it wants.
 Implementing a `page` and `pageSize` parameters with Express and Mongoose is quite straightforward:
 
 ```js
-router.get('/', function(req, res, next) {
+router.get('/', async function (req, res, next) {
   let query = Movie.find();
 
   // Parse the "page" param (default to 1 if invalid)
@@ -257,8 +229,6 @@ router.get('/', function(req, res, next) {
 });
 ```
 
-
-
 ### Telling the client how to get more elements
 
 To include information about getting more elements in the response,
@@ -268,18 +238,14 @@ either to give that information directly to the client or to build hyperlinks.
 You can do that easily using a Mongoose model's `countDocuments()` function:
 
 ```js
-router.get('/', function (req, res, next) {
-  `Movie.find().countDocuments()`
-    .then(total => {
-        let query = Movie.find();
-        // Apply pagination here (code from previous example)...
-        // Send response (including total/links) here...
-    })
-    .catch(err => next(err));
+router.get('/', async function (req, res, next) {
+  const total = await `Movie.find().countDocuments()`;
+
+  let query = Movie.find();
+  // Apply pagination here (code from previous example)...
+  // Send response (including total/links) here...
 });
 ```
-
-
 
 ### Using the `Link` header (solution 1)
 
@@ -311,72 +277,57 @@ if (Object.keys(links).length >= 1) {
 }
 ```
 
-
-
 ### Using custom pagination headers (solution 2)
 
 To implement this solution, you simply have to set the headers before sending the response:
 
 ```js
-router.get('/', function (req, res, next) {
-  Movie.find()
-    .countDocuments()
-    .then(total => {
-      let query = Movie.find();
-      // Parse the "page" param (default to 1 if invalid)
-      let page = parseInt(req.query.page, 10);
-      if (isNaN(page) || page < 1) {
-        /* ... */
-      }
-      // Parse the "pageSize" param (default to 100 if invalid)
-      let pageSize = parseInt(req.query.pageSize, 10);
-      if (isNaN(pageSize) || pageSize < 0 || pageSize > 100) {
-        /* ... */
-      }
-      // Apply skip and limit to select the correct page of elements
-      query = query.skip((page - 1) * pageSize).limit(pageSize);
-      res.set('Pagination-Page', page);
-      res.set('Pagination-PageSize', pageSize);
-      res.set('Pagination-Total', total);
-    })
-    .catch(err => next(err));
+router.get('/', async function (req, res, next) {
+  const total = await Movie.find().countDocuments();
+
+  let query = Movie.find();
+  // Parse the "page" param (default to 1 if invalid)
+  let page = parseInt(req.query.page, 10);
+  if (isNaN(page) || page < 1) {
+    /* ... */
+  }
+  // Parse the "pageSize" param (default to 100 if invalid)
+  let pageSize = parseInt(req.query.pageSize, 10);
+  if (isNaN(pageSize) || pageSize < 0 || pageSize > 100) {
+    /* ... */
+  }
+  // Apply skip and limit to select the correct page of elements
+  query = query.skip((page - 1) * pageSize).limit(pageSize);
+* res.set('Pagination-Page', page);
+* res.set('Pagination-PageSize', pageSize);
+* res.set('Pagination-Total', total);
+
+  // ...
 });
-
 ```
-
-
 
 ### Using a JSON envelope (solution 3)
 
 Instead of setting headers, you simply have to build and pass your envelope to `res.send()`:
 
 ```js
-router.get('/', function(req, res, next) {
-    Movie.find().countDocuments()
-      .then(total => {
-        let query = Movie.find();
-        // Parse query parameters and apply pagination here...
+router.get('/', async function (req, res, next) {
+  const total = await Movie.find().countDocuments();
+  let query = Movie.find();
+  // Parse query parameters and apply pagination here...
 
-        return query.exec().then(movies => {
-          return {total, movies};
-        });
-      })
-      .then(({total, movies}) => {
-        // Assuming page and pageSize are defined somewhere in your function or middleware
-        res.send({
-          page: page,
-          pageSize: pageSize,
-          total: total,
-          data: movies
-        });
-      })
-      .catch(err => {
-        next(err);
-      });
+  const movies = await query.exec();
+
+  // Assuming page and pageSize are defined somewhere
+  // in your function or middleware
+  res.send({
+    page: page,
+    pageSize: pageSize,
+    total: total,
+    data: movies
   });
+});
 ```
-
-
 
 ### Hypermedia pagination (solution 4)
 
@@ -385,15 +336,11 @@ JSON envelope), since the pagination information is also included in JSON in the
 response body. You just have to pass an object of the appropriate shape to
 Express's `res.send` function.
 
-
-
 ## Aggregation
 
 <!-- slide-front-matter class: center, middle -->
 
 <p class='center'><img src='images/aggregation.png' class='w60' /></p>
-
-
 
 ### Aggregation example
 
@@ -420,8 +367,6 @@ the [`$lookup` aggregation operator][mongodb-lookup] was added in version 3.2.
 
 To use it, you have to use [MongoDB aggregations][mongodb-aggregation].
 
-
-
 ### Aggregation pipeline
 
 The preferred MongoDB aggregation method is the [aggregation pipeline][mongodb-aggregation-pipeline]:
@@ -435,7 +380,7 @@ Movie.`aggregate`([ stage1, stage2, stage3 ]);
 
 Each **stage** is an object with an [aggregation pipeline operator][mongodb-aggregation-pipeline-operators]:
 
-```js
+```json
 {
   `$match`: {
     director: { $in: [ 'abc', 'def', 'ghi' ] }
@@ -465,15 +410,15 @@ Applying this operator adds the new `directedMovies` property to each Person:
 
 <!-- slide-column -->
 
-```js
+```json
 {
-  name: 'Peter Jackson'
+  "name": "Peter Jackson"
 }
 ```
 
 <!-- slide-column -->
 
-```js
+```json
 {
   name: 'Peter Jackson',
   `directedMovies`: [
@@ -492,8 +437,10 @@ don't really need it. You can avoid this by adding 2 more steps to the pipeline.
 The [`$unwind` operator][mongodb-unwind] duplicates Person documents for each
 directed movie:
 
-```js
-{ $unwind: '$directedMovies' }
+```json
+{
+  $unwind: '$directedMovies';
+}
 ```
 
 For example, if there is 1 Person with 2 Movies in the aggregation pipeline so
@@ -502,7 +449,7 @@ with 1 Movie each:
 
 <!-- slide-column -->
 
-```js
+```json
 {
   name: 'Peter Jackson',
   directedMovies: `[`
@@ -514,7 +461,7 @@ with 1 Movie each:
 
 <!-- slide-column -->
 
-```js
+```json
 {
   name: 'Peter Jackson',
   directedMovies: `{` title: 'a' `}`
@@ -524,8 +471,6 @@ with 1 Movie each:
   directedMovies: `{` title: 'b' `}`
 }
 ```
-
-
 
 #### Aggregation pipeline example (part 3/3)
 
@@ -549,7 +494,7 @@ directed movies, transforming `directedMovies` into a number:
 
 <!-- slide-column -->
 
-```js
+```json
 {
   name: 'Peter Jackson',
   directedMovies: { title: 'a' }
@@ -562,10 +507,10 @@ directed movies, transforming `directedMovies` into a number:
 
 <!-- slide-column -->
 
-```js
+```json
 {
   name: 'Peter Jackson',
-  `directedMovies: 2`
+* directedMovies: 2
 }
 ```
 
@@ -579,17 +524,8 @@ You can use MongoDB aggregations with Mongoose quite easily by simply calling
 the [`aggregate` method][mongoose-aggregate] on models:
 
 ```js
-import Person from '../models/person';
-
 import Person from "../models/person";
-Person.aggregate([{ stage1...}, { stage2... }])
-  .then((results) => {
-    // process results
-  })
-  .catch((err) => {
-    // handle error
-  });
-
+const results = await Person.aggregate([{ stage1...}, { stage2... }]);
 ```
 
 Note that the `results` array returned by Mongoose contains **plain objects, NOT
@@ -601,7 +537,7 @@ using your model:
 
 ```js
 // Create documents from aggregated results.
-const aggregatedDocuments = results.map(result => new Person(result));
+const aggregatedDocuments = results.map(result => Person.hydrate(result));
 ```
 
 ### Aggregation pipeline operators
@@ -610,26 +546,22 @@ There are many operators you can use in pipeline aggregation stages.
 They are all described in [the documentation][mongodb-aggregation-pipeline-operators].
 Here are some of the most useful:
 
-Operator   | Description
-:--------- | :---------------------------------------------------------------------------------------------------------------------------
-`$group`   | Groups documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group
-`$limit`   | Passes the first *n* documents unmodified to the pipeline
-`$match`   | **Filters** documents to allow only matching documents to pass unmodified into the next pipeline stage
-`$project` | Reshapes each document, such as by adding new fields or removing existing fields
-`$skip`    | Skips the first *n* documents (e.g. for **pagination**)
-`$sort`    | Reorders the documents by a specified sort key (e.g. for **pagination**)
-
-
+| Operator   | Description                                                                                                                  |
+| :--------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| `$group`   | Groups documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group |
+| `$limit`   | Passes the first _n_ documents unmodified to the pipeline                                                                    |
+| `$match`   | **Filters** documents to allow only matching documents to pass unmodified into the next pipeline stage                       |
+| `$project` | Reshapes each document, such as by adding new fields or removing existing fields                                             |
+| `$skip`    | Skips the first _n_ documents (e.g. for **pagination**)                                                                      |
+| `$sort`    | Reorders the documents by a specified sort key (e.g. for **pagination**)                                                     |
 
 ## Resources
 
 **Documentation**
 
-* [Mongoose `populate`][mongoose-populate]
-* [`format-link-header` package][format-link-header]
-* [MongoDB aggregation][mongodb-aggregation]
-
-
+- [Mongoose `populate`][mongoose-populate]
+- [`format-link-header` package][format-link-header]
+- [MongoDB aggregation][mongodb-aggregation]
 
 [demo]: https://github.com/MediaComem/comem-rest-demo
 [demo-doc]: https://demo.archioweb.ch
