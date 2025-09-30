@@ -565,7 +565,7 @@ Here are some of the most useful:
 
 [demo]: https://github.com/MediaComem/comem-rest-demo
 [demo-doc]: https://demo.archioweb.ch
-[demo-res]: https://github.com/MediaComem/comem-rest-demo#resources
+[demo-res]: https://github.com/MediaComem/comem-rest-demo#api-resources
 [express]: https://expressjs.com
 [format-link-header]: https://www.npmjs.com/package/format-link-header
 [heroku]: https://www.heroku.com
@@ -574,7 +574,7 @@ Here are some of the most useful:
 [mongodb]: https://www.mongodb.com
 [mongodb-aggregation]: https://docs.mongodb.com/manual/aggregation/
 [mongodb-aggregation-pipeline]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
-[mongodb-aggregation-pipeline-operators]: https://docs.mongodb.com/manual/reference/operator/aggregation/
+[mongodb-aggregation-pipeline-operators]: https://www.mongodb.com/docs/manual/reference/mql/aggregation-stages/
 [mongodb-group]: https://docs.mongodb.com/manual/reference/operator/aggregation/group/
 [mongodb-lookup]: https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/
 [mongodb-unwind]: https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/
