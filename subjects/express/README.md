@@ -1155,7 +1155,7 @@ moviesRouter.`use("/movies/:id/comments", makeCommentsRouter(findMovie))`;
 - [Routing][routing]
 - [Using middleware][using-middleware]
 
-[api]: http://expressjs.com/en/4x/api.html
+[api]: https://expressjs.com/en/5x/api.html
 [chrome]: https://www.google.com/chrome/
 [design-pattern-builder]: https://sourcemaking.com/design_patterns/builder
 [design-pattern-cor]: https://sourcemaking.com/design_patterns/chain_of_responsibility
