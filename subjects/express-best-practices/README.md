@@ -4,12 +4,12 @@ Learn best development practices for [Express][express] web applications.
 
 **You will need**
 
-* A working [Express][express] application
+- A working [Express][express] application
 
 **Recommended reading**
 
-* [Express](../express/)
-* [Mongoose](../mongoose/)
+- [Express](../express/)
+- [Mongoose](../mongoose/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -36,8 +36,6 @@ Learn best development practices for [Express][express] web applications.
   - [Handling specific errors](#handling-specific-errors)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-
 
 ## Use environment variables for configuration
 
@@ -181,8 +179,8 @@ you retrieve configuration from environment variables):
 
 ```js
 // Load environment variables from the .env file.
-* import * as dotenv from 'dotenv'
-* dotenv.config()
+*import * as dotenv from 'dotenv'
+*dotenv.config()
 
 // Retrieve configuration from environment variables.
 const port = process.env.PORT || 3000;
@@ -193,8 +191,6 @@ const port = process.env.PORT || 3000;
 > accessing any environment variable in `process.env`**, otherwise it will be
 > too late. You'll be fine if you use a centralized configuration file and put
 > that code at the top.
-
-
 
 ## The `debug` package
 
@@ -247,12 +243,10 @@ $> DEBUG=app:* npm start
 The `debug` package is a minimalistic logging solution. For more features, use a
 more advanced library such as:
 
-* [bunyan]
-* [log4js]
-* [nightingale]
-* [winston]
-
-
+- [bunyan]
+- [log4js]
+- [nightingale]
+- [winston]
 
 ## Use routers
 
@@ -274,36 +268,33 @@ app.use('/api/people', `peopleApiRouter`);
 app.use('/api/movies', `moviesApiRouter`);
 ```
 
-
-
 ## Avoid repetition with middleware
 
 You often end up with **code duplication in routes**:
 
-
 ```js
-router.get('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec().then(person => {
-*     if (!person) return res.sendStatus(404);
-      // Send user here
-*   })
-*   .catch(err => next(err));
+router.get('/:id', async function(req, res, next) {
+* const person = await Person.findById(req.params.id).exec();
+* if (!person) {
+*   return res.sendStatus(404);
+* }
+  // Send user here
 });
 
-router.patch('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec().then(person => {
-*     if (!person) return res.sendStatus(404);
-      // Update and send user here
-*   })
-*   .catch(err => next(err));
+router.patch('/:id', async function(req, res, next) {
+* const person = await Person.findById(req.params.id).exec();
+* if (!person) {
+*   return res.sendStatus(404);
+* }
+  // Update and send user here
 });
 
-router.delete('/:id', function(req, res, next) {
-* Person.findById(req.params.id).exec().then(person => {
-*     if (!person) return res.sendStatus(404);
-      // Delete user here
-*   })
-*   .catch(err => next(err));
+router.delete('/:id', async function(req, res, next) {
+* const person = await Person.findById(req.params.id).exec();
+* if (!person) {
+*   return res.sendStatus(404);
+* }
+  // Delete user here
 });
 ```
 
@@ -312,17 +303,14 @@ router.delete('/:id', function(req, res, next) {
 You can write a **middleware function** that performs only this task and **attaches the Person document to the `req` object**:
 
 ```js
-function loadPersonFromParams(req, res, next) {
-  Person.findById(req.params.id)
-    .exec()
-    .then(person => {
-      if (!person) {
-        return res.status(404).send(\`No person found with ID ${req.params.id}`);
-      }
-      req.person = person;
-      next();
-    })
-    .catch(err => next(err));
+async function loadPersonFromParams(req, res, next) {
+  const person = await Person.findById(req.params.id).exec();
+  if (!person) {
+    return res.status(404).send(\`No person found with ID ${req.params.id}`);
+  }
+
+  req.person = person;
+  next();
 }
 ```
 
@@ -336,76 +324,15 @@ router.get('/:id', `loadPersonFromParams`, function (req, res, next) {
   res.send(`req.person`);
 });
 
-router.patch('/:id', `loadPersonFromParams`, function (req, res, next) {
-  // Update req.person here
-  `req.person`
-    .save()
-    .then((updatedPerson) => {
-      res.send(updatedPerson);
-    })
-    .catch((err) => next(err));
+router.patch('/:id', `loadPersonFromParams`, async function (req, res, next) {
+  const updatedPerson = await `req.person`.save();
+  res.send(updatedPerson);
 });
 
-router.delete("/:id", `loadPersonFromParams`, function (req, res, next) {
-  `req.person`
-    .deleteOne()
-    .then(res.sendStatus(204))
-    .catch((err) => next(err));
+router.delete('/:id', `loadPersonFromParams`, async function (req, res, next) {
+  await `req.person`.deleteOne();
+  res.sendStatus(204);
 });
-```
-
-## Handling Promises
-So far, all of our examples have used chainable methods (`.then()` and `.catch()`) to handle Promises returned by Mongoose.
-
-```js
-router.get('/person/:id', (req, res, next) => {
-  Person.findById(req.params.id)
-*   .then(person => res.json(user))
-*   .catch(err => next(err));
-});
-```
-
-This is absolutely fine, but **you might be more comfortable using `async/await`**.
-
-### Handling Promises using `async/await`
-
-In that case, you may write your Express functions like this:
-
-```js
-router.get('/person/:id', `async` (req, res, next) => {
-  try {
-    const user = `await` Person.findById(req.params.id);
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-});
-```
-
-However, you will need to wrap every callback in those **annoying `try/catch` blocks** in order to handle errors. This leads to a lot of unnecesary repetition. **Could we do better?**
-
-### Async Handler wrapper function
-
-We can create a **wrapper function** that automatically catches errors and passes them to the next Express middleware.
-
-```js
-const asyncHandler = fn => (req, res, next) =>
-  Promise
-    .resolve(fn(req, res, next))
-    .catch(next);
-```
-
-`asyncHandler` is a **higher-order function** that takes an async function (`fn`) and **returns a new function**. The returned function, when called, runs `fn` and catches any unhandled errors, **passing them to next()** (i.e., the next middleware).
-
-### Using `asyncHandler` wrapper function
-
-You can now use this wrapper as middleware in your Express chain. Errors will be automatically caught.
-
-```js
-router.get('/user/:id', `asyncHandler`(`async` (req, res) => {
-  const user = await User.findById(req.params.id);
-  res.json(user);
-}));
 ```
 
 ## Error Handling
