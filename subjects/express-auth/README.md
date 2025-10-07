@@ -4,12 +4,12 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
 
 **You will need**
 
-* A running [Express][express] application with [Mongoose][mongoose] plugged in
+- A running [Express][express] application with [Mongoose][mongoose] plugged in
 
 **Recommended reading**
 
-* [Express](../express/)
-* [Mongoose](../mongoose/)
+- [Express](../express/)
+- [Mongoose](../mongoose/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -36,10 +36,10 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
   - [The `jsonwebtoken` package](#the-jsonwebtoken-package)
     - [Verifying a JWT](#verifying-a-jwt)
 - [Authentication flow](#authentication-flow)
-    - [Unauthorized client](#unauthorized-client)
-    - [Login](#login)
-    - [Authenticated request](#authenticated-request)
-    - [Full flow](#full-flow)
+  - [Unauthorized client](#unauthorized-client)
+  - [Login](#login)
+  - [Authenticated request](#authenticated-request)
+  - [Full flow](#full-flow)
 - [Sample code](#sample-code)
   - [Sample login route](#sample-login-route)
   - [Sample Express JWT authentication middleware](#sample-express-jwt-authentication-middleware)
@@ -56,24 +56,16 @@ Learn how to set up authentication with [JSON Web Tokens][jwt] an [Express][expr
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
-
-
 ## Security concepts
 
-Process        | Description
-:---           | :---
-Identification | Occurs when a user claims to have a specific identity, for example by supplying a **username**.
-Authentication | The process of **proving an identity** by supplying appropriate credentials, such as a **password**, an **authentication token**, or by using a **public key** with asymmetric cryptography.
-Authorization  | The process of **verifying that you have access to something**, such as a specific resource. For example, a user may have the right to edit their own posts in a social application, but not the posts of another user.
+| Process        | Description                                                                                                                                                                                                             |
+| :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Identification | Occurs when a user claims to have a specific identity, for example by supplying a **username**.                                                                                                                         |
+| Authentication | The process of **proving an identity** by supplying appropriate credentials, such as a **password**, an **authentication token**, or by using a **public key** with asymmetric cryptography.                            |
+| Authorization  | The process of **verifying that you have access to something**, such as a specific resource. For example, a user may have the right to edit their own posts in a social application, but not the posts of another user. |
 
 In this presentation, we'll focus on setting up **authentication**
 with [bcrypt][bcrypt] and [JSON Web Tokens][jwt].
-
-
-
-
 
 ## Storing passwords securely
 
@@ -116,8 +108,8 @@ The value returned by a hash function is called a hash value, a **digest**, or s
 
 A [cryptographic hash function][hash] is a [hash function][hash-non-crypto] that has the following properties:
 
-* The same message always results in the same hash (**deterministic**).
-* **Computing** the hash value of any message **is quick**.
+- The same message always results in the same hash (**deterministic**).
+- **Computing** the hash value of any message **is quick**.
 
 <!-- slide-column 60 -->
 
@@ -125,18 +117,18 @@ A [cryptographic hash function][hash] is a [hash function][hash-non-crypto] that
 
 <!-- slide-container -->
 
-* It is infeasible to generate a message from its hash value except by trying all possible messages (**one-way**).
-* A small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value.
-* It is infeasible to find two different messages with the same hash value (collisions).
+- It is infeasible to generate a message from its hash value except by trying all possible messages (**one-way**).
+- A small change to a message should change the hash value so extensively that the new hash value appears uncorrelated with the old hash value.
+- It is infeasible to find two different messages with the same hash value (collisions).
 
 ### Storing hashed passwords
 
 The properties of a hash function make it suitable for securely verifying
 users' passwords without actually storing them:
 
-* When the user **registers** the first time, their password is hashed. **Only
+- When the user **registers** the first time, their password is hashed. **Only
   the hash is stored** in the database. The plain password is not kept.
-* When the user comes back later to **log in**, the password is passed through
+- When the user comes back later to **log in**, the password is passed through
   the same hash function. **If the hash is the same, the password is the correct
   one** (in all probability).
 
@@ -175,10 +167,6 @@ Salting makes it impractical to generate rainbow tables because it would require
 too much computing power and storage, since you would have to generate the
 tables for all possible salts (a potentially infinite number).
 
-
-
-
-
 ## bcrypt
 
 <!-- slide-front-matter class: center, middle -->
@@ -192,18 +180,14 @@ The [`bcrypt` package][bcrypt-npm] provides an implementation of the
 generate a bcrypt hash from a password.
 
 ```js
-import bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
 
-const plainPassword = "changeme";
+const plainPassword = 'changeme';
 const costFactor = 10;
 
-bcrypt.hash(plainPassword, costFactor)
-  .then(hashedPassword => {
-    // Store the hashed password in your database.
-  })
-  .catch(err => {
-    // Deal with hashing error
-  })
+const hashedPassword = await bcrypt.hash(plainPassword, costFactor);
+
+// Store the hashed password in your database...
 ```
 
 > Creating a password hash is a costly operation, especially if the cost factor of the bcrypt algorithm is high (more than 10).
@@ -215,22 +199,19 @@ bcrypt.hash(plainPassword, costFactor)
 Here's an example of how to use bcrypt in an Express application using Mongoose for database access.
 
 ```js
-router.post("/", function(req, res, next) {
+router.post('/', async function (req, res, next) {
   const plainPassword = req.body.password;
   const costFactor = 10;
 
-* bcrypt.hash(plainPassword, costFactor)
-    .then(hashedPassword => {
-      const newUser = new User(req.body);
-*     newUser.password = hashedPassword;
-      return newUser.save();
-    })
-    .then(savedUser => {
-      res.send(savedUser);
-    })
-    .catch(next);
-});
+* const hashedPassword = await bcrypt.hash(plainPassword, costFactor);
 
+  const newUser = new User(req.body);
+* newUser.password = hashedPassword;
+
+  const savedUser = await newUser.save();
+
+  res.send(savedUser);
+});
 ```
 
 #### Hiding the password hash from API responses
@@ -262,19 +243,15 @@ function transformJsonUser(doc, json, options) {
 
 The `compare` function takes the following arguments:
 
-* The **plain password** to check.
-* The **hashed password** from your database.
+- The **plain password** to check.
+- The **hashed password** from your database.
 
 The asynchronous callback will be called with **a boolean indicating whether the password matches**.
 
 ```js
-  bcrypt.compare(plainPassword, hashedPassword)
-    .then(valid => {
-      // Do something depending on password validity
-    })
-    .catch(err => {
-      // Handle Promise rejection
-    });
+const valid = await bcrypt.compare(plainPassword, hashedPassword);
+
+// Do something depending on password validity...
 ```
 
 #### Verifying a password with Express and Mongoose
@@ -286,24 +263,21 @@ Express application using Mongoose:
 import bcrypt from "bcrypt";
 import User from "../models/user.js";
 
-router.post("/login", function (req, res, next) {
-  `User.findOne`({ name: req.body.name })
-    .exec()
-    .then(user => {
-      if (!user) return res.sendStatus(401); // Unauthorized
-      return `bcrypt.compare(req.body.password, user.password)`.then(valid => {
-        if (!valid) return res.sendStatus(401); // Unauthorized
-        // Login is valid...
-        res.send(\`Welcome ${user.name}!`);
-      });
-    })
-    .catch(next);
+router.post("/login", async function (req, res, next) {
+  const user = await `User.findOne`({ name: req.body.name });
+  if (!user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  const valid = await `bcrypt.compare(req.body.password, user.password)`;
+  if (!valid) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  // Login is valid.
+  res.send(\`Welcome ${user.name}!`);
 });
 ```
-
-
-
-
 
 ## Authentication tokens
 
@@ -315,11 +289,11 @@ An authentication token allows a user to authenticate to a server without sendin
 
 It is an alternative to cookies, with the following advantages:
 
-* Tokens are **stateless**. A token contains all the information it needs for authentication,
+- Tokens are **stateless**. A token contains all the information it needs for authentication,
   freeing your server from managing sessions.
-* Tokens can be **generated from anywhere**,
+- Tokens can be **generated from anywhere**,
   allowing you the option to handle the signing and verification of tokens on different servers.
-* **Fine-grained access control**.
+- **Fine-grained access control**.
   The token payload can contain specific user roles and permissions.
 
 ### JSON Web Token (JWT)
@@ -332,28 +306,28 @@ A [JSON Web Token][jwt] is a special format for authentication tokens:
 
 A JWT contains:
 
-* A header indicating the **hashing algorithm** and other JWT configuration properties.
-* A **payload** containing the **authentication claims**, i.e. who is the authenticated user.
-* A **signature** which is a [HMAC][hmac] of the previous 2 parts of the token, based on a **secret** known only by the server.
+- A header indicating the **hashing algorithm** and other JWT configuration properties.
+- A **payload** containing the **authentication claims**, i.e. who is the authenticated user.
+- A **signature** which is a [HMAC][hmac] of the previous 2 parts of the token, based on a **secret** known only by the server.
 
 Since the signature is tied to the contents of the token, and HMAC uses cryptographic hash functions which are not reversible:
 
-* An attacker cannot create a valid JWT token unless he knows the secret.
-* Nor can he modify an existing token while keeping the signature valid.
+- An attacker cannot create a valid JWT token unless he knows the secret.
+- Nor can he modify an existing token while keeping the signature valid.
 
 #### JWT claims
 
 The properties of the payload should be [**registered claims**][jwt-claims].
 These are some of the most common claims (all are optional):
 
-Claim | Description
-:---  | :---
-`iss` | Issuer
-`sub` | Subject (e.g. the ID of the authenticated user)
-`aud` | Audience
-`exp` | Expiration time (UNIX timestamp)
-`nbf` | Not before
-`iat` | Issued at
+| Claim | Description                                     |
+| :---- | :---------------------------------------------- |
+| `iss` | Issuer                                          |
+| `sub` | Subject (e.g. the ID of the authenticated user) |
+| `aud` | Audience                                        |
+| `exp` | Expiration time (UNIX timestamp)                |
+| `nbf` | Not before                                      |
+| `iat` | Issued at                                       |
 
 For example, a very simple token might only contain `sub` to indicate the authenticated user, and `exp` for an expiration date.
 
@@ -361,16 +335,16 @@ For example, a very simple token might only contain `sub` to indicate the authen
 
 #### JWT best practices
 
-* **Keep it secret. Keep it safe.**
+- **Keep it secret. Keep it safe.**
   The signing key should be treated like any other credentials and revealed only to services that absolutely need it.
   It should not be put under version control.
-* **Do not add sensitive data to the payload.**
+- **Do not add sensitive data to the payload.**
   Tokens are signed to protect against manipulation and are easily decoded.
   Add the bare minimum number of claims to the payload for best performance and security.
-* **Give tokens an expiration.**
+- **Give tokens an expiration.**
   Technically, once a token is signed, it is valid forever, unless the signing key is changed or expiration explicitly set.
   This could pose potential issues so have a strategy for expiring and/or revoking tokens.
-* **Embrace HTTPS.**
+- **Embrace HTTPS.**
   Do not send tokens over non-HTTPS connections as those requests can be intercepted and tokens compromised.
 
 ### The `jsonwebtoken` package
@@ -378,27 +352,26 @@ For example, a very simple token might only contain `sub` to indicate the authen
 Generating a JWT is trivial with the `jsonwebtoken` npm package:
 
 ```js
-import { promisify } from "util";
-import jwt from "jsonwebtoken";
+import { promisify } from 'util';
+import jwt from 'jsonwebtoken';
 
 const signJwt = promisify(jwt.sign);
 
 // Retrieve the secret key from your configuration.
-const secretKey = process.env.SECRET_KEY || "changeme";
+const secretKey = process.env.SECRET_KEY || 'changeme';
 // UNIX timstamp representing a date in 7 days.
 const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
 
 // Create and sign a token.
-*signJwt({ sub: "userId42", exp: exp }, secretKey).then(token => {
-* // Use the signed token...
-*});
+*const token = await signJwt({ sub: 'userId42', exp: exp }, secretKey);
+
+// Use the signed token...
 ```
 
 > The `jsonwebtoken` library uses callbacks instead of Promises. Many libraries
 > retain their callback APIs for backward compatibility and to avoid breaking
 > changes. Use [`util.promisify`][util.promisify] to convert `jwt.sign` and
 > `jwt.verify` to return Promises.
-
 
 #### Verifying a JWT
 
@@ -414,10 +387,11 @@ const verifyJwt = promisify(jwt.verify);
 const secretKey = process.env.SECRET_KEY || "changeme";
 
 // Create and sign a token.
-*verifyJwt(token, secretKey).then(payload => {
-* // Use the signed token...
-*});
+*const payload = await verifyJwt(token, secretKey);
+
+// Use the signed token...
 ```
+
 ## Authentication flow
 
 <!-- slide-front-matter class: center, middle -->
@@ -448,14 +422,10 @@ he or she can send it as a bearer token in the `Authorization` header to authent
 
 This is a summary of the general principle:
 
-* The user sends his or her credentials to obtain a JWT.
-* The JWT is sent as authentication for all requests to protected resources.
+- The user sends his or her credentials to obtain a JWT.
+- The JWT is sent as authentication for all requests to protected resources.
 
 <img class='w100' src='images/auth-seq-full.png' />
-
-
-
-
 
 ## Sample code
 
@@ -466,64 +436,64 @@ A little help.
 ### Sample login route
 
 ```js
-import bcrypt from "bcrypt"; import jwt from "jsonwebtoken";
-import { promisify } from "util"; import User from "../models/user.js";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
+import User from '../models/user.js';
 
 const signJwt = promisify(jwt.sign);
-const secretKey = process.env.SECRET_KEY || "changeme";
+const secretKey = process.env.SECRET_KEY || 'changeme';
 
-router.post("/login", function (req, res, next) {
+router.post('/login', async function (req, res, next) {
   // Attempt to find a user with the provided name
-  User.findOne({ name: req.body.name }).exec().then(`user` => {
-    if (!user) return res.sendStatus(401); // user not found
+  const user = await User.findOne({ name: req.body.name });
+  if (!user) return res.sendStatus(401); // user not found
 
-    // Compare the provided password with the stored hashed password
-    return bcrypt.compare(req.body.password, user.password).then(`valid` => {
-      if (!valid) return res.sendStatus(401); // wrong password
+  // Compare the provided password with the stored hashed password
+  const valid = await bcrypt.compare(req.body.password, user.password);
+  if (!valid) return res.sendStatus(401); // wrong password
 
-      // Define JWT expiration: current time + 1 week (in seconds)
-      const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
-      // Create the payload for the JWT including the user ID and expiration
-      const payload = { sub: `user._id.toString()`, exp: exp };
+  // Define JWT expiration: current time + 1 week (in seconds)
+  const exp = Math.floor(Date.now() / 1000) + 7 * 24 * 3600;
+  // Create the payload for the JWT including the user ID and expiration
+  const payload = { sub: `user._id.toString()`, exp: exp };
 
-      // Sign the JWT and send it to the client
-      return signJwt(payload, secretKey).then(token => {
-        res.send({ token });
-      });
-    });
-  }).catch(next);
+  // Sign the JWT and send it to the client
+  const token = await signJwt(payload, secretKey);
+  res.send({ token });
 });
 ```
 
 ### Sample Express JWT authentication middleware
 
 ```js
-import jwt from "jsonwebtoken";
-import { promisify } from "util";
-import User from "../models/user.js";
+import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
+import User from '../models/user.js';
 
-const secretKey = process.env.SECRET_KEY || "changeme";
+const secretKey = process.env.SECRET_KEY || 'changeme';
 const verifyJwt = promisify(jwt.verify);
 
-function authenticate(req, res, next) {
+async function authenticate(req, res, next) {
   // Ensure the header is present.
-  const authorization = req.get("Authorization");
+  const authorization = req.get('Authorization');
   if (!authorization) {
-    return res.status(401).send("Authorization header is missing");
+    return res.status(401).send('Authorization header is missing');
   }
   // Check that the header has the correct format.
   const match = authorization.match(/^Bearer (.+)$/);
   if (!match) {
-    return res.status(401).send("Authorization header is not a bearer token");
+    return res.status(401).send('Authorization header is not a bearer token');
   }
   // Extract and verify the JWT.
   const token = match[1];
-  verifyJwt(token, secretKey).then(payload => {
+  try {
+    const payload = await verifyJwt(token, secretKey);
     req.currentUserId = payload.sub;
     next(); // Pass the ID of the authenticated user to the next middleware.
-  }).catch(() => {
-    res.status(401).send("Your token is invalid or has expired");
-  });
+  } catch {
+    res.status(401).send('Your token is invalid or has expired');
+  }
 }
 ```
 
@@ -532,8 +502,7 @@ function authenticate(req, res, next) {
 The previous middleware can simply be plugged into routes which require authentication:
 
 ```js
-router.post("/things", `authenticate`, function(req, res, next) {
-
+router.post('/things', `authenticate`, function (req, res, next) {
   // If we reach this function, the previous authentication middleware
   // has done its job, i.e. a valid JWT was in the Authorization header.
   const currentUserId = req.currentUserId;
@@ -546,8 +515,6 @@ router.post("/things", `authenticate`, function(req, res, next) {
 
 You may also use an existing library which will verify the token for you instead
 of writing the code yourself, like [express-jwt][express-jwt].
-
-
 
 ## Authorization
 
@@ -570,18 +537,17 @@ authenticated user is the one who actually created that thing**.
 Here's an example of how you could do that:
 
 ```js
-router.put("/things/:id", `authenticate`, function(req, res, next) {
+router.put('/things/:id', `authenticate`, function (req, res, next) {
   // Get the thing.
-  Thing.findById(req.params.id).exec()
-    .then(thing => {
-      // Check authorization: was this thing created by the authenticated
-      // user (good), or by another user (bad)?
-      if (`req.currentUserId !== thing.user.toString()`) {
-        return res.status(403).send("Please mind your own business.");
-      }
-      // Do what needs to be done...
-    })
-    .catch(next);
+  const thing = await Thing.findById(req.params.id);
+
+  // Check authorization: was this thing created by the authenticated
+  // user (good), or by another user (bad)?
+  if (`req.currentUserId !== thing.user.toString()`) {
+    return res.status(403).send('Please mind your own business.');
+  }
+
+  // Do what needs to be done...
 });
 ```
 
@@ -602,9 +568,10 @@ const payload = {
 * scope: "admin" // Include permissions in the payload.
 };
 
-signJwt(payload, secretKey).then(token => {
-  res.send({ token }); // Send the token to the client.
-}).catch(next);
+const token = await signJwt(payload, secretKey)
+
+// Send the token to the client.
+res.send({ token });
 ```
 
 > The `scope` claim is an officially [registered claim][jwt-claims] which was
@@ -619,7 +586,9 @@ the subject. You could modify the `authenticate` middleware to do this:
 ```js
 // Extract and verify the JWT.
 const token = match[1];
-verifyJwt(token, secretKey).then(payload => {
+try {
+  const payload = await verifyJwt(token, secretKey);
+
   // Attach authentication information to the request for the next middleware.
   req.currentUserId = payload.sub;
 
@@ -628,9 +597,9 @@ verifyJwt(token, secretKey).then(payload => {
 * req.currentUserPermissions = scope ? scope.split(" ") : [];
 
   next();
-}).catch(() => {
+} catch {
   res.status(401).send("Your token is invalid or has expired");
-});
+}
 ```
 
 #### Writing an authorization middleware
@@ -668,12 +637,12 @@ route:
 
 ```js
 router.put(
-  "/protected/route",
+  '/protected/route',
   // Authenticate before authorization.
   authenticate,
   // Ensure only administrators can access this route.
   `authorize('admin')`,
-  function(req, res, next) {
+  function (req, res, next) {
     // Do admin stuff...
   }
 );
@@ -693,32 +662,27 @@ but maybe an administrator is allowed to:
 // All authenticated users can access this route.
 router.put("/things/:id", `authenticate`, function (req, res, next) {
   // Get the thing.
-  Thing.findById(req.params.id)
-    .exec()
-    .then(thing => {
-*     // The user is authorized to edit the thing only if he or she is
-*     // the owner of the thing, or if he or she is an administrator.
-*     const authorized =
-*       req.currentUserPermissions.includes("admin") ||
-*       req.currentUserId === thing.user.toString();
-*
-*     if (!authorized) {
-*       return res.status(403).send("Please mind your own things.");
-*     }
+  const thing = await Thing.findById(req.params.id);
 
-      // Do what needs to be done...
-    })
-    .catch(next);
+* // The user is authorized to edit the thing only if he or she is
+* // the owner of the thing, or if he or she is an administrator.
+* const authorized =
+*   req.currentUserPermissions.includes("admin") ||
+*   req.currentUserId === thing.user.toString();
+*
+* if (!authorized) {
+*   return res.status(403).send("Please mind your own things.");
+* }
+
+  // Do what needs to be done...
 });
 ```
 
 ## References
 
-* [Token-based authentication made easy](https://auth0.com/learn/token-based-authentication-made-easy/)
-* [JWT introduction](https://jwt.io/introduction/)
-* [We’re under attack! 23+ Node.js security best practices](https://medium.com/@nodepractices/were-under-attack-23-node-js-security-best-practices-e33c146cb87d)
-
-
+- [Token-based authentication made easy](https://auth0.com/learn/token-based-authentication-made-easy/)
+- [JWT introduction](https://jwt.io/introduction/)
+- [We’re under attack! 23+ Node.js security best practices](https://medium.com/@nodepractices/were-under-attack-23-node-js-security-best-practices-e33c146cb87d)
 
 [bcrypt]: https://en.wikipedia.org/wiki/Bcrypt
 [bcrypt-npm]: https://www.npmjs.com/package/bcrypt
