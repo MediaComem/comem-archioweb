@@ -279,7 +279,7 @@ Unit tests may **reduce uncertainty** in the units themselves.
 Unit tests **will not catch every error in the program**, because they cannot
 evaluate every execution path in any but the most trivial programs. [They will
 not catch integration
-errors](https://www.wovenware.com/blog/2020/11/unit-integration-testing/) or
+errors](https://www.simscale.com/blog/nasa-mars-climate-orbiter-metric/) or
 broader system-level errors.
 
 Software testing is a combinatorial problem. For every logical branch (true or
