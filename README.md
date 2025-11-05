@@ -93,7 +93,7 @@ This course is a [COMEM+][comem] web development course taught at
 **Documentation**
 
 - [Demonstration REST API implemented with Express][demo-api] ([OpenAPI documentation][demo-api-openapi])
-- Express API example written during class (_we haven't done that yet_)
+- [Express API example written during class](https://github.com/MediaComem/comem-archioweb-2025-2026-express-api)
 - [Project suggestions](PROJECTS.md)
 - [Architecture & source code management diagrams][diagrams]
 
