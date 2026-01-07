@@ -151,6 +151,9 @@ Your REST API must be developed with the [Express][express] framework and use a
       There must be at least one operation in the API which limits the
       permissions of authenticated users.
 
+- The API must provide at least one real-time update, for example using
+  WebSockets.
+
 **Infrastructure**
 
 - The source code of your REST API must be in a repository on GitHub.
