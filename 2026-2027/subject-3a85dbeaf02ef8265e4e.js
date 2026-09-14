@@ -1180,7 +1180,7 @@ eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpa
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
-/******/ 		__webpack_require__.p = "https://mediacomem.github.io/comem-archioweb/2025-2026/";
+/******/ 		__webpack_require__.p = "https://mediacomem.github.io/comem-archioweb/2026-2027/";
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
