@@ -1,0 +1,71 @@
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ansible-lint:
+    name: Ansible lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Install ansible-lint
+        # Keep this version in sync with the one used locally.
+        run: pip install ansible-lint==26.8.0
+
+      - name: Install the required Ansible collections
+        run: ansible-galaxy collection install -r vm/requirements.yml
+
+      - name: Stand in for the private files
+        # ansible-lint runs `ansible-playbook --syntax-check` under the hood,
+        # which loads `vm/vars/secrets.vault`. That file is encrypted and its
+        # password is not available in CI, so replace it with the plaintext
+        # sample, which declares the same variables. The dummy password file is
+        # never used to decrypt anything, but `ansible.cfg` points at it
+        # unconditionally and Ansible fails if it does not exist.
+        run: |
+          cp vm/vars/secrets.sample.yml vm/vars/secrets.vault
+          echo 'not-a-real-password' > .vault-password
+
+      - name: Run ansible-lint
+        run: ansible-lint vm/playbook.yml --offline
+
+  doctoc:
+    name: Tables of contents
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .tool-versions
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update the tables of contents
+        run: npm run doctoc
+
+      - name: Check that the tables of contents are up to date
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git diff
+            echo "::error::The tables of contents are out of date. Run 'npm run doctoc' and commit the result."
+            exit 1
+          fi
