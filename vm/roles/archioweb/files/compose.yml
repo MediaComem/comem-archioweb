@@ -2,7 +2,7 @@ name: archioweb
 
 services:
   rp:
-    image: 'traefik:v3.5.2'
+    image: 'traefik:v3.7.13'
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.rp-dashboard.entrypoints=public-https'
@@ -31,9 +31,13 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
 
   demo-app:
-    image: 'ghcr.io/mediacomem/comem-rest-demo:3.0.0'
+    image: 'ghcr.io/mediacomem/comem-rest-demo:3.0.1'
     depends_on:
-      - demo-db
+      demo-db:
+        # Wait for MongoDB to accept connections, not merely for its container
+        # to have started, so that the application never starts against a
+        # database that is not ready yet.
+        condition: service_healthy
     environment:
       - AUTH_TOKEN
       - BASE_URL=https://demo.archioweb.ch
@@ -60,7 +64,13 @@ services:
     restart: unless-stopped
 
   demo-db:
-    image: mongo:8.0.13
+    image: mongo:8.0.30
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     networks:
       - demo-db
     restart: unless-stopped
@@ -93,7 +103,11 @@ services:
   qimg-app:
     image: 'ghcr.io/mediacomem/comem-qimg:2.1.0'
     depends_on:
-      - qimg-db
+      qimg-db:
+        # Wait for PostgreSQL to accept connections, not merely for its
+        # container to have started, so that the application never starts
+        # against a database that is not ready yet.
+        condition: service_healthy
     environment:
       DEBUG: qimg:*
       QIMG_ADMIN_TOKEN:
@@ -122,11 +136,17 @@ services:
     restart: unless-stopped
 
   qimg-db:
-    image: postgres:17.6-alpine
+    image: postgres:17.11-alpine
     environment:
       POSTGRES_PASSWORD: ${QIMG_DATABASE_PASSWORD}
       POSTGRES_USER: qimg
       POSTGRES_DB: qimg
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready --username qimg --dbname qimg']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     networks:
       - qimg-db
     restart: unless-stopped
