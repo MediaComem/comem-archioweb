@@ -17,7 +17,7 @@ entryPoints:
     address: ':443'
 
 log:
-  level: DEBUG
+  level: INFO
 
 providers:
   docker:
