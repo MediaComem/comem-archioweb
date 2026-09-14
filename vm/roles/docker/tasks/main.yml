@@ -7,10 +7,23 @@
     - ca-certificates
     - curl
 
+- name: Create the APT keyrings directory
+  file:
+    path: /etc/apt/keyrings
+    owner: root
+    group: root
+    mode: '0755'
+    state: directory
+
 - name: Add Docker APT repository key
   get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
+    # The key must be world-readable, otherwise the unprivileged _apt user
+    # cannot verify the repository's signature.
+    mode: '0644'
   register: docker_apt_key
 
 - name: Add Docker APT repository
