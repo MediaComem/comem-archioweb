@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Provision the ArchiOWeb server
+  hosts: all
   become: true
 
   vars:
@@ -21,14 +22,14 @@
 
   tasks:
     - name: Set hostname
-      hostname:
+      ansible.builtin.hostname:
         name: '{{ server_name }}'
 
     - name: Set up motd
-      copy:
+      ansible.builtin.copy:
         src: motd
         dest: /etc/update-motd.d/99-banner
         owner: root
         group: root
-        mode: 0755
+        mode: '0755'
       tags: [motd]

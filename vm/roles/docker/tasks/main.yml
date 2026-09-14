@@ -1,14 +1,13 @@
 ---
 - name: Install Docker dependencies
-  apt:
-    name: '{{ item }}'
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
     state: present
-  with_items:
-    - ca-certificates
-    - curl
 
 - name: Create the APT keyrings directory
-  file:
+  ansible.builtin.file:
     path: /etc/apt/keyrings
     owner: root
     group: root
@@ -16,7 +15,7 @@
     state: directory
 
 - name: Add Docker APT repository key
-  get_url:
+  ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
     owner: root
@@ -27,27 +26,30 @@
   register: docker_apt_key
 
 - name: Add Docker APT repository
-  apt_repository:
-    repo: deb [arch={{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }}
+      signed-by=/etc/apt/keyrings/docker.asc]
+      https://download.docker.com/linux/ubuntu
+      {{ ansible_distribution_release }} stable
     state: present
   register: docker_apt_repository
 
 - name: Update APT cache
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    update_cache: true
   when: docker_apt_key is changed or docker_apt_repository is changed
 
 - name: Install Docker
-  apt:
-    name: '{{ item }}'
+  ansible.builtin.apt:
+    name:
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-ce
+      - docker-ce-cli
+      - docker-compose-plugin
     state: present
-  with_items:
-    - containerd.io
-    - docker-buildx-plugin
-    - docker-ce
-    - docker-ce-cli
-    - docker-compose-plugin
 
 - name: Make sure Docker works
-  command: docker run --rm hello-world
+  ansible.builtin.command: docker run --rm hello-world
   changed_when: false

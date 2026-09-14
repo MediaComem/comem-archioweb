@@ -1,20 +1,25 @@
 ---
 - name: Install UFW
-  apt:
+  ansible.builtin.apt:
     name: ufw
     state: present
   tags: [ufw]
 
 - name: Configure UFW TCP ports
-  ufw:
+  community.general.ufw:
     rule: allow
     port: '{{ item.port }}'
     proto: '{{ item.proto }}'
-    state: enabled
-  with_items: '{{ ufw_allow }}'
+  loop: '{{ ufw_allow }}'
+  tags: [ufw]
+
+- name: Deny all other incoming traffic by default
+  community.general.ufw:
+    default: deny
+    direction: incoming
   tags: [ufw]
 
 - name: Enable UFW
-  ufw:
+  community.general.ufw:
     state: enabled
   tags: [ufw]

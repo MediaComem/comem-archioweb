@@ -1,48 +1,50 @@
 ---
 - name: Create ArchiOWeb directories
-  file:
+  ansible.builtin.file:
     path: '{{ item }}'
     owner: root
     group: root
-    mode: 0750
+    mode: '0750'
     state: directory
-  with_items:
+  loop:
     - /srv/archioweb
     - /srv/archioweb/rp
   tags: [archioweb]
 
 - name: Copy ArchiOWeb Docker Compose file
-  copy:
+  ansible.builtin.copy:
     src: compose.yml
     dest: /srv/archioweb/compose.yml
     owner: root
     group: root
+    mode: '0640'
   tags: [archioweb]
 
 - name: Set up ArchiOWeb environment file
-  template:
+  ansible.builtin.template:
     src: .env
     dest: /srv/archioweb/.env
-    mode: 0640
+    mode: '0640'
     owner: root
     group: root
   tags: [archioweb]
 
 - name: Copy ArchiOWeb reverse proxy service configuration files
-  copy:
+  ansible.builtin.copy:
     src: 'rp/{{ item }}'
     dest: '/srv/archioweb/rp/{{ item }}'
     owner: root
     group: root
-  with_items:
+    mode: '0640'
+  loop:
     - traefik.yml
   tags: [archioweb]
 
 - name: Copy ArchiOWeb reverse proxy service password file
-  copy:
+  ansible.builtin.copy:
     content: '{{ archioweb_rp_htpasswd }}'
     dest: '/srv/archioweb/rp/htpasswd'
-    mode: 0640
+    mode: '0640'
     owner: root
     group: root
   tags: [archioweb]
