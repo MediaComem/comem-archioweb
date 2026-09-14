@@ -29,7 +29,7 @@ and one of the three core technologies of the web.
   - [Returning functions from a function](#returning-functions-from-a-function)
   - [Passing functions as arguments](#passing-functions-as-arguments)
   - [Transforming data with functions](#transforming-data-with-functions)
-  - [Arrow functions _(ES6+)_](#arrow-functions-es6)
+  - [Arrow functions _(ES6+)_](#arrow-functions-_es6_)
     - [Arrow function arguments](#arrow-function-arguments)
     - [Body of arrow functions](#body-of-arrow-functions)
 - [Constructors](#constructors)
