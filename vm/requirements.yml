@@ -1,0 +1,11 @@
+---
+# Ansible collections required by the playbook. Install them with:
+#
+#     ansible-galaxy collection install -r vm/requirements.yml
+#
+# They are bundled with the full `ansible` package, but not with `ansible-core`.
+collections:
+  # Provides community.docker.docker_compose_v2 (archioweb role).
+  - name: community.docker
+  # Provides community.general.ufw (ufw role).
+  - name: community.general
