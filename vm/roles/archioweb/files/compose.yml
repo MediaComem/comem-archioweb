@@ -5,6 +5,13 @@ services:
     image: 'traefik:v3.7.13'
     labels:
       - 'traefik.enable=true'
+
+      - 'traefik.http.routers.rp-dashboard-insecure.entrypoints=public-http'
+      - 'traefik.http.routers.rp-dashboard-insecure.rule=Host(`rp.archioweb.ch`)'
+      - 'traefik.http.routers.rp-dashboard-insecure.middlewares=rp-dashboard-insecure-redirect'
+      - 'traefik.http.middlewares.rp-dashboard-insecure-redirect.redirectscheme.scheme=https'
+      - 'traefik.http.middlewares.rp-dashboard-insecure-redirect.redirectscheme.permanent=true'
+
       - 'traefik.http.routers.rp-dashboard.entrypoints=public-https'
       - 'traefik.http.routers.rp-dashboard.rule=Host(`rp.archioweb.ch`)'
       - 'traefik.http.routers.rp-dashboard.middlewares=rp-dashboard-auth'
