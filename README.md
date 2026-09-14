@@ -33,22 +33,20 @@ This course is a [COMEM+][comem] web development course taught at
 - [Introduction](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/course?home=MediaComem%2Fcomem-archioweb%23readme)
 
 - Basics
-
   - [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Exercise_](./exercises/rest.md)
   - [_Extra:_ JavaScript](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
-    - [_Exercises_](./exercises/javascript.md) ([**solutions**](./exercises/javascript-solutions.md))
+    - [_Exercises_](./exercises/javascript.md)
     - [_Extra:_ promises](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Extra:_ prototypes](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Extra:_ classes](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Extra:_ modules](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Extra:_ closures](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
   - [Node.js](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
-    - [_Exercises_](./exercises/node.md) ([**solutions**](./exercises/node-solutions))
+    - [_Exercises_](./exercises/node.md)
   - [npm](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
 
 - Creating a web service
-
   - [Express](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
     - [_Exercises_](https://express.archioweb.ch)
   - [MongoDB](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
@@ -57,11 +55,9 @@ This course is a [COMEM+][comem] web development course taught at
     - [_Guide:_ store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
 - Deploying your web service
-
   - [_Guide:_ deploy an Express.js application with Render & MongoDB Atlas](./guides/deploy-in-the-cloud.md)
 
 - Creating a REST API
-
   - [REST in depth](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/rest-advanced?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Exercises_](./exercises/unrest.md)
   - [Express best practices](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/express-best-practices?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -69,7 +65,6 @@ This course is a [COMEM+][comem] web development course taught at
   - [Express Authentication](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/express-auth?home=MediaComem%2Fcomem-archioweb%23readme)
 
 - Documenting and testing a REST API
-
   - [_Guide:_ document a REST API](./guides/api-documentation.md)
   - [Automated Testing](https://mediacomem.github.io/comem-archioweb/2025-2026/subjects/automated-testing?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Guide:_ set up automated tests for an Express.js REST API](./guides/set-up-automated-tests.md)
@@ -118,7 +113,6 @@ Your REST API must be developed with the [Express][express] framework and use a
   - The API must provide minimal CRUD operations to manage and use those types
     in a mobile application.
 - The API must use the knowledge learned during the course:
-
   - At least one resource must be a **paginated list**.
   - At least one resource must be a **list with optional filters**.
   - At least one resource must provide **aggregated data** from other resources
@@ -126,7 +120,6 @@ Your REST API must be developed with the [Express][express] framework and use a
     of items created by a user).
   - The API must be developed as a backend to a mobile application using at
     least 2 [**mobile hardware features**][cordova-plugins], for example:
-
     - At least one resource must be **geolocated**.
 
       See [Store geospatial data with
@@ -139,7 +132,6 @@ Your REST API must be developed with the [Express][express] framework and use a
 
   - Sensitive operations must be protected by requiring valid
     **authentication** and performing **authorization**:
-
     - Authentication must be provided in the form of a [JWT token][jwt] or an
       equivalent mechanism.
     - You must define who is authorized to perform which operations on which
@@ -175,7 +167,6 @@ Your REST API must be developed with the [Express][express] framework and use a
 **Automated testing**
 
 - You must implement **automated tests** to test your REST API:
-
   - You must write tests for **at least 4 separate REST operations** in your API
     (for example: create thing, update thing, list things, delete thing). You
     must write **at least 10 tests** in total.
