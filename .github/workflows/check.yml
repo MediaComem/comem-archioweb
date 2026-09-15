@@ -43,6 +43,24 @@ jobs:
       - name: Run ansible-lint
         run: ansible-lint vm/playbook.yml --offline
 
+  livecodes:
+    name: Exercise playground links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .tool-versions
+
+      - name: Check that the "Open in LiveCodes" links match the exercises
+        # The links carry the code of each exercise in the URL, so they go stale
+        # as soon as the code block above them is edited. The script has no
+        # dependencies, so there is nothing to install here.
+        run: npm run livecodes:check
+
   doctoc:
     name: Tables of contents
     runs-on: ubuntu-latest
