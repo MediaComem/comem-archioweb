@@ -18,10 +18,10 @@ API to create repository issues.
   - [Authenticating](#authenticating)
   - [Create a personal access token](#create-a-personal-access-token)
   - [Use the API](#use-the-api)
+    - [How to read the documentation's examples](#how-to-read-the-documentations-examples)
+  - [Observe the protocol](#observe-the-protocol)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-
 
 ## Create a GitHub repository
 
@@ -32,12 +32,10 @@ prefer.
 
 ### Enable repository issues
 
-Whether you created a new repository or chose a new one, go to the repository's
-settings and make sure Issues are enabled.
+Whether you created a new repository or chose an existing one, go to the
+repository's settings and make sure Issues are enabled.
 
 ![Enable repository issues](../images/rest-02-enable-repo-issues.png)
-
-
 
 ## Create an issue by hand
 
@@ -66,9 +64,9 @@ Create a new issue. Imagine that you are reporting a problem on that project:
 
 Once you have created the issue, you can do various things with it:
 
-* See its details.
-* Add more comments.
-* Close the issue (since in this case you are the owner of the repository).
+- See its details.
+- Add more comments.
+- Close the issue (since in this case you are the owner of the repository).
 
 ![Show the issue](../images/rest-05-show-issue.png)
 
@@ -80,17 +78,15 @@ closed it during the previous step.
 
 ![List all issues](../images/rest-06-list-issues.png)
 
-
-
 ## Do the same thing with the GitHub REST API
 
 Now that you have seen how the GitHub website allows you to manage issues, the
 goal of this exercise is to do the same thing with the GitHub REST API:
 
-* Create an issue.
-* Retrieve the details of that issue.
-* Close the issue.
-* List all issues of the repository.
+- Create an issue.
+- Retrieve the details of that issue.
+- Close the issue.
+- List all issues of the repository.
 
 Except that you won't be using the web interface, you'll be communicating with
 the API in JSON.
@@ -101,7 +97,7 @@ perform these actions with your new favorite tool: Postman.
 ### Authenticating
 
 In order to [authenticate to the GitHub REST
-API](https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api?apiVersion=2022-11-28#authenticating),
+API](https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api?apiVersion=2022-11-28#authenticating),
 you will need an access token.
 
 To generate one, go to your account's settings:
@@ -146,19 +142,39 @@ Verify that your token has the correct permissions and create it:
 > able to get it back. If you forgot to copy it, delete it and create another
 > one.
 
+:warning: An access token is a **password**: anyone who has it can act as you on
+the repositories it grants access to. Never commit it to a repository, never
+paste it into a shared document or a public Postman workspace, and delete it
+once you are done with this exercise.
+
 ### Use the API
 
 Now play with your new repository's issues with the GitHub REST API:
 
-* Create an issue.
-* Retrieve the details of that issue.
-* Close the issue.
-* List all issues of the repository.
+- Create an issue.
+- Retrieve the details of that issue.
+- Close the issue.
+- List all issues of the repository.
 
-The [GitHub REST API documentation](https://docs.github.com/en/rest)
-explains how to use the token and how to make each request.
+The [GitHub REST API documentation](https://docs.github.com/en/rest) explains
+how to use the token and how to make each request. The pages you need are:
 
-For example, that's the cURL example for the request to create a repository:
+- [Create an
+  issue](https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue)
+- [Get an
+  issue](https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#get-an-issue)
+- [Update an
+  issue](https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#update-an-issue)
+  (this is how you close one)
+- [List repository
+  issues](https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#list-repository-issues)
+
+#### How to read the documentation's examples
+
+Every endpoint's documentation shows a cURL example. Here's what one looks like
+(this particular one creates a **repository**, and is only shown to explain
+**how to read these examples** — it is not one of the requests you have to make,
+and your token doesn't have the permission to run it anyway):
 
 ![cURL example](../images/rest-14-api-docs.png)
 
@@ -166,14 +182,64 @@ For example, that's the cURL example for the request to create a repository:
 > command](https://curl.se/docs/manpage.html) is a command line tool that can be
 > used, among other things, to make HTTP requests.
 
-You have everything you need to put in Postman:
+Such an example has everything you need to reproduce the request in Postman:
 
-* The `-X` option indicates the request method, in this case `POST`.
-* The various `-H` options indicate the required request headers, in this case
-  `Accept`, `Authorization` and `GitHub-Api-Version`.
-* The request URL, in this case `https://api.github.com/user/repos`.
-* The `-d` option indicates the JSON to send in the request body.
+- The `-X` option indicates the request method, in this case `POST`.
+- The various `-H` options indicate the required request headers, in this case
+  `Accept`, `Authorization` and `X-GitHub-Api-Version`.
+- The request URL, in this case `https://api.github.com/user/repos`.
+- The `-d` option indicates the JSON to send in the request body.
 
-It should be easy to adapt this example for Postman. It is recommended that you
-perform this exercise with Postman since this will help you understand how to
-make requests to your own API later.
+Find the equivalent example on the [Create an
+issue](https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#create-an-issue)
+page and adapt it the same way.
+
+> :gem: Rather than adding the `Authorization` header by hand, you can use
+> Postman's **Authorization** tab, select the **Bearer Token** type, and paste
+> your token there. Postman will add the header for you.
+
+It is recommended that you perform this exercise with Postman since this will
+help you understand how to make requests to your own API later.
+
+### Observe the protocol
+
+Making the requests work is only half the exercise. The GitHub API is a real,
+professionally designed REST API, so it is a good place to recognize the things
+you saw in the course. While you work, answer these questions:
+
+- **Creating the issue:** what **status code** does GitHub respond with? Is
+  there a `Location` header in the response, and what is in it? Does it match
+  what you learned about `POST`?
+- **Closing the issue:** GitHub asks you to use `PATCH`, not `PUT`, and to send
+  only `{ "state": "closed" }`. Why is `PATCH` the appropriate method here? What
+  would `PUT` have implied about the rest of the issue's properties?
+- **Authentication:** re-send the create request **without** the `Authorization`
+  header. Which status code do you get, and does it mean "I don't know you" or
+  "I know you but you're not allowed"?
+- **A resource that doesn't exist:** request issue number `999999` of your
+  repository. Which status code do you get?
+- **Invalid data:** try creating an issue **without a `title`**. GitHub responds
+  with `422 Unprocessable Entity` and a JSON body containing an `errors` array.
+  Compare it with the validation error example from the course: why is this
+  `422` and not `400`?
+- **Content negotiation:** retrieve your issue again **three times, at the exact
+  same URL**, changing only the `Accept` header each time:
+  `application/vnd.github+json`, then `application/vnd.github.text+json`, then
+  `application/vnd.github.html+json`. Which property holds the issue's body in
+  each response, and how does its content differ? Which slide of the course does
+  this illustrate? (Make sure your issue has a **body containing some markdown**
+  — a link, or some `**bold**` text — otherwise there is nothing to see.)
+- **Custom media types:** those `Accept` values are not generic like
+  `application/json` or `text/html`: GitHub defined its **own** media type. What
+  does that buy them that `application/json` would not? (Hint:
+  `application/json` only says "this is JSON"; it says nothing about _whose_
+  JSON, or which **version** of it. Look at the `X-GitHub-Api-Version` header
+  too.)
+- **Pagination:** look at the **response headers** when you list the issues of a
+  large repository (try
+  `https://api.github.com/repos/nodejs/node/issues?per_page=2`). GitHub sends a
+  `Link` header containing the URL of the next page. We will come back to this
+  when we talk about pagination.
+- **Rate limiting:** look for the `X-RateLimit-Limit` and
+  `X-RateLimit-Remaining` response headers. What status code do you think GitHub
+  sends once you have no requests remaining?

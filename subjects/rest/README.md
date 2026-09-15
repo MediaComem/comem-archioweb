@@ -158,6 +158,10 @@ constraints][rest-constraints]:
   scalability by enabling load balancing and shared caches.
 - **Uniform interface:** a uniform interface simplifies and decouples the
   architecture, which enables each part to evolve independently.
+- **Code on demand (optional):** servers can temporarily extend the
+  functionality of a client by transferring executable code (e.g. JavaScript).
+  This is the only constraint that is _optional_: a system can be RESTful
+  without it.
 
 #### So... what is REST?
 
@@ -217,7 +221,7 @@ Something that can be uniquely identified on the web:
 - http://imdb.com/movies/best?page=3&pageSize=50&orderBy=title
 - http://www.smart-machines.ch/customers/heig/machines/8272#order
 
-The syntax of an URL is:
+The syntax of a URL is:
 
 ```
 scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
@@ -244,22 +248,24 @@ scheme:[//[user:password@]host[:port]][/]path[?query][#fragment]
 ### Evolution of HTTP
 
 - [HTTP/1.0][http] (1996) - [RFC 1945][http10-rfc]
-- HTTP/1.1 (1999) - [RFC 2616][http11-rfc]
-- [HTTP/2.0][http2] (2015) - [RFC 7540][http2-rfc]
+- HTTP/1.1 (1999) - [RFC 2616][http11-rfc-old], now [RFC 9112][http11-rfc]
+- [HTTP/2][http2] (2015) - [RFC 7540][http2-rfc-old], now [RFC 9113][http2-rfc]
 
   > HTTP/2 is a more efficient expression of HTTP's semantics "on the wire",
   > which **maintains high-level compatibility with HTTP/1.1** (for example with
   > methods, status codes, URIs, and most header fields). It is now supported by
   > virtually all web browsers and major web servers.
 
-- [HTTP/3.0][http3] (2022) - [RFC 9144][http3-rfc]
+- [HTTP/3][http3] (2022) - [RFC 9114][http3-rfc]
 
-  > HTTP/3 is the proposed successor to HTTP/2, which is already in use on the
-  > web, using [UDP][udp] instead of [TCP][tcp] for the underlying transport
-  > protocol. **Like HTTP/2, it does not obsolete previous major versions of the
-  > protocol.** Support for HTTP/3 was added to Cloudflare and Google Chrome in
-  > September 2019, and can be enabled in the stable versions of Chrome and
-  > Firefox.
+  > HTTP/3 is the successor to HTTP/2, using [UDP][udp] instead of [TCP][tcp]
+  > for the underlying transport protocol (through [QUIC][quic]). **Like HTTP/2,
+  > it does not obsolete previous major versions of the protocol.** It is
+  > enabled by default in all major browsers.
+
+> Note: in 2022, HTTP was split into **semantics** shared by all versions
+> (methods, status codes, headers: [RFC 9110][http-semantics-rfc]) and the
+> **wire format** of each version (RFC 9112, 9113 & 9114).
 
 ### HTTP is a request-response protocol
 
@@ -368,13 +374,13 @@ After the request line, an HTTP request has one or more **headers**:
 
 ```http
 GET /movies/best?page=3&pageSize=50&orderBy=title HTTP/1.1
-*Accept: application/html,*/*
+*Accept: text/html,*/*
 *Host: www.example.com
 ```
 
 This allows the client to tell the server how to serve the request:
 
-- `Accept: application/html,*/*` - I prefer HTML, but otherwise give me any format you have
+- `Accept: text/html,*/*` - I prefer HTML, but otherwise give me any format you have
 - `Host: www.example.com` - This is the domain I want the resource from
 
 There are many [headers][headers] that can be used in requests.
@@ -398,7 +404,7 @@ In this case:
 
 - It's a `POST` request, so the server should create a new resource
 - The `Content-Type` header is `application/json`, so the server should
-  interepret the body as a JSON payload and use that data to create the resource
+  interpret the body as a JSON payload and use that data to create the resource
 
 ### Anatomy of an HTTP response
 
@@ -440,12 +446,12 @@ The first line of an HTTP response is the **status line**:
 
 The **status code** and the **reason phrase** indicate to the client whether the request was successful and how to handle it:
 
-| Code | Reason               | Purpose                                                                                                                                 |
-| :--- | :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| 200  | OK                   | The response body contains the requested resource.                                                                                      |
-| 201  | Created              | The `Location` header contains the URL of the created resource; the response body may contain a representation of the created resource. |
-| 401  | Unauthorized         | Authentication is required and was not provided or is invalid.                                                                          |
-| 422  | Unprocessable Entity | The request body is semantically invalid.                                                                                               |
+| Code | Reason                | Purpose                                                                                                                                 |
+| :--- | :-------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | OK                    | The response body contains the requested resource.                                                                                      |
+| 201  | Created               | The `Location` header contains the URL of the created resource; the response body may contain a representation of the created resource. |
+| 401  | Unauthorized          | Authentication is required and was not provided or is invalid.                                                                          |
+| 422  | Unprocessable Content | The request body is semantically invalid.                                                                                               |
 
 There are many [status codes][http-status-codes] a server can use to help the client handle responses.
 
@@ -597,30 +603,31 @@ that are here to **help you** implement rich client-server interaction.
 
 <!-- slide-front-matter class: compact-table -->
 
-| Example                              | What the client is asking                                                                                                                                                                                            |
-| :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Accept: text/plain`                 | I want you to send me a response in **plain text**. If you **can't**, I expect you to respond with `406 Not Acceptable`                                                                                              |
-| `Authorization: Basic 98aw=`         | Use the base64-encoded `user:password` string I am giving you as proof of my identity                                                                                                                                |
-| `Authorization: Bearer 1y09`         | Use the [bearer token][auth0-tokens] I am giving you as proof of my identity                                                                                                                                         |
-| `Content-Type: application/json`     | I am sending you a request with JSON text in the body                                                                                                                                                                |
-| `If-Modified-Since: Sun, 3 Jan 2017` | If the resource I am retrieving has **not changed** since January 3rd 2017, I expect you to respond with `304 Not Modified` and no response body (to save bandwidth). ([Conditional GET][http-conditional-requests]) |
-| `If-Unmodified-Since: ...`           | If the resource I am updating has **changed**, I expect you to **not update it** and respond with `412 Precondition Failed` ([Conditional update][http-conditional-requests])                                        |
-| `Referer: google.com`                | I am coming to you from `google.com`                                                                                                                                                                                 |
-| `User-Agent: Mobile Safari/534.30`   | I am sending you a request from a **mobile device**                                                                                                                                                                  |
+| Example                                            | What the client is asking                                                                                                                                                                                                                                              |
+| :------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Accept: text/plain`                               | I want you to send me a response in **plain text**. If you **can't**, I expect you to respond with `406 Not Acceptable`                                                                                                                                                |
+| `Authorization: Basic 98aw=`                       | Use the base64-encoded `user:password` string I am giving you as proof of my identity                                                                                                                                                                                  |
+| `Authorization: Bearer 1y09`                       | Use the [bearer token][bearer-token] I am giving you as proof of my identity                                                                                                                                                                                           |
+| `Content-Type: application/json`                   | I am sending you a request with JSON text in the body                                                                                                                                                                                                                  |
+| `If-Modified-Since: Tue, 03 Jan 2017 09:00:00 GMT` | If the resource I am retrieving has **not changed** since that date, I expect you to respond with `304 Not Modified` and no response body (to save bandwidth). ([Conditional GET][http-conditional-requests])                                                          |
+| `If-Unmodified-Since: ...`<br/>`If-Match: "xyz"`   | If the resource I am updating has **changed** (modified since that date, or no longer matching the [`ETag`][etag] `"xyz"` you gave me), I expect you to **not update it** and respond with `412 Precondition Failed` ([Conditional update][http-conditional-requests]) |
+| `Referer: google.com`                              | I am coming to you from `google.com` ([sic][referer]: the header name is misspelled in the spec)                                                                                                                                                                       |
+| `User-Agent: Mobile Safari/534.30`                 | I am sending you a request from a **mobile device**                                                                                                                                                                                                                    |
 
 ### Common response [headers][http-response-headers]
 
 <!-- slide-front-matter class: compact-table -->
 
-| Example                                  | What the server is telling you                                                                                                     |
-| :--------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
-| `Access-Control-Allow-Origin: *`         | I am allowing you to make a [cross-origin request][http-cors] from anywhere                                                        |
-| `Set-Cookie: UserID=JohnDoe`             | I am giving you a cookie: please send it back to me for all further requests on this domain                                        |
-| `Content-Type: text/html`                | I am sending you an HTML page                                                                                                      |
-| `Expires: Sun, 31 Dec 2017`              | The content I am sending you will not change until December 31st 2017                                                              |
-| `Last-Modified: Sun, 3 Jan 2017`         | The content I am sending you was last modified on January 3rd 2017                                                                 |
-| `Location: http://example.com/somewhere` | The resource you requested has moved and I am telling you where, **or** the resource you just created is available at that address |
-| `WWW-Authenticate: Basic`                | I do not know you, please re-send your request with [Basic HTTP authentication][http-auth]                                         |
+| Example                                        | What the server is telling you                                                                                                                                                              |
+| :--------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Access-Control-Allow-Origin: *`               | I am allowing you to make a [cross-origin request][http-cors] from anywhere                                                                                                                 |
+| `Set-Cookie: UserID=JohnDoe`                   | I am giving you a cookie: please send it back to me for all further requests on this domain                                                                                                 |
+| `Content-Type: text/html`                      | I am sending you an HTML page                                                                                                                                                               |
+| `ETag: "xyz"`                                  | `"xyz"` identifies the **current version** of the resource I am sending you: give it back to me in `If-Match` or `If-None-Match` to make a [conditional request][http-conditional-requests] |
+| `Expires: Sun, 31 Dec 2017 23:59:59 GMT`       | The content I am sending you will not change until December 31st 2017                                                                                                                       |
+| `Last-Modified: Tue, 03 Jan 2017 09:00:00 GMT` | The content I am sending you was last modified on January 3rd 2017                                                                                                                          |
+| `Location: http://example.com/somewhere`       | The resource you requested has moved and I am telling you where, **or** the resource you just created is available at that address                                                          |
+| `WWW-Authenticate: Basic`                      | I do not know you, please re-send your request with [Basic HTTP authentication][http-auth]                                                                                                  |
 
 ### Common successful response [status codes][http-status-codes]
 
@@ -640,20 +647,20 @@ that are here to **help you** implement rich client-server interaction.
 
 <!-- slide-front-matter class: ultra-compact-table -->
 
-| Code                         | What the server is telling you                                                             |
-| :--------------------------- | :----------------------------------------------------------------------------------------- |
-| `400 Bad Request`            | I cannot understand the request (e.g. invalid JSON)                                        |
-| `401 Unauthorized`           | I do not know you, please [authenticate][http-auth]                                        |
-| `403 Forbidden`              | I know you, but you do not have sufficient access rights to do that                        |
-| `404 Not Found`              | The resource you are requesting does not exist                                             |
-| `405 Method Not Allowed`     | You can't make a `GET/POST/...` on this resource                                           |
-| `406 Not Acceptable`         | I can't answer in the format you asked for in the `Accept` header                          |
-| `409 Conflict`               | Your request is not consistent with the resource's state                                   |
-| `412 Precondition Failed`    | I am denying your [conditional request][http-conditional-requests]                         |
-| `415 Unsupported Media Type` | You are sending me XML/JSON/... but the resource cannot be represented in that format      |
-| `418 I'm a teapot`           | [I don't make coffee][http-teapot]                                                         |
-| `422 Unprocessable Entity`   | The request body is syntactically correct but semantically invalid (e.g. validation error) |
-| `429 Too Many Requests`      | Stop spamming me                                                                           |
+| Code                         | What the server is telling you                                                                            |
+| :--------------------------- | :-------------------------------------------------------------------------------------------------------- |
+| `400 Bad Request`            | I cannot understand the request (e.g. invalid JSON)                                                       |
+| `401 Unauthorized`           | I do not know you, please [authenticate][http-auth]                                                       |
+| `403 Forbidden`              | I know you, but you do not have sufficient access rights to do that                                       |
+| `404 Not Found`              | The resource you are requesting does not exist                                                            |
+| `405 Method Not Allowed`     | You can't make a `GET/POST/...` on this resource                                                          |
+| `406 Not Acceptable`         | I can't send you a **response** in the format you asked for in the `Accept` header                        |
+| `409 Conflict`               | Your request is not consistent with the resource's state                                                  |
+| `412 Precondition Failed`    | I am denying your [conditional request][http-conditional-requests]                                        |
+| `415 Unsupported Media Type` | You are sending me a **request body** in a format I don't support here (e.g. XML when I only accept JSON) |
+| `418 I'm a teapot`           | [I don't make coffee][http-teapot]                                                                        |
+| `422 Unprocessable Content`  | The request body is syntactically correct but semantically invalid (e.g. validation error)                |
+| `429 Too Many Requests`      | Stop spamming me                                                                                          |
 
 ### Common server error response [status codes][http-status-codes]
 
@@ -662,13 +669,13 @@ that are here to **help you** implement rich client-server interaction.
 Unlike the errors from the previous table,
 these errors indicate that there is a **problem on the server**, not with the client's request:
 
-| Code                        | What the server is telling you                                                       |
-| :-------------------------- | :----------------------------------------------------------------------------------- |
-| `500 Internal Server Error` | Oops, I crashed and can't fulfill this request                                       |
-| `501 Not Implemented`       | You made a `HEAD/PATCH/...` request but I don't support that method for any resource |
-| `502 Bad Gateway`           | I tried using a third-party service to fulfill your request, but couldn't reach it   |
-| `503 Service Unavailable`   | I'm busy or being fixed, please try again later                                      |
-| `508 Loop Detected`         | _To understand recursion, you must first understand recursion..._                    |
+| Code                        | What the server is telling you                                                        |
+| :-------------------------- | :------------------------------------------------------------------------------------ |
+| `500 Internal Server Error` | Oops, I crashed and can't fulfill this request                                        |
+| `501 Not Implemented`       | You made a `PATCH/PURGE/...` request but I don't support that method for any resource |
+| `502 Bad Gateway`           | I tried using a third-party service to fulfill your request, but couldn't reach it    |
+| `503 Service Unavailable`   | I'm busy or being fixed, please try again later                                       |
+| `508 Loop Detected`         | _To understand recursion, you must first understand recursion..._                     |
 
 ### Conditional update example
 
@@ -679,10 +686,11 @@ there is a possible _race condition_ where one user's changes can be **silently 
 
 #### Conditional update solution
 
-The `If-Match` and `If-Unmodified-Since` headers allow the client to
-**conditionally update** a resource. If the resource **has changed** compared to
-the specified identifier or since the specified date, the server should
-**refuse** the request and respond with `412 Precondition Failed`:
+When it sends a resource, the server can include an [`ETag`][etag] header: an
+opaque string (e.g. `"xyz"`) identifying its **current version**. Giving it back
+in `If-Match` (or the date in `If-Unmodified-Since`) **conditionally updates**
+the resource: if it **has changed** meanwhile, the server **refuses** with `412
+Precondition Failed`:
 
 <p class='center'><img src='images/conditional-update-2.png' class='w100' /></p>
 
@@ -693,7 +701,7 @@ Since REST deals primarily with **resources**, in a REST API you will (mostly):
 - **C**reate new resources
 - **R**ead (or retrieve) a resource or collection of resources
 - **U**pdate resources
-- **D**elete (or detroy) resources
+- **D**elete (or destroy) resources
 
 Let's try these operations with a prepared REST API:
 
@@ -711,7 +719,7 @@ You don't have to sign up when it prompts you to, you can skip it:
 #### Postman interface
 
 Postman allows you to make any HTTP **request/response** (e.g. `POST`, `PUT`,
-custom headers, etc). It also remembers your **previous requests**..
+custom headers, etc). It also remembers your **previous requests**.
 
 <img src='images/postman-ui.png' width='100%' />
 
@@ -719,7 +727,7 @@ custom headers, etc). It also remembers your **previous requests**..
 
 <img src='images/postman-first-request.png' width='100%' />
 
-> **Hint:** the next steps will show you have to make various HTTP requests. The
+> **Hint:** the next steps will show you how to make various HTTP requests. The
 > placeholder **"Your Name"** is used in several places. Replace it with your
 > name to avoid collisions with other people using the API at the same time.
 
@@ -857,7 +865,7 @@ where each element is a **JSON object** representing a person.
 
 The API also allows us to **update** a person by making a `PUT` request to the
 person's resource with a **JSON representation** of the updated person. Let's
-make a request to add your birthdate:
+**add a birth date** and **change the gender**:
 
 ```http
 PUT /api/people/5f5...037 HTTP/1.1
@@ -885,8 +893,10 @@ Press **Send** and you should receive the updated person in the response:
 > server MUST send either a [`200 OK`][200] or a [`204 No Content`][204]
 > response to indicate successful completion of the request.
 
-Basically, we **replaced** the person's data with the representation we sent.
-Since no new resource was created, the server simply responds with `200 OK`.
+We **replaced** the person's data with what we sent: `birthDate` was added, and
+`gender` changed. `PUT` **substitutes the whole resource**, so you must send
+**every** property you want to keep. No new resource was created, so the server
+responds with `200 OK`.
 
 #### Partial update with PUT
 
@@ -897,8 +907,8 @@ Now, configure the same request but **without the gender**, and press **Send**:
 #### Partial update response with PUT
 
 The server is responding with the status code [`422 Unprocessable Entity`][422]
-and telling you that the person representation you sent is invalid because it is
-missing the gender property:
+(RFC 9110 renamed it _Unprocessable Content_) and telling you that the person
+representation you sent is invalid because it is missing the gender property:
 
 <p class="center">
   <img src='images/postman-update-failed-response.png' width='85%' />
@@ -937,9 +947,10 @@ This time the request was accepted:
 > the request entity be **applied to the resource** identified by the
 > Request-URI."
 
-Instead of a replacement of the entire resource, our JSON representation is
-interpreted as a **partial update** to the resource, in this case an update of
-the `birthDate` property.
+Instead of replacing the entire resource, our JSON representation is interpreted
+as a **partial update**, here of the `birthDate` property. Note that we did
+**not** send `name` or `gender`, yet they are untouched in the response: `PATCH`
+**merges** what you send, whereas `PUT` **replaces** everything.
 
 Like with `PUT`, no new resource was created, so the server responds with [`200
 OK`][200].
@@ -1019,55 +1030,61 @@ differently (e.g. `200 OK` with a representation of the deleted resource), but
 - [REST Cheat Sheet][rest-cheat-sheet]
 - [Best Practices for Designing a Pragmatic RESTful API][rest-pragmatic]
 
-[200]: https://httpstatuses.com/200
-[201]: https://httpstatuses.com/201
-[202]: https://httpstatuses.com/202
-[204]: https://httpstatuses.com/204
-[404]: https://httpstatuses.com/404
-[422]: https://httpstatuses.com/422
+[200]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/200
+[201]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/201
+[202]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/202
+[204]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/204
+[404]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/404
+[422]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/422
 [api]: https://en.wikipedia.org/wiki/Application_programming_interface
-[auth0-tokens]: https://auth0.com/blog/ten-things-you-should-know-about-tokens-and-cookies/
+[bearer-token]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization
 [chrome]: https://www.google.com/chrome/
 [content-type]: https://www.rfc-editor.org/rfc/rfc9110.html#name-content-type
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
 [delete]: https://www.rfc-editor.org/rfc/rfc9110.html#name-delete
+[etag]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag
 [get]: https://www.rfc-editor.org/rfc/rfc9110.html#name-get
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
-[headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
+[headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
 [http]: https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol
-[http10-rfc]: https://tools.ietf.org/html/rfc1945
-[http11-rfc]: https://tools.ietf.org/html/rfc2616
+[http10-rfc]: https://datatracker.ietf.org/doc/html/rfc1945
+[http11-rfc]: https://datatracker.ietf.org/doc/html/rfc9112
+[http11-rfc-old]: https://datatracker.ietf.org/doc/html/rfc2616
 [http2]: https://en.wikipedia.org/wiki/HTTP/2
-[http2-rfc]: https://tools.ietf.org/html/rfc7540
+[http2-rfc]: https://datatracker.ietf.org/doc/html/rfc9113
+[http2-rfc-old]: https://datatracker.ietf.org/doc/html/rfc7540
 [http3]: https://en.wikipedia.org/wiki/HTTP/3
-[http3-rfc]: https://tools.ietf.org/html/rfc9144
-[http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication
-[http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
+[http3-rfc]: https://datatracker.ietf.org/doc/html/rfc9114
+[http-auth]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication
+[http-conditional-requests]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
-[http-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
-[http-headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
-[http-methods]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+[http-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
+[http-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-methods]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 [http-methods-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-methods
-[http-request-headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Request_fields
-[http-response-headers]: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Response_fields
-[http-status-codes]: https://httpstatuses.com
+[http-request-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-response-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-semantics-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html
+[http-status-codes]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
 [http-status-codes-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes
-[http-teapot]: https://tools.ietf.org/html/rfc2324
+[http-teapot]: https://datatracker.ietf.org/doc/html/rfc2324
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
 [location]: https://www.rfc-editor.org/rfc/rfc9110.html#name-location
 [osi-application]: https://en.wikipedia.org/wiki/Application_layer
-[patch]: https://tools.ietf.org/html/rfc5789#section-2
-[patch-rfc]: https://tools.ietf.org/html/rfc5789
+[patch]: https://datatracker.ietf.org/doc/html/rfc5789#section-2
+[patch-rfc]: https://datatracker.ietf.org/doc/html/rfc5789
 [post]: https://www.rfc-editor.org/rfc/rfc9110.html#name-post
 [postman]: https://www.postman.com/downloads/
 [put]: https://www.rfc-editor.org/rfc/rfc9110.html#name-put
+[quic]: https://en.wikipedia.org/wiki/QUIC
+[referer]: https://en.wikipedia.org/wiki/HTTP_referer
 [rest]: https://en.wikipedia.org/wiki/Representational_state_transfer
-[rest-cheat-sheet]: http://51elliot.blogspot.ch/2014/03/rest-api-best-practices-rest-cheat-sheet.html
+[rest-cheat-sheet]: http://51elliot.blogspot.com/2014/03/rest-api-best-practices-rest-cheat-sheet.html
 [rest-constraints]: https://en.wikipedia.org/wiki/Representational_state_transfer#Architectural_constraints
-[rest-intro]: https://www.infoq.com/articles/rest-introduction
-[rest-pragmatic]: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
-[rest-standards]: https://standards.rest
-[roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+[rest-intro]: https://www.infoq.com/articles/rest-introduction/
+[rest-pragmatic]: https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+[rest-standards]: https://standards.rest/
+[roy-fielding-thesis]: https://ics.uci.edu/~fielding/pubs/dissertation/top.htm
 [tcp]: https://en.wikipedia.org/wiki/Transmission_Control_Protocol
 [udp]: https://en.wikipedia.org/wiki/User_Datagram_Protocol
 [url]: https://en.wikipedia.org/wiki/Uniform_Resource_Locator
