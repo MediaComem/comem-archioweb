@@ -41,7 +41,7 @@ Learn about JavaScript classes (ES6+).
 
 ## The new class syntax
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 <!-- slide-column 35 -->
 
@@ -97,7 +97,7 @@ console.log(r.computeArea()); // 800
 
 ### Syntactical sugar
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Here's a few checks to show you that the new class syntax is just another way to use JavaScript's **existing prototypal inheritance system**:
 
@@ -131,7 +131,7 @@ console.log(Object.getPrototypeOf(r) === Rectangle.prototype);
 
 ## Static methods
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 The `static` keyword defines a static method for a class.
 Static methods are called without instantiating their class and cannot be called through a class instance:
@@ -163,7 +163,7 @@ Static methods are often used to create utility functions for an application.
 
 ## Sub-classing
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 The `extends` keyword allows you to easily create a sub-class of another class.
 You can **override methods** of the super-class by simply redefining them:
@@ -197,7 +197,7 @@ jb.greet(); // "My name is Bond, James Bond"
 
 ### Using `super` in the constructor
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 If both sub-class and super-class have a constructor,
 the sub-class's constructor **MUST** call `super` as its first statement, which executes the super-class's constructor:
@@ -229,7 +229,7 @@ l.speak();
 
 ### Using `super` in methods
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 You can use `super` in a sub-class to reference the super-class or call its methods:
 
@@ -261,7 +261,7 @@ l.speak();
 
 ## Getters and setters
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 You can also define [getters][js-get] and [setters][js-set] with the new class syntax:
 

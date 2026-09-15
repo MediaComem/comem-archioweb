@@ -129,7 +129,7 @@ spartan.forEach(function(soldierFunc) {
   soldierFunc();
 });
 ```
-> What will be the output of this code, [once executed][closure-loop-bug-codepen]?
+> What will be the output of this code, [once executed][closure-loop-bug-livecodes]?
 
 <!-- slide-notes -->
 
@@ -254,4 +254,4 @@ closure captures its own.
 
 [chrome]: https://www.google.com/chrome/
 [closure]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
-[closure-loop-bug-codepen]: http://codepen.io/AlphaHydrae/pen/gmYQpN?editors=0010#0
+[closure-loop-bug-livecodes]: https://livecodes.io/?js=%2F%2F+Returns+an+array+of+10+rank%28%29+functions%0Afunction+createArmy%28%29+%7B%0A++var+generatedSoldiers+%3D+%5B%5D%3B+%2F%2F+Create+the+array%0A++for+%28var+nb+%3D+1%3B+nb+%3C+11%3B+nb%2B%2B%29+%7B%0A++++var+rank+%3D+function%28%29+%7B+%2F%2F+Rank+function+that+logs+the+soldier%27s+number%0A++++++console.log%28%22I%27m+the+soldier+n%C2%B0%22+%2B+nb%29%3B%0A++++%7D%3B%0A++++generatedSoldiers.push%28rank%29%3B+%2F%2F+Store+it+in+the+array%0A++%7D%0A++return+generatedSoldiers%3B+%2F%2F+Return+the+array%0A%7D%3B%0A%0Avar+spartan+%3D+createArmy%28%29%3B%0A%0A%2F%2F+Let%27s+execute+all+the+created+functions%0Aspartan.forEach%28function%28soldierFunc%29+%7B%0A++soldierFunc%28%29%3B%0A%7D%29%3B&console=open&welcome=false&recoverUnsaved=false&title=The+closure+loop+bug

@@ -9,6 +9,7 @@
   - [Generate slides and deploy to GitHub pages](#generate-slides-and-deploy-to-github-pages)
   - [Create a new subject](#create-a-new-subject)
   - [Update tables of contents](#update-tables-of-contents)
+  - [Update the "Open in LiveCodes" links of the exercises](#update-the-open-in-livecodes-links-of-the-exercises)
 - [Documentation](#documentation)
 - [Configuration](#configuration)
 - [Deploy the course's server](#deploy-the-courses-server)
@@ -63,6 +64,36 @@ npm run doctoc
 ```
 
 This will update the tables of contents in all Markdown files using [doctoc][doctoc].
+
+### Update the "Open in LiveCodes" links of the exercises
+
+```bash
+npm run livecodes
+```
+
+Each exercise in `exercises/*.md` has a link that opens its code in
+[LiveCodes][livecodes], an online editor which requires no account. The code is
+carried **in the link itself**, so the link must be regenerated when the code of
+an exercise changes: this script rebuilds every link from the code block below
+it.
+
+To add a link to a new exercise, put this placeholder under its heading, above
+the code block, and run the script:
+
+```markdown
+[Open in LiveCodes](TODO)
+```
+
+Use `npm run livecodes:check` to verify that no link is out of date without
+modifying anything (it exits with an error if any is).
+
+> In the **slides**, these links are not stored in the Markdown: they are
+> generated in the browser by `src/subject/livecodes.js`, which adds a LiveCodes
+> button to every JavaScript code block. Both use the same options, defined once
+> in `src/subject/livecodes-url.mjs`. Use the `<livecodes>` tag to control this
+> per slide (`<livecodes disabled>` on a slide, `<livecodes except='0'>` to skip
+> a given code block, `<livecodes global enabled='true'>` at the top of a
+> subject).
 
 ## Documentation
 
@@ -146,6 +177,7 @@ update its tag there, then re-run the playbook with the `archioweb` tag.
 [docs]: https://mediacomem.github.io/comem-archioweb/
 [docs-repo]: https://github.com/MediaComem/comem-archioweb
 [doctoc]: https://github.com/thlorenz/doctoc
+[livecodes]: https://livecodes.io
 [md2remark]: https://github.com/AlphaHydrae/md2remark#md2remark
 [remark]: https://remarkjs.com
 [remark-syntax]: https://github.com/gnab/remark/wiki/Markdown

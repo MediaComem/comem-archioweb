@@ -1,6 +1,6 @@
 # JavaScript
 
-<codepen global enabled='true'></codepen>
+<livecodes global enabled='true'></livecodes>
 
 Learn the basics of JavaScript, a high-level, dynamic, untyped and interpreted programming language,
 and one of the three core technologies of the web.
@@ -351,7 +351,7 @@ console.log(value); // 42
 
 ### Returning functions from a function
 
-<codepen except='1'></codepen>
+<livecodes except='1'></livecodes>
 
 ```js
 // Let's define a function that returns a function
@@ -422,7 +422,7 @@ console.log(lastNames); // [ "Doe", "Smith", "Smith" ]
 
 ### Arrow functions _(ES6+)_
 
-<codepen disabled></codepen>
+<livecodes disabled></livecodes>
 
 Modern JavaScript has a new additional syntax for functions which you will
 encounter more and more on the web:
@@ -442,7 +442,7 @@ let divideFunc = function (nb1, nb2) {
 
 #### Arrow function arguments
 
-<codepen except='0'></codepen>
+<livecodes except='0'></livecodes>
 
 Let's see how an arrow function is written:
 
@@ -469,7 +469,7 @@ setTimeout(callback, 1000);
 
 #### Body of arrow functions
 
-<codepen except='0'></codepen>
+<livecodes except='0'></livecodes>
 
 ```js
 (nb1, nb2) => `nb1 / nb2`;
@@ -544,7 +544,7 @@ console.log(discovery);
 
 ### Defining variables
 
-<codepen disabled></codepen>
+<livecodes disabled></livecodes>
 
 There are three ways to define a variable in JavaScript:
 
@@ -708,7 +708,7 @@ Just **don't do it**.
 
 ## String syntax
 
-<codepen disabled></codepen>
+<livecodes disabled></livecodes>
 
 In JavaScript, you (now) have 3 ways to use strings:
 
@@ -1139,7 +1139,6 @@ console.log(crew);
 [es2020]: https://2ality.com/2019/12/ecmascript-2020.html
 [es2021]: https://2ality.com/2020/09/ecmascript-2021.html
 [es2022]: https://2ality.com/2022/06/ecmascript-2022.html
-[ex-function-as-argument]: http://codepen.io/AlphaHydrae/pen/dNBpPv?editors=0010
 [first-class-functions]: https://en.wikipedia.org/wiki/First-class_function
 [func-prog]: https://en.wikipedia.org/wiki/Functional_programming
 [js-arrow-functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions

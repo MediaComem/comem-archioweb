@@ -2,7 +2,7 @@ import subject from 'courses-md/dist/client.js';
 
 window.subject = subject;
 
-import { CodepenController } from './codepen.js';
+import { LivecodesController } from './livecodes.js';
 
 import 'font-awesome/css/font-awesome.css';
 
@@ -12,7 +12,7 @@ import './assets/fonts/DroidSerif/DroidSerif.css';
 import './assets/fonts/UbuntuMono/UbuntuMono.css';
 import './assets/fonts/YanoneKaffeesatz/YanoneKaffeesatz.css';
 import './assets/slides.css';
-import './assets/codepen.css';
+import './assets/livecodes.css';
 
 import heigLogo from './assets/heig.png';
 
@@ -24,6 +24,6 @@ subject.setLogo({
 
 subject
   .afterStart(() => {
-    CodepenController.start();
+    LivecodesController.start();
   })
   .start();

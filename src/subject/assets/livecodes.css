@@ -1,8 +1,8 @@
-code.codepen:hover {
+code.livecodes:hover {
   background-color: #ffffe6;
 }
 
-code.codepen .codepen-button {
+code.livecodes .livecodes-button {
   float: right;
   display: flex;
   overflow: hidden;
@@ -41,6 +41,6 @@ code.codepen .codepen-button {
   background: #416dea;
 }
 
-code.codepen:hover .codepen-button {
+code.livecodes:hover .livecodes-button {
   opacity: 1;
 }

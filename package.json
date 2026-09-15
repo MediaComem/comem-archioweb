@@ -7,6 +7,8 @@
     "build": "cross-env DEBUG=courses-md:* courses-md build",
     "deploy": "cross-env DEBUG=courses-md:* courses-md publish",
     "doctoc": "doctoc --notitle --github README.md CONTRIBUTING.md exercises/*.md guides/*.md subjects/*/*.md",
+    "livecodes": "node scripts/update-livecodes-links.mjs",
+    "livecodes:check": "node scripts/update-livecodes-links.mjs --check",
     "start": "cross-env DEBUG=courses-md:* courses-md",
     "watch": "cross-env DEBUG=courses-md:* courses-md watch"
   },

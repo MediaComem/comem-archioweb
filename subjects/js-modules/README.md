@@ -84,7 +84,7 @@ It's the **developer's job** to **manually** ensure all dependencies are satisfi
 
 ### Traditional client-side JavaScript encapsulation
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 In a web page, encapsulation has been traditionally achieved by taking advantage of the JavaScript function scope.
 Patterns like the [revealing module pattern][revealing-module-pattern] can be used to
