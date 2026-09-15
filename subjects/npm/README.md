@@ -98,13 +98,17 @@ For programming languages:
 | RubyGems        | Ruby     |
 | pip             | Python   |
 
+> [pnpm][pnpm], [Yarn][yarn] and [Bun][bun] are alternatives to npm for Node.js:
+> same registry, same `package.json`, so what you learn here applies to them.
+
 For operating systems:
 
-| Package manager                   | OS                   |
-| :---                              | :---                 |
-| Advanced Package Tool (apt)       | Debian, Ubuntu       |
-| Homebrew (brew)                   | Mac OS X             |
-| Yellowdog Updater, Modified (yum) | RHEL, Fedora, CentOS |
+| Package manager             | OS                   |
+| :---                        | :---                 |
+| Advanced Package Tool (apt) | Debian, Ubuntu       |
+| Homebrew (brew)             | macOS                |
+| Dandified YUM (dnf)         | RHEL, Fedora         |
+| Windows Package Manager     | Windows              |
 
 
 
@@ -1008,5 +1012,8 @@ Protect yourself by setting the `private` property of your `package.json`:
 [npm-fix-permissions]: https://docs.npmjs.com/getting-started/fixing-npm-permissions
 [npm-publish]: https://docs.npmjs.com/cli/commands/npm-publish
 [npm-scripts]: https://docs.npmjs.com/misc/scripts
+[bun]: https://bun.sh
 [package.json]: https://docs.npmjs.com/files/package.json
+[pnpm]: https://pnpm.io
+[yarn]: https://yarnpkg.com
 [semver]: https://semver.org
