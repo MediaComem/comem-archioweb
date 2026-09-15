@@ -3,7 +3,7 @@
   <head>
     <title>REST In Depth (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/rest-advanced/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/02041b1571c665028687b941925bd008a348bd8e/subjects/rest-advanced/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -111,21 +111,22 @@ Real-world example: [Flickr API][flickr-api].
 
 HTTP introduces [standardized methods][http-methods] (or verbs):
 
-| Method   | Description                                  |
-| :------- | :------------------------------------------- |
-| `GET`    | Retrieve a resource at an URL.               |
-| `POST`   | Create a new resource subordinate to an URL. |
-| `PUT`    | Replace (modify) the resource at an URL.     |
-| `PATCH`  | Partially modify a resource at an URL.       |
-| `DELETE` | Delete the resource identified by an URL.    |
+| Method   | Description                                  | [Safe][http-safe] | [Idempotent][http-idempotence] |
+| :------- | :------------------------------------------- | :---------------: | :----------------------------: |
+| `GET`    | Retrieve a resource at an URL.               |         ✔         |               ✔                |
+| `POST`   | Create a new resource subordinate to an URL. |         ✘         |               ✘                |
+| `PUT`    | Replace (modify) the resource at an URL.     |         ✘         |               ✔                |
+| `PATCH`  | Partially modify a resource at an URL.       |         ✘         |               ✘                |
+| `DELETE` | Delete the resource identified by an URL.    |         ✘         |               ✔                |
 
 You do not have to reinvent the wheel for the most common operations on
 resources: creating, reading, updating and deleting ([CRUD][crud]).
 
-For example, `GET` has a [specific meaning][http-get]: it retrieves information,
-it must be [safe][http-safe] and [idempotent][http-idempotence], etc. **Where
-there are constraints there are optimizations**: [caching][http-cache],
-[conditional requests][http-conditional], [partial requests][http-partial] etc.
+Each method also comes with **guarantees** that are the same for every API in the
+world: [`GET`][http-get] is [safe][http-safe] (it changes nothing) and
+[idempotent][http-idempotence] (repeating it changes nothing). **Where there are
+constraints there are optimizations**: [caching][http-cache], [conditional
+requests][http-conditional], [partial requests][http-partial] etc.
 
 Real-world examples: [AWS Simple Storage Service (S3)
 API][s3-api], [Twitter API][twitter-api].
@@ -731,6 +732,79 @@ Content-Type: application/json
 Now you have all the data you need for that audit/security page.
 
 ---
+### So what do nouns buy you?
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a>]
+
+Respecting the rule is not the point. The point is **who else can understand your
+request**.
+
+.grid-50[
+
+**Verbs in the URL**
+
+```http
+POST /api/comments/42/star
+POST /api/comments/42/unstar
+```
+
+Two endpoints, and **two more for every new capability**. `star` and `unstar` are
+words that only _your_ application understands. Is it safe to send one of them
+twice? Only you know: `POST` is neither safe nor idempotent.
+
+
+]
+.grid-50[
+
+**A noun in the URL**
+
+```http
+PUT    /api/comments/42/star
+DELETE /api/comments/42/star
+```
+
+One resource. `PUT` and `DELETE` already mean "make it so" and "remove it", so
+there is no need to invent `unstar`. Both are [idempotent][http-idempotence] _by
+definition_: send either ten times, the result is the same.
+
+
+]
+.container[
+
+Modeling with resources moves the meaning of a request **out of your vocabulary
+and into the protocol**, where code that knows nothing about your application can
+still do the right thing: cache the response, retry the request, or refuse it if
+the resource has changed in the meantime.
+
+
+]
+---
+class: compact-table
+#### The benefit you get immediately
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a> > <a href="#31">So what do nouns buy you?</a>]
+
+
+
+Caching and retries mostly benefit **other people's code**. There is one benefit
+you get right away, on your own project: naming a resource forces you to find
+**concepts you were about to lose**.
+
+| The action you wanted     | The thing it really was                              | What it got you                                           |
+| :------------------------ | :--------------------------------------------------- | :-------------------------------------------------------- |
+| `POST /users/:id/follow`  | a follower in a collection                           | `GET /users/:id/followers`, the list you need anyway      |
+| `POST /comments/:id/star` | a `star` sub-resource                                | `DELETE` unstars it: one concept, not two endpoints       |
+| `POST /users/:id/disable` | an `enabled` property, or an entry in an audit trail | a state clients can **read**, or `GET /users/:id/actions` |
+
+In each case, asking "what is the **thing**?" instead of "what is the
+**action**?" uncovered something the application needed anyway.
+
+> On a small project with a single client, an "action" API would work too. These
+> benefits grow with the number of clients, the number of endpoints and the
+> lifetime of the API. That is why REST is an **architectural** style: it is
+> designed for systems that must survive their first version.
+
+---
 ## Linked resources
 
 .breadcrumbs[<a href="#1">REST In Depth</a>]
@@ -749,7 +823,7 @@ You will retrieve the movie's data, of course, but what do you expect to see con
 ---
 ### Embedded resource
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#33">Linked resources</a>]
 
 The director can be **embedded** into the movie's data:
 
@@ -774,7 +848,7 @@ The director can be **embedded** into the movie's data:
 ---
 ### Resource reference via ID
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#33">Linked resources</a>]
 
 To save bandwidth, only a unique identifier for the director could be included:
 
@@ -802,7 +876,7 @@ To save bandwidth, only a unique identifier for the director could be included:
 ---
 ### Resource reference via hyperlink
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#33">Linked resources</a>]
 
 Instead of just the ID, you could include a hyperlink to the director's resource:
 
@@ -831,7 +905,7 @@ Instead of just the ID, you could include a hyperlink to the director's resource
 ---
 ### Optional resource embedding
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#33">Linked resources</a>]
 
 Again, there's no _right or wrong_ answer: it depends on your use case. By
 spending a little more time on your server's implementation, it's also possible
@@ -889,7 +963,7 @@ This **lets the client decide** what's most appropriate **for each request** (de
 ---
 ### Embedding a collection
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#33">Linked resources</a>]
 
 You can ask yourself the same questions for **one-to-many** or **many-to-many** relationships:
 
@@ -946,7 +1020,7 @@ but embedding a company's employees is probably a really bad idea.
 ---
 ### Multiple resource references
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#31">Linked resources</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#33">Linked resources</a>]
 
 You can also use identifiers or hypermedia for links to multiple resources:
 
@@ -989,7 +1063,7 @@ Host: world-phonebook.com
 ---
 ### Huge collections
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
 Some collections can grow to a point where it is not possible to get all of its elements in a single HTTP request:
 
@@ -1003,7 +1077,7 @@ You want to be able to **successively retrieve pages** of the collection:
 ---
 ### What you need for pagination
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
 There are two main requirements to be able to implement pagination:
 
@@ -1019,7 +1093,7 @@ The most common way for clients to ask for a page is to add **URL query paramete
 ---
 #### Telling the client how to get more
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a> > <a href="#40">What you need for pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#42">What you need for pagination</a>]
 
 There are many different ways popular APIs tell the client how to get more elements.
 Here are a few:
@@ -1031,7 +1105,7 @@ Here are a few:
 ---
 ### The `Link` header (solution 1)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
 There have been many ways developers have implemented pagination over the years.
 
@@ -1050,7 +1124,7 @@ The server can indicate where to find:
 ---
 #### Pagination with the `Link` header
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a> > <a href="#42">The `Link` header (solution 1)</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#44">The `Link` header (solution 1)</a>]
 
 Consider the following request where the client requests the second page of 50
 elements in a collection:
@@ -1078,7 +1152,7 @@ Link: <https://example.com/api/movies?`page=1`&pageSize=50>; rel="`first prev`",
 ---
 ### Custom headers (solution 2)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
 The `Link` header has the advantage of being a standard, but it's harder to
 build a **pager** from it:
@@ -1098,7 +1172,7 @@ so you could decide to use these **custom headers** to send the client the addit
 ---
 #### Custom headers in the response
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a> > <a href="#44">Custom headers (solution 2)</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#46">Custom headers (solution 2)</a>]
 
 Consider the following request where the client requests the second page of 50 elements in a collection:
 
@@ -1123,7 +1197,7 @@ Content-Type: application/json; charset=utf-8
 ---
 ### JSON envelope (solution 3)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
 In some rare circumstances, there is a proxy between client and server that **strips some headers** from requests.
 In this case, you would have to send the pagination information in the **response body** instead of headers.
@@ -1148,7 +1222,7 @@ Content-Type: application/json; charset=utf-8
 ---
 ### Hypermedia pagination (solution 4)
 
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#38">Pagination</a>]
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
 Most hypermedia formats, like [JSON:API][json-api] or [HAL][hal], also allow you
 to include the pagination information in the response with standard link

@@ -3,7 +3,7 @@
   <head>
     <title>REST Introduction &amp; HTTP (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/rest/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/02041b1571c665028687b941925bd008a348bd8e/subjects/rest/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -639,19 +639,28 @@ that are here to **help you** implement rich client-server interaction.
 > ]
 
 ---
+class: compact-table
 ### Common [methods][http-methods]
 
 .breadcrumbs[<a href="#1">REST Introduction & HTTP</a> > <a href="#28">But can't I just use GET and POST?</a>]
 
-| Method    | Purpose                                                       |
-| :-------- | :------------------------------------------------------------ |
-| `GET`     | Retrieve data                                                 |
-| `HEAD`    | Retrieve the response headers but no data (to save bandwidth) |
-| `POST`    | Create a new resource                                         |
-| `PUT`     | Replace an existing resource                                  |
-| `PATCH`   | Partially modify an existing resource                         |
-| `DELETE`  | Delete a resource                                             |
-| `OPTIONS` | Ask the server what you can do with a resource                |
+
+
+| Method    | Purpose                                                       | [Safe][http-safe] | [Idempotent][http-idempotence] |
+| :-------- | :------------------------------------------------------------ | :---------------: | :----------------------------: |
+| `GET`     | Retrieve data                                                 |         ✔         |               ✔                |
+| `HEAD`    | Retrieve the response headers but no data (to save bandwidth) |         ✔         |               ✔                |
+| `POST`    | Create a new resource                                         |         ✘         |               ✘                |
+| `PUT`     | Replace an existing resource                                  |         ✘         |               ✔                |
+| `PATCH`   | Partially modify an existing resource                         |         ✘         |               ✘                |
+| `DELETE`  | Delete a resource                                             |         ✘         |               ✔                |
+| `OPTIONS` | Ask the server what you can do with a resource                |         ✔         |               ✔                |
+
+- **[Safe][http-safe]:** the request does not modify the resource, so it can be
+  made **without fear** (and its response can be cached).
+- **[Idempotent][http-idempotence]:** making the request **once** or **several
+  times** has the same effect, so it can be **retried without fear** after a
+  network failure.
 
 ---
 class: compact-table
@@ -1214,10 +1223,12 @@ class: compact-table
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
 [http-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
 [http-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-idempotence]: https://developer.mozilla.org/en-US/docs/Glossary/Idempotent
 [http-methods]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 [http-methods-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-methods
 [http-request-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
 [http-response-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-safe]: https://developer.mozilla.org/en-US/docs/Glossary/Safe
 [http-semantics-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html
 [http-status-codes]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
 [http-status-codes-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes
