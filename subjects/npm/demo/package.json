@@ -2,22 +2,24 @@
   "name": "npm-demo",
   "version": "1.0.0",
   "description": "npm demo",
+  "keywords": [
+    "npm",
+    "demo"
+  ],
+  "license": "ISC",
+  "author": "John Doe <john.doe@example.com>",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "hello": "echo Hello World!",
     "start": "node script.js",
     "serve-static": "http-server"
   },
-  "keywords": [
-    "npm",
-    "demo"
-  ],
-  "author": "John Doe <john.doe@example.com>",
-  "license": "ISC",
   "dependencies": {
-    "express": "^4.14.1"
+    "express": "^5.2.1",
+    "lodash": "^4.18.1"
   },
   "devDependencies": {
-    "http-server": "^0.9.0"
+    "http-server": "^14.1.1"
   }
 }

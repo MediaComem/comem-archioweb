@@ -111,7 +111,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v24.8.0
+v26.8.2
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -156,17 +156,20 @@ Node.js code is organized in **modules**. These are the core modules available
 to you out of the box (with those that you are likely to use in most
 applications highlighted):
 
-Assertion testing, Async hooks, Buffer, C++ addons, C/C++ addons with N-API, C++
-embedder API, **Child processes**, Cluster, Command line options, Console,
-**Crypto**, Debugger, Deprecated APIs, DNS, Domain, Errors, **Events**, **File
-system**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector,
-Internationalization, Modules: CommonJS modules, Modules: ECMAScript modules,
-Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
-**Process**, Punycode, **Query strings**, Readline, REPL, Report, **Stream**,
-String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
-Utilities, V8, VM, WASI, Worker threads, Zlib.
+Assertion testing, Asynchronous context tracking, Async hooks, Buffer, C++
+addons, C/C++ addons with Node-API, C++ embedder API, **Child processes**,
+Cluster, Command-line options, Console, **Crypto**, Debugger, Deprecated APIs,
+Diagnostics Channel, DNS, Domain, Environment variables, Errors, **Events**,
+FFI, **File system**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector,
+Internationalization, Iterable Streams, Modules: CommonJS modules, Modules:
+ECMAScript modules, Modules: `node:module` API, Modules: Packages, Modules:
+TypeScript, Net, OS, **Path**, Performance hooks, Permissions, **Process**,
+Punycode, **Query strings**, Readline, REPL, Report, Single executable
+applications, SQLite, **Stream**, String decoder, **Test runner**, Timers,
+**TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**, Utilities, V8, Virtual
+File System, VM, WASI, Web Crypto API, Web Streams API, Worker threads, Zlib.
 
-> Refer to the [documentation][node-24-api] for more information.
+> Refer to the [documentation][node-26-api] for more information.
 
 ### Requiring core modules
 
@@ -187,7 +190,7 @@ function hello(name) {
 hello('World');
 ```
 
-This will log the platform on which you are running:
+This will log your platform:
 
 ```bash
 $> node script.mjs
@@ -196,8 +199,7 @@ I am running on darwin
 ```
 
 > Core modules also work without the prefix (`import os from 'os'`), which you
-> will see in a lot of code. Prefer `node:`: it makes clear that the module is
-> built into Node.js and not an npm package that happens to have the same name.
+> will see a lot. Prefer `node:`: it says the module is built into Node.js.
 
 ### A note on Node.js and CommonJS modules
 
@@ -207,7 +209,7 @@ standardized. At the time, there were many module systems in the wild like
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
-Node.js to treat your code as ECMAScript modules][node-24-esm-enabling] by
+Node.js to treat your code as ECMAScript modules][node-26-esm-enabling] by
 naming your files with the `.mjs` extension instead of `.js`. If you have a
 `package.json` file (we'll learn more about these later), you can also set the
 `type` property to `module`.
@@ -225,7 +227,7 @@ function hello(name) {
 hello('World');
 ```
 
-> Since ECMAScript modules are now [natively supported][node-24-esm], we will
+> Since ECMAScript modules are now [natively supported][node-26-esm], we will
 > use them rather than the obsolete `require`.
 
 ### Writing your own module
@@ -234,14 +236,14 @@ Let's say we want to extract the `hello` function to another module.
 Create a `utils.mjs` file:
 
 ```js
-import os from 'os';
+import os from 'node:os';
 
-// Attach properties to exports so that you can use
-// them when requiring this file
+// Export the function so that you can use
+// it when importing this file
 export function hello(name) {
   console.log(\`Hello ${name}!`);
   console.log(\`I am running on ${os.platform()}`);
-};
+}
 ```
 
 `export`-ing things is what allow you to `import` them from other files.
@@ -509,16 +511,13 @@ You've probably often encountered something that looks like this while programmi
 
 ```
 Error: Both arguments must be numbers
-    at add (/path/to/project/st-demo.mjs:3:11)
-    at compute (/path/to/project/st-demo.mjs:10:10)
-    at demo (/path/to/project/st-demo.mjs:14:17)
-    at Object.<anonymous> (/path/to/project/st-demo.mjs:18:1)
-    at Module._compile (internal/modules/cjs/loader.js:689:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:700:10)
-    at Module.load (internal/modules/cjs/loader.js:599:32)
-    at tryModuleLoad (internal/modules/cjs/loader.js:538:12)
-    at Function.Module._load (internal/modules/cjs/loader.js:530:3)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:742:12)
+    at add (file:///path/to/project/st-demo.mjs:3:11)
+    at compute (file:///path/to/project/st-demo.mjs:10:10)
+    at demo (file:///path/to/project/st-demo.mjs:14:17)
+    at file:///path/to/project/st-demo.mjs:18:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
 ```
 
 What is this called and what does it mean?
@@ -527,13 +526,11 @@ What is this called and what does it mean?
 
 ```
 Error: Both arguments must be numbers
-    at `add` (/path/to/project/`st-demo.mjs:3`:11)
-    at `compute` (/path/to/project/`st-demo.mjs:10`:10)
-    at `demo` (/path/to/project/`st-demo.mjs:14`:17)
-    at Object.<anonymous> (/path/to/project/`st-demo.mjs:18`:1)
+    at `add` (file:///path/to/project/`st-demo.mjs:3`:11)
+    at `compute` (file:///path/to/project/`st-demo.mjs:10`:10)
+    at `demo` (file:///path/to/project/`st-demo.mjs:14`:17)
+    at file:///path/to/project/`st-demo.mjs:18`:1
 ```
-
-Here's the `st-demo.mjs` file:
 
 ```js
 function add(a, b) {
@@ -558,11 +555,11 @@ function demo() {
 
 ### The call stack
 
-The [**call stack**][stack] is a mechanism for the JavaScript interpreter to keep track of its place in a script that calls multiple functions: what function is being run, which should be called next, etc.
+The [**call stack**][stack] is how the JavaScript interpreter keeps track of its place in a script that calls multiple functions.
 
 - When called, a function is added to the top of the stack.
 - Functions called by that function are added to the stack further up.
-- When a function finishes, the interpreter takes it off the stack and resumes where it left off in the last stack item.
+- When a function finishes, it is taken off the stack and the interpreter resumes where it left off.
 
 <!-- slide-column -->
 
@@ -1260,17 +1257,17 @@ console.log(await fs.readFile('hello.txt', 'utf-8'));
 
 **Documentation**
 
-- [Core modules (24.x)][node-24-api]
+- [Core modules (26.x)][node-26-api]
 
 **Further reading**
 
-- [What is Node.js][mixu-node-book]
+- [Introduction to Node.js][node-intro]
 - [JavaScript Concurrency Model and Event Loop][event-loop]
 - [Understanding the Node.js Event Loop][event-loop-strongloop]
 - [Philip Roberts: What the heck is the event loop anyway? (YouTube)][event-loop-wth]
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-[commonjs]: https://nodejs.org/docs/latest-v22.x/api/modules.html
+[commonjs]: https://nodejs.org/docs/latest-v26.x/api/modules.html
 [destructuring-assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
@@ -1278,19 +1275,19 @@ console.log(await fs.readFile('hello.txt', 'utf-8'));
 [event-loop-wth]: https://www.youtube.com/watch?v=8aGhZQkoFbQ
 [event-machine]: http://rubyeventmachine.com
 [libuv]: https://libuv.org
-[mixu-node-book]: http://book.mixu.net/node/ch2.html
+[node-intro]: https://nodejs.org/en/learn/getting-started/introduction-to-nodejs
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-24-api]: https://nodejs.org/docs/latest-v24.x/api/documentation.html
-[node-24-esm]: https://nodejs.org/docs/latest-v24.x/api/esm.html#modules-ecmascript-modules
-[node-24-esm-enabling]: https://nodejs.org/docs/latest-v24.x/api/esm.html#enabling
-[node-cli]: https://nodejs.org/docs/latest-v24.x/api/cli.html
-[node-event-emitter]: https://nodejs.org/api/events.html
-[node-fs-promises]: https://nodejs.org/docs/latest-v24.x/api/fs.html#promises-api
+[node-26-api]: https://nodejs.org/docs/latest-v26.x/api/documentation.html
+[node-26-esm]: https://nodejs.org/docs/latest-v26.x/api/esm.html#modules-ecmascript-modules
+[node-26-esm-enabling]: https://nodejs.org/docs/latest-v26.x/api/esm.html#enabling
+[node-cli]: https://nodejs.org/docs/latest-v26.x/api/cli.html
+[node-event-emitter]: https://nodejs.org/docs/latest-v26.x/api/events.html
+[node-fs-promises]: https://nodejs.org/docs/latest-v26.x/api/fs.html#promises-api
 [node-lts]: https://nodejs.org/en/about/previous-releases
 [node-release-schedule]: https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule
-[node-module-os]: https://nodejs.org/docs/latest-v22.x/api/os.html
-[node-process]: https://nodejs.org/docs/latest-v24.x/api/process.html
+[node-module-os]: https://nodejs.org/docs/latest-v26.x/api/os.html
+[node-process]: https://nodejs.org/docs/latest-v26.x/api/process.html
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org

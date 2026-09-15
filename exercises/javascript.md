@@ -99,7 +99,7 @@ console.log(multiplyByFive(3)); // 15
 
 ### Passing a function vs calling it
 
-[Open in CodePen](TODO)
+[Open in CodePen](https://codepen.io/editor/AlphaHydrae/pen/01a0a653-eceb-768d-9e5d-d1fc1a4877d2?console=true&file=%2Fscript.js&orientation=left&panel=files&show=split)
 
 ```js
 function sayHello() {

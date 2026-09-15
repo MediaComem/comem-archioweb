@@ -1,6 +1,6 @@
 # npm
 
-Learn how to use [npm][npm], the most popular [Node.js][node] package manager, and the largest code registry in the world with over a quarter million packages.
+Learn how to use [npm][npm], the most popular [Node.js][node] package manager, and the largest code registry in the world with over 4 million packages.
 
 **You will need**
 
@@ -33,16 +33,25 @@ Learn how to use [npm][npm], the most popular [Node.js][node] package manager, a
   - [npm saves the dependencies to package.json](#npm-saves-the-dependencies-to-packagejson)
   - [npm install with a package.json](#npm-install-with-a-packagejson)
   - [The --save-dev option](#the---save-dev-option)
-  - [The --production option](#the---production-option)
+  - [The --omit=dev option](#the---omitdev-option)
   - [The --global option](#the---global-option)
     - [Global packages](#global-packages)
     - [Where are global packages installed?](#where-are-global-packages-installed)
+  - [Running a package without installing it](#running-a-package-without-installing-it)
+- [Versions and updates](#versions-and-updates)
+  - [Semantic versioning](#semantic-versioning)
+  - [Version ranges](#version-ranges)
+  - [The lock file](#the-lock-file)
+  - [npm ci](#npm-ci)
+  - [Keeping dependencies up to date](#keeping-dependencies-up-to-date)
+  - [Known vulnerabilities](#known-vulnerabilities)
+  - [The engines field](#the-engines-field)
 - [Common mistakes](#common-mistakes)
   - [Missing `package.json` file](#missing-packagejson-file)
   - [Wrong directory](#wrong-directory)
 - [The behavior of `import`](#the-behavior-of-import)
-  - [Requiring your own modules](#requiring-your-own-modules)
-  - [Requiring packages installed with npm](#requiring-packages-installed-with-npm)
+  - [Importing your own modules](#importing-your-own-modules)
+  - [Importing packages installed with npm](#importing-packages-installed-with-npm)
     - [Global packages installed with npm](#global-packages-installed-with-npm)
   - [Importing core Node.js modules](#importing-core-nodejs-modules)
   - [Import summary](#import-summary)
@@ -52,10 +61,7 @@ Learn how to use [npm][npm], the most popular [Node.js][node] package manager, a
   - [Lifecycle scripts](#lifecycle-scripts)
   - [The scripts property](#the-scripts-property)
   - [Custom scripts](#custom-scripts)
-- [npm publish](#npm-publish)
-  - [What do I need to publish?](#what-do-i-need-to-publish)
-  - [Publishing](#publishing)
-  - [Avoiding publication](#avoiding-publication)
+- [Publishing, and not publishing](#publishing-and-not-publishing)
 - [Resources](#resources)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -104,9 +110,9 @@ For operating systems:
 
 ### The npm registry
 
-The [npm registry][npm] hosts over a million packages of reusable code — the largest code registry in the world.
+The [npm registry][npm] hosts over 4 million packages of reusable code — the largest code registry in the world.
 
-<img src='images/popular-packages.png' width='100%' />
+<img src='images/npm-search.png' width='85%' />
 
 It contains more than double the number of packages of the next most populated
 package registry (the Apache Maven repository).
@@ -126,13 +132,14 @@ It's composed of:
   "name": "my-project",
   "version": "1.3.2",
   "description": "It's great",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.13.3",
-    "lodash": "~3.1.0"
+    "express": "^5.2.1",
+    "lodash": "^4.18.1"
   },
   "keywords": [ "awesome", "project" ],
   "author": "John Doe <john.doe@example.com>",
@@ -154,23 +161,29 @@ npm is also a set of command line tools that work together with the registry.
 
 ```bash
 $> npm help
+npm <command>
 
-Usage: npm <command>
+Usage:
 
-where <command> is one of:
-    access, adduser, bin, bugs, c, cache, completion, config,
-    ddp, dedupe, deprecate, dist-tag, docs, edit, explore, get,
-    `help`, help-search, i, `init`, `install`, install-test, it, link,
-    list, ln, login, logout, ls, outdated, owner, pack, ping,
-    prefix, prune, `publish`, rb, rebuild, repo, restart, root,
-    run, run-script, s, se, search, set, shrinkwrap, star,
-    stars, `start`, stop, t, tag, team, test, tst, un, uninstall,
-    unpublish, unstar, up, update, v, version, view, whoami
+npm `install`        install all the dependencies in your project
+npm `install` <foo>  add the <foo> dependency to your project
+npm `test`           run this project's tests
+npm `run` <foo>      run the script named <foo>
+npm <command> -h   quick help on <command>
 
-npm <cmd> -h     quick help on <cmd>
-npm -l           display full usage info
-npm help <term>  search for help on <term>
-npm help npm     involved overview
+All commands:
+
+    access, adduser, approve-scripts, audit, bugs, cache, ci,
+    completion, config, dedupe, deny-scripts, deprecate, diff,
+    dist-tag, docs, doctor, edit, exec, explain, explore,
+    find-dupes, fund, get, help, help-search, `init`, `install`,
+    install-ci-test, install-scripts, install-test, link, ll,
+    login, logout, ls, org, outdated, owner, pack, ping, pkg,
+    prefix, profile, prune, `publish`, query, rebuild, repo,
+    restart, root, run, sbom, search, set, shrinkwrap, stage,
+    star, stars, `start`, stop, team, test, token, trust,
+    undeprecate, uninstall, unpublish, unstar, update, version,
+    view, whoami
 ```
 
 
@@ -185,25 +198,18 @@ Create a new package
 
 ### Interactively create a package.json file
 
-Create and move into a new project directory:
+Create a new project directory and run `npm init` in it:
 
 ```bash
 $> cd /path/to/projects
 $> mkdir npm-demo
 $> cd npm-demo
-```
 
-Run `npm init`:
-
-```bash
 $> npm init
 This utility will walk you through creating a package.json file.
-It only covers the most common items, and tries to guess sensible defaults.
-
 ...
-
 Press ^C at any time to quit.
-name: (npm-demo)
+package name: (npm-demo)
 version: (1.0.0)
 description: npm demo
 entry point: (index.js)
@@ -212,7 +218,10 @@ git repository:
 keywords: npm, demo
 author: John Doe <john.doe@example.com>
 license: (ISC)
+*type: (commonjs) module
 ```
+
+> Answer **`module`** to the last question: this course uses ECMAScript modules.
 
 
 
@@ -223,13 +232,14 @@ license: (ISC)
   "name": "npm-demo",
   "version": "1.0.0",
   "description": "npm demo",
+  "keywords": [ "npm", "demo" ],
+  "license": "ISC",
+  "author": "John Doe <john.doe@example.com>",
+* "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [ "npm", "demo" ],
-  "author": "John Doe <john.doe@example.com>",
-  "license": "ISC"
+  }
 }
 ```
 
@@ -252,11 +262,13 @@ It then saves the downloaded packages in that directory:
 
 ```bash
 $> npm install lodash
-npm-demo@1.0.0 /path/to/projects/npm-demo
-└── lodash@4.17.4
+
+added 1 package, and audited 2 packages in 708ms
+
+found 0 vulnerabilities
 
 $> ls
-node_modules package.json package-lock.json
+node_modules package-lock.json package.json
 
 $> ls node_modules
 lodash
@@ -271,7 +283,7 @@ lodash
 Any script that is in the same directory as `package.json` and `node_modules`
 can `import` the installed packages:
 
-Create a `script.mjs` file in the project and run it::
+Create a `script.mjs` file in the project and run it:
 
 <!-- slide-column -->
 
@@ -298,10 +310,11 @@ which returns an array with its duplicate elements removed.
 
 ### Importing ECMAScript Modules
 
-As was mentionned during the presentation on Node, we will be using ECMAScript
+As was mentioned during the presentation on Node, we will be using ECMAScript
 modules during this course.
 
-In your `package.json`, add the following property:
+If you answered `commonjs` to `npm init` (or have an older project), change the
+`type` property of your `package.json`:
 
 ```json
 {
@@ -311,8 +324,8 @@ In your `package.json`, add the following property:
 }
 ```
 
-This will allow you to use ECMAScript modules without having to name your files
-with the `.mjs` extension. You can now rename your script to `.js`:
+This allows you to use ECMAScript modules without having to name your files with
+the `.mjs` extension. You can now rename your script to `.js`:
 
 ```bash
 $> mv script.mjs script.js
@@ -332,15 +345,13 @@ Your script should no longer work since the `lodash` package is no longer availa
 
 ```bash
 $> node script.js
-node:internal/errors:464
-    ErrorCaptureStackTrace(err);
-    ^
-
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash'
-Error: Cannot find module 'lodash'
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'lodash' imported from
+/path/to/projects/npm-demo/script.js
+    at packageResolve (node:internal/modules/esm/resolve:784:25)
+    ...
 ```
 
-Deleting the `node_modules` directory is not a common real-world scenario,
+Deleting the `node_modules` directory is not a common real-world scenario.
 However, it can get quite large, so most people have it in their `.gitignore`
 file in their Git repositories, since you just have to run `npm install` to get
 your dependencies back.
@@ -380,8 +391,8 @@ Delete the `node_modules` directory again and simply run `npm install` with no o
 ```bash
 $> rm -fr node_modules
 $> npm install
-npm-demo@1.0.0 /path/to/projects/npm-demo
-└── lodash@4.17.4
+
+added 1 package, and audited 2 packages in 608ms
 ```
 
 npm has installed the `lodash` package again.
@@ -404,14 +415,14 @@ That way, your entire team can reproduce the exact same package structure as on 
 You often use two kinds of packages:
 
 * **Production dependencies** that your program or application needs to run (e.g. a database client)
-* **Development dependencies** that you use during development but do not need to run the application (e.g. a live-reload server)
+* **Development dependencies** that you use during development but do not need to run the application (e.g. a tool that restarts your server when you edit a file)
 
 <!-- slide-column 45 -->
 
 Use the `--save-dev` option to save your development dependencies:
 
 ```bash
-$> npm install --save-dev gulp
+$> npm install --save-dev nodemon
 ```
 
 A `devDependencies` section will be added to your `package.json`:
@@ -420,9 +431,14 @@ A `devDependencies` section will be added to your `package.json`:
 
 <p class='center'><img src='images/npm-install-save-dev.png' class='w100'></p>
 
+<!-- slide-container -->
+
+> The diagram uses `gulp`, an older build tool, as its development dependency.
+> The mechanism is the same whichever package you install.
 
 
-### The --production option
+
+### The --omit=dev option
 
 <!-- slide-column 45 -->
 
@@ -444,6 +460,12 @@ $> npm install --omit=dev
 
 <img src='images/npm-install-prod.png' class='w100'>
 
+<!-- slide-container -->
+
+> This option used to be called `--production`, which is what the diagram still
+> shows. It works, but npm now answers `npm warn config production Use
+> --omit=dev instead.`
+
 
 
 ### The --global option
@@ -455,16 +477,13 @@ Use the `--global` or `-g` option:
 $> npm install --global http-server
 ```
 
-**If you get an `EACCES` error**, execute the following commands:
+**If you get an `EACCES` error**, it means npm is trying to write to a directory
+you do not own (e.g. `/usr/local`). Do **not** retry with `sudo`.
 
-```bash
-$> mkdir ~/.npm-global
-$> npm config set prefix '~/.npm-global'
-$> echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bash_profile
-$> echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.zshrc
-```
-
-Re-open your CLI, then retry the installation, which should work this time:
+The robust fix is to install Node.js with a **version manager** (such as
+[nvm][nvm], fnm or Volta), which puts both Node.js and the global packages in
+your home directory. npm also documents [how to change the global
+directory][npm-fix-permissions] if you prefer to keep your installation.
 
 ```bash
 $> npm install --global http-server
@@ -500,15 +519,218 @@ Use `npm config` to find out where global packages are installed on your machine
 
 ```bash
 $> npm config get prefix
-/usr/local
+/Users/jdoe/.asdf/installs/nodejs/26.8.2
 
-$> ls /usr/local/lib/node_modules
-http-server
+$> ls /Users/jdoe/.asdf/installs/nodejs/26.8.2/lib/node_modules
+http-server npm
 ```
+
+> The exact path depends on **how you installed Node.js**: a version manager
+> puts it in your home directory, while a system-wide installation may use
+> `/usr/local` or `/opt/homebrew`.
 
 You *cannot* use `--save` with global packages.
 You **do not need to** since they are global to your machine and available anywhere in the CLI.
 However, if you **reset** your machine or Node.js installation, you will have to **reinstall** manually.
+
+
+
+### Running a package without installing it
+
+Installing a command globally is often unnecessary. `npx`, which comes with npm,
+**downloads a package, runs its command and caches it**:
+
+```bash
+$> npx http-server
+npm warn exec The following package was not found and will be
+installed: http-server@14.1.1
+Starting up http-server, serving .
+
+Available on:
+  http://127.0.0.1:8080
+Hit CTRL-C to stop the server
+```
+
+- No global installation, so no `EACCES` problem and nothing to keep up to date.
+- If the package is **already a dependency** of your project, `npx` runs *that*
+  version instead of downloading anything.
+
+> Use `npx` for one-off commands, and `--global` only for commands you really
+> want available everywhere, all the time.
+
+
+
+## Versions and updates
+
+<!-- slide-front-matter class: center, middle -->
+
+What `^5.2.1` means, and how to keep it up to date.
+
+
+
+### Semantic versioning
+
+Most npm packages follow [semantic versioning][semver]: a version is
+**`MAJOR.MINOR.PATCH`**, e.g. `5.2.1`.
+
+| Part      | Incremented when                               | Safe to take?           |
+| :-------- | :--------------------------------------------- | :---------------------- |
+| **MAJOR** | the API changes in a **breaking** way           | no, read the changelog  |
+| **MINOR** | features are **added**, without breaking others | yes                     |
+| **PATCH** | **bugs are fixed**, without breaking others     | yes                     |
+
+> This is a **promise made by the author**, not something npm can enforce. It is
+> what makes the ranges on the next slide reasonably safe.
+
+
+
+### Version ranges
+
+npm does not save the exact version of a dependency, but a **range** starting
+with a caret:
+
+```json
+"dependencies": {
+* "express": "^5.2.1"
+}
+```
+
+| Range    | Accepts                                    | Examples             |
+| :------- | :----------------------------------------- | :------------------- |
+| `^5.2.1` | patches **and** minors: `>=5.2.1 <6.0.0`   | 5.3.0 ✔, 6.0.0 ✘    |
+| `~5.2.1` | patches only: `>=5.2.1 <5.3.0`             | 5.2.9 ✔, 5.3.0 ✘    |
+| `5.2.1`  | only that exact version                    | 5.2.1                |
+
+> With `^`, a fresh `npm install` can give you a **newer version than the one
+> you developed with**. That is what the lock file is for.
+
+
+
+### The lock file
+
+`package-lock.json` records the **exact** version of every package that was
+installed — including the dependencies of your dependencies.
+
+<!-- slide-column -->
+
+**Commit it to Git.**
+
+Your teammates, your automated tests and your server then install exactly what
+you tested, instead of whatever the ranges allow today.
+
+<!-- slide-column -->
+
+**Do not commit `node_modules`.**
+
+```bash
+$> cat .gitignore
+node_modules
+```
+
+<!-- slide-container -->
+
+> Deleting `node_modules` costs you one `npm install`. Deleting
+> `package-lock.json` throws away the only record of what actually worked.
+
+
+
+### npm ci
+
+`npm ci` (**c**lean **i**nstall) deletes `node_modules` and installs **exactly**
+what the lock file says:
+
+```bash
+$> npm ci
+
+added 96 packages, and audited 97 packages in 524ms
+
+found 0 vulnerabilities
+```
+
+|                          | `npm install`  | `npm ci`             |
+| :----------------------- | :------------- | :------------------- |
+| Installs what is in      | `package.json` | `package-lock.json`  |
+| Can change the lock file | yes            | **never**            |
+| Without a lock file      | works          | **fails**            |
+
+Use it on servers and in automated tests, where you want a **reproducible**
+install rather than the newest thing the ranges allow.
+
+
+
+### Keeping dependencies up to date
+
+```bash
+$> npm outdated
+Package  Current  Wanted  Latest  Location              Depended by
+express    5.0.0   5.2.1   5.2.1  node_modules/express  my-project
+lodash   4.17.20  4.18.1  4.18.1  node_modules/lodash   my-project
+```
+
+- **Current** is installed, **Wanted** is the newest version your range allows,
+  **Latest** is the newest published version.
+- `npm update` installs the **Wanted** versions and updates the lock file.
+- Getting to **Latest** when it is a **major** version is a manual decision:
+  change the range in `package.json` yourself, after reading the changelog.
+
+> `npm update` never crosses a major version, precisely because your ranges say
+> it must not.
+
+
+
+### Known vulnerabilities
+
+`found 0 vulnerabilities`, printed after every install, is the result of
+**`npm audit`**: npm compares the versions you installed against a public
+database of **known security advisories**.
+
+```bash
+$> npm audit
+# npm audit report
+
+minimist  1.0.0 - 1.2.5
+Severity: critical
+Prototype Pollution in minimist
+https://github.com/advisories/GHSA-vh95-rmgr-6w4m
+fix available via `npm audit fix`
+
+1 critical severity vulnerability
+```
+
+- `npm audit fix` installs the closest **non-breaking** version that solves the
+  problem — here, minimist 1.2.8 — and updates the lock file.
+- It reports vulnerabilities in **your dependencies' dependencies** too, which
+  you did not choose and often cannot see.
+
+> Resist `npm audit fix --force`: it installs **major** versions across your
+> ranges, and is quite capable of breaking your application to silence a
+> warning in a package you never call.
+
+
+
+### The engines field
+
+`engines` declares which Node.js version your project needs:
+
+```json
+{
+  "name": "npm-demo",
+* "engines": {
+*   "node": ">=26"
+* },
+  ...
+}
+```
+
+```bash
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'npm-demo@1.0.0',
+npm warn EBADENGINE   required: { node: '>=26' },
+npm warn EBADENGINE   current: { node: 'v20.19.0', npm: '10.8.2' }
+```
+
+> Deployment platforms **read this field** to choose the Node.js version that
+> will run your application. Without it, you may get an old one.
 
 
 
@@ -558,7 +780,7 @@ Always run `npm init` **first**, then add `"type": "module"`.
 
 ### Wrong directory
 
-Npm will not know if you are in the **wrong directory**.
+npm will not know if you are in the **wrong directory**.
 It will simply **install packages there**.
 Of course, you will **NOT** be able to `import` them from your project:
 
@@ -572,7 +794,7 @@ Of course, you will **NOT** be able to `import` them from your project:
 
 
 
-### Requiring your own modules
+### Importing your own modules
 
 You can import your own Node.js scripts with **relative file paths**:
 
@@ -585,7 +807,7 @@ In this example, you should do one or the other, **not both**.
 
 
 
-### Requiring packages installed with npm
+### Importing packages installed with npm
 
 You can import packages you installed with npm **using their name**:
 
@@ -642,7 +864,7 @@ import express from 'express';
 const app = express();
 
 app.get('/', function(req, res) {
-  res.send('Hello ' + req.query.name + '!');
+  res.send(\`Hello ${req.query.name}!`);
 });
 
 app.listen(3000, function () {
@@ -708,7 +930,7 @@ Here we define that running `npm start` should **execute** the `server.js` file 
 ```bash
 $> npm start
 
-> npm-demo@1.0.0 start /path/to/projects/npm-demo
+> npm-demo@1.0.0 start
 > node server.js
 
 Example app listening on port 3000!
@@ -735,7 +957,7 @@ These scripts are run with `npm run <script>`:
 ```bash
 $> npm run hello
 
-> npm-demo@1.0.0 serve-static /path/to/projects/npm-demo
+> npm-demo@1.0.0 hello
 > echo Hello World
 
 *Hello World
@@ -743,56 +965,19 @@ $> npm run hello
 
 
 
-## npm publish
+## Publishing, and not publishing
 
-<!-- slide-front-matter class: center, middle -->
+The packages you install are published to the registry by their authors with
+[`npm publish`][npm-publish], from a directory containing a valid
+`package.json` (the `main` property tells npm which file people get when they
+`import` your package). Names are registered on a **first-come, first-serve**
+basis.
 
-Publish a package
+You will **not** publish anything during this course, and most code should never
+be published: a web application is not something anyone will `import`, and your
+project may contain confidential information.
 
-
-
-### What do I need to publish?
-
-You need a valid `package.json` file.
-
-You should also set the `main` property:
-
-```json
-{
-  "name": "npm-demo",
-* "main": "./script.js",
-  ...
-}
-```
-
-When people `import` your module after installing it, they will get the same
-result as if they had imported that file.
-
-
-
-### Publishing
-
-Publishing is as simple as running the `npm publish` command in the directory where your `package.json` file is located:
-
-```js
-npm publish
-```
-
-You of course need an **npm account**.
-
-You can only publish a new package if the package name is not already used.
-Names are registered on a **first-come, first-serve** basis.
-
-
-
-### Avoiding publication
-
-Sometimes you write code that should not be published:
-
-* A website (something that makes no sense to `import`)
-* A private package with confidential information
-
-In these cases, you can set the `private` property of the `package.json` file:
+Protect yourself by setting the `private` property of your `package.json`:
 
 ```json
 {
@@ -802,7 +987,7 @@ In these cases, you can set the `private` property of the `package.json` file:
 }
 ```
 
-`npm publish` will then refuse to publish the package.
+`npm publish` will then **refuse** to publish the package.
 
 
 
@@ -817,8 +1002,11 @@ In these cases, you can set the `private` property of the `package.json` file:
 
 [express]: https://expressjs.com
 [node]: https://nodejs.org
+[nvm]: https://github.com/nvm-sh/nvm
 [npm]: https://www.npmjs.com
 [npm-cli]: https://docs.npmjs.com/cli/npm
 [npm-fix-permissions]: https://docs.npmjs.com/getting-started/fixing-npm-permissions
+[npm-publish]: https://docs.npmjs.com/cli/commands/npm-publish
 [npm-scripts]: https://docs.npmjs.com/misc/scripts
 [package.json]: https://docs.npmjs.com/files/package.json
+[semver]: https://semver.org
