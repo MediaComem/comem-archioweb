@@ -865,7 +865,7 @@ You can also use the `Promise.reject` shortcut:
 ```js
 function showOff(phone) {
   let reason = new Error('I broke my leg');
-  return `Promise.reject`(message);
+  return `Promise.reject`(reason);
 }
 ```
 
@@ -1040,25 +1040,26 @@ The following functions will be called:
 ### An asynchronous example
 
 ```js
-const request = require('request-promise-native'), peer = require('request');
 const apiUrl = 'https://demo.archioweb.ch/api';
 const now = new Date().getTime();
 
+// fetch() does not reject on HTTP errors (404, 422...), so check yourself:
+function postJson(url, body) {
+  return fetch(url, {
+    method: 'POST', body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)));
+}
+
 function `createDirector`() {
   const director = { name: \`John ${now}`, gender: 'male' };
-  return request({
-    method: 'POST', url: \`${apiUrl}/people`,
-    body: director, json: true
-  });
+  return postJson(\`${apiUrl}/people`, director);
 }
 
 function `createMovie`(createdDirector) {
   console.log(\`Director ${createdDirector.name} created!`);
   const movie = { title: \`Movie ${now}`, directorHref: createdDirector.id };
-  return request({
-    method: 'POST', url: \`${apiUrl}/movies`,
-    body: movie, json: true, qs: { include: 'director' }
-  });
+  return postJson(\`${apiUrl}/movies?include=director`, movie);
 }
 
 console.log('Doing all the things... please wait...');
@@ -1071,30 +1072,30 @@ console.log('Doing all the things... please wait...');
 #### An asynchronous example with error handling
 
 ```js
-const request = require('request-promise-native'), peer = require('request');
 const apiUrl = 'https://demo.archioweb.ch/api';
 const now = new Date().getTime();
 
+// `fetch() does not reject on HTTP errors (404, 422...), so check yourself:`
+function postJson(url, body) {
+  return fetch(url, {
+    method: 'POST', body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.ok ? res.json() : `Promise.reject`(new Error(res.status)));
+}
+
 function createDirector() {
   const director = { /* `no name!` */ gender: 'male' };
-  return request({
-    method: 'POST', url: \`${apiUrl}/people`,
-    body: director, json: true
-  });
+  return postJson(\`${apiUrl}/people`, director);
 }
 
 function createMovie(createdDirector) {
   // `I am not being called!`
   console.log(\`Director ${createdDirector.name} created!`);
   const movie = { title: \`Movie ${now}`, directorHref: createdDirector.id };
-  return request({
-    method: 'POST', url: \`${apiUrl}/movies`,
-    body: movie, json: true, qs: { include: 'director' }
-  });
+  return postJson(\`${apiUrl}/movies?include=director`, movie);
 }
 
 console.log('Doing all the things... please wait...');
-
 Promise.resolve().then(createDirector).then(createMovie)
   .then(createdMovie => console.log(\`Movie ${createdMovie.title} created!`))
 * .catch(err => console.warn(\`Oops: ${err.message}`));
@@ -1160,7 +1161,8 @@ This is pretty deep already, and we're not even handling errors yet.
 You could mitigate the issue by separating the calls into isolated functions:
 
 ```js
-function createUser(userData) {
+const userData = { name: 'foo', password: 'test' };
+function createUser() {
   $.post('/api/users', userData, function(createdUser) {
     authenticateUser(createdUser);
   });
@@ -1174,12 +1176,12 @@ function authenticateUser(createdUser) {
 
 function retrieveUserStats(createdUser, authData) {
   let query = { userId: createdUser.id, token: authData.token };
-  $.get('/api/stats', { userId: createdUser.id }, function(statsData) {
+  $.get('/api/stats', query, function(statsData) {
     // Do something with statsData...
   });
 }
 
-createUser({ name: 'foo', password: 'test' });
+createUser();
 ```
 
 But now you **don't see a clear call sequence** anymore.
@@ -1191,19 +1193,19 @@ And we're **still not handling errors**.
 It just so happens that jQuery AJAX calls also **return promises**:
 
 ```js
-function createUser(userData) {
+const userData = { name: 'foo', password: 'test' };
+function createUser() {
   return $.post('/api/users', userData);
 }
 
 function authenticateUser(createdUser) {
-  return $.post('/api/auth', userData).then(function(authData) {
-    return { createdUser: createdUser, authData: authData };
-  });
+  return $.post('/api/auth', userData)
+    .then(authData => ({ createdUser: createdUser, authData: authData }));
 }
 
 function retrieveUserStats(data) {
   let query = { userId: data.createdUser.id, token: data.authData.token };
-  return $.get('/api/stats', { userId: createdUser.id });
+  return $.get('/api/stats', query);
 }
 
 *createUser()
@@ -1605,7 +1607,7 @@ after
 * [Promise nuggets][promise-nuggets]
 * [Aren't promises just callbacks?][arent-promises-just-callbacks]
 
-**Popular promise librairies**
+**Popular promise libraries**
 
 * [Bluebird][bluebird]
 * [q][q]

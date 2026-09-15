@@ -41,7 +41,7 @@ var leonidas = makeYeller(); // Store a new yell() function
 leonidas(); // "This is... Sparta"
 ```
 
-> `yell()` is a **closure**: a function that has a reference to a variable declared in an outer scope (in this cas, the `city` variable).
+> `yell()` is a **closure**: a function that has a reference to a variable declared in an outer scope (in this case, the `city` variable).
 
 When created, `yell()` functions will permanently keep the reference to the `city` variable, even after `makeYeller()`'s execution has completed.
 
@@ -216,6 +216,30 @@ for (var nb = 1; nb < 11; nb++) {
 When you pass a primitive value to a function in JavaScript, its **value** is passed, *not a reference* to the variable.
 
 So each `rank()` function will keep a reference to its own `nbValue` variable, which had a different value at every iteration of the `for` loop.
+
+### The modern way: `let`
+
+The factory function shows **how closures capture values**, which is why it's
+worth understanding. But since ES6 you can fix this specific bug by simply
+replacing `var` with `let` in the loop:
+
+```javascript
+function createArmy() {
+  const generatedSoldiers = [];
+* for (let nb = 1; nb < 11; nb++) {
+    generatedSoldiers.push(function rank() {
+      console.log("I'm the soldier n°" + nb);
+    });
+  }
+  return generatedSoldiers;
+}
+```
+
+Unlike `var`, which is **function-scoped**, `let` is **block-scoped**: the
+`for` loop creates a **new `nb` binding at every iteration**, so each `rank()`
+closure captures its own.
+
+> No factory function needed. Prefer `let` (or `const`) over `var` in modern code.
 
 
 

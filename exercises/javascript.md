@@ -84,7 +84,7 @@ const personJson = '{"first":"James","last":"Bond"}';
 // Extract the person's first and last names to new variables
 // to make this code work, without modifying the rest of the code.
 
-console.log(`My name is ${last}, ${first}, ${last}`);
+console.log(`My name is ${last}, ${first} ${last}`);
 ```
 
 

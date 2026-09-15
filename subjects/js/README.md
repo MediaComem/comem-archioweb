@@ -117,7 +117,7 @@ GitHub.
 There are features from JavaScript ES6 (or later versions) that may **not yet
 fully supported** on all browsers.
 
-Where backwards-compatilibity is important in client-side code running in the
+Where backwards-compatibility is important in client-side code running in the
 **browser**, you should stick with **ES5** or use a JavaScript compiler like
 [Babel][babel], a module bundler like [Webpack][webpack], or a language that
 compiles to JavaScript like [TypeScript][ts], to turn your ES6+ code into
@@ -131,9 +131,9 @@ features are supported, including [ECMAScript modules
 
 <!-- slide-front-matter class: center, middle -->
 
-`boolean`, `null`, `number`, `string`, `symbol`, `undefined`
+`bigint`, `boolean`, `null`, `number`, `string`, `symbol`, `undefined`
 
-### JavaScript has 6 primitive data types
+### JavaScript has 7 primitive data types
 
 <!-- slide-column 70 -->
 
@@ -144,6 +144,7 @@ let aBoolean = true;
 let nullValue = null;
 let undefinedValue;
 let aSymbol = Symbol('foo');
+let aBigInt = 9007199254740993n;
 
 console.log(typeof aString); // "string"
 console.log(typeof aNumber); // "number"
@@ -151,6 +152,7 @@ console.log(typeof aBoolean); // "boolean"
 console.log(typeof nullValue); // "object"
 console.log(typeof undefinedValue); // "undefined"
 console.log(typeof aSymbol); // "symbol"
+console.log(typeof aBigInt); // "bigint"
 
 // There is no integer type
 console.log(Number.isInteger(aNumber)); // false
@@ -171,6 +173,7 @@ The types are:
 - Null
 - Undefined
 - Symbol (**ES6**)
+- BigInt (**ES2020**)
 
 <!-- slide-container -->
 
@@ -231,7 +234,7 @@ for (let i = 0; i < fruits.length; i++) {
 }
 
 // fruit 0 is apple
-// fruit 1 is banana
+// fruit 1 is pear
 ```
 
 We'll learn more about arrays later.
@@ -484,7 +487,10 @@ console.log(squareroot(4)); // 2
 If the body has **more than one line**, you **MUST add brackets** `{}` around it (_and use the `return` keyword if necessary_):
 
 ```js
-let square = number => `{``let result = number * number;``return result;``}`;
+let square = number => `{`
+  `let result = number * number;`
+  `return result;`
+`}`;
 
 console.log(square(5)); // 25
 ```
@@ -714,7 +720,7 @@ You have to **escape** all other single quotes, and use `+` to concatenate.
 
 ```js
 // With double quotes: "
-let string = 'I\'m your "Wurst" nightmare: ' + worstNightmare;
+let string = "I'm your \"Wurst\" nightmare: " + worstNightmare;
 ```
 
 You have to escape all other double quotes, and use `+` to concatenate.
@@ -743,6 +749,18 @@ Arrays in JavaScript are objects and provide you with a [boatload of methods][ar
 | `.push()`    | Adds new elements to **the end** of an array (`.unshift()` does the same but adds them to the **beginning** of the array) |
 | `.slice()`   | Returns **a portion** of the array                                                                                        |
 | `.reverse()` | Reverses the order of the elements in an array (**this modifies the original array**)                                     |
+
+### More array methods
+
+These are among the most commonly used, especially the first three:
+
+| Function      | Effect                                                                                                |
+| :------------ | :---------------------------------------------------------------------------------------------------- |
+| `.map()`      | Returns a **new array** with the result of calling a function on every element                        |
+| `.filter()`   | Returns a **new array** with only the elements that pass a provided test function                     |
+| `.reduce()`   | Reduces the array to **a single value** by calling a function on every element                        |
+| `.sort()`     | Sorts the elements of an array (**this modifies the original array**)                                 |
+| `.includes()` | Returns `true` if the array contains a given value, `false` otherwise                                 |
 
 ### Examples
 

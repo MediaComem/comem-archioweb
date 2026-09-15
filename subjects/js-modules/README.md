@@ -18,7 +18,7 @@ Learn about JavaScript module systems and ECMAScript modules.
   - [Traditional client-side JavaScript encapsulation](#traditional-client-side-javascript-encapsulation)
   - [Problems of traditional dependency & encapsulation](#problems-of-traditional-dependency--encapsulation)
 - [Modern JavaScript module systems](#modern-javascript-module-systems)
-  - [JavaScript module systems compabitility](#javascript-module-systems-compabitility)
+  - [JavaScript module systems compatibility](#javascript-module-systems-compatibility)
 - [ECMAScript modules](#ecmascript-modules)
   - [What's in a module?](#whats-in-a-module)
   - [The `export` statement](#the-export-statement)
@@ -157,11 +157,13 @@ export function myExample() {}
 
 
 
-### JavaScript module systems compabitility
+### JavaScript module systems compatibility
 
-Those systems are **not natively supported by browsers** (although ECMAScript modules are almost there),
-meaning that you cannot use AMD's `define()` or CommonJS's `require()` in the browser without including a module loader like RequireJS or System.js;
-and support for ECMAScript's `import/export` is not yet complete (and might never be on old browsers like Internet Explorer).
+**ECMAScript modules are natively supported** by all modern browsers and by
+Node.js, so `import`/`export` works out of the box today.
+AMD and CommonJS, however, are **not** natively supported by browsers: you
+cannot use AMD's `define()` or CommonJS's `require()` in the browser without
+including a module loader like RequireJS or System.js.
 
 Various tools can be used to work with JavaScript modules today:
 
@@ -175,8 +177,8 @@ Various tools can be used to work with JavaScript modules today:
 ## ECMAScript modules
 
 ECMAScript modules have been defined by [ECMA TC39, the ECMAScript International, Technical Committee 39][tc39].
-Full support has not yet been achieved but it will eventually become compatible with all modern browsers [and with Node.js][node-esm].
-It's *the way of the future*:
+They are supported by all modern browsers [and by Node.js][node-esm], and are
+**the standard way** to write modular JavaScript today:
 
 ```js
 import jquery from 'jquery';
@@ -297,7 +299,7 @@ Import everything with `import *`:
 `import * as a` from './module-a';
 
 console.log(`a.foo`); // "bar"
-console.log(`a.truth`): // true
+console.log(`a.truth`); // true
 `a.hello`('World'); // "Hello World!"
 
 const p = new `a.Person`('John', 'Doe');
@@ -311,7 +313,7 @@ Import only what you need with `{ }`:
 `import { foo, plane }` from './module-a';
 
 console.log(`foo`); // "bar"
-console.log(`plane`.speed): // 3540
+console.log(`plane`.speed); // 3540
 ```
 
 
@@ -439,15 +441,16 @@ console.log(lies);  // false
 
 Because:
 
-* They are integrated in the language (eventually they will supported everywhere, with no need for libraries).
+* They are integrated in the language and supported **natively** everywhere
+  (modern browsers and Node.js), with no need for libraries.
 * They support **synchronous** (CommonJS, server-side) and **asynchronous** (AMD, client-side) **loading**.
 * `import` and `export` are defined so as to support **static analysis** by tools.
 * Circular dependencies are supported.
 
 However:
 
-* They are **not yet supported** now, meaning that it forces you to use a transpiler like [Babel][babel],
-  a module loader like [System.js][systemjs], or a bundler like [Webpack][webpack].
+* You will still often use a bundler like [Webpack][webpack] (or [Vite][vite]) in
+  production, not for compatibility, but to **bundle and minify** your assets.
 
 
 
@@ -479,6 +482,7 @@ However:
 [revealing-module-pattern]: https://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript
 [subject-js]: ../js/
 [systemjs]: https://github.com/systemjs/systemjs
+[vite]: https://vitejs.dev
 [tc39]: https://github.com/tc39
 [ts]: https://www.typescriptlang.org
 [webpack]: https://webpack.js.org
