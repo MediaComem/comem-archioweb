@@ -40,6 +40,8 @@ various ways REST APIs are implemented in the wild, from "practical REST" to
   - [REST actions as a sub-resource](#rest-actions-as-a-sub-resource)
   - [REST actions as a collection](#rest-actions-as-a-collection)
     - [Using a collection of actions](#using-a-collection-of-actions)
+  - [So what do nouns buy you?](#so-what-do-nouns-buy-you)
+    - [The benefit you get immediately](#the-benefit-you-get-immediately)
 - [Linked resources](#linked-resources)
   - [Embedded resource](#embedded-resource)
   - [Resource reference via ID](#resource-reference-via-id)
@@ -128,21 +130,22 @@ Real-world example: [Flickr API][flickr-api].
 
 HTTP introduces [standardized methods][http-methods] (or verbs):
 
-| Method   | Description                                  |
-| :------- | :------------------------------------------- |
-| `GET`    | Retrieve a resource at an URL.               |
-| `POST`   | Create a new resource subordinate to an URL. |
-| `PUT`    | Replace (modify) the resource at an URL.     |
-| `PATCH`  | Partially modify a resource at an URL.       |
-| `DELETE` | Delete the resource identified by an URL.    |
+| Method   | Description                                  | [Safe][http-safe] | [Idempotent][http-idempotence] |
+| :------- | :------------------------------------------- | :---------------: | :----------------------------: |
+| `GET`    | Retrieve a resource at an URL.               |         ✔         |               ✔                |
+| `POST`   | Create a new resource subordinate to an URL. |         ✘         |               ✘                |
+| `PUT`    | Replace (modify) the resource at an URL.     |         ✘         |               ✔                |
+| `PATCH`  | Partially modify a resource at an URL.       |         ✘         |               ✘                |
+| `DELETE` | Delete the resource identified by an URL.    |         ✘         |               ✔                |
 
 You do not have to reinvent the wheel for the most common operations on
 resources: creating, reading, updating and deleting ([CRUD][crud]).
 
-For example, `GET` has a [specific meaning][http-get]: it retrieves information,
-it must be [safe][http-safe] and [idempotent][http-idempotence], etc. **Where
-there are constraints there are optimizations**: [caching][http-cache],
-[conditional requests][http-conditional], [partial requests][http-partial] etc.
+Each method also comes with **guarantees** that are the same for every API in the
+world: [`GET`][http-get] is [safe][http-safe] (it changes nothing) and
+[idempotent][http-idempotence] (repeating it changes nothing). **Where there are
+constraints there are optimizations**: [caching][http-cache], [conditional
+requests][http-conditional], [partial requests][http-partial] etc.
 
 Real-world examples: [AWS Simple Storage Service (S3)
 API][s3-api], [Twitter API][twitter-api].
@@ -668,6 +671,66 @@ Content-Type: application/json
 ```
 
 Now you have all the data you need for that audit/security page.
+
+### So what do nouns buy you?
+
+Respecting the rule is not the point. The point is **who else can understand your
+request**.
+
+<!-- slide-column -->
+
+**Verbs in the URL**
+
+```http
+POST /api/comments/42/star
+POST /api/comments/42/unstar
+```
+
+Two endpoints, and **two more for every new capability**. `star` and `unstar` are
+words that only _your_ application understands. Is it safe to send one of them
+twice? Only you know: `POST` is neither safe nor idempotent.
+
+<!-- slide-column -->
+
+**A noun in the URL**
+
+```http
+PUT    /api/comments/42/star
+DELETE /api/comments/42/star
+```
+
+One resource. `PUT` and `DELETE` already mean "make it so" and "remove it", so
+there is no need to invent `unstar`. Both are [idempotent][http-idempotence] _by
+definition_: send either ten times, the result is the same.
+
+<!-- slide-container -->
+
+Modeling with resources moves the meaning of a request **out of your vocabulary
+and into the protocol**, where code that knows nothing about your application can
+still do the right thing: cache the response, retry the request, or refuse it if
+the resource has changed in the meantime.
+
+#### The benefit you get immediately
+
+<!-- slide-front-matter class: compact-table -->
+
+Caching and retries mostly benefit **other people's code**. There is one benefit
+you get right away, on your own project: naming a resource forces you to find
+**concepts you were about to lose**.
+
+| The action you wanted     | The thing it really was                              | What it got you                                           |
+| :------------------------ | :--------------------------------------------------- | :-------------------------------------------------------- |
+| `POST /users/:id/follow`  | a follower in a collection                           | `GET /users/:id/followers`, the list you need anyway      |
+| `POST /comments/:id/star` | a `star` sub-resource                                | `DELETE` unstars it: one concept, not two endpoints       |
+| `POST /users/:id/disable` | an `enabled` property, or an entry in an audit trail | a state clients can **read**, or `GET /users/:id/actions` |
+
+In each case, asking "what is the **thing**?" instead of "what is the
+**action**?" uncovered something the application needed anyway.
+
+> On a small project with a single client, an "action" API would work too. These
+> benefits grow with the number of clients, the number of endpoints and the
+> lifetime of the API. That is why REST is an **architectural** style: it is
+> designed for systems that must survive their first version.
 
 ## Linked resources
 

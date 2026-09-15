@@ -589,15 +589,23 @@ that are here to **help you** implement rich client-server interaction.
 
 ### Common [methods][http-methods]
 
-| Method    | Purpose                                                       |
-| :-------- | :------------------------------------------------------------ |
-| `GET`     | Retrieve data                                                 |
-| `HEAD`    | Retrieve the response headers but no data (to save bandwidth) |
-| `POST`    | Create a new resource                                         |
-| `PUT`     | Replace an existing resource                                  |
-| `PATCH`   | Partially modify an existing resource                         |
-| `DELETE`  | Delete a resource                                             |
-| `OPTIONS` | Ask the server what you can do with a resource                |
+<!-- slide-front-matter class: compact-table -->
+
+| Method    | Purpose                                                       | [Safe][http-safe] | [Idempotent][http-idempotence] |
+| :-------- | :------------------------------------------------------------ | :---------------: | :----------------------------: |
+| `GET`     | Retrieve data                                                 |         ✔         |               ✔                |
+| `HEAD`    | Retrieve the response headers but no data (to save bandwidth) |         ✔         |               ✔                |
+| `POST`    | Create a new resource                                         |         ✘         |               ✘                |
+| `PUT`     | Replace an existing resource                                  |         ✘         |               ✔                |
+| `PATCH`   | Partially modify an existing resource                         |         ✘         |               ✘                |
+| `DELETE`  | Delete a resource                                             |         ✘         |               ✔                |
+| `OPTIONS` | Ask the server what you can do with a resource                |         ✔         |               ✔                |
+
+- **[Safe][http-safe]:** the request does not modify the resource, so it can be
+  made **without fear** (and its response can be cached).
+- **[Idempotent][http-idempotence]:** making the request **once** or **several
+  times** has the same effect, so it can be **retried without fear** after a
+  network failure.
 
 ### Common request [headers][http-request-headers]
 
@@ -1060,10 +1068,12 @@ differently (e.g. `200 OK` with a representation of the deleted resource), but
 [http-content-negotiation]: https://en.wikipedia.org/wiki/Content_negotiation
 [http-cors]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
 [http-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-idempotence]: https://developer.mozilla.org/en-US/docs/Glossary/Idempotent
 [http-methods]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
 [http-methods-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-methods
 [http-request-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
 [http-response-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers
+[http-safe]: https://developer.mozilla.org/en-US/docs/Glossary/Safe
 [http-semantics-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html
 [http-status-codes]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
 [http-status-codes-rfc]: https://www.rfc-editor.org/rfc/rfc9110.html#name-status-codes
