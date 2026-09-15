@@ -8,7 +8,7 @@ Learn how to use [npm][npm], the most popular [Node.js][node] package manager, a
 
 **Recommended reading**
 
-* [Command line](../cli/)
+* [Command line](https://archidep.ch/2026/course/101-command-line/)
 * [Node.js](../node/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -108,7 +108,8 @@ The [npm registry][npm] hosts over a million packages of reusable code — the l
 
 <img src='images/popular-packages.png' width='100%' />
 
-It contains [more than double the next most populated package registry][modulecounts] (the Apache Maven repository).
+It contains more than double the number of packages of the next most populated
+package registry (the Apache Maven repository).
 
 
 
@@ -303,11 +304,15 @@ modules during this course.
 In your `package.json`, add the following property:
 
 ```json
-type: "module"
+{
+  "name": "npm-demo",
+* "type": "module",
+  ...
+}
 ```
 
 This will allow you to use ECMAScript modules without having to name your files
-with the `.mjs` extension. You can now rename it to `.js`.
+with the `.mjs` extension. You can now rename your script to `.js`:
 
 ```bash
 $> mv script.mjs script.js
@@ -517,19 +522,38 @@ It happens.
 
 ### Missing `package.json` file
 
-If you **forgot to add a `package.json` file** to your project,
-npm will still install your dependencies and log a warning that is **easy to miss**:
+If you **forgot to run `npm init`**, npm will install your dependencies anyway
+and **silently create a minimal `package.json`** for you:
 
 ```bash
-$> npm install --save lodash
-npm WARN `saveError` ENOENT: no such file or directory,
-  open '/path/to/projects/npm-demo/package.json'
-/path/to/projects/npm-demo
-└── lodash@4.17.4
+$> npm install lodash
+added 1 package in 154ms
+$> cat package.json
+{
+  "dependencies": {
+    "lodash": "^4.18.1"
+  }
+}
 ```
 
-<p class='center'><img src='images/npm-missing-package.png' class='w80'></p>
+It has no `name`, no `version`, no `scripts` and, most importantly, **no
+`"type": "module"`**, so Node.js complains when you run a script that uses
+`import`:
 
+```bash
+$> node script.js
+(node:1234) [`MODULE_TYPELESS_PACKAGE_JSON`] Warning: Module type of
+file:///path/to/npm-demo/script.js is not specified...
+To eliminate this warning, add `"type": "module"` to package.json.
+```
+
+Always run `npm init` **first**, then add `"type": "module"`.
+
+<!--
+  TODO: the images/npm-missing-package.png diagram still shows the obsolete
+  "saveError" warning and the "--save" option. Regenerate it from diagrams.odg
+  before putting it back on this slide.
+-->
 
 
 ### Wrong directory
@@ -587,12 +611,17 @@ modules** with that name:
 
 ### Import summary
 
-Statement                                | What is imported
-:--------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-`import * as script from './script'`     | The `script.js` file in the current directory (relative to the file using `import`)
-`import * as script from './dir/script'` | The `script.js` file in the `dir` directory (relative to the file using `import`)
-`import * as script from '../script'`    | The `script.js` file in the parent directory (relative to the file using `import`)
-`import myModule from 'my-module'`       | The `my-module` npm package (if found in `node_modules` in the same directory *or any parent directory*)<br/>**OR**<br/>The core Node.js module with that name (if there is one)
+Statement                                   | What is imported
+:------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+`import * as script from './script.js'`     | The `script.js` file in the current directory (relative to the file using `import`)
+`import * as script from './dir/script.js'` | The `script.js` file in the `dir` directory (relative to the file using `import`)
+`import * as script from '../script.js'`    | The `script.js` file in the parent directory (relative to the file using `import`)
+`import myModule from 'my-module'`          | The `my-module` npm package (if found in `node_modules` in the same directory *or any parent directory*)<br/>**OR**<br/>The core Node.js module with that name (if there is one)
+
+> When importing **your own files**, the **file extension is mandatory** with
+> ECMAScript modules. `import * as script from './script'` will **not** work; it
+> will fail with an `ERR_MODULE_NOT_FOUND` error. (The old `require` function
+> used to guess the extension for you; `import` does not.)
 
 
 
@@ -787,7 +816,6 @@ In these cases, you can set the `private` property of the `package.json` file:
 
 
 [express]: https://expressjs.com
-[modulecounts]: http://www.modulecounts.com
 [node]: https://nodejs.org
 [npm]: https://www.npmjs.com
 [npm-cli]: https://docs.npmjs.com/cli/npm

@@ -9,7 +9,7 @@ run on your local machine or server.
 
 **Recommended reading**
 
-- [Command line](../cli/)
+- [Command line](https://archidep.ch/2026/course/101-command-line/)
 - [JavaScript](../js/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -83,15 +83,18 @@ run on your local machine or server.
 
 ### Which Node.js version to choose?
 
-<p class='center'><img src='images/lts-schedule.svg' width='75%' /></p>
+<p class='center'><img src='images/lts-schedule.svg' width='58%' /></p>
 
-- Odd-numbered versions (e.g. v11, v13, v15, v17, v19, v21) are **unstable**
-  releases with the latest features, and will **no longer be supported after 6-9
-  months**.
-- Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20, v22) have (or
-  will have) [**l**ong **t**erm **s**upport (LTS)][node-lts]. They are actively
-  developed for 6 months, but maintained for a total of 30 months (e.g. security
-  fixes). Production applications should use LTS releases.
+- There is **one major release per year**, in April. It is the **Current**
+  release for 6 months: latest features, not recommended for production yet.
+- In October, it becomes a [**l**ong **t**erm **s**upport (LTS)][node-lts]
+  release: **Active** for a year, then in **Maintenance** (critical & security
+  fixes), for **30 months** of support in total.
+- Production applications should use an **LTS** release.
+
+> Until Node.js 27, there were 2 releases per year and only **even-numbered**
+> versions became LTS. That rule is still in a lot of documentation, but [it no
+> longer applies][node-release-schedule].
 
 ### Install Node.js and make sure it works
 
@@ -188,7 +191,7 @@ I am running on darwin
 
 Node.js was first released in 2009, before [ECMAScript 2015's modules][esm] were
 standardized. At the time, there were many module systems in the wild like
-[CommonJS][commonjs] and [RequireJS](requirejs). Node.js chose CommonJS, based
+[CommonJS][commonjs] and [RequireJS][requirejs]. Node.js chose CommonJS, based
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
@@ -415,7 +418,7 @@ The third argument is a **callback function**:
 Under the hood, Node.js will read the file in a separate thread,
 then execute your callback function when it's ready.
 
-This is called **non-blocking I/O**, because all I/O operations are executed in separate threads and are therefore non-blocking:
+This is called **non-blocking I/O**, because I/O operations never block your code while they are in progress:
 
 - Database access
 - File system access
@@ -568,14 +571,15 @@ eagerlyMultiply();
 
 ### Platform APIs
 
-The **JavaScript runtime** (whether in Node.js or a web browser) **can only run one thing at a time**.
+The **JavaScript engine** (V8, both in Node.js and in Chrome) **can only run one
+thing at a time**.
 
-But some functions are not run by the Node.js runtime;
-they are run by the underlying platform: the v8 engine for Node.js or the web browser for a website.
+But some functions are not run by the JavaScript engine;
+they are run by the underlying platform: Node.js's C++ and [libuv][libuv] layer for Node.js, or the web browser for a website.
 For example:
 
 - `readFile` (Node.js API)
-- `fetch` (Experimental Node.js & Web API)
+- `fetch` (Node.js & Web API)
 - `setTimeout` (Node.js & Web API)
 
 <!-- slide-column -->
@@ -1058,16 +1062,16 @@ server.on('request', function(message) {
 - [JavaScript Concurrency Model and Event Loop][event-loop]
 - [Understanding the Node.js Event Loop][event-loop-strongloop]
 - [Philip Roberts: What the heck is the event loop anyway? (YouTube)][event-loop-wth]
-- [Node.js Explained (video)][node-explained-video]
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
 [commonjs]: https://nodejs.org/docs/latest-v22.x/api/modules.html
-[destructuring-assigment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+[destructuring-assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
 [event-loop-strongloop]: http://strongloop.com/strongblog/node-js-event-loop/
 [event-loop-wth]: https://www.youtube.com/watch?v=8aGhZQkoFbQ
 [event-machine]: http://rubyeventmachine.com
+[libuv]: https://libuv.org
 [mixu-node-book]: http://book.mixu.net/node/ch2.html
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
@@ -1075,11 +1079,11 @@ server.on('request', function(message) {
 [node-24-esm]: https://nodejs.org/docs/latest-v24.x/api/esm.html#modules-ecmascript-modules
 [node-24-esm-enabling]: https://nodejs.org/docs/latest-v24.x/api/esm.html#enabling
 [node-event-emitter]: https://nodejs.org/api/events.html
-[node-explained-video]: http://kunkle.org/talks/
-[node-lts]: https://nodejs.org/en/about/releases
+[node-lts]: https://nodejs.org/en/about/previous-releases
+[node-release-schedule]: https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule
 [node-module-os]: https://nodejs.org/docs/latest-v22.x/api/os.html
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
-[twisted]: http://twistedmatrix.com/trac/
+[twisted]: https://twisted.org
