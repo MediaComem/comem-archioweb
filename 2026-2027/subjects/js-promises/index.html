@@ -3,7 +3,7 @@
   <head>
     <title>JavaScript Promises (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a9d7c3df10492604245f83260acacb0dc31d1300/subjects/js-promises/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/js-promises/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -193,7 +193,7 @@ phonePromise`.then(onResolved, onRejected)`;
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#2">What is a promise?</a> > <a href="#7">Consuming a promise</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 ```js
 let phonePromise = new Promise(function(resolve, reject) {
@@ -242,7 +242,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 As we've seen in the previous examples,
 you can declare your resolution and rejection callbacks separately and pass them to `.then()`:
@@ -268,7 +268,7 @@ promise.then(`onResolved`, `onRejected`); // "ok"
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a> > <a href="#10">Promise callback syntax</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 But you can also declare the callbacks directly in the `.then()` call:
 
@@ -304,7 +304,7 @@ Further examples will use these shorter versions for brevity.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 You don't have to pass both resolution and rejection callbacks:
 
@@ -325,7 +325,7 @@ promise.then(undefined, console.warn); // Not called.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a> > <a href="#12">Promise callbacks are **optional**</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 However, if you don't specify a **rejection callback** and the promise is rejected,
 it will produce an **unhandled promise rejection warning**.
@@ -387,7 +387,7 @@ But it's easier to read and is similar in behavior to `try/catch`.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 A promise is **always asynchronous**:
 
@@ -421,7 +421,7 @@ I got a Samsung
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Once you call `resolve`, the promise is **resolved**,
 and additional calls to `resolve` or `reject` have no effect:
@@ -458,7 +458,7 @@ promise.then(console.log, err => console.warn(\`Oops: ${err.message}`));
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Once a promise is resolved or rejected, its resolution value or rejection reason is **cached**.
 Further calls to `.then()` will always produce the same result, even if called **later**:
@@ -492,7 +492,7 @@ setTimeout(function() {
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 **Only one value** can be passed when using `resolve()` in a promise.
 Additional values will be ignored:
@@ -523,7 +523,7 @@ fruitsPromise.then(console.log); // [ "apple", "banana", "orange" ]
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#9">Basic promise behavior</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Quickly create a resolved promise with `Promise.resolve`:
 
@@ -566,7 +566,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a>]
 
-<codepen except='0'></codepen>
+<livecodes except='0'></livecodes>
 
 Promises are chainable; the `then()` function also **returns a promise**:
 
@@ -649,7 +649,7 @@ let promise2 = phonePromise.then(onResolved, `onRejected`);
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 If `phonePromise` is resolved and we **return a value in the resolution callback**,
 the new `promise2` promise will be **resolved with that new value**:
@@ -686,7 +686,7 @@ but `promise2` is now **resolved**.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 If `phonePromise` is resolved and we **throw an error in the resolution callback**,
 the new `promise2` promise will be **rejected with that error**:
@@ -722,7 +722,7 @@ promise2.then(console.log, err => console.warn(\`Oops: ${err.message}`));
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 The most interesting behavior is what happens when we **return a promise from a callback**,
 in this example the resolution callback:
@@ -755,7 +755,7 @@ In this example, it will be resolved.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#22">Promise resolution procedure</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 The most interesting behavior is what happens when we **return a promise from a callback**,
 in this example the resolution callback:
@@ -939,7 +939,7 @@ You can also use the `Promise.reject` shortcut:
 ```js
 function showOff(phone) {
   let reason = new Error('I broke my leg');
-  return `Promise.reject`(message);
+  return `Promise.reject`(reason);
 }
 ```
 
@@ -1150,25 +1150,26 @@ The following functions will be called:
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a>]
 
 ```js
-const request = require('request-promise-native'), peer = require('request');
 const apiUrl = 'https://demo.archioweb.ch/api';
 const now = new Date().getTime();
 
+// fetch() does not reject on HTTP errors (404, 422...), so check yourself:
+function postJson(url, body) {
+  return fetch(url, {
+    method: 'POST', body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.ok ? res.json() : Promise.reject(new Error(res.status)));
+}
+
 function `createDirector`() {
   const director = { name: \`John ${now}`, gender: 'male' };
-  return request({
-    method: 'POST', url: \`${apiUrl}/people`,
-    body: director, json: true
-  });
+  return postJson(\`${apiUrl}/people`, director);
 }
 
 function `createMovie`(createdDirector) {
   console.log(\`Director ${createdDirector.name} created!`);
   const movie = { title: \`Movie ${now}`, directorHref: createdDirector.id };
-  return request({
-    method: 'POST', url: \`${apiUrl}/movies`,
-    body: movie, json: true, qs: { include: 'director' }
-  });
+  return postJson(\`${apiUrl}/movies?include=director`, movie);
 }
 
 console.log('Doing all the things... please wait...');
@@ -1184,30 +1185,30 @@ console.log('Doing all the things... please wait...');
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#20">Chaining promises</a> > <a href="#37">An asynchronous example</a>]
 
 ```js
-const request = require('request-promise-native'), peer = require('request');
 const apiUrl = 'https://demo.archioweb.ch/api';
 const now = new Date().getTime();
 
+// `fetch() does not reject on HTTP errors (404, 422...), so check yourself:`
+function postJson(url, body) {
+  return fetch(url, {
+    method: 'POST', body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' }
+  }).then(res => res.ok ? res.json() : `Promise.reject`(new Error(res.status)));
+}
+
 function createDirector() {
   const director = { /* `no name!` */ gender: 'male' };
-  return request({
-    method: 'POST', url: \`${apiUrl}/people`,
-    body: director, json: true
-  });
+  return postJson(\`${apiUrl}/people`, director);
 }
 
 function createMovie(createdDirector) {
   // `I am not being called!`
   console.log(\`Director ${createdDirector.name} created!`);
   const movie = { title: \`Movie ${now}`, directorHref: createdDirector.id };
-  return request({
-    method: 'POST', url: \`${apiUrl}/movies`,
-    body: movie, json: true, qs: { include: 'director' }
-  });
+  return postJson(\`${apiUrl}/movies?include=director`, movie);
 }
 
 console.log('Doing all the things... please wait...');
-
 Promise.resolve().then(createDirector).then(createMovie)
   .then(createdMovie => console.log(\`Movie ${createdMovie.title} created!`))
 * .catch(err => console.warn(\`Oops: ${err.message}`));
@@ -1292,7 +1293,8 @@ This is pretty deep already, and we're not even handling errors yet.
 You could mitigate the issue by separating the calls into isolated functions:
 
 ```js
-function createUser(userData) {
+const userData = { name: 'foo', password: 'test' };
+function createUser() {
   $.post('/api/users', userData, function(createdUser) {
     authenticateUser(createdUser);
   });
@@ -1306,12 +1308,12 @@ function authenticateUser(createdUser) {
 
 function retrieveUserStats(createdUser, authData) {
   let query = { userId: createdUser.id, token: authData.token };
-  $.get('/api/stats', { userId: createdUser.id }, function(statsData) {
+  $.get('/api/stats', query, function(statsData) {
     // Do something with statsData...
   });
 }
 
-createUser({ name: 'foo', password: 'test' });
+createUser();
 ```
 
 But now you **don't see a clear call sequence** anymore.
@@ -1326,19 +1328,19 @@ And we're **still not handling errors**.
 It just so happens that jQuery AJAX calls also **return promises**:
 
 ```js
-function createUser(userData) {
+const userData = { name: 'foo', password: 'test' };
+function createUser() {
   return $.post('/api/users', userData);
 }
 
 function authenticateUser(createdUser) {
-  return $.post('/api/auth', userData).then(function(authData) {
-    return { createdUser: createdUser, authData: authData };
-  });
+  return $.post('/api/auth', userData)
+    .then(authData => ({ createdUser: createdUser, authData: authData }));
 }
 
 function retrieveUserStats(data) {
   let query = { userId: data.createdUser.id, token: data.authData.token };
-  return $.get('/api/stats', { userId: createdUser.id });
+  return $.get('/api/stats', query);
 }
 
 *createUser()
@@ -1429,7 +1431,7 @@ the new promise **is also rejected** with the same reason as the first promise t
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#45">Parallel execution</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Here's an example of parallel promise execution where **both are resolved**:
 
@@ -1460,7 +1462,7 @@ Promise.all(promises).then(function(results) {
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#45">Parallel execution</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Here's an example of parallel promise execution where **one is rejected**:
 
@@ -1503,7 +1505,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Promises are powerful, but they're still an **asynchronous construct** that's hard to reason about:
 
@@ -1564,7 +1566,7 @@ but it's just easier to understand **synchronous execution**.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 By declaring a function with the `async` keyword,
 we can use the `await` operator inside it to **pause the execution of the function and wait for the promise to be resolved**.
@@ -1624,7 +1626,7 @@ At the same time, it **retains its asynchronous and non-blocking properties**.
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 When the promise being awaited is **rejected**,
 the function behaves as if the rejection error had been **thrown** on the line where the `await` statement is:
@@ -1679,7 +1681,7 @@ computeAllTheThings();
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a> > <a href="#51">`await` and rejected promises</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 Since a **rejected promise** behaves like a `throw` when using `await`,
 you can simply catch that error using a **traditional try/catch**:
@@ -1718,7 +1720,7 @@ computeAllTheThings().then(console.log) // 0
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 `Promise.all` is used to wait for the results of multiple promises executing in parallel.
 Since that also returns a promise, you can simply `await` that:
@@ -1755,7 +1757,7 @@ In this example, the 2 computations are executed in parallel and both results ar
 
 .breadcrumbs[<a href="#1">JavaScript Promises</a> > <a href="#48">`async`/`await`</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 ```js
 async function multiplyAsync(value, by) {
@@ -1799,7 +1801,7 @@ after
 * [Promise nuggets][promise-nuggets]
 * [Aren't promises just callbacks?][arent-promises-just-callbacks]
 
-**Popular promise librairies**
+**Popular promise libraries**
 
 * [Bluebird][bluebird]
 * [q][q]
@@ -1819,6 +1821,6 @@ after
 [q]: https://github.com/kriskowal/q
 
     </textarea>
-    <script src='../../subject-3a85dbeaf02ef8265e4e.js'></script>
+    <script src='../../subject-2d19222aac4e2bf2880b.js'></script>
   </body>
 </html>

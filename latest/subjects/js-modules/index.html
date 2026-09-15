@@ -3,7 +3,7 @@
   <head>
     <title>JavaScript Modules (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a9d7c3df10492604245f83260acacb0dc31d1300/subjects/js-modules/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/js-modules/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -86,7 +86,7 @@ It's the **developer's job** to **manually** ensure all dependencies are satisfi
 
 .breadcrumbs[<a href="#1">JavaScript Modules</a> > <a href="#2">Why are modules needed?</a>]
 
-<codepen></codepen>
+<livecodes></livecodes>
 
 In a web page, encapsulation has been traditionally achieved by taking advantage of the JavaScript function scope.
 Patterns like the [revealing module pattern][revealing-module-pattern] can be used to
@@ -166,13 +166,15 @@ export function myExample() {}
 
 
 ---
-### JavaScript module systems compabitility
+### JavaScript module systems compatibility
 
 .breadcrumbs[<a href="#1">JavaScript Modules</a> > <a href="#6">Modern JavaScript module systems</a>]
 
-Those systems are **not natively supported by browsers** (although ECMAScript modules are almost there),
-meaning that you cannot use AMD's `define()` or CommonJS's `require()` in the browser without including a module loader like RequireJS or System.js;
-and support for ECMAScript's `import/export` is not yet complete (and might never be on old browsers like Internet Explorer).
+**ECMAScript modules are natively supported** by all modern browsers and by
+Node.js, so `import`/`export` works out of the box today.
+AMD and CommonJS, however, are **not** natively supported by browsers: you
+cannot use AMD's `define()` or CommonJS's `require()` in the browser without
+including a module loader like RequireJS or System.js.
 
 Various tools can be used to work with JavaScript modules today:
 
@@ -189,8 +191,8 @@ Various tools can be used to work with JavaScript modules today:
 .breadcrumbs[<a href="#1">JavaScript Modules</a>]
 
 ECMAScript modules have been defined by [ECMA TC39, the ECMAScript International, Technical Committee 39][tc39].
-Full support has not yet been achieved but it will eventually become compatible with all modern browsers [and with Node.js][node-esm].
-It's *the way of the future*:
+They are supported by all modern browsers [and by Node.js][node-esm], and are
+**the standard way** to write modular JavaScript today:
 
 ```js
 import jquery from 'jquery';
@@ -325,7 +327,7 @@ Import everything with `import *`:
 `import * as a` from './module-a';
 
 console.log(`a.foo`); // "bar"
-console.log(`a.truth`): // true
+console.log(`a.truth`); // true
 `a.hello`('World'); // "Hello World!"
 
 const p = new `a.Person`('John', 'Doe');
@@ -339,7 +341,7 @@ Import only what you need with `{ }`:
 `import { foo, plane }` from './module-a';
 
 console.log(`foo`); // "bar"
-console.log(`plane`.speed): // 3540
+console.log(`plane`.speed); // 3540
 ```
 
 
@@ -485,15 +487,16 @@ console.log(lies);  // false
 
 Because:
 
-* They are integrated in the language (eventually they will supported everywhere, with no need for libraries).
+* They are integrated in the language and supported **natively** everywhere
+  (modern browsers and Node.js), with no need for libraries.
 * They support **synchronous** (CommonJS, server-side) and **asynchronous** (AMD, client-side) **loading**.
 * `import` and `export` are defined so as to support **static analysis** by tools.
 * Circular dependencies are supported.
 
 However:
 
-* They are **not yet supported** now, meaning that it forces you to use a transpiler like [Babel][babel],
-  a module loader like [System.js][systemjs], or a bundler like [Webpack][webpack].
+* You will still often use a bundler like [Webpack][webpack] (or [Vite][vite]) in
+  production, not for compatibility, but to **bundle and minify** your assets.
 
 
 
@@ -528,11 +531,12 @@ However:
 [revealing-module-pattern]: https://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript
 [subject-js]: ../js/
 [systemjs]: https://github.com/systemjs/systemjs
+[vite]: https://vitejs.dev
 [tc39]: https://github.com/tc39
 [ts]: https://www.typescriptlang.org
 [webpack]: https://webpack.js.org
 
     </textarea>
-    <script src='../../subject-3a85dbeaf02ef8265e4e.js'></script>
+    <script src='../../subject-2d19222aac4e2bf2880b.js'></script>
   </body>
 </html>

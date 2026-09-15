@@ -3,7 +3,7 @@
   <head>
     <title>Node.js Introduction (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a9d7c3df10492604245f83260acacb0dc31d1300/subjects/node/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/node/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -18,7 +18,7 @@ run on your local machine or server.
 
 **Recommended reading**
 
-- [Command line](../cli/)
+- [Command line](https://archidep.ch/2026/course/101-command-line/)
 - [JavaScript](../js/)
 
 
@@ -51,15 +51,18 @@ class: center, middle, image-header
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-<p class='center'><img src='images/lts-schedule.svg' width='75%' /></p>
+<p class='center'><img src='images/lts-schedule.svg' width='58%' /></p>
 
-- Odd-numbered versions (e.g. v11, v13, v15, v17, v19, v21) are **unstable**
-  releases with the latest features, and will **no longer be supported after 6-9
-  months**.
-- Even-numbered versions (e.g. v8, v10, v12, v14, v16, v18, v20, v22) have (or
-  will have) [**l**ong **t**erm **s**upport (LTS)][node-lts]. They are actively
-  developed for 6 months, but maintained for a total of 30 months (e.g. security
-  fixes). Production applications should use LTS releases.
+- There is **one major release per year**, in April. It is the **Current**
+  release for 6 months: latest features, not recommended for production yet.
+- In October, it becomes a [**l**ong **t**erm **s**upport (LTS)][node-lts]
+  release: **Active** for a year, then in **Maintenance** (critical & security
+  fixes), for **30 months** of support in total.
+- Production applications should use an **LTS** release.
+
+> Until Node.js 27, there were 2 releases per year and only **even-numbered**
+> versions became LTS. That rule is still in a lot of documentation, but [it no
+> longer applies][node-release-schedule].
 
 ---
 ### Install Node.js and make sure it works
@@ -71,7 +74,7 @@ able to display the version in your CLI:
 
 ```bash
 $> node --version
-v24.8.0
+v26.8.2
 ```
 
 By simply running the `node` command without any arguments, you can also open an
@@ -122,31 +125,34 @@ Node.js code is organized in **modules**. These are the core modules available
 to you out of the box (with those that you are likely to use in most
 applications highlighted):
 
-Assertion testing, Async hooks, Buffer, C++ addons, C/C++ addons with N-API, C++
-embedder API, **Child processes**, Cluster, Command line options, Console,
-**Crypto**, Debugger, Deprecated APIs, DNS, Domain, Errors, **Events**, **File
-system**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector,
-Internationalization, Modules: CommonJS modules, Modules: ECMAScript modules,
-Modules: module API, Net, OS, **Path**, Performance hooks, Policies,
-**Process**, Punycode, **Query strings**, Readline, REPL, Report, **Stream**,
-String decoder, Timers, **TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**,
-Utilities, V8, VM, WASI, Worker threads, Zlib.
+Assertion testing, Asynchronous context tracking, Async hooks, Buffer, C++
+addons, C/C++ addons with Node-API, C++ embedder API, **Child processes**,
+Cluster, Command-line options, Console, **Crypto**, Debugger, Deprecated APIs,
+Diagnostics Channel, DNS, Domain, Environment variables, Errors, **Events**,
+FFI, **File system**, Globals, **HTTP**, **HTTP/2**, **HTTPS**, Inspector,
+Internationalization, Iterable Streams, Modules: CommonJS modules, Modules:
+ECMAScript modules, Modules: `node:module` API, Modules: Packages, Modules:
+TypeScript, Net, OS, **Path**, Performance hooks, Permissions, **Process**,
+Punycode, **Query strings**, Readline, REPL, Report, Single executable
+applications, SQLite, **Stream**, String decoder, **Test runner**, Timers,
+**TLS/SSL**, Trace events, TTY, UDP/datagram, **URL**, Utilities, V8, Virtual
+File System, VM, WASI, Web Crypto API, Web Streams API, Worker threads, Zlib.
 
-> Refer to the [documentation][node-24-api] for more information.
+> Refer to the [documentation][node-26-api] for more information.
 
 ---
 ### Requiring core modules
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-You can get a hold of Node.js's modules in your code by simply `import`-ing the
-name of the module. The following example requires the [`os`
+You can get a hold of Node.js's modules in your code by `import`-ing the name of
+the module, prefixed with `node:`. The following example imports the [`os`
 module][node-module-os], which provides operating system-related utility
 methods:
 
 ```js
 // Import the operating system core module
-*import os from 'os';
+*import os from 'node:os';
 
 function hello(name) {
   console.log(\`Hello ${name}!`);
@@ -156,13 +162,16 @@ function hello(name) {
 hello('World');
 ```
 
-This will log the platform on which you are running:
+This will log your platform:
 
 ```bash
 $> node script.mjs
 Hello World!
 I am running on darwin
 ```
+
+> Core modules also work without the prefix (`import os from 'os'`), which you
+> will see a lot. Prefer `node:`: it says the module is built into Node.js.
 
 ---
 ### A note on Node.js and CommonJS modules
@@ -171,11 +180,11 @@ I am running on darwin
 
 Node.js was first released in 2009, before [ECMAScript 2015's modules][esm] were
 standardized. At the time, there were many module systems in the wild like
-[CommonJS][commonjs] and [RequireJS](requirejs). Node.js chose CommonJS, based
+[CommonJS][commonjs] and [RequireJS][requirejs]. Node.js chose CommonJS, based
 on `require`.
 
 Node.js treats JavaScript code as CommonJS modules by default. You can [tell
-Node.js to treat your code as ECMAScript modules][node-24-esm-enabling] by
+Node.js to treat your code as ECMAScript modules][node-26-esm-enabling] by
 naming your files with the `.mjs` extension instead of `.js`. If you have a
 `package.json` file (we'll learn more about these later), you can also set the
 `type` property to `module`.
@@ -193,7 +202,7 @@ function hello(name) {
 hello('World');
 ```
 
-> Since ECMAScript modules are now [natively supported][node-24-esm], we will
+> Since ECMAScript modules are now [natively supported][node-26-esm], we will
 > use them rather than the obsolete `require`.
 
 ---
@@ -205,14 +214,14 @@ Let's say we want to extract the `hello` function to another module.
 Create a `utils.mjs` file:
 
 ```js
-import os from 'os';
+import os from 'node:os';
 
-// Attach properties to exports so that you can use
-// them when requiring this file
+// Export the function so that you can use
+// it when importing this file
 export function hello(name) {
   console.log(\`Hello ${name}!`);
   console.log(\`I am running on ${os.platform()}`);
-};
+}
 ```
 
 `export`-ing things is what allow you to `import` them from other files.
@@ -327,15 +336,42 @@ The additional text `Doing it` will be logged as well.
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
 
-A short summary on how to require files:
+A short summary on how to import things:
 
 | Statement                                  | Effect                                                                                                     |
 | :----------------------------------------- | :--------------------------------------------------------------------------------------------------------- |
-| `import core from 'coreModule'`            | Import the core module (or npm package, more on that later) named `coreModule`                             |
+| `import os from 'node:os'`                 | Import the **core Node.js module** named `os`                                                              |
+| `import lodash from 'lodash'`              | Import the **npm package** named `lodash` (more on that later)                                             |
 | `import * as foo from './foo.mjs'`         | Import everything exported by the `foo.mjs` file in the current directory (relative to the current file)   |
 | `import { a, b } from './foo.mjs'`         | Import specific exports from the `foo.mjs` file in the current directory (relative to the current file)    |
 | `import * as baz from './foo/bar/baz.mjs'` | Import everything exported by the `baz.mjs` file in the `foo/bar` directory (relative to the current file) |
 | `import * as qux from '../../qux.mjs'`     | Import everything exported by the `qux.mjs` file two directories above (relative to the current file)      |
+
+---
+### The `process` object
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#2">What is [Node.js][node]?</a>]
+
+The global [`process`][node-process] object describes the running process. There
+is nothing to import; it is always available:
+
+```js
+// The command line arguments (the first two are always
+// the node executable and the script being run).
+console.log(process.argv);
+
+// The environment variables.
+console.log(process.env.HOME);
+```
+
+```bash
+$> node script.mjs foo bar
+[ '/path/to/node', '/path/to/node-demo/script.mjs', 'foo', 'bar' ]
+/Users/jdoe
+```
+
+> You will need `process.argv` for the exercises, and `process.env` later in
+> the course to configure your application.
 
 ---
 class: center, middle
@@ -348,7 +384,7 @@ class: center, middle
 ---
 ### Synchronous code
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#16">Synchronous vs. Asynchronous</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#17">Synchronous vs. Asynchronous</a>]
 
 Basic JavaScript code is synchronous.
 
@@ -380,17 +416,17 @@ The call to `getRandomNumber()` blocks the thread until its execution is complet
 ---
 ### Asynchronous code
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#16">Synchronous vs. Asynchronous</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#17">Synchronous vs. Asynchronous</a>]
 
 With asynchronous code, some operations are executed **in parallel**:
 
 ```js
-import fs from 'fs';
+import fs from 'node:fs/promises';
 
 console.log('Hello');
 
 // List the files at the root of the file system
-fs.readdir('/', function(err, result) {
+fs.readdir('/').then(result => {
   console.log(\`Files: ${result.join(', ')}`);
   console.log('Done');
 });
@@ -412,24 +448,24 @@ How does this work?
 ---
 ### Non-blocking I/O
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#16">Synchronous vs. Asynchronous</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#17">Synchronous vs. Asynchronous</a>]
 
-The signature of `fs.readFile` is:
+`fs.readdir` does not return the list of files. It returns a
+[**promise**][promise]: an object representing a result that is **not there
+yet**.
 
 ```
-  fs.readFile(file[, options], callback)
+  fs.readdir(path[, options]) → Promise
 ```
-
-The third argument is a **callback function**:
 
 - With synchronous code, the call blocks the thread until it is done
-- With asynchronous code, the rest of the code **keeps executing**;
-  you pass a function to `fs.readFile` and Node.js will **call you back** when it is done
+- With asynchronous code, the rest of the code **keeps executing**; you tell the
+  promise what to do `.then()`, and Node.js runs it **when the result is ready**
 
-Under the hood, Node.js will read the file in a separate thread,
-then execute your callback function when it's ready.
+Under the hood, Node.js lists the directory in a separate thread,
+then settles the promise when it's ready.
 
-This is called **non-blocking I/O**, because all I/O operations are executed in separate threads and are therefore non-blocking:
+This is called **non-blocking I/O**, because I/O operations never block your code while they are in progress:
 
 - Database access
 - File system access
@@ -439,15 +475,15 @@ This is called **non-blocking I/O**, because all I/O operations are executed in 
 ---
 ### Your Node.js code is single-threaded
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#16">Synchronous vs. Asynchronous</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#17">Synchronous vs. Asynchronous</a>]
 
 Although I/O operations are non-blocking, **your code always executes in a single thread**:
 
 ```js
-import fs from 'fs';
+import fs from 'node:fs/promises';
 let fileCount = 0;
 
-fs.readdir('/', function(err, result) {
+fs.readdir('/').then(result => {
   `fileCount = fileCount + result.length`;
   console.log(\`Files listed: ${fileCount}`);
 });
@@ -458,9 +494,9 @@ console.log(\`End of program: ${fileCount}`);
 This will **always** log `End of program: 0` first, then `Files listed: N`.
 
 Even if the operating system is very fast and the directory is listed _instantaneously_,
-Node.js **guarantees** that the last line, `console.log('End of program:', fileCount)`, will be executed first.
+Node.js **guarantees** that the last line, the `End of program` log, will be executed first.
 
-Callback functions will always wait for **blocking code** to finish executing.
+Asynchronous callbacks will always wait for **synchronous code** to finish executing.
 
 ---
 ## The event loop
@@ -483,7 +519,7 @@ and is what produces the behavior described in the previous slides.
 ---
 ### A short reminder
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a>]
 
 Before explaining the event loop,
 you must be clear on something.
@@ -493,16 +529,13 @@ You've probably often encountered something that looks like this while programmi
 
 ```
 Error: Both arguments must be numbers
-    at add (/path/to/project/st-demo.mjs:3:11)
-    at compute (/path/to/project/st-demo.mjs:10:10)
-    at demo (/path/to/project/st-demo.mjs:14:17)
-    at Object.<anonymous> (/path/to/project/st-demo.mjs:18:1)
-    at Module._compile (internal/modules/cjs/loader.js:689:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:700:10)
-    at Module.load (internal/modules/cjs/loader.js:599:32)
-    at tryModuleLoad (internal/modules/cjs/loader.js:538:12)
-    at Function.Module._load (internal/modules/cjs/loader.js:530:3)
-    at Function.Module.runMain (internal/modules/cjs/loader.js:742:12)
+    at add (file:///path/to/project/st-demo.mjs:3:11)
+    at compute (file:///path/to/project/st-demo.mjs:10:10)
+    at demo (file:///path/to/project/st-demo.mjs:14:17)
+    at file:///path/to/project/st-demo.mjs:18:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
 ```
 
 What is this called and what does it mean?
@@ -510,17 +543,15 @@ What is this called and what does it mean?
 ---
 #### Reading a stack trace
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a> > <a href="#22">A short reminder</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a> > <a href="#23">A short reminder</a>]
 
 ```
 Error: Both arguments must be numbers
-    at `add` (/path/to/project/`st-demo.mjs:3`:11)
-    at `compute` (/path/to/project/`st-demo.mjs:10`:10)
-    at `demo` (/path/to/project/`st-demo.mjs:14`:17)
-    at Object.<anonymous> (/path/to/project/`st-demo.mjs:18`:1)
+    at `add` (file:///path/to/project/`st-demo.mjs:3`:11)
+    at `compute` (file:///path/to/project/`st-demo.mjs:10`:10)
+    at `demo` (file:///path/to/project/`st-demo.mjs:14`:17)
+    at file:///path/to/project/`st-demo.mjs:18`:1
 ```
-
-Here's the `st-demo.mjs` file:
 
 ```js
 function add(a, b) {
@@ -546,13 +577,13 @@ function demo() {
 ---
 ### The call stack
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a>]
 
-The [**call stack**][stack] is a mechanism for the JavaScript interpreter to keep track of its place in a script that calls multiple functions: what function is being run, which should be called next, etc.
+The [**call stack**][stack] is how the JavaScript interpreter keeps track of its place in a script that calls multiple functions.
 
 - When called, a function is added to the top of the stack.
 - Functions called by that function are added to the stack further up.
-- When a function finishes, the interpreter takes it off the stack and resumes where it left off in the last stack item.
+- When a function finishes, it is taken off the stack and the interpreter resumes where it left off.
 
 .grid-40[
 
@@ -586,7 +617,7 @@ printSquare(4);
 ---
 ### Stack overflow
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a>]
 
 Taking into account the fact that the call stack has a limited size
 (unfortunately, your computer does not have infinite memory),
@@ -605,16 +636,17 @@ eagerlyMultiply();
 ---
 ### Platform APIs
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a>]
 
-The **JavaScript runtime** (whether in Node.js or a web browser) **can only run one thing at a time**.
+The **JavaScript engine** (V8, both in Node.js and in Chrome) **can only run one
+thing at a time**.
 
-But some functions are not run by the Node.js runtime;
-they are run by the underlying platform: the v8 engine for Node.js or the web browser for a website.
+But some functions are not run by the JavaScript engine;
+they are run by the underlying platform: Node.js's C++ and [libuv][libuv] layer for Node.js, or the web browser for a website.
 For example:
 
 - `readFile` (Node.js API)
-- `fetch` (Experimental Node.js & Web API)
+- `fetch` (Node.js & Web API)
 - `setTimeout` (Node.js & Web API)
 
 .grid-40[
@@ -646,7 +678,7 @@ program();
 ---
 #### The JavaScript runtime is single-threaded
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a> > <a href="#26">Platform APIs</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a> > <a href="#27">Platform APIs</a>]
 
 What does this mean?
 
@@ -682,7 +714,7 @@ program();
 ---
 ### Other event-driven, non-blocking I/O architectures
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#21">The event loop</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#22">The event loop</a>]
 
 Node.js is not the only tool to use an event-driven architecture with an event loop.
 Similar mechanisms are used in other frameworks and tools:
@@ -693,99 +725,146 @@ Similar mechanisms are used in other frameworks and tools:
 - [Twisted][twisted] (Python event-driven networking engine)
 
 ---
-## Node.js callback convention
+## Awaiting promises
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a>]
 
-Node.js callback functions usually have this signature:
+[`async/await`][async] is syntax on top of promises. Inside an `async` function
+— or at the [top level of an ECMAScript module][tla] — `await` gives you the
+**value** a promise will produce, and lets you write asynchronous code that
+reads top-to-bottom:
 
-```
-  function(err, result)
-```
+.grid-50[
 
-Like the previous example:
-
-```js
-fs.readdir(
-  '/',
-  `function(err, result) {` // ...
-  `}`
-);
-```
-
-1. Either the operation **failed**:
-
-- `err` contains an **error** describing the problem
-- `result` is `null` or `undefined`
-
-2. Or the operation **succeeded**:
-
-- `err` is `null` or `undefined`
-- `result` contains the **result** of the operation
-
----
-### **Always** check for errors
-
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Node.js callback convention</a>]
-
-You should never forget to check for errors:
+**With `.then()`**
 
 ```js
-import fs from 'fs';
-fs.readFile('name.txt', 'utf-8', function(err, data) {
-* if (err) {
-*   return console.warn(\`Could not read the file because: ${err.message}`);
-* }
+import fs from 'node:fs/promises';
 
-  console.log('Hello ' + data);
+fs.readdir('/').then(files => {
+  console.log(files.length);
 });
 ```
 
-If you forget to check `err`, this code could log `Hello undefined` if the operation fails (e.g. the file doesn't exist, is corrupt, etc).
 
-Do not forget the `return` either, or use `else`, to ensure that your "success" code is not run when an error occurs.
+]
+.grid-50[
 
----
-### A note on Node.js and callbacks
-
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Node.js callback convention</a>]
-
-Similarly to ECMAScript modules, [Promises][promise] were not yet part of
-ECMAScript when Node.js was first released, so the handling of asynchronous
-operations was built on callback functions, as we've seen:
+**With `await`**
 
 ```js
-// List the files at the root of the file system
-fs.readdir('/', function (err, result) {
-  // handle error or result
-});
+import fs from 'node:fs/promises';
+
+const files = await fs.readdir('/');
+console.log(files.length);
 ```
 
+
+]
+.container[
+
+This is how you will write asynchronous code for the rest of this course.
+
+
+]
 ---
-#### Node.js and promises
+### `await` does not block the program
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#29">Node.js callback convention</a> > <a href="#31">A note on Node.js and callbacks</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#30">Awaiting promises</a>]
 
-Today many Node.js libraries, and some Node.js core modules, also support
-promises. For example, the File System module provides an [alternative Promises
-API](https://nodejs.org/api/fs.html#fs_fs_promises_api) which you can access
-with `fs.promises`:
+`await` suspends **the function it is in**. It does **not** stop Node.js from
+doing other things. Here are two functions that each `await` in the middle:
 
 ```js
-// List the files at the root of the file system
-fs.promises.readdir('/').then(
-  result => {
-    // handle result
-  },
-  err => {
-    // handle error
-  }
-);
+import { setTimeout as sleep } from 'node:timers/promises';
+
+async function work(name, ms) {
+  console.log(\`${name}: start`);
+  `await sleep(ms)`;
+  console.log(\`${name}: end`);
+}
 ```
 
-> Since you can use promies, that means you can also write your Node.js code
-> with [`async/await`][async] if you wish.
+.grid-50[
 
+**What does this print?**
+
+```js
+await work('A', 200);
+await work('B', 100);
+```
+
+
+]
+.grid-50[
+
+**And this?**
+
+```js
+await Promise.all([
+  work('A', 200),
+  work('B', 100)
+]);
+```
+
+
+]
+---
+#### Execution order solution
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#30">Awaiting promises</a> > <a href="#31">`await` does not block the program</a>]
+
+.grid-50[
+
+```js
+await work('A', 200);
+await work('B', 100);
+```
+
+```txt
+A: start
+A: end
+B: start
+B: end
+```
+
+Total: **300ms**
+
+`A` is **fully finished** before `B` is even started: you `await` the first call
+before making the second one.
+
+
+]
+.grid-50[
+
+```js
+await Promise.all([
+  work('A', 200),
+  work('B', 100)
+]);
+```
+
+```txt
+A: start
+*B: start
+*B: end
+A: end
+```
+
+Total: **200ms**
+
+Both calls are **started** before anything is awaited, so they overlap — and
+`B` finishes **first**, because it is faster.
+
+
+]
+.container[
+
+> Waiting for two things that do not depend on each other one after the other is
+> the most common performance mistake in asynchronous code.
+
+
+]
 ---
 class: center, middle
 ## Spot the mistake
@@ -793,6 +872,8 @@ class: center, middle
 .breadcrumbs[<a href="#1">Node.js Introduction</a>]
 
 
+
+Three bugs you will write at least once.
 
 ---
 ### Mistake 1
@@ -802,27 +883,17 @@ class: center, middle
 What's wrong with this code?
 
 ```js
-import fs from 'fs';
+import fs from 'node:fs/promises';
 
 // Save a salutation into hello.txt
-const newSalutation = 'Hello Bob!';
-fs.writeFile('hello.txt', newSalutation, 'utf-8', function(err) {
-  if (err) {
-    console.warn(\`Could not write in file because: ${err.message}`);
-  }
-});
+await fs.writeFile('hello.txt', 'Hello Bob!', 'utf-8');
 
 // Read the salutation from hello.txt
-const salutation = fs.readFile('hello.txt', 'utf-8', function(err, data) {
-  if (err) {
-    return console.warn(\`Could not read file because: ${err.message}`);
-  }
-
-  return data;
-});
+const salutation = fs.readFile('hello.txt', 'utf-8');
 
 // Log the salutation read from hello.txt
 console.log(salutation);
+console.log(salutation.toUpperCase());
 ```
 
 Save it to a file and run it with `node` to see the issue.
@@ -832,123 +903,59 @@ Save it to a file and run it with `node` to see the issue.
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#34">Mistake 1</a>]
 
-If you save the script to `bug1.mjs` and execute it this is what will happen:
+If you save the script to `bug1.mjs` and execute it, this is what will happen:
 
 ```bash
 $> node bug1.mjs
-undefined
+*Promise { <pending> }
+
+TypeError: salutation.toUpperCase is not a function
+    at file:///path/to/projects/node-demo/bug1.mjs:11:24
 ```
 
 ---
-#### Mistake 1 asynchronous issue
+#### Mistake 1 issue
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#34">Mistake 1</a>]
 
-There are two problems with this code. First, Node.js I/O functions (such as file operations) are **asynchronous**.
-
-When `fs.writeFile()` is called, Node.js will start a thread and write the file in the background.
-Meanwhile, **your code will keep executing** and the call to `fs.readFile` will occur **before the callback function of `fs.writeFile` is called back**
-and **before Node.js is done writing the file**.
+The `await` is **missing** on the second call:
 
 ```js
-// Save a salutation into hello.txt
-const newSalutation = 'Hello Bob!';
-`fs.writeFile`('hello.txt', newSalutation, 'utf-8', function(err) {
-  if (err) {
-    console.warn(\`Could not write in file because: ${err.message}`);
-  }
-});
-
-// Read the salutation from hello.txt
-const salutation = `fs.readFile`('hello.txt', 'utf-8', function(err, data) {
-  if (err) {
-    return console.warn(\`Could not read file because: ${err.message}`);
-  }
-
-  return data;
-});
+const salutation = `fs.readFile`('hello.txt', 'utf-8');
 ```
 
----
-#### Mistake 1 return issue
+- `fs.readFile()` returns a **promise**, not a string, and that promise is what
+  is stored in `salutation`.
+- The file is being read, but **nothing is waiting for the result**.
+- `Promise { <pending> }` is Node.js telling you exactly that: you are looking
+  at a promise that has no value yet.
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#34">Mistake 1</a>]
-
-Second, even if there was no asynchronous issue, the assignment of `const salutation` would still be `undefined`:
-
-- You are calling `fs.readFile()`, which **always** returns `undefined`, and that is what is stored in the `salutation` variable.
-- **When** Node.js is done reading the file in a separate thread, **it will call your callback function (later)**.
-- The `return data;` of your callback function is **not going anywhere**.
-
-```js
-// Read the salutation from hello.txt
-`const salutation = fs.readFile`('hello.txt', 'utf-8', function(err, data) {
-  if (err) {
-    return console.warn(\`Could not read file because: ${err.message}`);
-  }
-
-  `return data;`
-});
-```
+> Whenever you see `Promise { <pending> }` in your output, or `undefined` where
+> you expected data, **look for a missing `await`**.
 
 ---
 #### Mistake 1 correct implementation
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#34">Mistake 1</a>]
 
-The second asynchronous call must be performed **inside the callback function of the previous call**.
-That way, it will not be executed **until the first call is done** and Node.js has called your callback function.
-
-The `console.log()` must also be performed **inside the second callback**.
-
 ```js
-import fs from 'fs';
+import fs from 'node:fs/promises';
 
 // Save a salutation into hello.txt
-const newSalutation = 'Hello Bob!';
-fs.writeFile('hello.txt', newSalutation, 'utf-8', `function(err) {`
-  if (err) {
-    console.warn(\`Could not write in file because: ${err.message}`);
-  }
+await fs.writeFile('hello.txt', 'Hello Bob!', 'utf-8');
 
-  // Read the salutation from hello.txt
-  fs.readFile('hello.txt', 'utf-8', `function(err, data) {`
-    if (err) {
-      return console.warn(\`Could not read file because: ${err.message}`);
-    }
+// Read the salutation from hello.txt
+const salutation = `await` fs.readFile('hello.txt', 'utf-8');
 
-    // Log the salutation read from hello.txt
-    `console.log(data);`
-  `}`);
-`}`);
+// Log the salutation read from hello.txt
+console.log(salutation);
+console.log(salutation.toUpperCase());
 ```
 
----
-#### Mistake 1 async/await implementation
-
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#34">Mistake 1</a>]
-
-If the module or library you are using supports promises, you can also use
-[`async/await`][async] to avoid nested callbacks and improve the readability of
-the code. As we've seen, that is the case for [Node'js file system
-API](https://nodejs.org/api/fs.html#fs_fs_promises_api):
-
-```js
-import fs from 'fs';
-
-execute().catch(err => console.warn(\`An error occurred: ${err.message}`));
-
-`async function` execute() {
-  // Save a salutation into hello.txt
-  const newSalutation = 'Hello Bob!';
-  `await fs.promises.writeFile`('hello.txt', newSalutation, 'utf-8');
-
-  // Read the salutation from hello.txt
-  const salutations = `await fs.promises.readFile`('hello.txt', 'utf-8');
-
-  // Log the salutation read from hello.txt
-  console.log(salutations);
-}
+```bash
+$> node bug1.mjs
+Hello Bob!
+HELLO BOB!
 ```
 
 ---
@@ -958,22 +965,22 @@ execute().catch(err => console.warn(\`An error occurred: ${err.message}`));
 
 This is an example of **error handling**.
 
-The intended behavior is that if the file does not exist,
-the text `Could not read file because: some error` should be printed,
-otherwise it should print the contents of the file in upper case.
+The intended behavior is that if the file does not exist, the text
+`Could not read file because: some error` should be printed, otherwise it
+should print the contents of the file in upper case.
 
 ```js
-import fs from 'fs';
+import fs from 'node:fs/promises';
 
-// Read the contents of a file
-fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
-  if (err) {
-    console.warn(\`Could not read file because: ${err.message}`);
-  }
+let text;
+try {
+  text = await fs.readFile('file-that-does-not-exist.txt', 'utf-8');
+} catch (err) {
+  console.warn(\`Could not read file because: ${err.message}`);
+}
 
-  // Log the salutation in upper case
-  console.log(text.toUpperCase());
-});
+// Log the contents in upper case
+console.log(text.toUpperCase());
 ```
 
 What's wrong with this code?
@@ -981,20 +988,16 @@ What's wrong with this code?
 ---
 #### Mistake 2 result
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#40">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#38">Mistake 2</a>]
 
 If you save this script in `bug2.mjs` and execute it, this is what will happen:
 
 ```bash
 $> node bug2.mjs
 Could not read file because: ENOENT: no such file or directory, open 'file-...'
-/path/to/projects/node-demo/bug2.mjs:9
-  console.log(text.toUpperCase());
-                  ^
 
-TypeError: Cannot read property 'toUpperCase' of undefined
-    at ReadFileContext.callback (/path/to/projects/node-demo/bug2.mjs:9:19)
-    at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:365:13)
+TypeError: Cannot read properties of undefined (reading 'toUpperCase')
+    at file:///path/to/projects/node-demo/bug2.mjs:11:18
 ```
 
 As expected, we see the `Could not read file because: ...` log.
@@ -1003,97 +1006,205 @@ But we also see another **unexpected error** and its stack trace.
 ---
 #### Mistake 2 issue
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#40">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#38">Mistake 2</a>]
 
-There is an error check, but execution of the callback function is **not stopped**
-as there is no `return` and no `else`.
-
-If an error occurs, **both the `console.warn` and the `console.log` calls will be executed**.
-This will cause a "null pointer exception":
+The error is caught, but execution of the script is **not stopped**. After the
+`catch` block, the code carries on with `text` still `undefined`:
 
 ```js
-import fs from 'fs';
+let text;
+try {
+  text = await fs.readFile('file-that-does-not-exist.txt', 'utf-8');
+} catch (err) {
+* console.warn(\`Could not read file because: ${err.message}`);
+}
 
-// Read the contents of a file
-fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
-  if (err) {
-*   console.warn(\`Could not read file because: ${err.message}`);
-  }
-
-  // Log the contents in upper case
-* console.log(text.toUpperCase());
-});
+// Log the contents in upper case
+*console.log(text.toUpperCase());
 ```
+
+**Catching an error is not the same as handling it.** Once you are in the
+`catch` block, you must decide what happens next.
 
 ---
 #### Mistake 2 correct implementation
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#40">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#38">Mistake 2</a>]
 
-You can add a `return` to solve the issue:
+Put the code that **needs the result** inside the `try` block:
 
 ```js
-import fs from 'fs';
-// Read the contents of a file
-fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
-  if (err) {
-    `return` console.warn(\`Could not read file because: ${err.message}`);
-  }
+import fs from 'node:fs/promises';
+
+try {
+  const text = await fs.readFile('file-that-does-not-exist.txt', 'utf-8');
   // Log the contents in upper case
-  console.log(text.toUpperCase());
-});
+  `console.log(text.toUpperCase());`
+} catch (err) {
+  // Handle the error
+  console.warn(\`Could not read file because: ${err.message}`);
+}
 ```
 
-Or use an `if/else`:
+Or stop the script in the `catch` block:
 
 ```js
-import fs from 'fs';
-// Read the contents of a file
-fs.readFile('file-that-does-not-exist.txt', 'utf-8', function(err, text) {
-  `if (err) {`
-    // Handle the error
-    console.warn(\`Could not read file because: ${err.message}`);
-  `} else {`
-    // Log the contents in upper case
-    console.log(text.toUpperCase());
-  `}`
-});
+} catch (err) {
+  console.warn(\`Could not read file because: ${err.message}`);
+  `process.exit(1);`
+}
 ```
 
 ---
-#### Mistake 2 async/await implementation
+### Mistake 3
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#40">Mistake 2</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a>]
 
-Here how the same example could be implemented with [promises][promise]:
-
-```js
-// Read the contents of a file
-fs.promises.readFile('file-that-does-not-exist.txt', 'utf-8').then(text => {
-  // Log the contents in upper case
-  console.log(text.toUpperCase());
-}).catch(err => {
-  // Handle the error
-  console.warn(\`Could not read file because: ${err.message}`);
-});
-```
-
-Or with [`async/await`][async]:
+This code is supposed to save a file for each name, then log when it is done.
 
 ```js
-async function printUppercaseFile(file) {
-  try {
-    // Read and log the contents of a file
-    console.log(await fs.promises.readFile(file, 'utf-8'));
-  } catch (err) {
-    // Handle the error
-    console.warn(\`Could not read file because: ${err.message}`);
-  }
+import fs from 'node:fs/promises';
+
+async function save(name) {
+  const contents = \`Hello, ${name}!`;
+  await fs.writeFile(\`${name}.txt`, contents, 'utf-8');
+  console.log(\`Saved ${name}.txt`);
 }
 
-printUppercaseFile('file-that-does-not-exist.txt');
+const names = ['alice', 'bob', 'carol'];
+
+names.forEach(`async` name => {
+  await save(name);
+});
+
+console.log('All names saved!');
 ```
 
+What's wrong with this code?
+
+---
+#### Mistake 3 result
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#42">Mistake 3</a>]
+
+```bash
+$> node bug3.mjs
+*All names saved!
+Saved bob.txt
+Saved carol.txt
+Saved alice.txt
+```
+
+The program claims to be done **before** anything has been saved.
+
+> Run it again and the 3 `Saved ...` lines may come out in a different order.
+> We will come back to that.
+
+---
+#### Mistake 3 issue
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#42">Mistake 3</a>]
+
+`forEach` knows nothing about promises.
+
+- Your `async` callback returns a **promise** each time it is called.
+- `forEach` **throws those promises away** and returns immediately.
+- So `console.log('All names saved!')` runs while the saves are still pending.
+
+> This applies to `forEach` specifically. `map` also returns immediately, but it
+> **gives you back** the array of promises, which is what makes the fix below
+> possible.
+
+---
+#### Mistake 3 correct implementation
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#42">Mistake 3</a>]
+
+.grid-50[
+
+**One at a time**, with `for...of`:
+
+```js
+`for (const name of names) {`
+  await save(name);
+`}`
+
+console.log('All names saved!');
+```
+
+Use this when each operation depends on the previous one.
+
+
+]
+.grid-50[
+
+**All at once**, with `Promise.all`:
+
+```js
+await Promise.all(
+  `names.map(name => save(name))`
+);
+
+console.log('All names saved!');
+```
+
+Use this when they are independent — it is much faster.
+
+
+]
+.container[
+
+In both versions, `All names saved!` is now logged **last**. But do we know in
+which order the 3 `Saved ...` logs will appear?
+
+
+]
+---
+#### Mistake 3 execution order
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#33">Spot the mistake</a> > <a href="#42">Mistake 3</a>]
+
+.grid-50[
+
+**`for...of`: yes**
+
+```txt
+Saved alice.txt
+Saved bob.txt
+Saved carol.txt
+All names saved!
+```
+
+Each `save()` is **fully finished** before the next one starts, so the logs
+always follow the order of the array.
+
+
+]
+.grid-50[
+
+**`Promise.all`: no**
+
+```txt
+*Saved carol.txt
+*Saved alice.txt
+*Saved bob.txt
+All names saved!
+```
+
+All 3 saves are running **at the same time**. Whichever write finishes first
+logs first, and that changes from one run to the next.
+
+
+]
+.container[
+
+> `Promise.all` **does** preserve order where it matters: the array it resolves
+> with is in the same order as the promises you gave it, no matter which one
+> finished first. It is the **side effects** — logs, writes — that are not
+> ordered.
+
+
+]
 ---
 class: center, middle
 ## The HTTP module
@@ -1105,14 +1216,14 @@ class: center, middle
 ---
 ### Modern web language
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#45">The HTTP module</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#47">The HTTP module</a>]
 
 Node.js provides a ready-to-use HTTP server. Thanks to the event loop, this one
 small server can handle many clients concurrently.
 
 ```js
 // Import the HTTP module.
-import http from 'http';
+import http from 'node:http';
 
 // Define configuration properties.
 const hostname = '127.0.0.1';
@@ -1137,7 +1248,7 @@ server.listen(port, hostname, function() {
 ---
 ### Event emitters
 
-.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#45">The HTTP module</a>]
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#47">The HTTP module</a>]
 
 Many Node.js objects are [event emitters][node-event-emitter].
 You can register callback functions to **react** to these events:
@@ -1163,47 +1274,192 @@ server.on('request', function(message) {
 
 ]
 ---
+## Batteries included
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a>]
+
+The `node` command does more than run a file. A few [options][node-cli] that
+used to require extra tools:
+
+| Option       | What it does                                                     |
+| :----------- | :--------------------------------------------------------------- |
+| `--watch`    | Restart the program whenever a source file changes                |
+| `--env-file` | Load environment variables from a `.env` file into `process.env`  |
+| `--test`     | Run test files with Node's built-in test runner                   |
+
+```bash
+$> node --watch --env-file=.env script.js
+```
+
+We will come back to the first two later in the course, when we have something
+worth restarting and something worth configuring.
+
+> Most tutorials you will find still reach for a package to do these things
+> (`nodemon`, `dotenv`). That advice predates these options.
+
+---
+class: center, middle
+## Appendix: Node.js callbacks
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a>]
+
+
+
+You will not need callbacks for your project, but you will meet them in older
+code, so here is what they look like.
+
+---
+### Where callbacks come from
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#51">Appendix: Node.js callbacks</a>]
+
+Similarly to ECMAScript modules, [promises][promise] were not yet part of
+ECMAScript when Node.js was first released in 2009. The handling of
+asynchronous operations was built on **callback functions** instead: you pass a
+function in, and Node.js calls it back when the operation is done.
+
+```js
+import fs from 'node:fs';
+
+// List the files at the root of the file system
+fs.readdir('/', `function(err, result) {`
+  // handle error or result
+`}`);
+```
+
+Most core modules still offer this style alongside their [promise-based
+version][node-fs-promises]. You will run into it in older npm packages, in
+documentation and in almost every StackOverflow answer written before 2018.
+
+---
+### The callback convention
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#51">Appendix: Node.js callbacks</a>]
+
+Node.js callback functions almost always have this signature:
+
+```
+  function(err, result)
+```
+
+1. Either the operation **failed**:
+
+- `err` contains an **error** describing the problem
+- `result` is `null` or `undefined`
+
+2. Or the operation **succeeded**:
+
+- `err` is `null` or `undefined`
+- `result` contains the **result** of the operation
+
+There is no `try/catch` here: an error is just **the first argument**, and
+nothing forces you to look at it.
+
+---
+### **Always** check for errors
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#51">Appendix: Node.js callbacks</a>]
+
+Since nothing forces you to check `err`, forgetting to is the classic bug:
+
+```js
+import fs from 'node:fs';
+
+fs.readFile('name.txt', 'utf-8', function(err, data) {
+* if (err) {
+*   `return` console.warn(\`Could not read the file because: ${err.message}`);
+* }
+
+  console.log(\`Hello ${data}`);
+});
+```
+
+If you forget to check `err`, this code logs `Hello undefined` when the
+operation fails (e.g. the file doesn't exist).
+
+Do not forget the `return` either, or use `else`, to ensure that your "success"
+code is not run when an error occurs — the same mistake as
+[Mistake 2](#mistake-2), in callback form.
+
+---
+### Callback hell
+
+.breadcrumbs[<a href="#1">Node.js Introduction</a> > <a href="#51">Appendix: Node.js callbacks</a>]
+
+The result is only available **inside** the callback, so chaining operations
+means nesting them:
+
+```js
+fs.writeFile('hello.txt', 'Hello Bob!', 'utf-8', `function(err) {`
+  if (err) {
+    return console.warn(\`Could not write file: ${err.message}`);
+  }
+
+  fs.readFile('hello.txt', 'utf-8', `function(err, data) {`
+    if (err) {
+      return console.warn(\`Could not read file: ${err.message}`);
+    }
+
+    console.log(data);
+  `}`);
+`}`);
+```
+
+The same thing with `await`:
+
+```js
+await fs.writeFile('hello.txt', 'Hello Bob!', 'utf-8');
+console.log(await fs.readFile('hello.txt', 'utf-8'));
+```
+
+> This is why promises and `async/await` were added to the language.
+
+---
 ## Resources
 
 .breadcrumbs[<a href="#1">Node.js Introduction</a>]
 
 **Documentation**
 
-- [Core modules (24.x)][node-24-api]
+- [Core modules (26.x)][node-26-api]
 
 **Further reading**
 
-- [What is Node.js][mixu-node-book]
+- [Introduction to Node.js][node-intro]
 - [JavaScript Concurrency Model and Event Loop][event-loop]
 - [Understanding the Node.js Event Loop][event-loop-strongloop]
 - [Philip Roberts: What the heck is the event loop anyway? (YouTube)][event-loop-wth]
-- [Node.js Explained (video)][node-explained-video]
 
 [async]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
-[commonjs]: https://nodejs.org/docs/latest-v22.x/api/modules.html
-[destructuring-assigment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+[commonjs]: https://nodejs.org/docs/latest-v26.x/api/modules.html
+[destructuring-assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 [esm]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
 [event-loop]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
 [event-loop-strongloop]: http://strongloop.com/strongblog/node-js-event-loop/
 [event-loop-wth]: https://www.youtube.com/watch?v=8aGhZQkoFbQ
 [event-machine]: http://rubyeventmachine.com
-[mixu-node-book]: http://book.mixu.net/node/ch2.html
+[libuv]: https://libuv.org
+[node-intro]: https://nodejs.org/en/learn/getting-started/introduction-to-nodejs
 [nginx]: https://www.nginx.com
 [node]: https://nodejs.org/en/
-[node-24-api]: https://nodejs.org/docs/latest-v24.x/api/documentation.html
-[node-24-esm]: https://nodejs.org/docs/latest-v24.x/api/esm.html#modules-ecmascript-modules
-[node-24-esm-enabling]: https://nodejs.org/docs/latest-v24.x/api/esm.html#enabling
-[node-event-emitter]: https://nodejs.org/api/events.html
-[node-explained-video]: http://kunkle.org/talks/
-[node-lts]: https://nodejs.org/en/about/releases
-[node-module-os]: https://nodejs.org/docs/latest-v22.x/api/os.html
+[node-26-api]: https://nodejs.org/docs/latest-v26.x/api/documentation.html
+[node-26-esm]: https://nodejs.org/docs/latest-v26.x/api/esm.html#modules-ecmascript-modules
+[node-26-esm-enabling]: https://nodejs.org/docs/latest-v26.x/api/esm.html#enabling
+[node-cli]: https://nodejs.org/docs/latest-v26.x/api/cli.html
+[node-event-emitter]: https://nodejs.org/docs/latest-v26.x/api/events.html
+[node-fs-promises]: https://nodejs.org/docs/latest-v26.x/api/fs.html#promises-api
+[node-lts]: https://nodejs.org/en/about/previous-releases
+[node-release-schedule]: https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule
+[node-module-os]: https://nodejs.org/docs/latest-v26.x/api/os.html
+[node-process]: https://nodejs.org/docs/latest-v26.x/api/process.html
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [repl]: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
 [requirejs]: https://requirejs.org
 [stack]: https://developer.mozilla.org/en-US/docs/Glossary/Call_stack
-[twisted]: http://twistedmatrix.com/trac/
+[tla]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#top_level_await
+[twisted]: https://twisted.org
 
     </textarea>
-    <script src='../../subject-3a85dbeaf02ef8265e4e.js'></script>
+    <script src='../../subject-2d19222aac4e2bf2880b.js'></script>
   </body>
 </html>

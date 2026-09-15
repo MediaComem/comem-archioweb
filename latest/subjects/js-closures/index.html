@@ -3,7 +3,7 @@
   <head>
     <title>JavaScript Closures (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a9d7c3df10492604245f83260acacb0dc31d1300/subjects/js-closures/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/js-closures/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -42,7 +42,7 @@ var leonidas = makeYeller(); // Store a new yell() function
 leonidas(); // "This is... Sparta"
 ```
 
-> `yell()` is a **closure**: a function that has a reference to a variable declared in an outer scope (in this cas, the `city` variable).
+> `yell()` is a **closure**: a function that has a reference to a variable declared in an outer scope (in this case, the `city` variable).
 
 When created, `yell()` functions will permanently keep the reference to the `city` variable, even after `makeYeller()`'s execution has completed.
 
@@ -135,7 +135,7 @@ spartan.forEach(function(soldierFunc) {
   soldierFunc();
 });
 ```
-> What will be the output of this code, [once executed][closure-loop-bug-codepen]?
+> What will be the output of this code, [once executed][closure-loop-bug-livecodes]?
 
 ???
 
@@ -233,6 +233,33 @@ When you pass a primitive value to a function in JavaScript, its **value** is pa
 
 So each `rank()` function will keep a reference to its own `nbValue` variable, which had a different value at every iteration of the `for` loop.
 
+---
+### The modern way: `let`
+
+.breadcrumbs[<a href="#1">JavaScript Closures</a> > <a href="#4">Closures in loops</a>]
+
+The factory function shows **how closures capture values**, which is why it's
+worth understanding. But since ES6 you can fix this specific bug by simply
+replacing `var` with `let` in the loop:
+
+```javascript
+function createArmy() {
+  const generatedSoldiers = [];
+* for (let nb = 1; nb < 11; nb++) {
+    generatedSoldiers.push(function rank() {
+      console.log("I'm the soldier n°" + nb);
+    });
+  }
+  return generatedSoldiers;
+}
+```
+
+Unlike `var`, which is **function-scoped**, `let` is **block-scoped**: the
+`for` loop creates a **new `nb` binding at every iteration**, so each `rank()`
+closure captures its own.
+
+> No factory function needed. Prefer `let` (or `const`) over `var` in modern code.
+
 
 
 ---
@@ -248,9 +275,9 @@ So each `rank()` function will keep a reference to its own `nbValue` variable, w
 
 [chrome]: https://www.google.com/chrome/
 [closure]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
-[closure-loop-bug-codepen]: http://codepen.io/AlphaHydrae/pen/gmYQpN?editors=0010#0
+[closure-loop-bug-livecodes]: https://livecodes.io/?js=%2F%2F+Returns+an+array+of+10+rank%28%29+functions%0Afunction+createArmy%28%29+%7B%0A++var+generatedSoldiers+%3D+%5B%5D%3B+%2F%2F+Create+the+array%0A++for+%28var+nb+%3D+1%3B+nb+%3C+11%3B+nb%2B%2B%29+%7B%0A++++var+rank+%3D+function%28%29+%7B+%2F%2F+Rank+function+that+logs+the+soldier%27s+number%0A++++++console.log%28%22I%27m+the+soldier+n%C2%B0%22+%2B+nb%29%3B%0A++++%7D%3B%0A++++generatedSoldiers.push%28rank%29%3B+%2F%2F+Store+it+in+the+array%0A++%7D%0A++return+generatedSoldiers%3B+%2F%2F+Return+the+array%0A%7D%3B%0A%0Avar+spartan+%3D+createArmy%28%29%3B%0A%0A%2F%2F+Let%27s+execute+all+the+created+functions%0Aspartan.forEach%28function%28soldierFunc%29+%7B%0A++soldierFunc%28%29%3B%0A%7D%29%3B&console=open&welcome=false&recoverUnsaved=false&title=The+closure+loop+bug
 
     </textarea>
-    <script src='../../subject-3a85dbeaf02ef8265e4e.js'></script>
+    <script src='../../subject-2d19222aac4e2bf2880b.js'></script>
   </body>
 </html>

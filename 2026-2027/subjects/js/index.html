@@ -3,13 +3,13 @@
   <head>
     <title>JavaScript (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/a9d7c3df10492604245f83260acacb0dc31d1300/subjects/js/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/2407db773c13845caafb1e549d3b3fb038e3102d/subjects/js/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
 # JavaScript
 
-<codepen global enabled='true'></codepen>
+<livecodes global enabled='true'></livecodes>
 
 Learn the basics of JavaScript, a high-level, dynamic, untyped and interpreted programming language,
 and one of the three core technologies of the web.
@@ -95,7 +95,7 @@ GitHub.
 There are features from JavaScript ES6 (or later versions) that may **not yet
 fully supported** on all browsers.
 
-Where backwards-compatilibity is important in client-side code running in the
+Where backwards-compatibility is important in client-side code running in the
 **browser**, you should stick with **ES5** or use a JavaScript compiler like
 [Babel][babel], a module bundler like [Webpack][webpack], or a language that
 compiles to JavaScript like [TypeScript][ts], to turn your ES6+ code into
@@ -113,10 +113,10 @@ class: center, middle
 
 
 
-`boolean`, `null`, `number`, `string`, `symbol`, `undefined`
+`bigint`, `boolean`, `null`, `number`, `string`, `symbol`, `undefined`
 
 ---
-### JavaScript has 6 primitive data types
+### JavaScript has 7 primitive data types
 
 .breadcrumbs[<a href="#1">JavaScript</a> > <a href="#7">JavaScript types</a>]
 
@@ -129,6 +129,7 @@ let aBoolean = true;
 let nullValue = null;
 let undefinedValue;
 let aSymbol = Symbol('foo');
+let aBigInt = 9007199254740993n;
 
 console.log(typeof aString); // "string"
 console.log(typeof aNumber); // "number"
@@ -136,6 +137,7 @@ console.log(typeof aBoolean); // "boolean"
 console.log(typeof nullValue); // "object"
 console.log(typeof undefinedValue); // "undefined"
 console.log(typeof aSymbol); // "symbol"
+console.log(typeof aBigInt); // "bigint"
 
 // There is no integer type
 console.log(Number.isInteger(aNumber)); // false
@@ -158,6 +160,7 @@ The types are:
 - Null
 - Undefined
 - Symbol (**ES6**)
+- BigInt (**ES2020**)
 
 
 ]
@@ -232,7 +235,7 @@ for (let i = 0; i < fruits.length; i++) {
 }
 
 // fruit 0 is apple
-// fruit 1 is banana
+// fruit 1 is pear
 ```
 
 We'll learn more about arrays later.
@@ -367,7 +370,7 @@ console.log(value); // 42
 
 .breadcrumbs[<a href="#1">JavaScript</a> > <a href="#14">JavaScript supports first-class functions</a>]
 
-<codepen except='1'></codepen>
+<livecodes except='1'></livecodes>
 
 ```js
 // Let's define a function that returns a function
@@ -447,7 +450,7 @@ console.log(lastNames); // [ "Doe", "Smith", "Smith" ]
 
 .breadcrumbs[<a href="#1">JavaScript</a> > <a href="#14">JavaScript supports first-class functions</a>]
 
-<codepen disabled></codepen>
+<livecodes disabled></livecodes>
 
 Modern JavaScript has a new additional syntax for functions which you will
 encounter more and more on the web:
@@ -470,7 +473,7 @@ let divideFunc = function (nb1, nb2) {
 
 .breadcrumbs[<a href="#1">JavaScript</a> > <a href="#14">JavaScript supports first-class functions</a> > <a href="#19">Arrow functions _(ES6+)_</a>]
 
-<codepen except='0'></codepen>
+<livecodes except='0'></livecodes>
 
 Let's see how an arrow function is written:
 
@@ -500,7 +503,7 @@ setTimeout(callback, 1000);
 
 .breadcrumbs[<a href="#1">JavaScript</a> > <a href="#14">JavaScript supports first-class functions</a> > <a href="#19">Arrow functions _(ES6+)_</a>]
 
-<codepen except='0'></codepen>
+<livecodes except='0'></livecodes>
 
 ```js
 (nb1, nb2) => `nb1 / nb2`;
@@ -519,7 +522,10 @@ console.log(squareroot(4)); // 2
 If the body has **more than one line**, you **MUST add brackets** `{}` around it (_and use the `return` keyword if necessary_):
 
 ```js
-let square = number => `{``let result = number * number;``return result;``}`;
+let square = number => `{`
+  `let result = number * number;`
+  `return result;`
+`}`;
 
 console.log(square(5)); // 25
 ```
@@ -585,7 +591,7 @@ class: center, middle
 
 .breadcrumbs[<a href="#1">JavaScript</a> > <a href="#24">Variables</a>]
 
-<codepen disabled></codepen>
+<livecodes disabled></livecodes>
 
 There are three ways to define a variable in JavaScript:
 
@@ -770,7 +776,7 @@ Just **don't do it**.
 
 .breadcrumbs[<a href="#1">JavaScript</a>]
 
-<codepen disabled></codepen>
+<livecodes disabled></livecodes>
 
 In JavaScript, you (now) have 3 ways to use strings:
 
@@ -783,7 +789,7 @@ You have to **escape** all other single quotes, and use `+` to concatenate.
 
 ```js
 // With double quotes: "
-let string = 'I\'m your "Wurst" nightmare: ' + worstNightmare;
+let string = "I'm your \"Wurst\" nightmare: " + worstNightmare;
 ```
 
 You have to escape all other double quotes, and use `+` to concatenate.
@@ -815,6 +821,21 @@ Arrays in JavaScript are objects and provide you with a [boatload of methods][ar
 | `.push()`    | Adds new elements to **the end** of an array (`.unshift()` does the same but adds them to the **beginning** of the array) |
 | `.slice()`   | Returns **a portion** of the array                                                                                        |
 | `.reverse()` | Reverses the order of the elements in an array (**this modifies the original array**)                                     |
+
+---
+### More array methods
+
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#33">Manipulating arrays</a>]
+
+These are among the most commonly used, especially the first three:
+
+| Function      | Effect                                                                                                |
+| :------------ | :---------------------------------------------------------------------------------------------------- |
+| `.map()`      | Returns a **new array** with the result of calling a function on every element                        |
+| `.filter()`   | Returns a **new array** with only the elements that pass a provided test function                     |
+| `.reduce()`   | Reduces the array to **a single value** by calling a function on every element                        |
+| `.sort()`     | Sorts the elements of an array (**this modifies the original array**)                                 |
+| `.includes()` | Returns `true` if the array contains a given value, `false` otherwise                                 |
 
 ---
 ### Examples
@@ -887,7 +908,7 @@ The destructuring assignment syntax makes it possible to **unpack values from ar
 ---
 ### Array destructuring
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#36">Destructuring assignment</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#37">Destructuring assignment</a>]
 
 .grid-50[
 
@@ -940,7 +961,7 @@ console.log(three); // "three"
 ---
 #### Array destructuring features & tricks
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#36">Destructuring assignment</a> > <a href="#37">Array destructuring</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#37">Destructuring assignment</a> > <a href="#38">Array destructuring</a>]
 
 Here's a few things you can do with array destructuring:
 
@@ -972,7 +993,7 @@ console.log(h); // [2, 3]
 ---
 ### Object destructuring
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#36">Destructuring assignment</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#37">Destructuring assignment</a>]
 
 .grid-50[
 
@@ -1022,7 +1043,7 @@ console.log(q); // true
 ---
 #### Object destructuring features & tricks
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#36">Destructuring assignment</a> > <a href="#39">Object destructuring</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#37">Destructuring assignment</a> > <a href="#40">Object destructuring</a>]
 
 Here's a few things you can do with object destructuring:
 
@@ -1061,7 +1082,7 @@ class: center, middle
 ---
 ### Optional chaining
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#41">Null-safe operators</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#42">Null-safe operators</a>]
 
 The [optional chaining operator
 `?.`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
@@ -1089,7 +1110,7 @@ console.log(fishName); // undefined
 ---
 ### Nullish coalescing operator
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#41">Null-safe operators</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#42">Null-safe operators</a>]
 
 The [nullish coalescing operator
 `??`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
@@ -1125,7 +1146,7 @@ class: center, middle
 ---
 ### JSON who?
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#44">JSON</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#45">JSON</a>]
 
 [JSON][json] stands for **J**ava**S**cript **O**bject **N**otation.
 It is a syntax that is used to **represent JavaScript objects** with **text**,
@@ -1149,7 +1170,7 @@ Note that you **cannot** put a JavaScript function in a JSON object.
 ---
 ### Example
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#44">JSON</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#45">JSON</a>]
 
 Here is an example of a **JavaScript object**, and its **description in JSON**:
 
@@ -1205,7 +1226,7 @@ The double quotes around property names are **required** in JSON.
 ---
 ### Using JSON
 
-.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#44">JSON</a>]
+.breadcrumbs[<a href="#1">JavaScript</a> > <a href="#45">JSON</a>]
 
 **Manually** declaring a JavaScript object in JSON (or the opposite) can be quite tedious, especially with deep, complex objects.
 
@@ -1256,7 +1277,6 @@ console.log(crew);
 [es2020]: https://2ality.com/2019/12/ecmascript-2020.html
 [es2021]: https://2ality.com/2020/09/ecmascript-2021.html
 [es2022]: https://2ality.com/2022/06/ecmascript-2022.html
-[ex-function-as-argument]: http://codepen.io/AlphaHydrae/pen/dNBpPv?editors=0010
 [first-class-functions]: https://en.wikipedia.org/wiki/First-class_function
 [func-prog]: https://en.wikipedia.org/wiki/Functional_programming
 [js-arrow-functions]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
@@ -1291,6 +1311,6 @@ console.log(crew);
 [webpack]: https://webpack.js.org/
 
     </textarea>
-    <script src='../../subject-3a85dbeaf02ef8265e4e.js'></script>
+    <script src='../../subject-2d19222aac4e2bf2880b.js'></script>
   </body>
 </html>
