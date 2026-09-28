@@ -129,7 +129,7 @@ Listening on http://localhost:3000
 Visit [http://localhost:3000](http://localhost:3000) in your browser and you should see the app running:
 
 <p class="center">
-  <img src="images/express-running.png" width="62%" />
+  <img src="images/express-running.png" />
 </p>
 
 In the terminal where you're running the app, you should also see that your
