@@ -61,6 +61,42 @@ jobs:
         # dependencies, so there is nothing to install here.
         run: npm run livecodes:check
 
+  express-starter:
+    name: Express starter (Node.js ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      # Report every version that fails, not just the first one.
+      fail-fast: false
+      matrix:
+        # The Node.js versions that have not reached their end of life. Keep
+        # this in sync with the "engines" field of the starter's package.json.
+        node-version: [22, 24, 26]
+    defaults:
+      run:
+        working-directory: subjects/express/starter
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: subjects/express/starter/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check that the application starts and responds
+        # Students copy this directory with degit as the starting point of their
+        # Express application, so it must work as-is on every Node.js version
+        # they might have installed.
+        run: |
+          npm start &
+          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://localhost:3000
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://localhost:3000/not-found)" = 404
+
   doctoc:
     name: Tables of contents
     runs-on: ubuntu-latest
