@@ -419,14 +419,14 @@ That way, your entire team can reproduce the exact same package structure as on 
 You often use two kinds of packages:
 
 * **Production dependencies** that your program or application needs to run (e.g. a database client)
-* **Development dependencies** that you use during development but do not need to run the application (e.g. a tool that restarts your server when you edit a file)
+* **Development dependencies** that you use during development but do not need to run the application (e.g. a tool that formats your code)
 
 <!-- slide-column 45 -->
 
 Use the `--save-dev` option to save your development dependencies:
 
 ```bash
-$> npm install --save-dev nodemon
+$> npm install --save-dev prettier
 ```
 
 A `devDependencies` section will be added to your `package.json`:

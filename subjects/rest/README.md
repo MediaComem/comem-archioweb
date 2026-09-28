@@ -607,6 +607,9 @@ that are here to **help you** implement rich client-server interaction.
   times** has the same effect, so it can be **retried without fear** after a
   network failure.
 
+> `PUT` may also **create** the resource at that URL if it does not exist yet.
+> The server then responds with `201 Created`.
+
 ### Common request [headers][http-request-headers]
 
 <!-- slide-front-matter class: compact-table -->

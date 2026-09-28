@@ -130,10 +130,18 @@ reference.
 With the code above, the Swagger UI is kept automatically up to date every time
 you launch your Express application.
 
-> If you use [nodemon][nodemon] and have a `nodemon.json` configuration file,
-> remember to add your `openapi.json` or `openapi.yml` file to the `watch` list
-> in `nodemon.json`. This will make you application restart every time you
-> modify the OpenAPI document.
+> `npm run dev` (`node --watch`) only restarts your application when a file your
+> code **imports** changes. Your OpenAPI document is read, not imported, so
+> modifying it does not restart the application. To fix this, list what to watch
+> with [`--watch-path`][node-watch-path] in the `dev` script of your
+> `package.json`:
+>
+> ```json
+> "dev": "node --watch-path=app.js --watch-path=bin --watch-path=routes --watch-path=openapi.yml bin/start.js"
+> ```
+>
+> `--watch-path` turns off the automatic watching of imported files, so list
+> every file and directory that contains code.
 
 #### Tips
 
@@ -165,7 +173,7 @@ with it, but for your information, there are alternatives:
 [json-schema-validation]: https://json-schema.org/draft/2019-09/json-schema-validation.html
 [markdown]: https://daringfireball.net/projects/markdown/syntax
 [node]: https://nodejs.org/
-[nodemon]: https://www.npmjs.com/package/nodemon
+[node-watch-path]: https://nodejs.org/docs/latest-v26.x/api/cli.html#--watch-path
 [openapi]: https://www.openapis.org
 [openapi-components]: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#componentsObject
 [openapi-schema]: https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#schema

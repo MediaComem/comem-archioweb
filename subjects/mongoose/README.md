@@ -534,8 +534,9 @@ one of the most popular Node.js web framework.
 
 ### Install and connect Mongoose
 
-Assuming you have generated an Express application with [express-generator][express-generator],
-go into its directory and install Mongoose:
+Assuming you have created an Express application from the
+[Express starter application][express-starter], go into its directory and
+install Mongoose:
 
 ```bash
 $> cd /path/to/projects/my-app
@@ -701,7 +702,7 @@ Content-Type: application/json
 [alt-camo]: https://www.npmjs.com/package/camo
 [alt-waterline]: https://github.com/balderdashy/waterline
 [collection-api]: http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html
-[express-generator]: https://www.npmjs.com/package/express-generator
+[express-starter]: https://github.com/MediaComem/comem-archioweb/tree/main/subjects/express/starter
 [mongodb]: https://www.mongodb.com
 [mongodb-node-driver]: http://mongodb.github.io/node-mongodb-native/
 [mongoose]: http://mongoosejs.com

@@ -49,22 +49,22 @@ and database, etc.
 
 ## Create an Express.js application
 
-Install the [custome Express.js generator][express-generator] if you haven't already:
+Copy the [starter application][express-starter] from the Express subject into a
+new directory, and install its dependencies:
 
 ```bash
-$> npm install -g yo
-$> npm install -g generator-express-api-es
+$> npx degit MediaComem/comem-archioweb/subjects/express/starter my-api
+$> cd my-api
+$> npm install
 ```
 
-Generate a new [Express][express] application:
+Start it:
 
 ```bash
-$> yo express-api-es
+$> npm start
 ```
 
-Make sure it works by following the instructions in your terminal.
-
-Check that you can access the express application at [http://localhost:3000](http://localhost:3000).
+Check that you can access the [Express][express] application at [http://localhost:3000](http://localhost:3000).
 Once you're sure it works, you can stop it with `Ctrl-C`.
 
 ### Make it a Git repository
@@ -76,17 +76,13 @@ repository in the application's directory:
 $> git init
 ```
 
-Add a `.gitignore` file to ignore the `node_modules` directory (dependencies
-will be automatically installed by Render when you push):
-
-```bash
-$> echo node_modules > .gitignore
-```
-
-The contents of your `.gitignore` file should look like this:
+The starter comes with a `.gitignore` file that ignores the `node_modules`
+directory (dependencies will be automatically installed by Render when you
+push):
 
 ```txt
-node_modules
+/.env
+/node_modules
 ```
 
 Commit all the app's files:
@@ -297,7 +293,7 @@ Once your deploy is live, you should be able to test your API at the URL generat
 
 [cloud]: https://en.wikipedia.org/wiki/Cloud_computing
 [express]: https://expressjs.com
-[express-generator]: https://www.npmjs.com/package/generator-express-api-es
+[express-starter]: https://github.com/MediaComem/comem-archioweb/tree/main/subjects/express/starter
 [git]: https://git-scm.com
 [github]: https://github.com
 [render]: https://render.com

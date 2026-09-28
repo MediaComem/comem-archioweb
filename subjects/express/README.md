@@ -38,29 +38,26 @@ Learn the basics of [Express][express], a fast, unopinionated, minimalistic web 
     - [Serving the index page](#serving-the-index-page)
     - [Serving static files](#serving-static-files)
     - [Creating a user with a JSON payload](#creating-a-user-with-a-json-payload)
-  - [Attaching data to the request in a middleware](#attaching-data-to-the-request-in-a-middleware)
   - [Asynchronous middleware](#asynchronous-middleware)
-    - [Using Node.js callbacks](#using-nodejs-callbacks)
+  - [Attaching data to the request](#attaching-data-to-the-request)
   - [How to deal with errors in middlewares](#how-to-deal-with-errors-in-middlewares)
     - [Error-handling middleware](#error-handling-middleware)
     - [Error-handling example](#error-handling-example)
     - [Error-handling middleware in the starter application](#error-handling-middleware-in-the-starter-application)
 - [The request object](#the-request-object)
   - [Request example](#request-example)
-  - [Getting the HTTP method, URL path and query parameters](#getting-the-http-method-url-path-and-query-parameters)
-  - [Getting HTTP headers](#getting-http-headers)
-  - [Getting the HTTP request body](#getting-the-http-request-body)
+  - [Reading the request](#reading-the-request)
 - [The response object](#the-response-object)
   - [Sending the response](#sending-the-response)
-  - [Setting the HTTP status code](#setting-the-http-status-code)
-  - [Sending HTTP response headers](#sending-http-response-headers)
-  - [Chain response methods](#chain-response-methods)
+  - [Status code and headers](#status-code-and-headers)
 - [Routing](#routing)
   - [Basic routing](#basic-routing)
-  - [Routing middlewares](#routing-middlewares)
   - [Routers](#routers)
     - [Creating a router](#creating-a-router)
     - [Plugging in a router](#plugging-in-a-router)
+- [Practice](#practice)
+  - [Express 5 vs. what you'll find online](#express-5-vs-what-youll-find-online)
+  - [Exercise](#exercise)
 - [Resources](#resources)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -328,6 +325,12 @@ app.post('/ping', function ping(req, res, next) {
 
 As you can see, you can use `res.send()` to send a response to the client.
 
+<!-- slide-notes -->
+
+`app.use('/hello')` matches **every method** and every path **starting with**
+`/hello` (e.g. `/hello/world`), whereas `app.get('/hello')` only matches
+`GET /hello`.
+
 ### Controlling the middleware chain
 
 Remove the call to `next()` in your first middleware function:
@@ -444,30 +447,6 @@ Host: localhost:3000
 
 <img src="images/middleware-chain-3.png" width="100%" />
 
-### Attaching data to the request in a middleware
-
-You can attach data to the request object:
-
-```js
-app.use(function (req, res, next) {
-  req.hello = 'World';
-  next();
-});
-```
-
-Then use that in the next middleware:
-
-```js
-app.use(function (req, res, next) {
-  console.log('Hello ' + req.hello); // "Hello World"
-  next();
-});
-```
-
-Many middlewares use this pattern to **provide data to the next middlewares**.
-For example, the `express.json()` middleware parses the body of HTTP requests with the `application/json` content type,
-and attaches it to the `req.body` property.
-
 ### Asynchronous middleware
 
 You don't have to call `next()` right away.
@@ -484,22 +463,26 @@ app.use(`async function`(req, res, next) {
 
 The middleware chain will not proceed until you call `next()`.
 
-#### Using Node.js callbacks
+### Attaching data to the request
 
-You can also make callback-based asynchronous calls. Just call `next()` when
-you're done:
+A middleware can load something and **attach it to `req`** for the next ones.
+A route can also have **its own chain** of middlewares:
 
 ```js
-app.use(function(req, res, next) {
-  `fs.readFile`("data.txt", "utf-8", `function(err, data)` {
-    if (err) {
-      return next(err);
-    }
-    req.myData = data;
-    `next();`
-  });
+async function loadUser(req, res, next) {
+  const base = 'https://jsonplaceholder.typicode.com';
+  const response = await fetch(\`${base}/users/${req.params.id}`);
+* req.user = await response.json();
+  next();
+}
+
+app.get('/users/:id', `loadUser`, function (req, res) {
+  res.send(\`Hello ${req.user.name}`); // "Hello Leanne Graham"
 });
 ```
+
+`loadUser` only runs for `GET /users/:id`. Many middlewares use this pattern:
+`express.json()` is what gives you `req.body`.
 
 ### How to deal with errors in middlewares
 
@@ -515,24 +498,6 @@ automatically be given to Express (just remember to `await` them):
 app.use(async function (req, res, next) {
   req.myData = await fs.readFile('data.txt', 'utf-8');
   next();
-});
-```
-
-#### Error-handling with callbacks
-
-If you are making a callback-based asynchronous call, the proper thing to do
-with Express in case of error is to give it to `next()`:
-
-```js
-app.use(function(req, res, next) {
-  fs.readFile("data.txt", { encoding: "utf-8" }, function(err, data) {
-*   if (err) {
-*     return next(err);
-*   }
-
-    req.myData = data;
-    next();
-  });
 });
 ```
 
@@ -616,87 +581,24 @@ Authorization: Basic Zm9vOmJhcg==
 }
 ```
 
-### Getting the HTTP method, URL path and query parameters
-
-Let's start with the request line:
-
-```http
-POST /test/a/b?page=3&select=foo&select=bar HTTP/1.1
-```
-
-This is how to get the different parts:
+### Reading the request
 
 ```js
-app.all('/test/:param1/:param2', function (req, res, next) {
-  console.log(req.method); // "POST"
-  console.log(req.path); // "/test/a/b"
-  console.log(req.params); // { param1: "a", param2: "b" }
-  console.log(req.query); // { page: "3", select: [ "foo", "bar" ] }
-  next();
+app.post('/test/:param1/:param2', function (req, res) {
+  req.method; // 'POST'
+  req.path; // '/test/a/b'
+  req.params; // { param1: 'a', param2: 'b' }
+  req.query; // { page: '3', select: ['foo', 'bar'] }
+  req.headers; // { 'content-type': 'application/json', … }
+  req.get('Content-Type'); // 'application/json' (any case)
+  req.body; // { age: '24', name: { … } }
+  res.sendStatus(204);
 });
 ```
 
-### Getting HTTP headers
-
-```http
-Content-Type: application/json
-Host: localhost:3000
-Authorization: Basic Zm9vOmJhcg==
-```
-
-You can get the **normalized** headers (all in lower case):
-
-```js
-app.all('/test/:param1/:param2', function (req, res, next) {
-  console.log(req.headers);
-  // {
-  //   "content-type": "application/json",
-  //   "host": "localhost:3000",
-  //   "authorization": "Basic Zm9vOmJhcg=="
-  // }
-  next();
-});
-```
-
-Or you can use `req.get()` to retrieve them in a case-insensitive manner:
-
-```js
-app.all('/test/:param1/:param2', function (req, res, next) {
-  console.log(req.get('content-type')); // "application/json"
-  console.log(req.get('Content-Type')); // "application/json"
-  next();
-});
-```
-
-### Getting the HTTP request body
-
-Finally, let's get the request body:
-
-```json
-{
-  "age": "24",
-  "name": {
-    "first": "John",
-    "last": "Doe"
-  }
-}
-```
-
-As long as you have the `express.json()` middleware in your chain, it's as simple as this:
-
-```js
-app.all('/test/:param1/:param2', function (req, res, next) {
-  console.log(req.body);
-  // {
-  //   "age": "24",
-  //   "name": {
-  //     "first": "John",
-  //     "last": "Doe"
-  //   }
-  // }
-  next();
-});
-```
+- Query and path parameters are **always strings**
+- `req.headers` has **lower-case** names, `req.get()` accepts any case
+- `req.body` is `undefined` unless a body parser such as `express.json()` ran first
 
 ## The response object
 
@@ -706,88 +608,43 @@ Using the `res` object
 
 ### Sending the response
 
-Use `res.send()` for most use cases.
-It will automatically determine the type of content your are sending and set the appropriate `Content-Type` header:
+Use `res.send()` for most use cases. It determines the type of content you
+are sending and sets the appropriate `Content-Type` header:
 
-<!-- slide-column 45 -->
+| You send                        | `Content-Type`             |
+| :------------------------------ | :------------------------- |
+| `res.send('Some text')`         | `text/html`                |
+| `res.send({ some: 'object' })`  | `application/json`         |
+| `res.send(Buffer.from('0101'))` | `application/octet-stream` |
 
-```js
-res.send('Some text');
-```
+Objects and arrays are serialized to JSON for you.
 
-<!-- slide-column -->
-
-```http
-HTTP/1.1 200 OK
-Content-Type: text/html
-
-Some text
-```
-
-<!-- slide-container -->
-
-<!-- slide-column 45 -->
-
-```js
-res.send({
-  some: 'object'
-});
-```
+### Status code and headers
 
 <!-- slide-column -->
 
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "some": "object"
-}
-```
-
-<!-- slide-container -->
-
-<!-- slide-column 45 -->
+<!-- prettier-ignore-start -->
 
 ```js
-res.send(Buffer.from('0101'));
+res
+  .status(201)
+  .set('Location', '/books/42')
+  .send(book);
 ```
 
-<!-- slide-column -->
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/octet-stream
-
-0101
-```
-
-### Setting the HTTP status code
-
-Use `res.status()` to set the status code:
-
-<!-- slide-column -->
-
-```js
-res.status(201).send({
-  some: 'object'
-});
-```
+<!-- prettier-ignore-end -->
 
 <!-- slide-column -->
 
 ```http
 HTTP/1.1 201 Created
+Location: /books/42
 Content-Type: application/json
 
-{
-  "some": "object"
-}
+{ "id": 42, … }
 ```
 
 <!-- slide-container -->
-
-If you have no body to send, use `res.sendStatus()`:
 
 <!-- slide-column -->
 
@@ -801,98 +658,10 @@ res.sendStatus(204);
 HTTP/1.1 204 No Content
 ```
 
-### Sending HTTP response headers
-
-Use `res.set()` to set headers:
-
-<!-- slide-column -->
-
-<!-- prettier-ignore-start -->
-
-```js
-res.set('Header-1', 'foo');
-res.set('Total-Books', 2);
-
-res.send([
-  'Catch-22', 'Fahrenheit 451'
-]);
-```
-
-<!-- prettier-ignore-end -->
-
-<!-- slide-column -->
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-Header-1: foo
-Total-Books: 2
-
-[
-  "Catch-22",
-  "Fahrenheit 451"
-]
-```
-
 <!-- slide-container -->
 
-Setting headers does not send the response, so you can do it in **multiple middlewares** as long as you do not call `res.send()`:
-
-<!-- slide-column -->
-
-```js
-app.use(function (req, res, next) {
-  res.set('Header-1', 'foo');
-  next();
-});
-
-app.use(function (req, res, next) {
-  res.set('Header-2', 'bar');
-  res.send('Some text');
-});
-```
-
-<!-- slide-column -->
-
-```http
-HTTP/1.1 200 OK
-Content-Type: text/html
-Header-1: foo
-Header-2: bar
-
-Some text
-```
-
-### Chain response methods
-
-You can also chain all the previous methods together:
-
-<!-- slide-column -->
-
-<!-- prettier-ignore-start -->
-
-```js
-res
-  .set('Header-1', 'foo')
-  .status(201)
-  .send('Some text');
-```
-
-<!-- prettier-ignore-end -->
-
-<!-- slide-column -->
-
-```http
-HTTP/1.1 201 Created
-Content-Type: text/html
-Header-1: foo
-
-Some text
-```
-
-<!-- slide-container -->
-
-Each of these methods returns `res` itself, which is what makes this **method chaining** possible.
+Each method returns `res`, so calls can be **chained**. Nothing is sent until
+`send()`, so earlier middlewares can set headers too.
 
 ## Routing
 
@@ -920,35 +689,13 @@ app.get('/authors/`:authorId`/books/`:bookId`', function (req, res, next) {
 });
 ```
 
-Calling `http://localhost:3000/authors/24/books/33` will produce the following response:
+Calling `http://localhost:3000/authors/24/books/33` will respond with:
 
 ```txt
 Getting book 33 by 24
 ```
 
 See the [routing guide][routing] for more advanced paths.
-
-### Routing middlewares
-
-A route can also contain **its own chain of successive middlewares**:
-
-```js
-function `getNameFromQuery`(req, res, next) {
-  req.nameToSalute = req.query.name;
-  next();
-}
-
-function `prepareSalutation`(req, res, next) {
-  req.salutation = "Hello " + req.nameToSalute;
-  next();
-}
-
-app.get("/hello",`getNameFromQuery`,`prepareSalutation`, function (req, res, next) {
-  res.send(req.salutation);
-});
-```
-
-These middleware functions are **only executed for that route** (`GET /hello` in this case).
 
 ### Routers
 
@@ -1032,6 +779,40 @@ The path passed to `app.use()` is **prepended to your router's paths**,
 so your router's `/:id` route becomes `/books/:id` when plugged in like this.
 It will handle HTTP requests to `/books/42`, for example.
 
+## Practice
+
+<!-- slide-front-matter class: center, middle -->
+
+Time to write your own routes
+
+### Express 5 vs. what you'll find online
+
+Most tutorials (and AI assistants) still write **Express 4** code. In Express 5:
+
+| Express 4 code                           | What Express 5 does                                                  |
+| :--------------------------------------- | :------------------------------------------------------------------- |
+| An `async` middleware that throws        | The error goes to the error handler (Express 4 hung)                 |
+| `req.body` without a body parser         | `undefined` (was `{}`)                                               |
+| `res.send(404)`                          | Sends `404` as the body with status `200`: use `res.sendStatus(404)` |
+| `app.get('*', …)`, `app.get('/:id?', …)` | Throws at startup: use `'/*splat'` and `'{/:id}'`                    |
+| `?a[b]=1`                                | `req.query` is `{ 'a[b]': '1' }`, not a nested object                |
+
+See the [migration guide][migrating-5] for the full list.
+
+### Exercise
+
+Implement the API described at **[express.archioweb.ch][exercise]** in your
+`my-api` application, in this order:
+
+1. `GET /hello`: the server you wrote by hand in the Node.js exercise
+2. `POST /computations`: read and validate a JSON request body
+3. The books: read and write files, and put the routes in a router
+
+The page is an [OpenAPI][openapi] document: it describes each route's expected
+parameters, request body and responses. It's your job to implement them as documented.
+
+Test each route with [Postman][postman] as you go.
+
 ## Resources
 
 - [API reference][api] (documentation for `app`, `req`, `res` and `Router`)
@@ -1043,11 +824,14 @@ It will handle HTTP requests to `/books/42`, for example.
 [design-pattern-cor]: https://sourcemaking.com/design_patterns/chain_of_responsibility
 [express]: https://expressjs.com
 [degit]: https://www.npmjs.com/package/degit
+[exercise]: https://express.archioweb.ch
 [express-static]: https://expressjs.com/en/5x/api/express/#expressstatic
 [using-middleware]: https://expressjs.com/en/guide/using-middleware/
+[migrating-5]: https://expressjs.com/en/guide/migrating-5/
 [node]: https://nodejs.org/en/
 [node-watch]: https://nodejs.org/docs/latest-v26.x/api/cli.html#--watch
 [router]: https://expressjs.com/en/5x/api/router/
 [routing]: https://expressjs.com/en/guide/routing/
+[openapi]: https://www.openapis.org
 [postman]: https://www.postman.com
 [starter]: https://github.com/MediaComem/comem-archioweb/tree/main/subjects/express/starter

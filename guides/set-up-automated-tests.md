@@ -374,8 +374,9 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/my-app', {
 
 ### Get rid of request logs while testing
 
-You may have a request logger in your Express.js application. If you used
-`generator-express-api-es`, you might see this line in the `npm test` command's output:
+You may have a request logger in your Express.js application. If you started
+from the Express starter application, you might see this line in the `npm test`
+command's output:
 
 ```
 POST /users 200 93.114 ms - 52

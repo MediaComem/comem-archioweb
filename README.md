@@ -78,7 +78,7 @@ This course is a [COMEM+][comem] web development course taught at
 - [Git][git-downloads]
 - A free [GitHub][github] account
 - [Google Chrome][chrome] (recommended, any browser with developer tools will do)
-- [Node.js][node] 24.x
+- [Node.js][node] 26 (22 and 24 also work)
 - [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
 - [MongoDB][mongodb] 8
 - A free [Render][render] account
@@ -339,4 +339,4 @@ the end of each subject.
 [mongodb]: https://www.mongodb.com
 [mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
 [node]: https://nodejs.org/
-[postman]: https://www.getpostman.com
+[postman]: https://www.postman.com
