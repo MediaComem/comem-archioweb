@@ -5,7 +5,7 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
 
 **You will need**
 
-- A running [MongoDB][mongodb] database
+- A running [MongoDB][mongodb] 8.0 database
 
 **Recommended reading**
 
@@ -16,10 +16,7 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [MongoDB Node.js driver](#mongodb-nodejs-driver)
-  - [Usage](#usage)
-  - [MongoDB client API](#mongodb-client-api)
-    - [Finding documents](#finding-documents)
-  - [Should I use it?](#should-i-use-it)
+  - [The official driver](#the-official-driver)
 - [What is Mongoose?](#what-is-mongoose)
   - [Object-Document Mapper (ODM)](#object-document-mapper-odm)
     - [Connect to the database](#connect-to-the-database)
@@ -33,17 +30,16 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
   - [Unique constraints](#unique-constraints)
   - [Mongoose queries](#mongoose-queries)
     - [Query builder](#query-builder)
-    - [Counting documents](#counting-documents)
+    - [Find by ID](#find-by-id)
+    - [Update and delete](#update-and-delete)
   - [Debugging](#debugging)
-  - [Should I use it?](#should-i-use-it-1)
+  - [Driver or Mongoose?](#driver-or-mongoose)
 - [Integrating Mongoose into Express](#integrating-mongoose-into-express)
   - [Install and connect Mongoose](#install-and-connect-mongoose)
   - [Create a schema and model](#create-a-schema-and-model)
   - [Implement the `GET /users` route](#implement-the-get-users-route)
-    - [Retrieve users](#retrieve-users)
   - [Implement the `POST /users` route](#implement-the-post-users-route)
-    - [Create a user](#create-a-user)
-    - [Retrieve users again](#retrieve-users-again)
+  - [What about invalid input?](#what-about-invalid-input)
 - [Resources](#resources)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -54,111 +50,25 @@ and how it differs from the [official Node.js MongoDB driver][mongodb-node-drive
 
 The [official MongoDB driver][mongodb-node-driver] for Node.js
 
-### Usage
-
-The native Node.js client is an npm package:
-
-```bash
-$> npm install mongodb --save
-```
-
-You can then connect to your MongoDB database:
+### The official driver
 
 ```js
-import { MongoClient } from 'mongodb'
+import { MongoClient } from 'mongodb';
 
-// Connection URL
-const url = 'mongodb://localhost:27017/myproject';
+const client = new MongoClient('mongodb://127.0.0.1:27017');
+const people = client.db('archioweb').collection('people');
 
-// Use connect method to connect to the Server
-MongoClient.connect(url, function(err, db) {
-  if (err) {
-    console.warn(\`Could not connect to database because:  ${err.message}`);
-  } else {
-    console.log('Connected to MongoDB');
+const result = await people.insertOne({ name: 'John Doe', age: 42 });
+console.log(result.insertedId); // ObjectId('…')
 
-    // Do something with "db"...
-
-    db.close();
-  }
-});
+const adults = await people.find({ age: { $gte: 18 } }).toArray();
+await client.close();
 ```
 
-### MongoDB client API
-
-This client provides a [similar API][collection-api] to the MongoDB shell:
-
-```js
-collection.insertOne(document, options, callback);
-collection.find(query);
-collection.updateMany(query, update, options, callback);
-collection.deleteOne(query, options, callback);
-collection.createIndex(fields, options, callback);
-```
-
-For example, to insert a document:
-
-```js
-const person = {
-  name: 'John Doe',
-  age: 42
-};
-
-db.collection('people').insertOne(person, function(err, commandResult) {
-  if (err) {
-    console.warn(\`Could not insert person: ${err.message}`);
-  } else {
-    console.log(\`Inserted ${commandResult.insertedCount} person`);
-    db.close();
-  }
-});
-```
-
-#### Finding documents
-
-To find documents:
-
-```js
-db.collection('people')
-  .find({ 'age': { '$gt': 18 },  'phone.type': 'professional' })
-  .skip(40)
-  .limit(20)
-  .project({ 'name': 1 })
-  .toArray(function(err, people) {
-    if (err) {
-      console.warn(\`Could not fetch people because: ${err.message}`);
-    } else {
-      console.log(\`Found ${people.length} people`);
-      db.close();
-    }
-  })
-```
-
-### Should I use it?
-
-<!-- slide-column -->
-
-**Advantages**
-
-- Similar API to MongoDB (the names are almost the same, e.g. `insert` vs `insertOne/insertMany`)
-- You use the MongoDB query language directly
-
-<!-- slide-column -->
-
-**Disadvantages**
-
-- Very low level
-  - No serialization and deserialization of objects
-  - No validation
-- No connection abstraction (you must manage the connections yourself; no pool)
-
-<!-- slide-container -->
-
-**Alternatives**
-
-- [Camo][alt-camo]: a class-based ES6 ODM for Mongo-like databases
-- [Mongoose][mongoose]: elegant MongoDB object modeling for Node.js
-- [Waterline][alt-waterline]: an adapter-based ORM for Node.js with support for MySQL, MongoDB, Postgres, Redis, and more
+- **The same methods as the shell**, with `await` (see the
+  [Collection API][collection-api])
+- Documents are **plain objects**: no schema, no validation
+- **Mongoose is built on top of it**
 
 ## What is Mongoose?
 
@@ -170,15 +80,16 @@ db.collection('people')
 
 ### Object-Document Mapper (ODM)
 
-Mongoose **maps JavaScript objects to MongoDB documents**, much like an Object-Relational Mapper (ORM) maps objects to relational database tables.
+Mongoose **maps JavaScript objects to MongoDB documents**, much like an
+Object-Relational Mapper (ORM) maps objects to relational database tables.
 
 <p class='center'><img src='images/schema-model-document.png' width='60%' /></p>
 
-- Everything in Mongoose starts with a [Schema][mongoose-guide]:
-  each schema maps to a MongoDB collection and defines the **shape of the documents** within that collection
-- [Models][mongoose-model] are fancy **constructors** compiled from our Schema definitions
-- Mongoose [Documents][mongoose-document] represent a one-to-one mapping to **documents** as stored in MongoDB:
-  each document is an instance of its Model
+- A [**schema**][mongoose-guide] defines the **shape of the documents** in a
+  collection.
+- A [**model**][mongoose-model] is a **constructor** compiled from a schema.
+- A [**document**][mongoose-document] is an instance of a model, stored in
+  MongoDB.
 
 <!-- slide-notes -->
 
@@ -186,37 +97,37 @@ ORM examples: Hibernate (Java), Active Record (Ruby), SQLAlchemy (Python).
 
 #### Connect to the database
 
-Simply call `mongoose.connect()`:
-
 ```js
 import mongoose from 'mongoose';
-mongoose.connect('mongodb://localhost/myproject');
+
+await mongoose.connect('mongodb://127.0.0.1/my-app');
 ```
 
-Notice that you don't have to specify a callback.
-Mongoose will start connecting and delay your first requests until it is done.
-It will also automatically create and manage a **connection pool** for you.
+- **`await` it**: if MongoDB isn't running, the error shows up **here**
+  (`ECONNREFUSED`, after about 30 seconds) instead of in your first request.
+- Mongoose keeps a **pool** of connections open for the whole app.
 
 #### Create a schema
 
 The schema defines the shape of the documents you want to save:
 
 ```js
-import mongoose from 'mongoose';
-const `Schema` = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
 
 // Define a schema
 const blogSchema = `new Schema`({
   title: String,
   body: String,
-  date: { type: Date, default: Date.now  }, // Default value
-  comments: [ // Nested array of documents
+  date: { type: Date, default: Date.now }, // Default value
+  comments: [
+    // Nested array of documents
     {
       body: String,
       date: Date
     }
   ],
-  meta: { // Nested document
+  meta: {
+    // Nested document
     votes: Number,
     favs: Number
   }
@@ -225,23 +136,26 @@ const blogSchema = `new Schema`({
 
 #### Create a model
 
-Once you have your schema, you can create a model to link that schema to a MongoDB collection:
+A model links a schema to a **collection**:
 
 ```js
+// models/blog.js
 import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
 
-// Define a schema
-const blogSchema = new Schema({
-  // ...
-});
+const blogSchema = new mongoose.Schema({ /* ... */ });
 
-// Create a model
-*mongoose.model('Blog', blogSchema);
+*export default mongoose.model('Blog', blogSchema);
 ```
 
-`mongoose.model()` takes a **singular** name, but will then look for a collection with the **lowercase, plural version** of that name in the MongoDB database.
-In this case, the model will store documents in the `blogs` collection (not `Blog`).
+```js
+// Anywhere else
+import Blog from './models/blog.js';
+```
+
+The model `Blog` stores its documents in the **`blogs`** collection (lowercase,
+plural).
+
+<!-- slide-notes -->
 
 You can also choose your own collection name if you prefer:
 
@@ -254,11 +168,10 @@ mongoose.model('Blog', blogSchema, 'awesome-blog-collection');
 The model is a **constructor** that you can use to create documents:
 
 ```js
-// Retrieve the model from another file
-const `Blog` = mongoose.model('Blog');
+import `Blog` from './models/blog.js';
 
 // Create a document with it
-let blog = `new Blog`({
+const blog = `new Blog`({
   title: 'Teaching Mongoose',
   body: 'So cool',
   comments: [
@@ -272,33 +185,24 @@ let blog = `new Blog`({
 });
 ```
 
+Fields that are **not in the schema are silently dropped** (e.g. `role:
+'admin'`), so you can pass `req.body` without storing unexpected fields.
+
 #### Saving documents
 
-Once you have your document, you can insert or update it with `save()`:
-
 ```js
-let blog = new Blog({
-  // ...
-});
+const blog = new Blog({ title: 'Teaching Mongoose' });
+blog._id; // ObjectId('…'): already set
+blog.isNew; // true
 
-try {
-  const savedBlog = await `blog.save()`;
-  console.log('Saved blog');
+await `blog.save()`; // Inserts the document
 
-  // Update something
-  blog.meta.votes = 5;
-
-  // This will update the document
-  const updatedBlog = await `blog.save()`;
-  console.log('Updated blog');
-} catch (err) {
-  console.warn(\`Could not save blog because: ${err.message}`);
-}
+blog.meta.votes = 5;
+await `blog.save()`; // Updates only what changed: { $set: { 'meta.votes': 5 } }
 ```
 
-The first time, your blog document has no `_id` so Mongoose will **insert** it.
-The second time, Mongoose has added the `_id` to the document object, so it
-knows that it exists and should be **updated** instead.
+`save()` **inserts** new documents and **updates** existing ones. To create and
+save in one step: `await Blog.create({ … })`.
 
 ### Mongoose validations
 
@@ -309,8 +213,8 @@ const personSchema = new Schema({
   name: {
     type: String, // Type validation
     `required: true`, // Mandatory
-    `minlength: [ 3, 'Name is too short' ]`, // Minimum length
-    `maxlength: 20` // Maximum length
+    `minLength: [ 3, 'Name is too short' ]`, // Minimum length
+    `maxLength: 20` // Maximum length
   },
   address: {
     city: {
@@ -327,37 +231,34 @@ const personSchema = new Schema({
     `min: 0`, // Minimum value
     `max: 122` // Maximum value
   },
-  interests: [{ type: String, `maxlength: 10` }]
+  interests: [{ type: String, `maxLength: 10` }]
 });
 ```
 
 #### Handling validations
 
-The promise returned by `save()` will be rejected if validations fail
+The promise returned by `save()` (or `create()`) is rejected if validations
+fail:
 
 ```js
-let person = new Person({
-  name: 'Bo',
-  age: -4,
-  honorific: 'Great'
-});
-
-
 try {
-  await person.save();
+  await Person.create({ name: 'Bo', age: -4, honorific: 'Great' });
 } catch (err) {
-* if (err.name === 'ValidationError') {
-*   console.log(err.errors);
-*   // {
-*   //   "honorific": { "message": "'Great' is not a valid enum value" },
-*   //   "age": { "message": "Path 'age' (-4) is less than minimum" },
-*   //   "name": { "message": "Name is too short" }
-*   // }
-*   console.warn('Person is invalid');
-  } else {
-    console.warn(\`Could not save person because: ${err.message}`);
+  if (err.name !== 'ValidationError') {
+    throw err;
+  }
+
+  for (const [path, error] of Object.entries(err.errors)) {
+    console.log(path, error.message);
   }
 }
+```
+
+```txt
+address.city Path \`address.city` is required.
+name Name is too short
+honorific \`Great` is not a valid enum value for path \`honorific`.
+age Path \`age` (-4) is less than minimum allowed value (0).
 ```
 
 #### Custom validations
@@ -373,7 +274,7 @@ const userSchema = new Schema({
 *   validate: {
 *     // Returns true if the name is valid (in lower case)
 *     validator: function(value) {
-*       return value.toLowerCase() == value;
+*       return value.toLowerCase() === value;
 *     },
 *     // Custom error message
 *     message: '{VALUE} is not in lower case'
@@ -384,20 +285,18 @@ const userSchema = new Schema({
 
 ### Unique constraints
 
-Simply add the `unique: true` property to the schema property you want to be unique:
-
 ```js
 const personSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: [ 3, 'Name is too short' ],
-    maxlength: 20,
-    `unique: true`
-  },
-  // ...
+  email: { type: String, required: true, `unique: true` },
 });
 ```
+
+`unique` is **not a validator**: it creates a **unique index**.
+
+- A duplicate makes `save()` reject with a **`MongoServerError`, code 11000**,
+  not a `ValidationError`.
+- The index is built when the app starts. If duplicates **already exist**, it
+  **silently fails**, and nothing is enforced.
 
 To create a unique index on **multiple fields**, use `index()` on the schema:
 
@@ -407,25 +306,23 @@ To create a unique index on **multiple fields**, use `index()` on the schema:
 
 ### Mongoose queries
 
-You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoose models:
+You can make MongoDB queries with the `find()` or `findOne()` methods of
+Mongoose models:
 
 ```js
-* Person.find({
-*  name: /arnold/i,
-*  'address.city': 'Los Angeles',
-*  age: { $gt: 17, $lt: 80 },
-*  interests: { $in: ['shooting', 'talking'] }
+const people = await Person
+* .find({
+*   name: /arnold/i,
+*   'address.city': 'Los Angeles',
+*   age: { $gt: 17, $lt: 80 },
+*   interests: { $in: ['shooting', 'talking'] }
 * })
   .limit(10)
   .sort({ name: -1 })
   .select({ name: 1, address: 1 })
-* .exec()
-  .then(people => {
-    console.log(\`Found ${people.length} people`);
-  })
-  .catch(err => {
-    console.warn(\`Could not find people because: ${err.message}`);
-  });
+* .exec();
+
+console.log(\`Found ${people.length} people`);
 ```
 
 #### Query builder
@@ -433,7 +330,8 @@ You can make MongoDB queries with the `find()` or `findOne()` methods of Mongoos
 You can also use chainable query methods:
 
 ```js
-  Person.find()
+const people = await Person
+  .find()
 * .where('name').equals(/arnold/i)
 * .where('address.city').equals('Los Angeles')
 * .where('age').gt(17).lt(80)
@@ -441,32 +339,48 @@ You can also use chainable query methods:
   .limit(10)
   .sort('-name')
   .select('name address')
-* .exec()
-  .then(people => {
-    console.log(\`Found ${people.length} people`);
-  })
-  .catch(err => {
-    console.warn(\`Could not find people because: ${err.message}`);
-  });
+  .exec();
+
+// Count the matching documents instead of retrieving them
+const total = await Person.countDocuments({ age: { $gt: 17 } }).exec();
 ```
 
-#### Counting documents
+The builder is handy when the filters depend on the request (e.g. optional
+query parameters).
 
-Use `countDocuments()` instead of `exec()` at the end of your query builder to count the matching documents:
+#### Find by ID
 
 ```js
-Person.find()
-  .where('name').equals(/arnold/i)
-  .where('address.city').equals('Los Angeles')
-  .where('age').gt(17).lt(80)
-  .where('interests').in(['shooting', 'talking'])
-  .countDocuments()
-  .then(total => {
-    console.log(\`There are ${total} people matching the criteria`);
-  })
-  .catch(err => {
-    console.warn(\`Could not count people because: ${err.message}`);
-  });
+const person = await Person.findById(req.params.id).exec();
+if (!person) {
+  // No person with that ID: respond with 404
+}
+```
+
+A malformed ID such as `abc` does not give `null`: the query **rejects** with a
+**`CastError`**. Check it first:
+
+```js
+if (!mongoose.isValidObjectId(req.params.id)) {
+  // Respond with 404 too
+}
+```
+
+#### Update and delete
+
+```js
+// Load, change and save: validators run
+person.set(req.body);
+await person.save();
+
+// In one step: validators run only if you ask
+const updated = await Person.findByIdAndUpdate(id, req.body, {
+  returnDocument: 'after', // Otherwise you get the old version
+  runValidators: true
+});
+
+// Returns the deleted document, or null
+const deleted = await Person.findByIdAndDelete(id);
 ```
 
 ### Debugging
@@ -480,89 +394,73 @@ mongoose.set('debug', true);
 You will then see them in your CLI log:
 
 ```txt
-Mongoose: people.find({
-  name: /arnold/,
-  'city.address': 'Los Angeles',
-  age: { '$gt': 17, '$lt': 66 },
-  interests: { '$in': [ 'shooting', 'talking' ] }
-}, {
-  limit: 10,
-  sort: { occupation: -1 },
-  fields: { name: 1, occupation: 1 }
-})
+Mongoose: people.find({ name: /arnold/i, 'address.city': 'Los Angeles',
+age: { '$gt': 17, '$lt': 80 }, interests: { '$in': [ 'shooting', 'talking' ]
+}}, { limit: 10, sort: { name: -1 }, projection: { name: 1, address: 1 } })
 ```
 
-### Should I use it?
+(It prints each query on **one line**; it is wrapped here to fit the slide.)
+
+### Driver or Mongoose?
 
 <!-- slide-column -->
 
-**Advantages**
+**Driver**
 
-- Schemas
-- Validations
-- Complex query building
-- Connection pooling
+- The shell's API, nothing more
+- Plain objects in, plain objects out
+- You validate everything yourself
 
 <!-- slide-column -->
 
-**Disadvantages**
+**Mongoose**
 
-- Additional abstraction layer between you and the database
+- Schemas, casting and **validation**
+- Query builder, population (later)
+- One more layer to learn
 
 <!-- slide-container -->
 
-Mongoose uses the **native Node.js client** under the hood, and you can even access it **directly** if need be:
-
-```js
-const Blog = mongoose.model('Blog');
-
-Blog.collection.insertOne({ foo: 'bar' }, function(err, commandResult) {
-  if (err) {
-    return console.warn(\`Could not insert blog because: ${err.message}`);
-  }
-
-  console.log(\`${commandResult.insertedCount} documents inserted`);
-});
-```
+`Model.collection` gives you the underlying driver collection if you ever need
+it.
 
 ## Integrating Mongoose into Express
 
 <!-- slide-front-matter class: center, middle -->
 
-A typical Mongoose usage example with Express,
-one of the most popular Node.js web framework.
+A typical Mongoose usage example with Express, one of the most popular Node.js
+web framework.
 
 ### Install and connect Mongoose
 
-Assuming you have created an Express application from the
-[Express starter application][express-starter], go into its directory and
-install Mongoose:
+Assuming you have created an Express application from the [Express starter
+application][express-starter], go into its directory and install Mongoose:
 
 ```bash
 $> cd /path/to/projects/my-app
-
-$> npm install --save mongoose
-my-app@0.0.0 /path/to/projects/my-app
-└─┬ mongoose@7.5.3
-...
+$> npm install mongoose
 ```
 
-Open `app.js` and add these two lines below the first calls to `import`:
+In `app.js`, below the other imports:
 
 ```js
 import mongoose from 'mongoose';
-mongoose.connect('mongodb://127.0.0.1/my-database-name');
+
+await mongoose.connect(
+  process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/my-app'
+);
 ```
 
-Your Express application is now connected to MongoDB (to the `my-database-name` database)!
+Your Express application is now connected to MongoDB (to the `my-app` database).
+`DATABASE_URL` lets you use **another database** in production and in tests.
 
-The default generated application includes a `GET /users` resource that is not implemented in `routes/users.js`.
-Let's do that!
+The starter includes a `GET /users` route in `routes/users.js` that doesn't do
+much yet. Let's make it list users from the database!
 
 ### Create a schema and model
 
-We'll need a Mongoose model for users.
-Create a new `models` directory with a `user.js` file inside it:
+We'll need a Mongoose model for users. Create a new `models` directory with a
+`user.js` file inside it:
 
 ```js
 import mongoose from 'mongoose';
@@ -570,7 +468,7 @@ const Schema = mongoose.Schema;
 
 // Define the schema for users
 const userSchema = new Schema({
-  name: String
+  name: { type: String, required: true }
 });
 
 // Create the model from the schema and export it
@@ -579,7 +477,7 @@ export default mongoose.model('User', userSchema);
 
 ### Implement the `GET /users` route
 
-Add the following code to `routes/users.js`:
+Replace the contents of `routes/users.js` with:
 
 ```js
 import express from 'express';
@@ -587,8 +485,7 @@ import User from '../models/user.js';
 
 const router = express.Router();
 
-/* GET users listing. */
-router.get('/', async function(req, res, next) {
+router.get('/', async function (req, res) {
 * const users = await User.find().sort('name').exec();
 * res.send(users);
 });
@@ -596,17 +493,16 @@ router.get('/', async function(req, res, next) {
 export default router;
 ```
 
-#### Retrieve users
+Start your app with `npm run dev` (it restarts by itself when you save a file)
+and try it. There are no users yet:
 
-**Start or restart** your app (if need be) and try your new implementation of the route
-by making a `GET` request on `http://localhost:3000/users`:
+<!-- slide-column -->
 
 ```http
 GET /users HTTP/1.1
-Host: localhost:3000
 ```
 
-You should get a response with no users:
+<!-- slide-column -->
 
 ```http
 HTTP/1.1 200 OK
@@ -615,78 +511,77 @@ Content-Type: application/json
 []
 ```
 
-Great!
-Now how about we create some users?
-
 ### Implement the `POST /users` route
 
-Add this route to `routes/users.js` (above or below the existing route):
+Add this route to `routes/users.js`:
 
 ```js
-/* POST new user */
-router.post('/', async (req, res, next) => {
-  // Create a new document from the JSON in the request body
-  const newUser = new User(req.body);
-
-  // Save that document
-  const savedUser = await newUser.save();
-
-  // Send the saved document in the response
-  res.send(savedUser);
+router.post('/', async function (req, res) {
+  // Create and save a document from the JSON request body
+  const user = await User.create(req.body);
+  res
+    .status(201)
+    .set('Location', \`/users/${user.id}`)
+    .send(user);
 });
 ```
 
-#### Create a user
-
-**Restart** your app (if need be) and try your new route
-by making a `POST` request on `http://localhost:3000/users` with some JSON:
+<!-- slide-column -->
 
 ```http
 POST /users HTTP/1.1
 Content-Type: application/json
-Host: localhost:3000
 
 {
   "name": "John Doe"
 }
 ```
 
-You should get your new user with additional data from MongoDB:
+<!-- slide-column -->
 
 ```http
-HTTP/1.1 200 OK
+HTTP/1.1 201 Created
+Location: /users/6abb6c55…
 Content-Type: application/json
 
 {
-  "__v": 0,
-  "_id": "58b2ff04e4fbe52b3a2feb0b",
-  "name": "John Doe"
+  "name": "John Doe",
+  "_id": "6abb6c55…",
+  "__v": 0
 }
 ```
 
-#### Retrieve users again
+<!-- slide-container -->
 
-Try making another `GET` request:
+A new `GET /users` now returns this user (with `_id`, `name` and `__v`).
 
-```http
-GET /users HTTP/1.1
-Host: localhost:3000
-```
+### What about invalid input?
 
-You should retrieve the user(s) you created:
+<!-- slide-column -->
 
 ```http
-HTTP/1.1 200 OK
+POST /users HTTP/1.1
 Content-Type: application/json
 
-[
-  {
-    "__v": 0,
-    "_id": "58b2ff04e4fbe52b3a2feb0b",
-    "name": "John Doe"
-  }
-]
+{ "name": { "first": "John" } }
 ```
+
+<!-- slide-column -->
+
+```http
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json
+
+{ "message": "User validation
+  failed: name: Cast to string
+  failed…" }
+```
+
+<!-- slide-container -->
+
+Express 5 sends the rejected promise to your error handler, so the app keeps
+running. But this is the **client's** mistake: it should be a `4xx`. [Express
+best practices](../express-best-practices/) shows how to fix it.
 
 ## Resources
 
@@ -697,17 +592,19 @@ Content-Type: application/json
 - [Mongoose][mongoose]
   - [Getting started][mongoose-getting-started]
   - [Guide][mongoose-guide]
+  - [Validation][mongoose-validation]
+  - [Queries][mongoose-queries]
   - [API documentation][mongoose-api]
 
-[alt-camo]: https://www.npmjs.com/package/camo
-[alt-waterline]: https://github.com/balderdashy/waterline
-[collection-api]: http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html
+[collection-api]: https://mongodb.github.io/node-mongodb-native/7.6/classes/Collection.html
 [express-starter]: https://github.com/MediaComem/comem-archioweb/tree/main/subjects/express/starter
 [mongodb]: https://www.mongodb.com
-[mongodb-node-driver]: http://mongodb.github.io/node-mongodb-native/
-[mongoose]: http://mongoosejs.com
-[mongoose-api]: http://mongoosejs.com/docs/api.html
-[mongoose-document]: http://mongoosejs.com/docs/documents.html
-[mongoose-getting-started]: http://mongoosejs.com/docs/index.html
-[mongoose-guide]: http://mongoosejs.com/docs/guide.html
-[mongoose-model]: http://mongoosejs.com/docs/models.html
+[mongodb-node-driver]: https://mongodb.github.io/node-mongodb-native/
+[mongoose]: https://mongoosejs.com
+[mongoose-api]: https://mongoosejs.com/docs/api/mongoose.html
+[mongoose-document]: https://mongoosejs.com/docs/documents.html
+[mongoose-getting-started]: https://mongoosejs.com/docs/index.html
+[mongoose-guide]: https://mongoosejs.com/docs/guide.html
+[mongoose-model]: https://mongoosejs.com/docs/models.html
+[mongoose-queries]: https://mongoosejs.com/docs/queries.html
+[mongoose-validation]: https://mongoosejs.com/docs/validation.html
