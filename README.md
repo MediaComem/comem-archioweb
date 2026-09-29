@@ -105,7 +105,7 @@ This course is a [COMEM+][comem] web development course taught at
 **REST API**
 
 Your REST API must be developed with the [Express][express] framework and use a
-[MongoDB][mongodb] database. It must provide (at least):
+[MongoDB][mongodb] database. It must fulfill the following criteria:
 
 - The API must provide **user management**:
   - New users must be able to **register**.
@@ -121,17 +121,6 @@ Your REST API must be developed with the [Express][express] framework and use a
   - At least one resource must provide **aggregated data** from other resources
     using a [MongoDB aggregation pipeline][mongodb-aggregation] (e.g. the number
     of items created by a user).
-  - The API must be developed as a backend to a mobile application using at
-    least 2 [**mobile hardware features**][cordova-plugins], for example:
-    - At least one resource must be **geolocated**.
-
-      See [Store geospatial data with
-      Mongoose](./guides/store-geospatial-data.md) for information on how to
-      store this data.
-
-    - At least one resource must have one or multiple **pictures**.
-
-      It is sufficient to store a picture URL or URLs in the database.
 
   - Sensitive operations must be protected by requiring valid
     **authentication** and performing **authorization**:
@@ -146,8 +135,19 @@ Your REST API must be developed with the [Express][express] framework and use a
       There must be at least one operation in the API which limits the
       permissions of authenticated users.
 
-- The API must provide at least one real-time update, for example using
-  WebSockets.
+- The API must have a significant real-time component that is properly
+  integrated with the rest of the code. Developing this real-time component will
+  be done in the Développement Mobile course.
+
+You can (but are not required to) design your REST API around mobile features,
+for example:
+
+- **Geolocation:** see [Store geospatial data with
+  Mongoose](./guides/store-geospatial-data.md) for information on how to store
+  geospatial data in MongoDB and query it with Mongoose
+- **Pictures**
+- **Audio/Video**
+- **Accelerometer**
 
 **Infrastructure**
 
@@ -159,27 +159,28 @@ Your REST API must be developed with the [Express][express] framework and use a
 - Your REST API must be documented.
 
   By reading the documentation, a user must know in advance (before testing the
-  API) which requests can be made, what can be sent in each request (URL path
-  parameters, headers and/or body, and their validation constraints, if any),
-  and what responses can be expected from the API (status code, headers and/or
-  body).
+  API and without reading the code) which requests can be made, what can be sent
+  in each request (URL path parameters, headers and/or body, and their
+  validation constraints, if any), and what responses can be expected from the
+  API (status code, headers and/or body).
 
-  You may but do not have to document the 500 Internal Server Error response,
-  which is considered to always be a possible response to any request.
+  You do not have to document the 500 Internal Server Error response, which is
+  considered to always be a possible response to any request.
 
 **Automated testing**
 
 - You must implement **automated tests** to test your REST API:
-  - You must write tests for **at least 4 separate REST operations** in your API
-    (for example: create thing, update thing, list things, delete thing). You
-    must write **at least 10 tests** in total.
-
-    > A test for a `GET` request that retrieves an empty list does not count in
-    > the minimal number of tests you must write unless you also write a test
-    > for the non-empty list.
-
+  - Your test suite must reach at least **75% code coverage**, with properly
+    written tests. Note that we will not evaluate pure coverage numbers, but
+    rather the quality of your tests.
+  - Your tests must cover **all types of REST operations** in your API (for
+    example: create thing, update thing, list things, delete thing).
+  - Your tests must not cover only the "happy path" (i.e. successful requests),
+    but also **error cases**.
+  - Each of your tests must exercise only one REST operation, to remain focused,
+    independent of other operations, and to avoid excessive code duplication.
   - Your tests must be **reproducible** (running `npm test` several times in a
-    row should always produce the same result).
+    row should always pass and produce the same results).
 
 **Quality of the implementation**
 
@@ -196,26 +197,10 @@ Your REST API must be developed with the [Express][express] framework and use a
 - Your API must validate the existence of linked resources (e.g. when creating
   an item linked to a user).
 
-**Bonus**
-
-Doing more than is required **MAY** earn you some bonus points in the
-evaluation if implemented correctly. Here are some examples:
-
-- Implement a level 3 hypermedia API using a standard format such as
-  [JSON:API][json-api] or [HAL+JSON][hal].
-- Implement "full" (80-100%) test coverage with automated tests.
-
-  Note that test coverage alone is useless. The tests must also make meaningful
-  assertions.
-
-- Implement role-based authorization, i.e. users may have different roles with
-  fewer or more permissions. For example, an admin user may be authorized to
-  update resources that do not belong to them, whereas a regular user may not.
-
 ### Delivery
 
-Send an e-mail _no later than **January 11th 2026 at 23:59:59.999 CET**_ to
-Simon Oulevay & Loris Gavillet with:
+Send an e-mail _no later than **[TO BE DETERMINED]**_ to Simon Oulevay & Loris
+Gavillet with:
 
 - The list of group members.
 - The link to your source code repository on GitHub.
