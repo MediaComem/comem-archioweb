@@ -22,7 +22,8 @@ project](./deploy-in-the-cloud.md)) also works.
   - [Checking the server's logs](#checking-the-servers-logs)
   - [Run the MongoDB shell on macOS](#run-the-mongodb-shell-on-macos)
 - [MongoDB on Windows](#mongodb-on-windows)
-  - [Install the MongoDB shell on Windows](#install-the-mongodb-shell-on-windows)
+  - [Install MongoDB with the native installer](#install-mongodb-with-the-native-installer)
+  - [Install MongoDB in the WSL](#install-mongodb-in-the-wsl)
 - [Test the MongoDB shell on macOS or Windows](#test-the-mongodb-shell-on-macos-or-windows)
 - [Troubleshooting](#troubleshooting)
   - [I installed MongoDB 9](#i-installed-mongodb-9)
@@ -137,6 +138,17 @@ You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
 ## MongoDB on Windows
 
+You have two options on Windows:
+
+- [Use the native installer](#install-mongodb-with-the-native-installer).
+  This is the simplest option.
+- [Install it in the WSL](#install-mongodb-in-the-wsl). Choose this if you
+  already develop in the [Windows Subsystem for Linux][wsl].
+
+**Pick one, not both.** Both servers would try to listen on port 27017.
+
+### Install MongoDB with the native installer
+
 Download and install [MongoDB Community Edition][mongodb-download]. In the
 **Version** list, pick the latest **8.0.x** release, **not 9**. Choose the **Run
 service as Network Service user** option during installation.
@@ -163,13 +175,8 @@ And stop it by entering:
 The MongoDB Server (MongoDB) service was stopped successfully.
 ```
 
-### Install the MongoDB shell on Windows
-
-Download and install [MongoDB Shell][mongosh-download].
-
-You run the MongoDB shell by calling `mongosh` in your terminal (Git Bash or the
-Command Prompt). If it shows no prompt or doesn't react to your input in Git
-Bash, run `winpty mongosh` instead, or use the Command Prompt.
+Then download and install [MongoDB Shell][mongosh-download], and run it by
+calling `mongosh` in the Command Prompt or PowerShell.
 
 You will know it's working if you see a **different prompt** in your CLI. That
 means you are now connected to the MongoDB shell and can **type MongoDB
@@ -187,6 +194,74 @@ test>
 
 Check that `Using MongoDB` says **8.0** (if it says 9, see
 [I installed MongoDB 9](#i-installed-mongodb-9)).
+
+You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
+
+### Install MongoDB in the WSL
+
+MongoDB requires **WSL 2**. Check your version in PowerShell (the `VERSION`
+column must say `2`):
+
+```bash
+> wsl -l -v
+  NAME      STATE           VERSION
+* Ubuntu    Running         2
+```
+
+In your WSL terminal, follow the [instructions to install MongoDB 8.0 on
+Ubuntu][install-ubuntu]. Make sure that the page says **8.0** and that you
+select the tab for your Ubuntu version (`lsb_release -a` shows it). This
+installs both the `mongod` server and the `mongosh` shell.
+
+MongoDB runs as a **systemd service**. Recent WSL distributions enable systemd
+by default. If `ps -p 1 -o comm=` does not print `systemd`, add these lines to
+`/etc/wsl.conf` (e.g. with `sudo nano /etc/wsl.conf`):
+
+```ini
+[boot]
+systemd=true
+```
+
+Then run `wsl --shutdown` in PowerShell and open a new WSL terminal.
+
+Start MongoDB (`enable` also starts it automatically when the WSL starts):
+
+```bash
+$> sudo systemctl enable --now mongod
+```
+
+And stop it as needed:
+
+```bash
+$> sudo systemctl stop mongod
+```
+
+Check that it is running with `systemctl status mongod` (it should say `active
+(running)`). If it's not, display the end of its logfile to see what went wrong:
+
+```bash
+$> sudo tail -n 50 /var/log/mongodb/mongod.log
+```
+
+> **The WSL stops when you close your last WSL terminal**, and MongoDB stops
+> with it. The simplest setup is to install Node.js and work on your project
+> **inside the WSL** too. If you run your application or [MongoDB
+> Compass][compass] on Windows instead, they can reach the server at
+> `localhost:27017`, but only while the WSL is running: keep a WSL terminal
+> open.
+
+Run the MongoDB shell by calling `mongosh` in your WSL terminal. You will know
+it's working if you see a **different prompt** in your CLI, and `Using MongoDB`
+should say **8.0**:
+
+```bash
+$> mongosh
+...
+Using MongoDB:		8.0.32
+Using Mongosh:		2.12.0
+...
+test>
+```
 
 You can now [test the shell](#test-the-mongodb-shell-on-macos-or-windows).
 
@@ -248,7 +323,17 @@ $> brew services start mongodb-community@8.0
 ```
 
 On Windows, uninstall MongoDB 9 from _Settings › Apps_, then install 8.0 as
-described in [MongoDB on Windows](#mongodb-on-windows).
+described in [Install MongoDB with the native
+installer](#install-mongodb-with-the-native-installer).
+
+In the WSL, uninstall version 9, delete its data and its package repository,
+then [install 8.0](#install-mongodb-in-the-wsl) again:
+
+```bash
+$> sudo systemctl stop mongod
+$> sudo apt-get purge "mongodb-org*"
+$> sudo rm -rf /var/lib/mongodb /etc/apt/sources.list.d/mongodb-org-*.list
+```
 
 ### `Connection refused` error in the MongoDB shell
 
@@ -261,8 +346,9 @@ MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
 ```
 
 It means that **your MongoDB server is not running**. Start it with
-`brew services start mongodb-community@8.0` on macOS, or `net start MongoDB` on
-Windows.
+`brew services start mongodb-community@8.0` on macOS, `net start MongoDB` with
+the native Windows installer, or `sudo systemctl start mongod` in the WSL (if
+you are connecting from Windows, also make sure that a WSL terminal is open).
 
 ### `Access control` warning in the MongoDB server or shell
 
@@ -289,9 +375,11 @@ you're only running MongoDB for development**.
 [compass]: https://www.mongodb.com/products/tools/compass
 [docker]: https://www.docker.com
 [install-linux]: https://www.mongodb.com/docs/manual/administration/install-community-linux/
+[install-ubuntu]: https://www.mongodb.com/docs/v8.0/tutorial/install-mongodb-on-ubuntu/
 [mongod]: https://www.mongodb.com/docs/manual/reference/program/mongod/#mongodb-binary-bin.mongod
 [mongosh-download]: https://www.mongodb.com/try/download/shell
 [daemon]: https://en.wikipedia.org/wiki/Daemon_(computing)
 [mongodb]: https://www.mongodb.com
 [mongodb-download]: https://www.mongodb.com/try/download/community
 [installation-instructions]: https://www.mongodb.com/docs/manual/installation/
+[wsl]: https://learn.microsoft.com/en-us/windows/wsl/about

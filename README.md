@@ -77,7 +77,7 @@ This course is a [COMEM+][comem] web development course taught at
 
 ## What you will need
 
-- A Unix CLI (Git Bash is included with Git on Windows)
+- A Unix CLI (WSL on Windows)
 - [Git][git-downloads]
 - A free [GitHub][github] account
 - [Google Chrome][chrome] (recommended, any browser with developer tools will do)

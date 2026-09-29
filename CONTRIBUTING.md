@@ -49,7 +49,8 @@ npm run deploy
 
 This will compile the slides and commit them to a [separate repository][docs-repo] that is published on GitHub Pages at [https://mediacomem.github.io/comem-archioweb/][docs].
 
-**Warning:** this runs a script which requires a **Unix shell** (use Git Bash or equivalent on Windows).
+**Warning:** this runs a script which requires a **Unix shell** (use the WSL on
+Windows).
 
 ### Create a new subject
 
