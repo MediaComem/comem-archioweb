@@ -51,6 +51,7 @@ This course is a [COMEM+][comem] web development course taught at
     - [_Exercises_](https://express.archioweb.ch)
   - [MongoDB](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     - [_Guide:_ install MongoDB](./guides/install-mongodb.md)
+    - [_Reference:_ data modeling](https://www.mongodb.com/docs/manual/data-modeling/) (embedding vs. referencing)
   - [Mongoose](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme) Object-Document Mapper
     - [_Guide:_ store geospatial data with Mongoose](./guides/store-geospatial-data.md)
 
@@ -80,7 +81,7 @@ This course is a [COMEM+][comem] web development course taught at
 - [Google Chrome][chrome] (recommended, any browser with developer tools will do)
 - [Node.js][node] 26 (22 and 24 also work)
 - [Postman][postman] (recommended, any tool that makes raw HTTP requests will do)
-- [MongoDB][mongodb] 8
+- [MongoDB][mongodb] 8.0 (not 9)
 - A free [Render][render] account
 
 ## Useful links
