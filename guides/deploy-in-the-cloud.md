@@ -22,17 +22,13 @@ When working as a team, only one member of the team needs to follow this guide.
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## Requirements
 
-* [Node.js][node] 12+
-* [Git][git]
-* A [GitHub][github] account
-* A [Render][render] account
-* A [MongoDB Atlas][mongodb-atlas] account
-
-
+- [Node.js][node] 22+
+- [Git][git]
+- A [GitHub][github] account
+- A [Render][render] account
+- A [MongoDB Atlas][mongodb-atlas] account
 
 ## Name your project
 
@@ -44,8 +40,6 @@ When working as a team, only one member of the team needs to follow this guide.
 Choose a good name for your project. You will have to use it to name several
 things: your Express.js application, the Render application, the MongoDB cluster
 and database, etc.
-
-
 
 ## Create an Express.js application
 
@@ -64,8 +58,9 @@ Start it:
 $> npm start
 ```
 
-Check that you can access the [Express][express] application at [http://localhost:3000](http://localhost:3000).
-Once you're sure it works, you can stop it with `Ctrl-C`.
+Check that you can access the [Express][express] application at
+[http://localhost:3000](http://localhost:3000). Once you're sure it works, you
+can stop it with `Ctrl-C`.
 
 ### Make it a Git repository
 
@@ -117,18 +112,24 @@ Add [Mongoose][mongoose] to your application:
 $> npm install mongoose
 ```
 
-Then add the following code to the `app.js` file:
+Then add the following code to the `app.js` file, below the other imports (if
+you followed the [Mongoose
+subject](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme),
+you already have it):
 
 ```js
 import mongoose from 'mongoose';
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
+
+await mongoose.connect(
+  process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/your-app-name'
+);
 ```
 
-> Note the code `process.env.DATABASE_URL ||
-> 'mongodb://localhost/your-app-name'` which will either take the value of the
+> Note the code `process.env.DATABASE_URL ??
+'mongodb://127.0.0.1/your-app-name'` which will either take the value of the
 > `$DATABASE_URL` environment variable, or default to
-> `mongodb://localhost/your-app-name` if the environment variable is not
-> available. See https://nodejs.org/api/process.html#process_process_env.
+> `mongodb://127.0.0.1/your-app-name` if the environment variable is not
+> available. See https://nodejs.org/api/process.html#processenv.
 
 Stage all changes (including the changes made to `package.json` and
 `package-lock.json` as a result of the `npm install mongoose` command). Then
@@ -142,7 +143,8 @@ $> git push origin master
 
 ## Deploy the application to Render
 
-Register a [Render][render] account if you haven't already. If you register through GitHub, you will not have to link the two accounts together later.
+Register a [Render][render] account if you haven't already. If you register
+through GitHub, you will not have to link the two accounts together later.
 
 ![Render: register using an exisiting GitHub Account](./images/render-01-signup.png)
 
@@ -150,11 +152,14 @@ Go to your dashboard and create a new Web Service:
 
 ![Render: dashboard](./images/render-02-create.png)
 
-Connect your GitHub repository to Render by selecting the one the contains your app from the list.
+Connect your GitHub repository to Render by selecting the one the contains your
+app from the list.
 
 ![Render: connect to repo](./images/render-03-connect.png)
 
-Name the application, choose the region and enter the commands used to build and start your app. The branch name should automatically be set to "main" or "master", depending on how your repository is setup.
+Name the application, choose the region and enter the commands used to build and
+start your app. The branch name should automatically be set to "main" or
+"master", depending on how your repository is setup.
 
 ![Render: setup your application](./images/render-04-setup.png)
 
@@ -162,40 +167,34 @@ Select the free plan and finish the creation process.
 
 ![Render: end the web service creation process](./images/render-05-plans.png)
 
-Once you submit the form, Render will automatically try to deploy your app. You will be able to see live logs. Pretty cool, but be aware that deploys on the free plan can take a little while. Be patient.
+Once you submit the form, Render will automatically try to deploy your app. You
+will be able to see live logs. Pretty cool, but be aware that deploys on the
+free plan can take a little while. Be patient.
 
 ![Render: first deploy](./images/render-06-deploy.png)
 
 The deployment process should eventually succeed. But... **Oh no there seems to be a some weird error in the logs!** Think about it for a second. What could've gone wrong?
 
 ```bash
-2020-09-13T09:46:13.394704+00:00 app[web.1]: (node:23) UnhandledPromiseRejectionWarning: MongoNetworkError: failed to connect to server [localhost:27017] on first connect [Error: connect ECONNREFUSED 127.0.0.1:27017
-2020-09-13T09:46:13.394707+00:00 app[web.1]: at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16) {
-2020-09-13T09:46:13.394708+00:00 app[web.1]: name: 'MongoNetworkError'
-2020-09-13T09:46:13.394709+00:00 app[web.1]: }]
-2020-09-13T09:46:13.394710+00:00 app[web.1]: at Pool.<anonymous> (/app/node_modules/mongodb/lib/core/topologies/server.js:438:11)
-2020-09-13T09:46:13.394711+00:00 app[web.1]: at Pool.emit (events.js:315:20)
-2020-09-13T09:46:13.394712+00:00 app[web.1]: at /app/node_modules/mongodb/lib/core/connection/pool.js:562:14
-2020-09-13T09:46:13.394712+00:00 app[web.1]: at /app/node_modules/mongodb/lib/core/connection/pool.js:995:11
-2020-09-13T09:46:13.394712+00:00 app[web.1]: at /app/node_modules/mongodb/lib/core/connection/connect.js:32:7
-2020-09-13T09:46:13.394713+00:00 app[web.1]: at callback (/app/node_modules/mongodb/lib/core/connection/connect.js:280:5)
-2020-09-13T09:46:13.394713+00:00 app[web.1]: at Socket.<anonymous> (/app/node_modules/mongodb/lib/core/connection/connect.js:310:7)
-2020-09-13T09:46:13.394714+00:00 app[web.1]: at Object.onceWrapper (events.js:422:26)
-2020-09-13T09:46:13.394714+00:00 app[web.1]: at Socket.emit (events.js:315:20)
-2020-09-13T09:46:13.394715+00:00 app[web.1]: at emitErrorNT (internal/streams/destroy.js:92:8)
-2020-09-13T09:46:13.394716+00:00 app[web.1]: at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
-2020-09-13T09:46:13.394716+00:00 app[web.1]: at processTicksAndRejections (internal/process/task_queues.js:84:21)
+MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+    at _handleConnectionErrors (/opt/render/project/src/node_modules/mongoose/lib/connection.js:1175:11)
+    ...
 ```
 
 Remember this piece of code?
 
 ```js
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/your-app-name');
+await mongoose.connect(
+  process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/your-app-name'
+);
 ```
-At this point, our app is looking for a `DATABASE_URL` variable environment. Unfortunately we have not configured it yet and are therefore trying to connect to our local Mongo instance which is obviously inaccessible from remotely.
 
-We must therefore setup a database elsewhere and provide its URL to Render. Let's start by setting up a [MongoDB Atlas][mongodb-atlas] cluster.
+At this point, our app is looking for a `DATABASE_URL` variable environment.
+Unfortunately we have not configured it yet and are therefore trying to connect
+to our local Mongo instance which is obviously inaccessible from remotely.
 
+We must therefore setup a database elsewhere and provide its URL to Render.
+Let's start by setting up a [MongoDB Atlas][mongodb-atlas] cluster.
 
 ## Create a MongoDB cluster on MongoDB Atlas
 
@@ -257,17 +256,15 @@ Note that the connection URL is in the format
 There are two placeholders in this URL, `<password>` and `<dbname>`, which you
 should replace:
 
-* `<password>` is the password of the database user you just created.
-* `<dbname>` is the name of a MongoDB database to connect to. You should name it
+- `<password>` is the password of the database user you just created.
+- `<dbname>` is the name of a MongoDB database to connect to. You should name it
   after your project. The exact name is unimportant, since MongoDB will
   automatically create the database the first time you connect to it.
 
-> If you have the `mongo` executable available in your command line, you can
-> connect to your new MongoDB cluster from your machine with the command:
+> If you have [installed `mongosh`](./install-mongodb.md), you can connect to your
+> new MongoDB cluster from your machine with the command:
 >
 >     mongosh "mongodb+srv://admin:<password>@your-cluster-name.abcd.mongodb.net/<dbname>?retryWrites=true&w=majority"
->
-> (Use the full path to `mongo.exe` on Windows instead of `mongo`.)
 
 ## Provide your database URL to your Render application
 

@@ -27,7 +27,6 @@ the following tools:
   - [Switch databases when running tests](#switch-databases-when-running-tests)
 - [Write your first test](#write-your-first-test)
   - [Disconnect from the database once the tests are done](#disconnect-from-the-database-once-the-tests-are-done)
-  - [Fix Mongoose `collection.ensureIndex is deprecated` warning](#fix-mongoose-collectionensureindex-is-deprecated-warning)
   - [Get rid of request logs while testing](#get-rid-of-request-logs-while-testing)
 - [Add a unicity constraint to your model](#add-a-unicity-constraint-to-your-model)
 - [Reproducible tests](#reproducible-tests)
@@ -203,9 +202,9 @@ variable. For example, your `app.js` file may contain a line that looks like
 this:
 
 ```js
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/my-app', {
-  // Options...
-});
+await mongoose.connect(
+  process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/my-app'
+);
 ```
 
 This means that you can easily switch the database URL by setting the
@@ -233,9 +232,6 @@ This switches the `$DATABASE_URL` variable to another value before running your
 tests. In this example, it connects to the `my-app-test` database on
 `127.0.0.1` (localhost) instead of the `my-app` database. That way, your tests
 will modify a separate database without touching your development data.
-
-> You could normally use `mongodb://localhost/my-app-test` for the database
-> URL, but it does not seem to work on Windows for some reason.
 
 > If your application needs any other environment variable, such as a secret to
 > sign JWTs, you may provide as many variables as you need with `cross-env`, for
@@ -289,7 +285,7 @@ const res = await supertest(app)
     name: 'John Doe',
     password: '1234'
   })
-  .expect(200)
+  .expect(201)
   .expect('Content-Type', /json/);
 ```
 
@@ -353,24 +349,6 @@ afterAll(async () => {
 > Here you are using [Jest hooks][jest-hooks]. The `beforeAll` and `afterAll` global
 > functions provided by Jest allow you to run code before or after your test
 > suite.
-
-### Fix Mongoose `collection.ensureIndex is deprecated` warning
-
-If you use version 5.x of Mongoose, you may see the following warning:
-
-```
-(node:21235) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
-```
-
-To get rid of it, set the `useCreateIndex` option to true in your
-`mongoose.connect` call (presumably in `app.js`):
-
-```js
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/my-app', {
-  // <PREVIOUS OPTIONS HERE...>
-  useCreateIndex: true
-});
-```
 
 ### Get rid of request logs while testing
 
@@ -810,7 +788,7 @@ right after the `jest` command:
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env DATABASE_URL=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage"
+  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage"
 }
 ```
 
@@ -850,7 +828,7 @@ Jest command to instruct it to run all tests sequentially (i.e. one by one):
 ```json
 "scripts": {
   "...": "<PREVIOUS SCRIPTS HERE...>",
-  "test": "cross-env DATABASE_URL=mongodb://localhost/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage --runInBand"
+  "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/my-app-test node --experimental-vm-modules node_modules/.bin/jest --coverage --runInBand"
 }
 ```
 

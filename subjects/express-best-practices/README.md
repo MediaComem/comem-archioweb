@@ -296,19 +296,28 @@ router.delete('/:id', async function(req, res, next) {
 
 ### Writing middleware functions for common tasks
 
-You can write a **middleware function** that performs only this task and **attaches the Person document to the `req` object**:
+You can write a **middleware function** that performs only this task and
+**attaches the Person document to the `req` object**:
 
 ```js
 async function loadPersonFromParams(req, res, next) {
-  const person = await Person.findById(req.params.id).exec();
+  const { id } = req.params;
+  if (!mongoose.isValidObjectId(id)) {
+    return res.status(404).send({ message: \`Person ${id} not found` });
+  }
+
+  const person = await Person.findById(id).exec();
   if (!person) {
-    return res.status(404).send(\`No person found with ID ${req.params.id}`);
+    return res.status(404).send({ message: \`Person ${id} not found` });
   }
 
   req.person = person;
   next();
 }
 ```
+
+Without the `isValidObjectId` check, a malformed ID such as `abc` would make
+`findById` throw a `CastError`, and your API would respond with a `500` error.
 
 ### Plugging your middleware function into routes
 
@@ -321,6 +330,7 @@ router.get('/:id', `loadPersonFromParams`, function (req, res, next) {
 });
 
 router.patch('/:id', `loadPersonFromParams`, async function (req, res, next) {
+  `req.person`.set(req.body);
   const updatedPerson = await `req.person`.save();
   res.send(updatedPerson);
 });
@@ -352,7 +362,11 @@ need to handle errors thrown by MongoDB.**
 
 ### MongoDB errors
 
-Imagine the following scenario: one of your Mongoose models specifies that a `Person` must have a unique email. Someone using your API make a `POST` request to `/person`, trying to create a new person with an email that has already been registered. If this happens, an **ugly error message and generic status code will be sent to the user**:
+Imagine the following scenario: one of your Mongoose models specifies that a
+`Person` must have a unique email. Someone using your API make a `POST` request
+to `/person`, trying to create a new person with an email that has already been
+registered. If this happens, an **ugly error message and generic status code
+will be sent to the user**:
 
 ```txt
 E11000 duplicate key error collection
@@ -360,22 +374,25 @@ E11000 duplicate key error collection
 
 ### Handling specific errors
 
-In order to get a **meaningful status code and prettier error message**, we could adjust the error handling middleware to **check for this specific case**:
+In order to get a **meaningful status code and prettier error message**, we
+could adjust the error handling middleware to **check for this specific case**:
 
 ```js
 app.use(function (`err`, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
 * if (err.code === 11000) {
-*   res.status(409).send('Email already registered.');
-* } else {
-  // Send the error status
-    res.status(err.status || 500);
-    res.send(err.message);
-  }
+*   return res.status(409).send({ message: 'Email already registered' });
+* } else if (err.name === 'ValidationError') {
+*   return res.status(422).send({ message: err.message });
+* }
+
+  res.status(err.status ?? 500);
+  res.send({ message: err.message });
 });
 ```
+
+The same goes for **invalid input**: Mongoose rejects it with a
+`ValidationError`, which is the **client's** mistake, so respond with `422
+Unprocessable Entity` instead of `500`.
 
 [bunyan]: https://github.com/trentm/node-bunyan
 [debug]: https://www.npmjs.com/package/debug
