@@ -36,7 +36,7 @@ This course is a [COMEM+][comem] web development course taught at
   - [HTTP & REST introduction](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/rest?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Exercise_](./exercises/rest.md)
   - [_Extra:_ JavaScript](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme)
-    - [_Exercises_](./exercises/javascript.md) (:key:
+    - [_Exercises_](./exercises/javascript.md) (🔑
       [**solutions**](./exercises/javascript-solutions.md))
     - [_Extra:_ promises](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Extra:_ prototypes](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme)
@@ -44,7 +44,7 @@ This course is a [COMEM+][comem] web development course taught at
     - [_Extra:_ modules](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-modules?home=MediaComem%2Fcomem-archioweb%23readme)
     - [_Extra:_ closures](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-closures?home=MediaComem%2Fcomem-archioweb%23readme)
   - [Node.js](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme) JavaScript runtime
-    - [_Exercises_](./exercises/node.md) (:key:
+    - [_Exercises_](./exercises/node.md) (🔑
       [**solutions**](./exercises/node-solutions))
   - [npm](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme) Node.js package manager
 
