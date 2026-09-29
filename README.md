@@ -314,7 +314,7 @@ the end of each subject.
 - [Functional Design Patterns for Express.js - Jonathan Lee Martin](https://pragprog.com/titles/d-jmexpress/functional-design-patterns-for-express-js/)
 - [Standards.REST](https://standards.rest)
 - [Richardson Maturity Model - Leonard Richardson, Martin Fowler](https://martinfowler.com/articles/richardsonMaturityModel.html)
-- [MongoDB Documentation](https://docs.mongodb.com)
+- [MongoDB Documentation](https://www.mongodb.com/docs/manual/)
 - [Mongoose Documentation](https://mongoosejs.com/docs/index.html)
 - [Auth0](https://auth0.com)
   - [Introduction to JSON Web Tokens](https://jwt.io/introduction/)
@@ -338,6 +338,6 @@ the end of each subject.
 [json-api]: https://jsonapi.org
 [jwt]: https://jwt.io/
 [mongodb]: https://www.mongodb.com
-[mongodb-aggregation]: https://docs.mongodb.com/manual/core/aggregation-pipeline/
+[mongodb-aggregation]: https://www.mongodb.com/docs/manual/core/aggregation-pipeline/
 [node]: https://nodejs.org/
 [postman]: https://www.postman.com
