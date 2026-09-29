@@ -1,5 +1,8 @@
 # JavaScript exercises
 
+These exercises are a way to **check your own knowledge of JavaScript** before
+we start building web services with it.
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
@@ -23,9 +26,6 @@
   - [Errors in asynchronous code](#errors-in-asynchronous-code)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-These exercises are a way to **check your own knowledge of JavaScript** before
-we start building web services with it.
 
 The [Functions](#functions) exercises cover higher-level concepts that many
 people find tricky, and that we will rely on throughout the course. Take your
