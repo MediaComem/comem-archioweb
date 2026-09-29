@@ -1,0 +1,12 @@
+{
+  "name": "node-solutions",
+  "version": "1.0.0",
+  "description": "Solutions to the Node.js exercises",
+  "author": "Simon Oulevay <simon.oulevay@heig-vd.ch>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "lodash": "^4.18.1"
+  }
+}
