@@ -1,0 +1,15 @@
+# https://github.com/tmuxinator/tmuxinator
+
+name: archioweb
+root: .
+
+windows:
+  - main:
+      layout: main-vertical
+      panes:
+        - shell:
+            - tmux resize-pane -t archioweb:main.0 -x 60%
+            - clear
+        - start: npm start
+        - doctoc: tmux send-keys -t archioweb:main.2 "npm run doctoc"
+      focused_pane: shell
