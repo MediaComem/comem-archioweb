@@ -3,18 +3,19 @@
   <head>
     <title>MongoDB (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/626d9fc571e0cc6f7d9c2f91135e7130db55abfe/subjects/mongodb/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1ef58eb758ec689de50e4f79a94d2d30f1e5500f/subjects/mongodb/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
 # MongoDB
 
-Learn the basics of [MongoDB][mongodb], one of the most populars document-oriented databases.
+Learn the basics of [MongoDB][mongodb], one of the most populars
+document-oriented databases.
 
 **You will need**
 
 - A Unix CLI
-- A running MongoDB server ([installation instructions][install])
+- A running MongoDB 8.0 server ([installation instructions][install])
 
 
 
@@ -28,25 +29,19 @@ class: center, middle, image-header
 
 <p class='center'><img src='images/mongodb.png' width='60%' /></p>
 
-> "MongoDB is a free and open-source cross-platform **document-oriented database** program."
+> "MongoDB is a source-available, cross-platform, **document-oriented database** program."
 
 ---
-### Key features
+### Why MongoDB?
 
 .breadcrumbs[<a href="#1">MongoDB</a> > <a href="#2">What is MongoDB?</a>]
 
-- High performance
-  - Atomic operations
-  - Unacknowledged writes
-- **Rich query language**
-  - **Data aggregation**
-  - Full text search
-  - Geospatial queries
-- High availability
-  - Replica sets with automatic failover and data redundancy
-- Horizontal scalability
-  - Sharding
-  - Zones
+- **Documents are JSON-like**: what your API sends and receives is close to
+  what you store
+- **Flexible schema**: add a field without migrating the whole collection
+- **Rich queries**: filters, sorting, text search, and the two your project
+  needs, **geospatial queries** and **aggregations**
+- **Scales out**: replication and sharding across many servers
 
 ---
 ### Document-oriented database
@@ -55,59 +50,98 @@ class: center, middle, image-header
 
 Instead of SQL rows, you store [**JSON-like**][bson] documents in MongoDB:
 
-```json
+```js
 {
-  "_id" : ObjectId("54c955492b7c8eb21818bd09"),
-  "firstName": "John",
-  "lastName": "Doe",
-  "birthDate": ISODate("1970-10-01T00:00:00Z"),
-  "interests": [ "Pastry", "Kung fu" ],
-  "address" : {
-    "city": "Livingston",
-    "street" : "13 Garden Street",
-    "zip" : "07039"
+  _id: ObjectId('54c955492b7c8eb21818bd09'),
+  firstName: 'John',
+  lastName: 'Doe',
+  birthDate: ISODate('1970-10-01T00:00:00.000Z'),
+  interests: [ 'Pastry', 'Kung fu' ],
+  address: {
+    city: 'Livingston',
+    street: '13 Garden Street',
+    zip: '07039'
   },
-  "phones": [
-    { "type": "professional", "number": "+1-202-555-0144" },
-    { "type": "home", "number": "+1-202-555-0186" }
+  phones: [
+    { type: 'professional', number: '+1-202-555-0144' },
+    { type: 'home', number: '+1-202-555-0186' }
   ]
 }
 ```
 
-- Documents are **key-value** data structures
-- Values may include other **documents, arrays, and arrays of documents**
+- Documents are **key-value** data structures.
+- Values may include other **documents, arrays, and arrays of documents**.
+- Every document has a unique **`_id`** (its **primary key**), by default an
+  **`ObjectId`**: 12 bytes, starting with a timestamp.
 
 ---
 ### Schema-less collections
 
 .breadcrumbs[<a href="#1">MongoDB</a> > <a href="#2">What is MongoDB?</a>]
 
-Documents are stored in **collections**.
-Unlike SQL tables, collections are **schema-less**.
-These two documents could be stored in the same collection:
+Documents are stored in **collections**. Unlike SQL tables, collections are
+**schema-less**. These two documents could be stored in the same collection:
 
-```json
+```js
 {
-  "_id" : ObjectId("54c955492b7c8eb21818bd09"),
-  "name": "John Doe",
-  "birthDate": ISODate("1970-10-01T00:00:00Z"),
-  "interests": [ "Pastry", "Kung fu" ]
+  _id: ObjectId('54c955492b7c8eb21818bd09'),
+  name: 'John Doe',
+  birthDate: ISODate('1970-10-01T00:00:00.000Z'),
+  interests: [ 'Pastry', 'Kung fu' ]
 }
 ```
 
-```json
+```js
 {
-  "_id" : ObjectId("54c955492b7c8eb21818cd1"),
-  "model": "Campagna T-Rex",
-  "wheels": 3,
-  "dimensions": { "length": "3.5m", "width": "1.981m", "height": "1.067m" }
+  _id: ObjectId('54c955492b7c8eb21818cd10'),
+  model: 'Campagna T-Rex',
+  wheels: 3,
+  dimensions: { length: '3.5m', width: '1.981m', height: '1.067m' }
 }
 ```
 
-This example is probably not a good idea, but it also means your documents can **evolve** (add new keys, remove others) without having to migrate your schema.
+This example may not be a good idea, but it also means your documents can
+**evolve** (add keys, remove others) without having to migrate your schema.
 
-In MongoDB, documents stored in a collection must have a unique `_id` field that acts as a **primary key**.
+---
+### Embed or reference?
 
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#2">What is MongoDB?</a>]
+
+.grid-50[
+
+**Embed** (a sub-document)
+
+```js
+{ name: 'John Doe',
+  address: { city: 'Livingston' } }
+```
+
+- Read together, **owned** by the parent
+- Bounded size (not "all comments ever")
+
+
+]
+.grid-50[
+
+**Reference** (store the `_id`)
+
+```js
+{ title: 'Casino Royale',
+  director: ObjectId('…') }
+```
+
+- Has **its own lifecycle** and API resource
+- Shared, or grows without limit
+
+
+]
+.container[
+
+Read more about [data modeling][data-modeling].
+
+
+]
 ---
 class: center, middle
 ## Query language
@@ -121,20 +155,21 @@ Inserting, querying, updating and removing documents.
 ---
 ### Connecting
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
-Connect to the MongoDB shell from your CLI and you should have a **new prompt**, indicating that you can now type MongoDB commands and queries:
+Connect to the MongoDB shell from your CLI and you should have a **new prompt**,
+indicating that you can now type MongoDB commands and queries:
 
 ```bash
 $> mongosh
-Connecting to:		mongodb://127.0.0.1:27017/
-Using MongoDB:		7.0.0
-Using Mongosh:		2.0.1
+Connecting to:		mongodb://127.0.0.1:27017/?directConnection=true&...
+Using MongoDB:		8.0.32
+Using Mongosh:		2.12.0
 ...
 test>
 ```
 
-You can switch databases with `use <name>`. Let's do that now:
+You can switch databases with `use <name>`:
 
 ```bash
 test> use test
@@ -143,71 +178,76 @@ test> use archioweb
 switched to db archioweb
 ```
 
-Note that you do not need to create the "archioweb" database before accessing it.
-It is **automatically created** as you first access it.
+Note that you do not need to create the "archioweb" database before accessing
+it. It is **automatically created** as you first access it.
 
 ---
 ### Inserting documents
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
-Insert a couple of documents into a collection named **people** (again, it is automatically created if it doesn't exist):
+Insert a couple of documents into a collection named **people** (again,
+automatically created if it doesn't exist). MongoDB should acknowledge each
+insertion by showing you the new `ObjectId` of the inserted object.
 
-```bash
+```js
 db.people.insertOne({
-  "name": "John Doe",
-  "birthDate": ISODate("1970-10-01T00:00:00Z"),
-  "children": 2,
-  "address" : { "city": "Livingston", "street" : "13 Garden Street" },
-  "interests": [ "Pastry", "Kung fu" ],
-  "phones": []
-})
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  birthDate: ISODate('1970-10-01T00:00:00Z'),
+  children: 2,
+  address: { city: 'Livingston', street: '13 Garden Street' },
+  interests: ['Pastry', 'Kung fu'],
+  phones: []
+});
 db.people.insertOne({
-  "name": "John Smith",
-  "birthDate": ISODate("1990-12-24T00:00:00Z"),
-  "address" : { "city": "Newport", "street" : "85 Bay Drive" },
-  "interests": [ "Sunglasses" ],
-  "phones": [
-    { "type": "professional", "number": "+1-202-555-0144" },
-    { "type": "home", "number": "+1-202-555-0186" }
+  name: 'John Smith',
+  email: 'john.smith@example.com',
+  birthDate: ISODate('1990-12-24T00:00:00Z'),
+  address: { city: 'Newport', street: '85 Bay Drive' },
+  interests: ['Sunglasses'],
+  phones: [
+    { type: 'professional', number: '+1-202-555-0144' },
+    { type: 'home', number: '+1-202-555-0186' }
   ]
-})
+});
 ```
-
-MongoDB should acknowledge each insertion by showing you the new `ObjectId` of
-the inserted object.
 
 ---
 ### Inserting multiple documents
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
 You can insert multiple documents at once by using the
 [`insertMany`][mongodb-insert-many] method and passing it an array.
 
-```bash
-db.people.insertMany([{
-  "name": "Saul Goodman",
-  "birthDate": ISODate("1970-10-01T00:00:00Z"),
-  "children": 2,
-  "address" : { "city": "Albuquerque", "street" : "13 Garden Street" },
-  "interests": [ "Law", "Money" ],
-  "phones": []
+```js
+db.people.insertMany([
+  {
+    name: 'Saul Goodman',
+    email: 'saul.goodman@example.com',
+    birthDate: ISODate('1960-11-12T00:00:00Z'),
+    children: 0,
+    address: { city: 'Albuquerque', street: '9800 Montgomery Blvd NE' },
+    interests: ['Law', 'Money'],
+    phones: []
   },
   {
-  "name": "Jimmy McGill",
-  "birthDate": ISODate("1970-10-01T00:00:00Z"),
-  "children": 2,
-  "address" : { "city": "Albuquerque", "street" : "13 Garden Street" },
-  "interests": [ "Family", "Falling" ],"phones": []
+    name: 'Jimmy McGill',
+    email: 'jimmy.mcgill@example.com',
+    birthDate: ISODate('1962-04-01T00:00:00Z'),
+    children: 2,
+    address: { city: 'Albuquerque', street: '160 Juan Tabo Blvd NE' },
+    interests: ['Family', 'Falling'],
+    phones: []
   }
-])
+]);
 ```
 
 ---
 ### Finding documents
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
 Here are a few simple queries you can run with MongoDB's [find][find] method:
 
@@ -227,14 +267,14 @@ db.people.find({ 'phones.type': 'home' });
 // Find all people interested in Kung fu
 db.people.find({ interests: 'Kung fu' });
 
-// Find all people named John Smith AND living in Livingston
-db.people.find({ name: 'John Smith', 'address.city': 'Livingston' });
+// Find all people living in Albuquerque AND with 2 children
+db.people.find({ 'address.city': 'Albuquerque', children: 2 });
 ```
 
 ---
 #### Query operators
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#10">Finding documents</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a> > <a href="#11">Finding documents</a>]
 
 You can write more complex queries with query operators:
 
@@ -254,12 +294,13 @@ db.people.find({
 });
 ```
 
-Read the documention on [query operators][query-operators] to learn more about these and other operators.
+Read the documentation on [query operators][query-operators] to learn more about
+these and other operators.
 
 ---
 #### Projection
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#10">Finding documents</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a> > <a href="#11">Finding documents</a>]
 
 You can give a second parameter to `find` to specify which fields to return:
 
@@ -272,219 +313,139 @@ db.people.find({}, { name: 1, address: 1 });
 db.people.find({ name: 'John Doe' }, { address: 0, interests: 0 });
 ```
 
-You can specify fields to include or fields to exclude, **not both**.
-
----
-#### Sort, skip & limit
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#10">Finding documents</a>]
-
-The `sort` method orders the documents in the result set:
+You can specify fields to include or fields to exclude, **not both**. The one
+exception is `_id`, which you can exclude from an inclusion:
 
 ```js
-// Find all people sorted by descending name
-// ("SELECT * FROM people ORDER BY name DESC" in SQL)
-db.people.find({}).sort({ name: -1 });
-```
-
-The `skip` and `limit` methods allow you to select a slice of the result set:
-
-```js
-// Find one person
-// ("SELECT * FROM people LIMIT 1" in SQL)
-db.people.find({}).limit(1);
-
-// Find one person among people sorted by name, starting at the second person
-// ("SELECT * FROM people ORDER BY name OFFSET 1 LIMIT 1" in SQL)
-db.people.find({}).sort({ name: 1 }).skip(1).limit(1);
+// Find all people and get their name only, without their _id
+db.people.find({}, { _id: 0, name: 1 });
 ```
 
 ---
-### Counting documents
+#### Sort, paginate and count
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
-
-Counting documents works basically the same way as finding them:
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a> > <a href="#11">Finding documents</a>]
 
 ```js
-// Count all people
-db.people.countDocuments({});
+// Sort by descending name, skip one, return one
+// ("... ORDER BY name DESC OFFSET 1 LIMIT 1" in SQL)
+db.people.find({}).sort({ name: -1 }).skip(1).limit(1);
 
-// Count all people named John Doe
-db.people.countDocuments({ name: 'John Doe' });
-
-// Count all people that have a home phone number
-db.people.countDocuments({ 'phones.type': 'home' });
-
-// Count all people named John Smith AND living in Livingston
-db.people.countDocuments({ name: 'John Smith', 'address.city': 'Livingston' });
-
-// Count all people born after 1980
-db.people.countDocuments({ birthDate: { $gt: ISODate('1980-01-01') } });
-
-// Count all people named John Smith OR living in Livingston
-db.people.countDocuments({
-  $or: [{ name: 'John Smith' }, { 'address.city': 'Livingston' }]
-});
+// Count the documents matching a filter (same filter as find)
+db.people.countDocuments({ 'address.city': 'Newport' }); // 1
 ```
+
+`skip`, `limit` and `countDocuments` are all you need to **paginate** a
+collection in your API.
 
 ---
 ### Updating documents
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
-
-Here's an update example:
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
 ```js
-// Rename "John Smith" to "John A. Smith" and add "Movies" to his interests
+// Rename "John Smith" and add "Movies" to his interests
 db.people.updateOne(
   { name: 'John Smith' },
-  {
-    $set: { name: 'John A. Smith' },
-    $push: { interests: 'Movies' }
-  }
+  { $set: { name: 'John A. Smith' }, $push: { interests: 'Movies' } }
 );
+
+// Mark everyone as active
+db.people.updateMany({}, { $set: { active: true } });
 ```
 
-The [`updateOne`][mongodb-update-one] method takes 3 parameters:
-
-- A filter to match the documents to update
-- An update document to specify the modification to perform
-- An options parameter (optional)
-
-Read the documention on [update operators][update-operators] to learn more about these and other operators.
-
----
-#### Updating multiple documents
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#15">Updating documents</a>]
-
-To update multiple documents, you must use the [`updateMany`][mongodb-update-many] method.
-Otherwise, only the first matching document will be updated.
+- The first argument is a **filter**, as with `find`.
+- The second uses [**update operators**][update-operators]: `$set`, `$push`,
+  `$inc`, etc.
+- [`updateOne`][mongodb-update-one] changes the **first** match;
+  [`updateMany`][mongodb-update-many] changes **all** of them.
 
 ---
 #### Upserts
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#15">Updating documents</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a> > <a href="#15">Updating documents</a>]
 
-The `upsert` option allows you to **automatically insert** a new document when you try to make an **update** but **no matching document is found**:
+With `upsert: true`, an update **inserts** a document when **nothing
+matches**:
 
 ```js
-// Update Ned Stark, but create him if he doesn't exist
 db.people.updateOne(
-  { name: 'Ned Stark' },
-  {
-    $set: {
-      children: 6,
-      interests: ['Snow']
-    }
-  },
-  {
-    upsert: true
-  }
+  { email: 'ned.stark@example.com' },
+  { $set: { name: 'Ned Stark', children: 6 } },
+  { upsert: true }
 );
+// { matchedCount: 0, upsertedCount: 1, insertedId: ObjectId('…'), … }
 ```
 
----
-#### Upsert behavior
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#15">Updating documents</a>]
-
-MongoDB will tell you that an upsert has taken place:
-
-```txt
-{
-  acknowledged: true,
-  insertedId: ObjectId("6311d94c2af6bb4dd5b40a9a"),
-  matchedCount: 0,
-  modifiedCount: 0,
-  upsertedCount: 1
-}
-```
-
-Note that the query was merged with the update (the new person also has the `name` field):
+The new document also gets the **filter's fields**:
 
 ```js
-db.people.find({ "name": "Ned Stark" })
-
-{
-  "_id" : ObjectId("589f24f1f0bb4e1d9fedf1eb"),
-  "name" : "Ned Stark",
-  "children" : 6,
-  "interests" : [ "Snow" ]
-}
+{ _id: ObjectId('…'), email: 'ned.stark@example.com',
+  children: 6, name: 'Ned Stark' }
 ```
 
 ---
 #### Atomic operations
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a> > <a href="#15">Updating documents</a>]
-
-Some operators are **atomic operations**:
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a> > <a href="#15">Updating documents</a>]
 
 ```js
 // Add one child to John Doe
-db.people.updateOne(
-  { name: 'John Doe' },
-  {
-    $inc: {
-      children: 1
-    }
-  }
-);
+db.people.updateOne({ name: 'John Doe' }, { $inc: { children: 1 } });
 ```
 
-This means that:
-
-- You can perform some arithmetic operations **directly in the database** without having to first fetch data, then update it
-- These operations are not subject to **concurrency issues** (at least on a single node)
+- A write to **one document** is always **atomic**: nobody sees it half-done.
+- `$inc` computes **in the database**. If two clients add 1 at the same time,
+  you get +2. Reading the value, adding 1 in your code and writing it back
+  might give +1 if the reads and writes overlap.
 
 ---
 ### Replacing documents
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
-The [`replaceOne`][mongodb-replace-one] method allows you to replace the
-entirety of a document.
+The [`replaceOne`][mongodb-replace-one] method replaces the **entire**
+document. This is what a `PUT` request does in a REST API.
 
 ```js
-> db.people.replaceOne(
-  {name: "Saul Goodman"},
-  {
-    name: "Gene",
-    children: 0,
-    address: "N/A"
-  }
-)
+db.people.replaceOne(
+  { name: 'Saul Goodman' },
+  { name: 'Gene', email: 'gene@example.com', children: 0 }
+);
 
-> db.people.find({name: "Gene"})
+db.people.find({ name: 'Gene' });
 [
   {
-    _id: ObjectId("6311d6ccd2b0f4cf05594185"),
+    _id: ObjectId('6abb6b0e2437811cd7e80aa8'),
     name: 'Gene',
-    children: 0,
-    address: 'N/A'
+    email: 'gene@example.com',
+    children: 0
   }
-]
+];
 ```
+
+The replacement is a plain document: it **cannot contain update operators**
+like `$set` (`MongoInvalidArgumentError: Replacement document must not contain
+atomic operators`).
 
 ---
 ### Removing documents
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#6">Query language</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#7">Query language</a>]
 
-You can use [`deleteMany`][mongodb-delete-many] to remove documents from a collection:
+You can use [`deleteMany`][mongodb-delete-many] to remove documents from a
+collection:
 
 ```js
-// Remove all people
-db.people.deleteMany({});
-
 // Remove all people who have 5 children
 db.people.deleteMany({ children: 5 });
 ```
 
-It removes all matching documents by default.
-Use the [`deleteOne`][mongodb-delete-one] mathod if you want to only remove the first matching document:
+It removes all matching documents by default. **Careful:** an empty filter
+matches everything, so `deleteMany({})` removes **all** people (don't run it
+now, you will need them for the next slides). Use the
+[`deleteOne`][mongodb-delete-one] method if you want to only remove the first
+matching document:
 
 ```js
 // Remove the first person found who likes chocolate
@@ -502,143 +463,111 @@ class: center, middle
 Indexes can support the efficient execution of queries and enforce constraints.
 
 ---
+### Without an index
+
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#20">Indexes</a>]
+
+MongoDB must **scan the whole collection** (`COLLSCAN`). `explain()` shows the
+plan it picked:
+
+```js
+db.people.find({ name: 'John Doe' }).explain().queryPlanner.winningPlan;
+```
+
+```js
+{
+  isCached: false,
+* stage: 'COLLSCAN',
+  filter: { name: { '$eq': 'John Doe' } },
+  direction: 'forward'
+}
+```
+
+---
+### With an index
+
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#20">Indexes</a>]
+
+```js
+db.people.createIndex({ name: 1 }); // 'name_1'
+db.people.find({ name: 'John Doe' }).explain().queryPlanner.winningPlan;
+```
+
+```js
+{
+  isCached: false,
+  stage: 'FETCH',
+  inputStage: {
+*   stage: 'IXSCAN',
+    keyPattern: { name: 1 },
+    indexName: 'name_1',
+    ...
+  }
+}
+```
+
+The [index][create-index] **limits the documents MongoDB must inspect**. It
+costs disk space and slows down writes a little, so index the fields **you
+actually query**.
+
+---
+### Compound indexes
+
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#20">Indexes</a>]
+
+```js
+db.people.createIndex({ 'address.city': 1, birthDate: 1 });
+
+// Can use it: they start with the index's first field
+db.people.find({ 'address.city': 'Newport' });
+db.people.find({ 'address.city': 'Newport', birthDate: { $lt: … } });
+
+// Cannot: birthDate alone is not a prefix of the index (COLLSCAN)
+db.people.find({ birthDate: { $lt: ISODate('1980-01-01') } });
+```
+
+The **order of fields matters**: an index on `{ a, b }` serves queries on `a`
+and on `a` + `b`, but not on `b` alone.
+
+???
+
+Sort direction also matters for multi-field sorts: the index serves
+`{ a: 1, b: 1 }` and `{ a: -1, b: -1 }`, not `{ a: 1, b: -1 }`.
+
+---
 ### Unique indexes
 
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#22">Indexes</a>]
+.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#20">Indexes</a>]
 
 A unique index enforces uniqueness for the indexed fields:
 
 ```js
-// Ensure that there are no two people born on the same day
-db.people.createIndex({ birthDate: 1 }, { unique: true });
+// Ensure that there are no two people with the same email
+db.people.createIndex({ email: 1 }, { unique: true });
 
-// Ensure that there are no two people with the same name in the same city
-db.people.createIndex({ name: 1, 'address.city': 1 }, { unique: true });
+db.people.insertOne({ name: 'Johnny', email: 'john.doe@example.com' });
+// MongoServerError: E11000 duplicate key error ...
+//   dup key: { email: "john.doe@example.com" }
 ```
 
-By default, MongoDB creates a unique index on the `_id` field during the creation of a collection.
+- Creating the index **fails if duplicates already exist**
+- A **missing field counts as `null`**: two people without an email are
+  duplicates
+- MongoDB already creates a unique index on the `_id` field of every collection
 
-Read the [documentation on indexes][indexes] to find out more about other types of indexes.
-
----
-### Query performance
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#22">Indexes</a>]
-
-Without indexes, MongoDB must perform a **full collection scan** to find the matching documents.
-Use `explain` to find out how a query will be executed.
-The `COLLSCAN` value in the `winningPlan` object tells us that a collection scan will be performed when executing that query:
-
-```bash
-db.people.find({ name: "John A. Smith" }).explain()
-
-{
-  "explainVersion" : 2,
-  "queryPlanner" : {
-    "namespace" : "test.people",
-    "indexFilterSet" : false,
-    "parsedQuery" : {
-      "name" : { "$eq" : "John A. Smith" }
-    },
-*   "winningPlan" : {
-*     "stage" : "COLLSCAN",
-      "filter" : {
-        "name" : { "$eq" : "John A. Smith" }
-      },
-      "direction" : "forward"
-    },
-    "rejectedPlans" : [ ]
-  },
-  "ok" : 1
-}
-```
-
----
-### Improving performance with indexes
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#22">Indexes</a>]
-
-If an appropriate index exists for a query, MongoDB can use the index to **limit the number of documents it must inspect**.
-
-Use [createIndex][create-index] to add an index:
-
-```js
-// Add a simple index for queries on the "name" field
-db.people.createIndex({ name: 1 });
-
-name_1;
-```
-
----
-### Index scan
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#22">Indexes</a>]
-
-Run `explain` again to confirm that your index will be applied (you should see `IXSCAN` in the `winningPlan` object):
-
-```bash
-db.people.find({ name: "John A. Smith" }).explain()
-
-{
-  explainVersion: '2',
-  "queryPlanner" : {
-    "namespace" : "demo.people",
-    "indexFilterSet" : false,
-    "parsedQuery" : {
-      "name" : { "$eq" : "John A. Smith" }
-    },
-*   "winningPlan" : {
-      "stage" : "FETCH",
-      "inputStage" : {
-*       "stage" : "IXSCAN",
-        "keyPattern" : { "name" : 1 },
-        "indexName" : "name_1",
-        ...
-      }
-    },
-    "rejectedPlans" : [ ]
-  },
-  "ok" : 1
-}
-```
-
----
-### Performance of compound indexes
-
-.breadcrumbs[<a href="#1">MongoDB</a> > <a href="#22">Indexes</a>]
-
-You can create an index on **multiple fields**:
-
-```js
-// Create an index of people sorted first from oldest to youngest,
-// then by ascending name
-db.people.createIndex({ birthDate: -1, name: 1 });
-```
-
-**Be careful:** for compound indexes, the **order** of fields is important:
-it determines what queries the index can support:
-
-```js
-// Queries sorted like the index will use it
-db.people.find({}).sort({ birthDate: -1, name: 1 });
-
-// Reverse order is supported as well
-db.people.find({}).sort({ birthDate: 1, name: -1 });
-
-// But this is an incompatible sort order
-// The index will NOT be used, and MongoDB will revert to a collection scan
-db.people.find({}).sort({ birthDate: 1, name: 1 });
-```
+Read the [documentation on indexes][indexes] to find out more about other types
+of indexes.
 
 ---
 ## Resources
 
 .breadcrumbs[<a href="#1">MongoDB</a>]
 
-- [Getting started with MongoDB][getting-started]
+- [MongoDB CRUD operations][crud]
+- [Data modeling][data-modeling]
 - [db.collection.find][find] & [query operators][query-operators]
 - [db.collection.insertOne][mongodb-insert-one] & [db.collection.insertMany][mongodb-insert-many]
-- [db.collection.updateOne][mongodb-update-one] & [db.collection.updateOne][mongodb-update-many]
+- [db.collection.updateOne][mongodb-update-one] & [db.collection.updateMany][mongodb-update-many]
 - [update operators][update-operators]
 - [db.collection.replaceOne][mongodb-replace-one]
 - [db.collection.deleteMany][mongodb-delete-many] & [db.collection.deleteOne][mongodb-delete-one]
@@ -647,21 +576,22 @@ db.people.find({}).sort({ birthDate: 1, name: 1 });
 - [SQL comparison][sql-comparison]
 
 [bson]: https://www.mongodb.com/resources/basics/json-and-bson
-[create-index]: https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/
-[find]: https://docs.mongodb.com/manual/reference/method/db.collection.find/
-[getting-started]: https://www.mongodb.com/docs/manual/tutorial/getting-started/
-[indexes]: https://docs.mongodb.com/manual/indexes/
+[create-index]: https://www.mongodb.com/docs/manual/reference/method/db.collection.createindex/
+[crud]: https://www.mongodb.com/docs/manual/crud/
+[data-modeling]: https://www.mongodb.com/docs/manual/data-modeling/
+[find]: https://www.mongodb.com/docs/manual/reference/method/db.collection.find/
+[indexes]: https://www.mongodb.com/docs/manual/indexes/
 [install]: https://github.com/MediaComem/comem-archioweb/blob/main/guides/install-mongodb.md
 [query-operators]: https://www.mongodb.com/docs/manual/reference/mql/query-predicates/
 [mongodb]: https://www.mongodb.com
-[mongodb-insert-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertOne/
-[mongodb-insert-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertMany/
-[mongodb-delete-one]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/
-[mongodb-delete-many]: https://docs.mongodb.com/manual/reference/method/db.collection.deleteMany/
-[mongodb-replace-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/
-[mongodb-update-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateOne/
-[mongodb-update-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateMany/
-[sql-comparison]: https://docs.mongodb.com/manual/reference/sql-comparison/
+[mongodb-insert-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertone/
+[mongodb-insert-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.insertmany/
+[mongodb-delete-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.deleteone/
+[mongodb-delete-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.deletemany/
+[mongodb-replace-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceone/
+[mongodb-update-one]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updateone/
+[mongodb-update-many]: https://www.mongodb.com/docs/manual/reference/method/db.collection.updatemany/
+[sql-comparison]: https://www.mongodb.com/docs/manual/reference/sql-comparison/
 [update-operators]: https://www.mongodb.com/docs/manual/reference/operator/update-field/
 
     </textarea>

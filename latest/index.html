@@ -79,7 +79,8 @@ will:</p>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> JavaScript</a><ul>
-<li><a href="./exercises/javascript.md"><em>Exercises</em></a></li>
+<li><a href="./exercises/javascript.md"><em>Exercises</em></a> (🔑
+<a href="./exercises/javascript-solutions.md"><strong>solutions</strong></a>)</li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-promises?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> promises</a></li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-prototypes?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> prototypes</a></li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/js-classes?home=MediaComem%2Fcomem-archioweb%23readme"><em>Extra:</em> classes</a></li>
@@ -88,7 +89,8 @@ will:</p>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/node?home=MediaComem%2Fcomem-archioweb%23readme">Node.js</a> JavaScript runtime<ul>
-<li><a href="./exercises/node.md"><em>Exercises</em></a></li>
+<li><a href="./exercises/node.md"><em>Exercises</em></a> (🔑
+<a href="./exercises/node-solutions"><strong>solutions</strong></a>)</li>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/npm?home=MediaComem%2Fcomem-archioweb%23readme">npm</a> Node.js package manager</li>
@@ -102,6 +104,7 @@ will:</p>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme">MongoDB</a> document-oriented database<ul>
 <li><a href="./guides/install-mongodb.md"><em>Guide:</em> install MongoDB</a></li>
+<li><a href="https://www.mongodb.com/docs/manual/data-modeling/"><em>Reference:</em> data modeling</a> (embedding vs. referencing)</li>
 </ul>
 </li>
 <li><a href="https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/mongoose?home=MediaComem%2Fcomem-archioweb%23readme">Mongoose</a> Object-Document Mapper<ul>
@@ -143,13 +146,13 @@ will:</p>
 </ul>
 <h2 id="what-you-will-need">What you will need</h2>
 <ul>
-<li>A Unix CLI (Git Bash is included with Git on Windows)</li>
+<li>A Unix CLI (WSL on Windows)</li>
 <li><a href="https://git-scm.com/downloads">Git</a></li>
 <li>A free <a href="https://github.com">GitHub</a> account</li>
 <li><a href="https://www.google.com/chrome/">Google Chrome</a> (recommended, any browser with developer tools will do)</li>
 <li><a href="https://nodejs.org/">Node.js</a> 26 (22 and 24 also work)</li>
 <li><a href="https://www.postman.com">Postman</a> (recommended, any tool that makes raw HTTP requests will do)</li>
-<li><a href="https://www.mongodb.com">MongoDB</a> 8</li>
+<li><a href="https://www.mongodb.com">MongoDB</a> 8.0 (not 9)</li>
 <li>A free <a href="https://www.render.com">Render</a> account</li>
 </ul>
 <h2 id="useful-links">Useful links</h2>
@@ -168,7 +171,7 @@ will:</p>
 <h2 id="evaluation">Evaluation</h2>
 <p><strong>REST API</strong></p>
 <p>Your REST API must be developed with the <a href="https://expressjs.com">Express</a> framework and use a
-<a href="https://www.mongodb.com">MongoDB</a> database. It must provide (at least):</p>
+<a href="https://www.mongodb.com">MongoDB</a> database. It must fulfill the following criteria:</p>
 <ul>
 <li><p>The API must provide <strong>user management</strong>:</p>
 <ul>
@@ -191,21 +194,8 @@ in a mobile application.</li>
 <li><p>At least one resource must be a <strong>list with optional filters</strong>.</p>
 </li>
 <li><p>At least one resource must provide <strong>aggregated data</strong> from other resources
-using a <a href="https://docs.mongodb.com/manual/core/aggregation-pipeline/">MongoDB aggregation pipeline</a> (e.g. the number
+using a <a href="https://www.mongodb.com/docs/manual/core/aggregation-pipeline/">MongoDB aggregation pipeline</a> (e.g. the number
 of items created by a user).</p>
-</li>
-<li><p>The API must be developed as a backend to a mobile application using at
-least 2 <a href="https://cordova.apache.org/docs/en/latest/#plugin-apis"><strong>mobile hardware features</strong></a>, for example:</p>
-<ul>
-<li><p>At least one resource must be <strong>geolocated</strong>.</p>
-<p>See <a href="./guides/store-geospatial-data.md">Store geospatial data with
-Mongoose</a> for information on how to
-store this data.</p>
-</li>
-<li><p>At least one resource must have one or multiple <strong>pictures</strong>.</p>
-<p>It is sufficient to store a picture URL or URLs in the database.</p>
-</li>
-</ul>
 </li>
 <li><p>Sensitive operations must be protected by requiring valid
 <strong>authentication</strong> and performing <strong>authorization</strong>:</p>
@@ -225,9 +215,20 @@ permissions of authenticated users.</p>
 </li>
 </ul>
 </li>
-<li><p>The API must provide at least one real-time update, for example using
-WebSockets.</p>
+<li><p>The API must have a significant real-time component that is properly
+integrated with the rest of the code. Developing this real-time component will
+be done in the Développement Mobile course.</p>
 </li>
+</ul>
+<p>You can (but are not required to) design your REST API around mobile features,
+for example:</p>
+<ul>
+<li><strong>Geolocation:</strong> see <a href="./guides/store-geospatial-data.md">Store geospatial data with
+Mongoose</a> for information on how to store
+geospatial data in MongoDB and query it with Mongoose</li>
+<li><strong>Pictures</strong></li>
+<li><strong>Audio/Video</strong></li>
+<li><strong>Accelerometer</strong></li>
 </ul>
 <p><strong>Infrastructure</strong></p>
 <ul>
@@ -238,29 +239,28 @@ WebSockets.</p>
 <ul>
 <li><p>Your REST API must be documented.</p>
 <p>By reading the documentation, a user must know in advance (before testing the
-API) which requests can be made, what can be sent in each request (URL path
-parameters, headers and/or body, and their validation constraints, if any),
-and what responses can be expected from the API (status code, headers and/or
-body).</p>
-<p>You may but do not have to document the 500 Internal Server Error response,
-which is considered to always be a possible response to any request.</p>
+API and without reading the code) which requests can be made, what can be sent
+in each request (URL path parameters, headers and/or body, and their
+validation constraints, if any), and what responses can be expected from the
+API (status code, headers and/or body).</p>
+<p>You do not have to document the 500 Internal Server Error response, which is
+considered to always be a possible response to any request.</p>
 </li>
 </ul>
 <p><strong>Automated testing</strong></p>
 <ul>
 <li>You must implement <strong>automated tests</strong> to test your REST API:<ul>
-<li><p>You must write tests for <strong>at least 4 separate REST operations</strong> in your API
-(for example: create thing, update thing, list things, delete thing). You
-must write <strong>at least 10 tests</strong> in total.</p>
-<blockquote>
-<p>A test for a <code>GET</code> request that retrieves an empty list does not count in
-the minimal number of tests you must write unless you also write a test
-for the non-empty list.</p>
-</blockquote>
-</li>
-<li><p>Your tests must be <strong>reproducible</strong> (running <code>npm test</code> several times in a
-row should always produce the same result).</p>
-</li>
+<li>Your test suite must reach at least <strong>75% code coverage</strong>, with properly
+written tests. Note that we will not evaluate pure coverage numbers, but
+rather the quality of your tests.</li>
+<li>Your tests must cover <strong>all types of REST operations</strong> in your API (for
+example: create thing, update thing, list things, delete thing).</li>
+<li>Your tests must not cover only the &quot;happy path&quot; (i.e. successful requests),
+but also <strong>error cases</strong>.</li>
+<li>Each of your tests must exercise only one REST operation, to remain focused,
+independent of other operations, and to avoid excessive code duplication.</li>
+<li>Your tests must be <strong>reproducible</strong> (running <code>npm test</code> several times in a
+row should always pass and produce the same results).</li>
 </ul>
 </li>
 </ul>
@@ -281,25 +281,9 @@ validations).</li>
 <li>Your API must validate the existence of linked resources (e.g. when creating
 an item linked to a user).</li>
 </ul>
-<p><strong>Bonus</strong></p>
-<p>Doing more than is required <strong>MAY</strong> earn you some bonus points in the
-evaluation if implemented correctly. Here are some examples:</p>
-<ul>
-<li><p>Implement a level 3 hypermedia API using a standard format such as
-<a href="https://jsonapi.org">JSON:API</a> or <a href="https://en.wikipedia.org/wiki/Hypertext_Application_Language">HAL+JSON</a>.</p>
-</li>
-<li><p>Implement &quot;full&quot; (80-100%) test coverage with automated tests.</p>
-<p>Note that test coverage alone is useless. The tests must also make meaningful
-assertions.</p>
-</li>
-<li><p>Implement role-based authorization, i.e. users may have different roles with
-fewer or more permissions. For example, an admin user may be authorized to
-update resources that do not belong to them, whereas a regular user may not.</p>
-</li>
-</ul>
 <h3 id="delivery">Delivery</h3>
-<p>Send an e-mail <em>no later than <strong>January 11th 2026 at 23:59:59.999 CET</strong></em> to
-Simon Oulevay &amp; Loris Gavillet with:</p>
+<p>Send an e-mail <em>no later than <strong>[TO BE DETERMINED]</strong></em> to Simon Oulevay &amp; Loris
+Gavillet with:</p>
 <ul>
 <li>The list of group members.</li>
 <li>The link to your source code repository on GitHub.</li>
@@ -387,7 +371,7 @@ the end of each subject.</p>
 <li><a href="https://pragprog.com/titles/d-jmexpress/functional-design-patterns-for-express-js/">Functional Design Patterns for Express.js - Jonathan Lee Martin</a></li>
 <li><a href="https://standards.rest">Standards.REST</a></li>
 <li><a href="https://martinfowler.com/articles/richardsonMaturityModel.html">Richardson Maturity Model - Leonard Richardson, Martin Fowler</a></li>
-<li><a href="https://docs.mongodb.com">MongoDB Documentation</a></li>
+<li><a href="https://www.mongodb.com/docs/manual/">MongoDB Documentation</a></li>
 <li><a href="https://mongoosejs.com/docs/index.html">Mongoose Documentation</a></li>
 <li><a href="https://auth0.com">Auth0</a><ul>
 <li><a href="https://jwt.io/introduction/">Introduction to JSON Web Tokens</a></li>
