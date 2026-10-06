@@ -38,7 +38,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
 
   demo-app:
-    image: 'ghcr.io/mediacomem/comem-rest-demo:3.0.1'
+    image: 'ghcr.io/mediacomem/comem-rest-demo:3.0.2'
     depends_on:
       demo-db:
         # Wait for MongoDB to accept connections, not merely for its container
