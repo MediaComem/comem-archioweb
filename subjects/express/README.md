@@ -191,7 +191,7 @@ Let's take a look at the generated `package.json`:
     "morgan": "^1.12.1"
   },
   "engines": {
-    "node": "^22 || ^24 || ^26"
+    "node": "^22.9 || ^24 || ^26"
   }
 }
 ```

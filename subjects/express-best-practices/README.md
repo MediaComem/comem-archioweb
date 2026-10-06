@@ -18,8 +18,8 @@ Learn best development practices for [Express][express] web applications.
   - [Running your application with environment variables](#running-your-application-with-environment-variables)
   - [Create a configuration file if you have many variables](#create-a-configuration-file-if-you-have-many-variables)
   - [Validate complex configuration variables](#validate-complex-configuration-variables)
-  - [The `dotenv` package](#the-dotenv-package)
-    - [Installing and using `dotenv`](#installing-and-using-dotenv)
+  - [The `.env` file](#the-env-file)
+    - [Loading the `.env` file](#loading-the-env-file)
 - [The `debug` package](#the-debug-package)
   - [Enabling debug logs](#enabling-debug-logs)
   - [More powerful logging](#more-powerful-logging)
@@ -36,7 +36,7 @@ Learn best development practices for [Express][express] web applications.
 ## Use environment variables for configuration
 
 Never hardcode configuration into your application, as it makes it difficult to
-deploy in different environments. You may also uninentionally expose sensitive
+deploy in different environments. You may also unintentionally expose sensitive
 data such as secret keys.
 
 [Environment variables][node-process-env] are a suitable alternative. There is
@@ -94,13 +94,13 @@ centralize your configuration code in a single file, for example `config.js`:
 
 ```js
 // File: config.js
-export const port = process.env.PORT || 3000;
-export const secretKey = process.env.MY_APP_SECRET_KEY || 'changeme';
+export const port = process.env.PORT ?? 3000;
+export const secretKey = process.env.MY_APP_SECRET_KEY ?? 'changeme';
 ```
 
 This avoids repetition if you use the same variable in different places, and
 serves as a sort of documentation of all your configuration parameters and their
-default values. You can simply require this file and use its variables where
+default values. You can simply import this file and use its variables where
 needed:
 
 ```js
@@ -123,7 +123,7 @@ as expected:
 ```js
 // Validate that port is a positive integer.
 if (process.env.PORT) {
-  const parsedPort = parseInt(process.env.PORT, 10);
+  const parsedPort = Number(process.env.PORT);
   if (!Number.isInteger(parsedPort)) {
     throw new Error('Environment variable $PORT must be an integer');
   } else if (parsedPort < 1 || parsedPort > 65535) {
@@ -137,56 +137,46 @@ if (!process.env.MY_APP_FOO) {
 }
 ```
 
-### The `dotenv` package
+### The `.env` file
 
 If you use many environment variables for configuration, it can be a pain to set
-them all when starting your application for local development.
-[`dotenv`][dotenv] is a popular npm package that can **auto-fill your project's
-environment variables from a configuration file** named `.env` with the
-following format:
+them all when starting your application for local development. Node.js can
+**load them from a file** named `.env`, with the following format:
 
 ```
 PORT=4000
 MY_APP_SECRET=letmein
 ```
 
-To use it, the first thing you should do it **ignore this `.env` file**, as you
-don't want to unintentionally commit sensitive information into your repository:
-
-```bash
-$> echo .env >> .gitignore
-$> git add .gitignore
-$> git commit -m "Ignore .env file"
-```
+The starter's `.gitignore` file **already ignores `.env`**: it may contain
+secrets, so it must never be committed.
 
 > You can share this `.env` file among your team members, and everyone can adapt
 > it to their local environment if necessary. But never commit it.
 
-#### Installing and using `dotenv`
+#### Loading the `.env` file
 
-Install `dotenv` as a development dependency:
+Add the `--env-file-if-exists` option to the `dev` script in your
+`package.json` file:
 
-```bash
-npm install --save-dev dotenv
+```json
+"scripts": {
+* "dev": "node --watch --env-file-if-exists=.env bin/start.js",
+  "start": "node bin/start.js"
+}
 ```
 
-Then add the following code to the top of your configuration file (or wherever
-you retrieve configuration from environment variables):
+- The variables are loaded **before any of your code runs**
+- Editing `.env` **restarts** the application, like editing your code
+- Variables set in your shell take precedence: `PORT=5000 npm run dev`
+- `--env-file=.env` would fail if the file does not exist (e.g. for a new team
+  member)
 
-```js
-// Load environment variables from the .env file.
-*import * as dotenv from 'dotenv'
-*dotenv.config()
+The `start` script does not need it: on [Render][render], you set the variables
+in the dashboard.
 
-// Retrieve configuration from environment variables.
-const port = process.env.PORT || 3000;
-// ...
-```
-
-> Make sure that you execute the `dotenv.config()` line **before
-> accessing any environment variable in `process.env`**, otherwise it will be
-> too late. You'll be fine if you use a centralized configuration file and put
-> that code at the top.
+> Tutorials often use the `dotenv` package for this. The `--env-file` option
+> replaces it.
 
 ## The `debug` package
 
@@ -239,10 +229,9 @@ $> DEBUG=app:* npm start
 The `debug` package is a minimalistic logging solution. For more features, use a
 more advanced library such as:
 
-- [bunyan]
-- [log4js]
-- [nightingale]
+- [pino]
 - [winston]
+- [log4js]
 
 ## Use routers
 
@@ -258,7 +247,7 @@ import `moviesApiRouter` from './routes/movies.js';
 
 const app = express();
 
-// Basic middlewares configuration here (e.g. bodyParser, static)...
+// Basic middlewares configuration here (e.g. express.json())...
 
 app.use('/api/people', `peopleApiRouter`);
 app.use('/api/movies', `moviesApiRouter`);
@@ -363,13 +352,16 @@ need to handle errors thrown by MongoDB.**
 ### MongoDB errors
 
 Imagine the following scenario: one of your Mongoose models specifies that a
-`Person` must have a unique email. Someone using your API make a `POST` request
-to `/person`, trying to create a new person with an email that has already been
+`Person` must have a unique email. Someone using your API makes a `POST` request
+to `/people`, trying to create a new person with an email that has already been
 registered. If this happens, an **ugly error message and generic status code
 will be sent to the user**:
 
-```txt
-E11000 duplicate key error collection
+```http
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json; charset=utf-8
+
+{ "message": "E11000 duplicate key error collection: …" }
 ```
 
 ### Handling specific errors
@@ -380,7 +372,9 @@ could adjust the error handling middleware to **check for this specific case**:
 ```js
 app.use(function (`err`, req, res, next) {
 * if (err.code === 11000) {
-*   return res.status(409).send({ message: 'Email already registered' });
+*   // err.keyValue is e.g. { email: 'jdoe@example.com' }
+*   const [field] = Object.keys(err.keyValue);
+*   return res.status(409).send({ message: \`${field} already exists` });
 * } else if (err.name === 'ValidationError') {
 *   return res.status(422).send({ message: err.message });
 * }
@@ -390,17 +384,17 @@ app.use(function (`err`, req, res, next) {
 });
 ```
 
+`err.keyValue` tells you **which unique field** was duplicated, so the same
+code works for all your unique indexes.
+
 The same goes for **invalid input**: Mongoose rejects it with a
 `ValidationError`, which is the **client's** mistake, so respond with `422
 Unprocessable Entity` instead of `500`.
 
-[bunyan]: https://github.com/trentm/node-bunyan
 [debug]: https://www.npmjs.com/package/debug
-[dotenv]: https://www.npmjs.com/package/dotenv
 [express]: https://expressjs.com
 [render]: https://render.com/docs/configure-environment-variables#configuring-secrets-and-other-environment-information-on-render
 [log4js]: https://www.npmjs.com/package/log4js
-[mongoose]: http://mongoosejs.com
-[nightingale]: https://www.npmjs.com/package/nightingale
-[node-process-env]: https://nodejs.org/docs/latest-v12.x/api/process.html#process_process_env
+[pino]: https://getpino.io
+[node-process-env]: https://nodejs.org/docs/latest-v26.x/api/process.html#processenv
 [winston]: https://www.npmjs.com/package/winston

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="934" height="695" viewBox="0 0 934 695" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="12" fill="#000">
+<defs><marker id="head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#000"/></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<text x="222.7" y="34" font-size="22" textLength="488.4" lengthAdjust="spacingAndGlyphs">Person.aggregate([ stage1, stage2 ]);</text>
+<rect x="144.4" y="66.0" width="222.2" height="121.0" fill="#ff8a8a" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="150.4" y="82.0" xml:space="preserve">{</text>
+<text x="150.4" y="96.0" xml:space="preserve">  $lookup: {</text>
+<text x="150.4" y="110.0" xml:space="preserve">    from: 'movies',</text>
+<text x="150.4" y="124.0" xml:space="preserve">    localField: '_id',</text>
+<text x="150.4" y="138.0" xml:space="preserve">    foreignField: 'director',</text>
+<text x="150.4" y="152.0" xml:space="preserve">    as: 'directedMovies'</text>
+<text x="150.4" y="166.0" xml:space="preserve">  }</text>
+<text x="150.4" y="180.0" xml:space="preserve">}</text>
+<line x1="513.1" y1="42" x2="255.5" y2="63" stroke="#000" stroke-width="1.2" marker-end="url(#head)"/>
+<rect x="491.0" y="66.0" width="360.0" height="79.0" fill="#ff8a8a" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="497.0" y="82.0" xml:space="preserve">{</text>
+<text x="497.0" y="96.0" xml:space="preserve">  $set: {</text>
+<text x="497.0" y="110.0" xml:space="preserve">    directedMovies: { $size: '$directedMovies' }</text>
+<text x="497.0" y="124.0" xml:space="preserve">  }</text>
+<text x="497.0" y="138.0" xml:space="preserve">}</text>
+<line x1="618.7" y1="42" x2="671.0" y2="63" stroke="#000" stroke-width="1.2" marker-end="url(#head)"/>
+<rect x="20.0" y="237.0" width="200.5" height="65.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="26.0" y="253.0" xml:space="preserve">{</text>
+<text x="26.0" y="267.0" xml:space="preserve">  "_id": "0ab…",</text>
+<text x="26.0" y="281.0" xml:space="preserve">  "name": "John McTiernan"</text>
+<text x="26.0" y="295.0" xml:space="preserve">}</text>
+<rect x="290.5" y="209.0" width="345.5" height="121.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="296.5" y="225.0" xml:space="preserve">{</text>
+<text x="296.5" y="239.0" xml:space="preserve">  "_id": "0ab…",</text>
+<text x="296.5" y="253.0" xml:space="preserve">  "name": "John McTiernan",</text>
+<text x="296.5" y="267.0" xml:space="preserve" font-weight="bold">  "directedMovies": [</text>
+<text x="296.5" y="281.0" xml:space="preserve" font-weight="bold">    { "title": "Die Hard" },</text>
+<text x="296.5" y="295.0" xml:space="preserve" font-weight="bold">    { "title": "Die Hard With a Vengeance" }</text>
+<text x="296.5" y="309.0" xml:space="preserve" font-weight="bold">  ]</text>
+<text x="296.5" y="323.0" xml:space="preserve">}</text>
+<rect x="706.0" y="230.0" width="207.8" height="79.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="712.0" y="246.0" xml:space="preserve">{</text>
+<text x="712.0" y="260.0" xml:space="preserve">  "_id": "0ab…",</text>
+<text x="712.0" y="274.0" xml:space="preserve">  "name": "John McTiernan",</text>
+<text x="712.0" y="288.0" xml:space="preserve" font-weight="bold">  "directedMovies": 2</text>
+<text x="712.0" y="302.0" xml:space="preserve">}</text>
+<rect x="20.0" y="359.0" width="200.5" height="65.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="26.0" y="375.0" xml:space="preserve">{</text>
+<text x="26.0" y="389.0" xml:space="preserve">  "_id": "8f4…",</text>
+<text x="26.0" y="403.0" xml:space="preserve">  "name": "Renny Harlin"</text>
+<text x="26.0" y="417.0" xml:space="preserve">}</text>
+<rect x="290.5" y="338.0" width="345.5" height="107.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="296.5" y="354.0" xml:space="preserve">{</text>
+<text x="296.5" y="368.0" xml:space="preserve">  "_id": "8f4…",</text>
+<text x="296.5" y="382.0" xml:space="preserve">  "name": "Renny Harlin",</text>
+<text x="296.5" y="396.0" xml:space="preserve" font-weight="bold">  "directedMovies": [</text>
+<text x="296.5" y="410.0" xml:space="preserve" font-weight="bold">    { "title": "Die Hard 2" }</text>
+<text x="296.5" y="424.0" xml:space="preserve" font-weight="bold">  ]</text>
+<text x="296.5" y="438.0" xml:space="preserve">}</text>
+<rect x="706.0" y="352.0" width="207.8" height="79.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="712.0" y="368.0" xml:space="preserve">{</text>
+<text x="712.0" y="382.0" xml:space="preserve">  "_id": "8f4…",</text>
+<text x="712.0" y="396.0" xml:space="preserve">  "name": "Renny Harlin",</text>
+<text x="712.0" y="410.0" xml:space="preserve" font-weight="bold">  "directedMovies": 1</text>
+<text x="712.0" y="424.0" xml:space="preserve">}</text>
+<rect x="20.0" y="488.0" width="200.5" height="65.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="26.0" y="504.0" xml:space="preserve">{</text>
+<text x="26.0" y="518.0" xml:space="preserve">  "_id": "d45…",</text>
+<text x="26.0" y="532.0" xml:space="preserve">  "name": "Peter Jackson"</text>
+<text x="26.0" y="546.0" xml:space="preserve">}</text>
+<rect x="290.5" y="453.0" width="345.5" height="135.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="296.5" y="469.0" xml:space="preserve">{</text>
+<text x="296.5" y="483.0" xml:space="preserve">  "_id": "d45…",</text>
+<text x="296.5" y="497.0" xml:space="preserve">  "name": "Peter Jackson",</text>
+<text x="296.5" y="511.0" xml:space="preserve" font-weight="bold">  "directedMovies": [</text>
+<text x="296.5" y="525.0" xml:space="preserve" font-weight="bold">    { "title": "The Fellowship of the Ring" },</text>
+<text x="296.5" y="539.0" xml:space="preserve" font-weight="bold">    { "title": "The Two Towers" },</text>
+<text x="296.5" y="553.0" xml:space="preserve" font-weight="bold">    { "title": "The Return of the King" }</text>
+<text x="296.5" y="567.0" xml:space="preserve" font-weight="bold">  ]</text>
+<text x="296.5" y="581.0" xml:space="preserve">}</text>
+<rect x="706.0" y="481.0" width="207.8" height="79.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="712.0" y="497.0" xml:space="preserve">{</text>
+<text x="712.0" y="511.0" xml:space="preserve">  "_id": "d45…",</text>
+<text x="712.0" y="525.0" xml:space="preserve">  "name": "Peter Jackson",</text>
+<text x="712.0" y="539.0" xml:space="preserve" font-weight="bold">  "directedMovies": 3</text>
+<text x="712.0" y="553.0" xml:space="preserve">}</text>
+<rect x="20.0" y="603.0" width="200.5" height="65.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="26.0" y="619.0" xml:space="preserve">{</text>
+<text x="26.0" y="633.0" xml:space="preserve">  "_id": "7c1…",</text>
+<text x="26.0" y="647.0" xml:space="preserve">  "name": "Jane Doe"</text>
+<text x="26.0" y="661.0" xml:space="preserve">}</text>
+<rect x="290.5" y="596.0" width="345.5" height="79.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="296.5" y="612.0" xml:space="preserve">{</text>
+<text x="296.5" y="626.0" xml:space="preserve">  "_id": "7c1…",</text>
+<text x="296.5" y="640.0" xml:space="preserve">  "name": "Jane Doe",</text>
+<text x="296.5" y="654.0" xml:space="preserve" font-weight="bold">  "directedMovies": []</text>
+<text x="296.5" y="668.0" xml:space="preserve">}</text>
+<rect x="706.0" y="596.0" width="207.8" height="79.0" fill="#ffff99" stroke="#2b5d9c" stroke-width="1.5"/>
+<text x="712.0" y="612.0" xml:space="preserve">{</text>
+<text x="712.0" y="626.0" xml:space="preserve">  "_id": "7c1…",</text>
+<text x="712.0" y="640.0" xml:space="preserve">  "name": "Jane Doe",</text>
+<text x="712.0" y="654.0" xml:space="preserve" font-weight="bold">  "directedMovies": 0</text>
+<text x="712.0" y="668.0" xml:space="preserve">}</text>
+<path d="M232.5,436.0 h30.0 v-10 l16,16 l-16,16 v-10 h-30.0 z" fill="#000"/>
+<polyline points="255.5,187.0 255.5,412.0 255.5,424.0" fill="none" stroke="#2b5d9c" stroke-width="1" stroke-dasharray="2 3"/>
+<path d="M648.0,436.0 h30.0 v-10 l16,16 l-16,16 v-10 h-30.0 z" fill="#000"/>
+<polyline points="671.0,145.0 671.0,412.0 671.0,424.0" fill="none" stroke="#2b5d9c" stroke-width="1" stroke-dasharray="2 3"/>
+</svg>

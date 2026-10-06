@@ -24,7 +24,7 @@ When working as a team, only one member of the team needs to follow this guide.
 
 ## Requirements
 
-- [Node.js][node] 22+
+- [Node.js][node] 26 (22.9+ and 24 also work)
 - [Git][git]
 - A [GitHub][github] account
 - A [Render][render] account
@@ -62,6 +62,11 @@ Check that you can access the [Express][express] application at
 [http://localhost:3000](http://localhost:3000). Once you're sure it works, you
 can stop it with `Ctrl-C`.
 
+> The starter requires **Node.js 22.9 or later**. If you copied it earlier in
+> the course, check the `engines` field of your `package.json`: it should be
+> `"node": "^22.9 || ^24 || ^26"`. Render uses this field to choose the Node.js
+> version that runs your application.
+
 ### Make it a Git repository
 
 To deploy code on Render, you will need to use [Git][git]. Initialize a Git
@@ -95,8 +100,9 @@ Create a **private** repository on GitHub, then add it as a remote on your
 machine and push your new application to it:
 
 ```bash
+$> git branch -M main
 $> git remote add origin git@github.com:your-github-username/your-repo-name.git
-$> git push -u origin master
+$> git push -u origin main
 ```
 
 If you have team members, you may add them in the repository's settings on
@@ -125,20 +131,18 @@ await mongoose.connect(
 );
 ```
 
-> Note the code `process.env.DATABASE_URL ??
-'mongodb://127.0.0.1/your-app-name'` which will either take the value of the
-> `$DATABASE_URL` environment variable, or default to
-> `mongodb://127.0.0.1/your-app-name` if the environment variable is not
-> available. See https://nodejs.org/api/process.html#processenv.
+> The application connects to the database URL in the `$DATABASE_URL`
+> [environment variable][node-process-env], or to your local database if that
+> variable is not set.
 
 Stage all changes (including the changes made to `package.json` and
 `package-lock.json` as a result of the `npm install mongoose` command). Then
-commit and deploy this change:
+commit and push this change:
 
 ```bash
 $> git add .
 $> git commit -m "Connect to a MongoDB database with Mongoose"
-$> git push origin master
+$> git push origin main
 ```
 
 ## Deploy the application to Render
@@ -146,20 +150,23 @@ $> git push origin master
 Register a [Render][render] account if you haven't already. If you register
 through GitHub, you will not have to link the two accounts together later.
 
-![Render: register using an exisiting GitHub Account](./images/render-01-signup.png)
+> Render's interface may have changed since the following screenshots were
+> taken. Look for the equivalent options.
+
+![Render: register using an existing GitHub Account](./images/render-01-signup.png)
 
 Go to your dashboard and create a new Web Service:
 
 ![Render: dashboard](./images/render-02-create.png)
 
-Connect your GitHub repository to Render by selecting the one the contains your
-app from the list.
+Connect your GitHub repository to Render by selecting the one that contains
+your app from the list.
 
 ![Render: connect to repo](./images/render-03-connect.png)
 
 Name the application, choose the region and enter the commands used to build and
-start your app. The branch name should automatically be set to "main" or
-"master", depending on how your repository is setup.
+start your app (`npm install` and `npm start`). The branch should be set to
+`main`.
 
 ![Render: setup your application](./images/render-04-setup.png)
 
@@ -173,9 +180,10 @@ free plan can take a little while. Be patient.
 
 ![Render: first deploy](./images/render-06-deploy.png)
 
-The deployment process should eventually succeed. But... **Oh no there seems to be a some weird error in the logs!** Think about it for a second. What could've gone wrong?
+But... **Oh no, the deploy fails after a little while!** Look at the logs. Think
+about it for a second. What could've gone wrong?
 
-```bash
+```txt
 MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
     at _handleConnectionErrors (/opt/render/project/src/node_modules/mongoose/lib/connection.js:1175:11)
     ...
@@ -189,9 +197,10 @@ await mongoose.connect(
 );
 ```
 
-At this point, our app is looking for a `DATABASE_URL` variable environment.
-Unfortunately we have not configured it yet and are therefore trying to connect
-to our local Mongo instance which is obviously inaccessible from remotely.
+At this point, our app is looking for a `DATABASE_URL` environment variable.
+Unfortunately we have not configured it yet, so the app is trying to connect to
+a local MongoDB server, which does not exist on Render. The app never starts
+listening for requests, so Render considers that the deploy has failed.
 
 We must therefore setup a database elsewhere and provide its URL to Render.
 Let's start by setting up a [MongoDB Atlas][mongodb-atlas] cluster.
@@ -200,9 +209,12 @@ Let's start by setting up a [MongoDB Atlas][mongodb-atlas] cluster.
 
 Register a free [MongoDB Atlas][mongodb-try] account for a cloud deployment:
 
+> MongoDB Atlas's interface has changed since the following screenshots were
+> taken. Look for the equivalent options, e.g. the **Free** cluster tier.
+
 ![MongoDB Atlas: register an account](./images/mongodb-atlas-01-register.png)
 
-Choose the free shared cluster plan:
+Choose the free cluster plan:
 
 ![MongoDB Atlas: choose the free plan](./images/mongodb-atlas-02-plan.png)
 
@@ -226,7 +238,7 @@ to access the cluster):
 
 ![MongoDB Atlas: allow access from anywhere](./images/mongodb-atlas-06-whitelist-ip.png)
 
-> In a real production environment, you should whitelist the exact IP addresses
+> In a real production environment, you should only allow the exact IP addresses
 > of your servers so that only they can connect to your cluster, for improved
 > security.
 
@@ -251,20 +263,33 @@ And you are using a Node.js driver. You should copy the provided connection URL:
 
 ![MongoDB Atlas: connect a Node.js application](./images/mongodb-atlas-11-connect-nodejs.png)
 
-Note that the connection URL is in the format
-`mongodb+srv://admin:<password>@your-cluster-name.abcd.mongodb.net/<dbname>?retryWrites=true&w=majority`.
-There are two placeholders in this URL, `<password>` and `<dbname>`, which you
-should replace:
+The connection URL Atlas gives you looks like this (the screenshot above shows
+an older format):
 
-- `<password>` is the password of the database user you just created.
-- `<dbname>` is the name of a MongoDB database to connect to. You should name it
-  after your project. The exact name is unimportant, since MongoDB will
-  automatically create the database the first time you connect to it.
+```txt
+mongodb+srv://<db_username>:<db_password>@your-cluster-name.abcd.mongodb.net/?retryWrites=true&w=majority&appName=…
+```
+
+You must make two changes to it:
+
+- Replace `<db_password>` with the password of the database user you just
+  created (and `<db_username>` with its name, if Atlas has not already done so).
+  If the password contains characters such as `@`, `:`, `/` or `?`, you must
+  [URL-encode][url-encoding] them (e.g. `@` becomes `%40`).
+- **Add a database name after the `/`**, before the `?`. You should name it
+  after your project:
+
+  ```txt
+  mongodb+srv://admin:secret@your-cluster-name.abcd.mongodb.net/my-api?retryWrites=true&w=majority&appName=…
+  ```
+
+  MongoDB creates the database automatically the first time you use it.
+  Without a name, your data ends up in a database called `test`.
 
 > If you have [installed `mongosh`](./install-mongodb.md), you can connect to your
 > new MongoDB cluster from your machine with the command:
 >
->     mongosh "mongodb+srv://admin:<password>@your-cluster-name.abcd.mongodb.net/<dbname>?retryWrites=true&w=majority"
+>     mongosh "mongodb+srv://admin:secret@your-cluster-name.abcd.mongodb.net/my-api?retryWrites=true&w=majority"
 
 ## Provide your database URL to your Render application
 
@@ -276,17 +301,23 @@ environment variables in the Environment section:
 
 ![Render: configure environment variables](./images/render-08-variables.png)
 
-These changes will only be taken into account the next time we deploy. New deploys will automatically happen when you push commits on your main branch to GitHub.
+When you save the variables, choose **Save and deploy** so that Render deploys
+your application again with the new configuration. From now on, Render will
+also deploy automatically every time you push commits on your `main` branch to
+GitHub.
 
-```bash
-$> git add .
-$> git commit -m "<exciting changes>"
-$> git push origin master
-```
-
-Once your deploy is live, you should be able to test your API at the URL generated by Render. It should look something like: `https://app_name-4vxg.onrender.com`
+Once your deploy is live, you should be able to test your API at the URL
+generated by Render. It should look something like:
+`https://my-api-4vxg.onrender.com`
 
 🎉
+
+> You don't need to configure the port: Render sets the `$PORT` environment
+> variable, which the starter's `bin/start.js` already uses.
+
+> **On the free plan, your application goes to sleep** after 15 minutes without
+> requests. The next request wakes it up, which takes about a minute. If your API
+> seems down, wait a minute and try again.
 
 [cloud]: https://en.wikipedia.org/wiki/Cloud_computing
 [express]: https://expressjs.com
@@ -298,5 +329,7 @@ Once your deploy is live, you should be able to test your API at the URL generat
 [mongodb-try]: https://www.mongodb.com/try
 [mongoose]: https://mongoosejs.com
 [node]: https://nodejs.org
+[node-process-env]: https://nodejs.org/docs/latest-v26.x/api/process.html#processenv
 [paas]: https://en.wikipedia.org/wiki/Platform_as_a_service
 [two-hard-things]: https://martinfowler.com/bliki/TwoHardThings.html
+[url-encoding]: https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding

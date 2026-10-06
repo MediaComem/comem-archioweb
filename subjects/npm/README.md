@@ -690,8 +690,6 @@ database of **known security advisories**.
 
 ```bash
 $> npm audit
-# npm audit report
-
 minimist  1.0.0 - 1.2.5
 Severity: critical
 Prototype Pollution in minimist
@@ -720,7 +718,7 @@ fix available via `npm audit fix`
 {
   "name": "npm-demo",
 * "engines": {
-*   "node": ">=26"
+*   "node": "^26"
 * },
   ...
 }
@@ -729,12 +727,14 @@ fix available via `npm audit fix`
 ```bash
 npm warn EBADENGINE Unsupported engine {
 npm warn EBADENGINE   package: 'npm-demo@1.0.0',
-npm warn EBADENGINE   required: { node: '>=26' },
-npm warn EBADENGINE   current: { node: 'v20.19.0', npm: '10.8.2' }
+npm warn EBADENGINE   required: { node: '^26' },
+npm warn EBADENGINE   current: { node: 'v20.20.0', npm: '10.8.2' }
+npm warn EBADENGINE }
 ```
 
 > Deployment platforms **read this field** to choose the Node.js version that
-> will run your application. Without it, you may get an old one.
+> will run your application. Without it, you may get an old one. With an
+> open-ended range such as `>=26`, you may get a future major version.
 
 
 
