@@ -50,7 +50,8 @@ This course is a [COMEM+][comem] web development course taught at
 
 - Creating a web service
   - [Express](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/express?home=MediaComem%2Fcomem-archioweb%23readme) web framework
-    - [_Exercises_](https://express.archioweb.ch)
+    - [_Exercises_](https://express.archioweb.ch) (🔑
+      [**solutions**](./exercises/express-solutions))
   - [MongoDB](https://mediacomem.github.io/comem-archioweb/2026-2027/subjects/mongodb?home=MediaComem%2Fcomem-archioweb%23readme) document-oriented database
     - [_Guide:_ install MongoDB](./guides/install-mongodb.md)
     - [_Reference:_ data modeling](https://www.mongodb.com/docs/manual/data-modeling/) (embedding vs. referencing)

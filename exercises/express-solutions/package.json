@@ -1,0 +1,20 @@
+{
+  "name": "express-solutions",
+  "version": "1.0.0",
+  "description": "Solutions to the Express.js exercises",
+  "author": "Simon Oulevay <simon.oulevay@heig-vd.ch>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch-path=app.js --watch-path=config.js --watch-path=bin --watch-path=routes bin/start.js",
+    "start": "node bin/start.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "morgan": "^1.12.1"
+  },
+  "engines": {
+    "node": "^22.9 || ^24 || ^26"
+  }
+}
