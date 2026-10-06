@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="110" viewBox="0 0 800 110" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" fill="#000">
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0,0 L10,5 L0,10" fill="none" stroke="#2b5d9c" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fff"/>
+
+  <!-- Movie -->
+  <rect x="2" y="2" width="316" height="104" fill="#5bc0f8" stroke="#2b5d9c" stroke-width="1.5"/>
+  <line x1="2" y1="44" x2="318" y2="44" stroke="#2b5d9c" stroke-width="1.5"/>
+  <text x="160" y="33" font-size="26" text-anchor="middle">Movie</text>
+  <text x="10" y="70" font-size="20">- title: String</text>
+  <text x="10" y="96" font-size="20">- director: ObjectId</text>
+
+  <!-- Person -->
+  <rect x="512" y="2" width="286" height="74" fill="#5bc0f8" stroke="#2b5d9c" stroke-width="1.5"/>
+  <line x1="512" y1="44" x2="798" y2="44" stroke="#2b5d9c" stroke-width="1.5"/>
+  <text x="655" y="33" font-size="26" text-anchor="middle">Person</text>
+  <text x="520" y="68" font-size="20">- name: String</text>
+
+  <!-- Relationship -->
+  <line x1="318" y1="54" x2="512" y2="54" stroke="#2b5d9c" stroke-width="1.5" marker-end="url(#head)"/>
+  <text x="326" y="46" font-size="16">0..*</text>
+  <text x="482" y="46" font-size="16">1</text>
+  <text x="415" y="76" font-size="14" text-anchor="middle">directed by</text>
+</svg>

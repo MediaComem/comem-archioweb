@@ -3,7 +3,7 @@
   <head>
     <title>REST In Depth (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1ef58eb758ec689de50e4f79a94d2d30f1e5500f/subjects/rest-advanced/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/06f62dec69fe7bdea68469198605329b6e4af72a/subjects/rest-advanced/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -84,8 +84,6 @@ This looks more like a library of functions than a web service. It's a huge
 
 Definitely not REST: the whole service consists of one overly complex resource.
 
-Examples: XML-RPC or SOAP big web services.
-
 
 ]
 .grid-50[
@@ -129,7 +127,7 @@ constraints there are optimizations**: [caching][http-cache], [conditional
 requests][http-conditional], [partial requests][http-partial] etc.
 
 Real-world examples: [AWS Simple Storage Service (S3)
-API][s3-api], [Twitter API][twitter-api].
+API][s3-api], [Stripe API][stripe-api].
 
 ---
 ### "True REST" hypermedia APIs - Level 3
@@ -153,13 +151,13 @@ exhibits properties of the REST architecture, let's take a look at HTML:
     <li><a href='https://amazon.com?affiliate=me'>Buy some stuff</a></li>
   </ul>
   <form action='/login' method='POST'>
-    <input name='username' type='text' / >
+    <input name='username' type='text' />
   </form>
 &lt;/body&gt;</html>
 ```
 
 HTML is hypermedia. **Why?** Think about the following question: what drives the
-user's interaction through the various pages of a website? How does he or she
+user's interaction through the various pages of a website? How do they
 navigate?
 
 ---
@@ -193,7 +191,7 @@ functioning of the website.
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#2">Richardson Maturity Model</a> > <a href="#7">"True REST" hypermedia APIs - Level 3</a>]
 
-[RFC 8288 (Web Linking)][web-linking] defines a new `Link` HTTP header which can
+[RFC 8288 (Web Linking)][web-linking] defines the `Link` HTTP header which can
 be included in non-HTML responses to provide links to other resources:
 
 ```http
@@ -310,9 +308,9 @@ You may also define your own custom media type, also known as a [vendor-specific
 media type][vnd-media-type].
 
 For example, instead of using raw JSON, you can create a
-`vnd.my-awesome-website+json` media type. The `+json` suffix indicates that your
-media type is an augmentation of the basic JSON media type with additional
-rules.
+`application/vnd.my-awesome-website+json` media type. The `+json` suffix
+indicates that your media type is an augmentation of the basic JSON media type
+with additional rules.
 
 It's up to you to define what these rules are. For example, you could write the
 following in your documentation:
@@ -324,7 +322,7 @@ following in your documentation:
 {
   "first_name": "John",
   "last_name": "Doe",
-* "address_link": "https://example.com/api/people/jdoe/address
+* "address_link": "https://example.com/api/people/jdoe/address"
 }
 ```
 
@@ -428,7 +426,7 @@ structure and HTTP:
   `people/person`).
 
 > This is a matter of debate. You will see both solutions implemented in
-> real-world APIs. What's important is not mix the two techniques to avoid
+> real-world APIs. What's important is not to mix the two techniques to avoid
 > confusion.
 
 ---
@@ -478,7 +476,7 @@ Or it could be **flat**:
 In this case, the **flat** version probably makes more sense because:
 
 - The existence of the course **does not depend** on the existence of the professor
-  (if you murder Arnold, someone else will take over the course)
+  (if Arnold retires, someone else will take over the course)
 - You'll probably want to be able to **list all courses** on a page somewhere
 
 ---
@@ -702,18 +700,20 @@ actions taken on a given user:
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#24">Resources vs. actions</a> > <a href="#29">REST actions as a collection</a>]
 
-With such a collection, you would `POST` to create actions:
+With such a collection, you would `POST` to create actions (the `type` property
+determines what action to take):
 
 ```http
 POST /api/users/jdoe/actions HTTP/1.1
 Content-Type: application/json
-Location: https://example.com/api/users/jdoe/actions/321
 
 *{ "type": "disable", "reason": "He looks suspicious." }
 ```
 
-> The JSON property `"type"` is used in this example to determine what action to
-> take. Other properties would depend on the type of action.
+```http
+HTTP/1.1 201 Created
+Location: https://example.com/api/users/jdoe/actions/321
+```
 
 Then later you could `GET /api/users/jdoe/actions` to retrieve the list of
 actions that were performed:
@@ -863,7 +863,6 @@ To save bandwidth, only a unique identifier for the director could be included:
 - _Advantages:_
   - **Smaller JSON payloads**.
 - _Disadvantages:_
-
   - It **increases chattiness**: the client has to make two requests to retrieve
     both the movie's and the director's data.
   - The client **must know how to build the URL** to the director resource,
@@ -886,7 +885,7 @@ Instead of just the ID, you could include a hyperlink to the director's resource
 *   "http://example.com/links/director": {
 *     "href": "http://example.com/api/people/la09sld"
 *   }
-* }
+* },
   "title": "The Two Towers",
   "rating": 7.1
 }
@@ -924,7 +923,7 @@ Content-Type: application/json
 {
   "title": "The Two Towers",
   "rating": 7.1,
-  "directorId": "la0"
+  "directorId": "la09sld"
 }
 ```
 
@@ -943,7 +942,7 @@ Content-Type: application/json
 {
   "title": "The Two Towers",
   "rating": 7.1,
-  "directorId": "la0",
+  "directorId": "la09sld",
 * "director": {
 *   "id": "la09sld",
 *   "name": "Peter Jackson",
@@ -1033,18 +1032,14 @@ You can also use identifiers or hypermedia for links to multiple resources:
 
 ```json
 {
-  "title": "Die Hard With a Vengance",
-  "_embedded": [
-    {
-      "_links": { "href": "https://example.com/api/people/0a9duvx" }
-    },
-    {
-      "_links": { "href": "https://example.com/api/people/acsl9w2" }
-    },
-    {
-      "_links": { "href": "https://example.com/api/people/7dis92k" }
-    }
-  ]
+  "title": "Die Hard With a Vengeance",
+  "_links": {
+    "http://example.com/links/actors": [
+      { "href": "https://example.com/api/people/0a9duvx" },
+      { "href": "https://example.com/api/people/acsl9w2" },
+      { "href": "https://example.com/api/people/7dis92k" }
+    ]
+  }
 }
 ```
 
@@ -1091,119 +1086,17 @@ The most common way for clients to ask for a page is to add **URL query paramete
 ```
 
 ---
-#### Telling the client how to get more
-
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#42">What you need for pagination</a>]
-
-There are many different ways popular APIs tell the client how to get more elements.
-Here are a few:
-
-- The `Link` header
-- Custom headers
-- Using a JSON _envelope_ or _wrapper_
-
----
-### The `Link` header (solution 1)
+### A JSON envelope
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
-There have been many ways developers have implemented pagination over the years.
-
-The relatively recent [`Link` header][web-linking] allows the server to **tell
-the client where to find other pages** of the collection, **without the client
-having to build new URLs** ([HATEOAS][hateoas]).
-
-The server can indicate where to find:
-
-- The first page
-- The previous page
-- The next page
-- The last page
-- _(Other variants if necessary)_
-
----
-#### Pagination with the `Link` header
-
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#44">The `Link` header (solution 1)</a>]
-
-Consider the following request where the client requests the second page of 50
-elements in a collection:
+The server must also tell the client how to get the other pages. One simple
+way is to wrap the page in a **JSON object** (an _envelope_) that contains
+additional information, instead of sending a plain JSON array:
 
 ```http
 GET /api/movies?`page=2`&`pageSize=50` HTTP/1.1
 ```
-
-In the response, in addition to the 50 movies on that page, the server can send
-a `Link` header with references to **the URLs of other pages** of the
-collection:
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-Link: <https://example.com/api/movies?`page=1`&pageSize=50>; rel="`first prev`",
-      <https://example.com/api/movies?`page=3`&pageSize=50>; rel="`next`",
-      <https://example.com/api/movies?`page=5`&pageSize=50>; rel="`last`"
-
-[
-  ...
-]
-```
-
----
-### Custom headers (solution 2)
-
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
-
-The `Link` header has the advantage of being a standard, but it's harder to
-build a **pager** from it:
-
-<p class='center'><img src='images/pagination.png' /></p>
-
-The server would need to send pre-built **links for each page**, and there are
-no standard link relations for that.
-
-HTTP does not forbid you from using non-standard headers,
-so you could decide to use these **custom headers** to send the client the additional information it needs:
-
-- A `Pagination-Page` header to tell the client which page is being served
-- A `Pagination-Page-Size` header to tell the client what is the current page size
-- A `Pagination-Total` header to tell the client how many elements there are in the collection
-
----
-#### Custom headers in the response
-
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#46">Custom headers (solution 2)</a>]
-
-Consider the following request where the client requests the second page of 50 elements in a collection:
-
-```http
-GET /api/movies?`page=2`&`pageSize=50` HTTP/1.1
-```
-
-In the response, in addition to the 50 movies on that page, the server can send the custom pagination headers:
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json; charset=utf-8
-*Pagination-Page: 2
-*Pagination-Page-Size: 50
-*Pagination-Total: 231
-
-[
-  ...
-]
-```
-
----
-### JSON envelope (solution 3)
-
-.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
-
-In some rare circumstances, there is a proxy between client and server that **strips some headers** from requests.
-In this case, you would have to send the pagination information in the **response body** instead of headers.
-
-Instead of using a **JSON array** as the response body,
-you can use a **JSON object** that contains additional metadata as well as the array of elements:
 
 ```http
 HTTP/1.1 200 OK
@@ -1220,38 +1113,68 @@ Content-Type: application/json; charset=utf-8
 ```
 
 ---
-### Hypermedia pagination (solution 4)
+#### Why an envelope?
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a> > <a href="#43">A JSON envelope</a>]
+
+- The client finds everything in **one place**, the body, the same way for
+  every list of your API
+- **Browser-based clients** (web apps, hybrid mobile apps, Swagger UI) can only
+  read a few response headers, unless the server explicitly [exposes
+  more][http-expose-headers]. They can always read the body
+- It is **easy to document**: one schema in your OpenAPI documentation
+- With the total, the client can compute the number of pages and build a
+  **pager**:
+
+<p class='center'><img src='images/pagination.png' /></p>
+
+> Use the same envelope for every list in your API, even short ones.
+
+---
+### Other conventions you will meet
 
 .breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
 
-Most hypermedia formats, like [JSON:API][json-api] or [HAL][hal], also allow you
-to include the pagination information in the response with standard link
-relations:
+The `Link` header (see _Hyperlinks in HTTP_) gives the URLs of other pages.
+This is the one you saw in GitHub's API during the REST exercise:
 
 ```http
-HTTP/1.1 200 OK
-Content-Type: application/hal+json; charset=utf-8
+Link: <https://api.github.com/…/issues?per_page=2&after=Y3Vy…&page=2>; rel="next"
+```
 
+Some APIs use **custom headers** such as `X-Total-Count: 231`. Both are
+headers, so browser-based clients cannot read them by default.
+
+> Notice the `after` parameter in GitHub's link: GitHub uses [**cursor
+> pagination**][cursor-pagination]. Instead of a page number, the client sends
+> back a value identifying the last item it received, so that pages don't shift
+> when items are added. Page numbers are enough for your project.
+
+---
+### Hypermedia pagination
+
+.breadcrumbs[<a href="#1">REST In Depth</a> > <a href="#40">Pagination</a>]
+
+A hypermedia API can include the **URLs** of other pages in the envelope with
+standard link relations, so that the client does not have to build them:
+
+```json
 {
-  `"data": [`
-    ...
-  `]`,
-* "_links": {
-*   "first": {
-*     "href": "https://example.com/api/movies?page=1&pageSize=50"
-*   },
-*   "prev": {
-*     "href": "https://example.com/api/movies?page=1&pageSize=50"
-*   },
-*   "next": {
-*     "href": "https://example.com/api/movies?page=3&pageSize=50"
-*   },
-*   "last": {
-*     "href": "https://example.com/api/movies?page=5&pageSize=50"
-*   },
+  "page": 2,
+  "pageSize": 50,
+  "total": 231,
+  "data": [ ... ],
+* "links": {
+*   "first": "https://example.com/api/movies?page=1&pageSize=50",
+*   "prev": "https://example.com/api/movies?page=1&pageSize=50",
+*   "next": "https://example.com/api/movies?page=3&pageSize=50",
+*   "last": "https://example.com/api/movies?page=5&pageSize=50"
 * }
 }
 ```
+
+Hypermedia formats such as [HAL][hal] and [JSON:API][json-api] standardize the
+structure of these links.
 
 ---
 ## Resources
@@ -1259,7 +1182,7 @@ Content-Type: application/hal+json; charset=utf-8
 .breadcrumbs[<a href="#1">REST In Depth</a>]
 
 - [HTTP methods][http-methods], [Web Linking][web-linking]
-- APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Twitter][twitter-api] (L2), [GitHub][github-api] (L3), [Foxy][foxy-api] (L3)
+- APIs: [Flickr][flickr-api] (L1), [AWS S3][s3-api] (L2), [Stripe][stripe-api] (L2), [GitHub][github-api] (L3), [Foxy][foxy-api] (L3)
 - [JSON:API][json-api], [Collection+JSON][collection-json], [HAL][hal], [JSON Hyper-Schema][json-hyper-schema], [JSON-LD][json-ld], [Siren][SIREN]
 - [Standards.REST: don't reinvent the wheel, use fantastic wheels][rest-standards]
 
@@ -1270,7 +1193,6 @@ Content-Type: application/hal+json; charset=utf-8
 - [How to GET a Cup of Coffee][get-coffee]
 - [Best Practices for Designing a Pragmatic RESTful API][pragmatic-rest]
 - [REST with Hypermedia - Hot or Not?][rest-with-hypermedia]
-- [Haters Gonna HATEOAS][haters-gonna-hateoas]
 
 ---
 ## Alternatives to REST
@@ -1287,50 +1209,48 @@ constraints. REST might not always be the best fit for all use cases.
 **Alternatives**
 
 - Plain old RPC: [gRPC][grpc]
-- Newcomer: [GraphQL][graphql] (see the [Facebook API][facebook-api])
+- Query language: [GraphQL][graphql] (see the [GitHub GraphQL API][github-graphql])
 - Microservices messaging for complex distributed applications: [Apache Kafka][kafka], [RabbitMQ][rabbitmq], [WAMP][wamp]
 
 **Further reading**
 
 - [Is REST still a relevant API style?][rest-still-relevant]
-- [Microservices messaging: why REST isn't always the best choice][microservices-messaging]
 
 [collection-json]: https://github.com/collection-json/spec
+[cursor-pagination]: https://slack.engineering/evolving-api-pagination-at-slack/
 [crud]: https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
-[facebook-api]: https://developers.facebook.com/docs/graph-api/
 [flickr-api]: https://www.flickr.com/services/api/
 [foxy-api]: https://api.foxycart.com/docs
 [get-coffee]: https://www.infoq.com/articles/webber-rest-workflow/
-[github-api]: https://developer.github.com/v3/
+[github-api]: https://docs.github.com/en/rest
+[github-graphql]: https://docs.github.com/en/graphql
 [graphql]: https://graphql.org
 [grpc]: https://grpc.io
 [hal]: https://en.wikipedia.org/wiki/Hypertext_Application_Language
 [hal-browser]: https://github.com/mikekelly/hal-browser
-[hal-rfc]: https://tools.ietf.org/html/draft-kelly-json-hal-08
+[hal-rfc]: https://datatracker.ietf.org/doc/html/draft-kelly-json-hal-08
 [hateoas]: https://en.wikipedia.org/wiki/HATEOAS
-[haters-gonna-hateoas]: http://timelessrepo.com/haters-gonna-hateoas
-[html-form]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form
-[http-allow]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Allow
-[http-cache]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
-[http-conditional]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Conditional_requests
-[http-get]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET
+[html-form]: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/form
+[http-allow]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Allow
+[http-cache]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching
+[http-conditional]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Conditional_requests
+[http-expose-headers]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Expose-Headers
+[http-get]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/GET
 [http-idempotence]: https://developer.mozilla.org/en-US/docs/Glossary/Idempotent
 [http-methods]: https://www.rfc-editor.org/rfc/rfc9110.html#name-methods
-[http-options]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/OPTIONS
-[http-partial]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
+[http-options]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods/OPTIONS
+[http-partial]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Range_requests
 [http-safe]: https://developer.mozilla.org/en-US/docs/Glossary/Safe
 [hypermedia]: https://en.wikipedia.org/wiki/Hypermedia
 [hyperlink]: https://en.wikipedia.org/wiki/Hyperlink
-[iana]: https://www.iana.org
-[iana-link-relations]: https://www.iana.org/assignments/link-relations/link-relations.xhtml
-[iana-media-types]: https://www.iana.org/assignments/media-types/media-types.xhtml
+[iana-link-relations]: https://www.iana.org/assignments/link-relations
+[iana-media-types]: https://www.iana.org/assignments/media-types
 [json-api]: https://jsonapi.org
 [json-hyper-schema]: https://datatracker.ietf.org/doc/draft-handrews-json-schema-hyperschema/
 [json-ld]: https://json-ld.org
 [json-ld-spec]: https://www.w3.org/2018/jsonld-cg-reports/json-ld/
 [kafka]: https://kafka.apache.org
 [media-type]: https://en.wikipedia.org/wiki/Media_type
-[microservices-messaging]: https://blog.codeship.com/microservices-messaging-rest-isnt-always-best-choice/
 [npm-http-link-header]: https://www.npmjs.com/package/http-link-header
 [npm-format-link-header]: https://www.npmjs.com/package/format-link-header
 [npm-parse-link-header]: https://www.npmjs.com/package/parse-link-header
@@ -1344,13 +1264,13 @@ constraints. REST might not always be the best fit for all use cases.
 [rest-standards]: https://standards.rest
 [rest-still-relevant]: https://nordicapis.com/is-rest-still-a-relevant-api-style/
 [rest-with-hypermedia]: https://reflectoring.io/rest-hypermedia/
-[roy-fielding-thesis]: https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+[roy-fielding-thesis]: https://ics.uci.edu/~fielding/pubs/dissertation/top.htm
 [s3-api]: https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html
+[stripe-api]: https://docs.stripe.com/api
 [siren]: https://github.com/kevinswiber/siren
-[twitter-api]: https://developer.twitter.com/en/docs/api-reference-index
 [vnd-media-type]: https://en.wikipedia.org/wiki/Media_type#Vendor_tree
 [wamp]: https://wamp-proto.org
-[web-linking]: https://tools.ietf.org/html/rfc8288
+[web-linking]: https://www.rfc-editor.org/rfc/rfc8288.html
 
     </textarea>
     <script src='../../subject-2d19222aac4e2bf2880b.js'></script>

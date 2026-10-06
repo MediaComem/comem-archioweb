@@ -3,7 +3,7 @@
   <head>
     <title>npm (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/1ef58eb758ec689de50e4f79a94d2d30f1e5500f/subjects/npm/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/06f62dec69fe7bdea68469198605329b6e4af72a/subjects/npm/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -780,8 +780,6 @@ database of **known security advisories**.
 
 ```bash
 $> npm audit
-# npm audit report
-
 minimist  1.0.0 - 1.2.5
 Severity: critical
 Prototype Pollution in minimist
@@ -805,7 +803,7 @@ fix available via `npm audit fix`
 ---
 ### The engines field
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#26">Versions and updates</a>]
 
 `engines` declares which Node.js version your project needs:
 
@@ -813,7 +811,7 @@ fix available via `npm audit fix`
 {
   "name": "npm-demo",
 * "engines": {
-*   "node": ">=26"
+*   "node": "^26"
 * },
   ...
 }
@@ -822,12 +820,14 @@ fix available via `npm audit fix`
 ```bash
 npm warn EBADENGINE Unsupported engine {
 npm warn EBADENGINE   package: 'npm-demo@1.0.0',
-npm warn EBADENGINE   required: { node: '>=26' },
-npm warn EBADENGINE   current: { node: 'v20.19.0', npm: '10.8.2' }
+npm warn EBADENGINE   required: { node: '^26' },
+npm warn EBADENGINE   current: { node: 'v20.20.0', npm: '10.8.2' }
+npm warn EBADENGINE }
 ```
 
 > Deployment platforms **read this field** to choose the Node.js version that
-> will run your application. Without it, you may get an old one.
+> will run your application. Without it, you may get an old one. With an
+> open-ended range such as `>=26`, you may get a future major version.
 
 
 
@@ -835,7 +835,7 @@ npm warn EBADENGINE   current: { node: 'v20.19.0', npm: '10.8.2' }
 class: center, middle
 ## Common mistakes
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a>]
 
 
 
@@ -846,7 +846,7 @@ It happens.
 ---
 ### Missing `package.json` file
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#35">Common mistakes</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#34">Common mistakes</a>]
 
 If you **forgot to run `npm init`**, npm will install your dependencies anyway
 and **silently create a minimal `package.json`** for you:
@@ -885,7 +885,7 @@ Always run `npm init` **first**, then add `"type": "module"`.
 ---
 ### Wrong directory
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#35">Common mistakes</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#34">Common mistakes</a>]
 
 npm will not know if you are in the **wrong directory**.
 It will simply **install packages there**.
@@ -899,7 +899,7 @@ Of course, you will **NOT** be able to `import` them from your project:
 class: center, middle
 ## The behavior of `import`
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a>]
 
 
 
@@ -908,7 +908,7 @@ class: center, middle
 ---
 ### Importing your own modules
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#38">The behavior of `import`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#37">The behavior of `import`</a>]
 
 You can import your own Node.js scripts with **relative file paths**:
 
@@ -924,7 +924,7 @@ In this example, you should do one or the other, **not both**.
 ---
 ### Importing packages installed with npm
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#38">The behavior of `import`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#37">The behavior of `import`</a>]
 
 You can import packages you installed with npm **using their name**:
 
@@ -933,7 +933,7 @@ You can import packages you installed with npm **using their name**:
 ---
 #### Global packages installed with npm
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#38">The behavior of `import`</a> > <a href="#40">Importing packages installed with npm</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#37">The behavior of `import`</a> > <a href="#39">Importing packages installed with npm</a>]
 
 You **CANNOT** import packages you installed **globally** with npm.
 They provide **new commands** but cannot be used in code:
@@ -945,7 +945,7 @@ They provide **new commands** but cannot be used in code:
 ---
 ### Importing core Node.js modules
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#38">The behavior of `import`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#37">The behavior of `import`</a>]
 
 When you give **a name** to `import`, it will also look for a **core Node.js
 modules** with that name:
@@ -957,7 +957,7 @@ modules** with that name:
 ---
 ### Import summary
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#38">The behavior of `import`</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#37">The behavior of `import`</a>]
 
 Statement                                   | What is imported
 :------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -976,7 +976,7 @@ Statement                                   | What is imported
 ---
 ## More complex packages
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a>]
 
 The npm registry has many packages, some small, some big.
 Let's install [Express][express], a web application framework:
@@ -1004,7 +1004,7 @@ app.listen(3000, function () {
 ---
 #### Run a web app
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#44">More complex packages</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#43">More complex packages</a>]
 
 Run the file:
 
@@ -1023,7 +1023,7 @@ You have a running web application server!
 class: center, middle
 ## npm scripts
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a>]
 
 
 
@@ -1034,7 +1034,7 @@ npm is not only a package *installer*, it's also a package **manager**
 ---
 ### Lifecycle scripts
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#46">npm scripts</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#45">npm scripts</a>]
 
 For programs that can be **long-lived**, such as **web servers**,
 npm defines **standard lifecycle scripts** that you should use to control your program.
@@ -1054,7 +1054,7 @@ Read the [documentation][npm-scripts] to learn about all the available lifecycle
 ---
 ### The scripts property
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#46">npm scripts</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#45">npm scripts</a>]
 
 .grid-40[
 
@@ -1089,7 +1089,7 @@ Example app listening on port 3000!
 ---
 ### Custom scripts
 
-.breadcrumbs[<a href="#33">npm audit report</a> > <a href="#46">npm scripts</a>]
+.breadcrumbs[<a href="#1">npm</a> > <a href="#45">npm scripts</a>]
 
 You can also define your own custom scripts:
 
@@ -1119,7 +1119,7 @@ $> npm run hello
 ---
 ## Publishing, and not publishing
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a>]
 
 The packages you install are published to the registry by their authors with
 [`npm publish`][npm-publish], from a directory containing a valid
@@ -1148,7 +1148,7 @@ Protect yourself by setting the `private` property of your `package.json`:
 ---
 ## Resources
 
-.breadcrumbs[<a href="#33">npm audit report</a>]
+.breadcrumbs[<a href="#1">npm</a>]
 
 **Documentation**
 
