@@ -95,7 +95,8 @@ centralize your configuration code in a single file, for example `config.js`:
 ```js
 // File: config.js
 export const port = process.env.PORT ?? 3000;
-export const secretKey = process.env.MY_APP_SECRET_KEY ?? 'changeme';
+export const databaseUrl =
+  process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/your-app-name';
 ```
 
 This avoids repetition if you use the same variable in different places, and
@@ -145,7 +146,7 @@ them all when starting your application for local development. Node.js can
 
 ```
 PORT=4000
-MY_APP_SECRET=letmein
+JWT_SECRET=replace-me-with-a-long-random-value
 ```
 
 The starter's `.gitignore` file **already ignores `.env`**: it may contain

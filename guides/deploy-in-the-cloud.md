@@ -301,6 +301,10 @@ environment variables in the Environment section:
 
 ![Render: configure environment variables](./images/render-08-variables.png)
 
+Add any other variable your application needs in the same place, such as the
+`JWT_SECRET` used to sign authentication tokens. If your application refuses to
+start without a variable, a deploy that is missing it will fail.
+
 When you save the variables, choose **Save and deploy** so that Render deploys
 your application again with the new configuration. From now on, Render will
 also deploy automatically every time you push commits on your `main` branch to
