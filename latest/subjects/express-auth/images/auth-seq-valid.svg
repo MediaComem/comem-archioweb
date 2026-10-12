@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="970" height="540" viewBox="0 0 970 540" fill="#000">
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,1 L10,5 L0,9 Z" fill="#000"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#fff"/>
+
+  <!-- Participants -->
+  <rect x="158" y="8" width="140" height="60" fill="#628dc6" stroke="#3a5f94"/>
+  <text x="228" y="34" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="17" text-anchor="middle">Client</text>
+  <text x="228" y="55" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="17" text-anchor="middle">(App, Postman)</text>
+  <rect x="640" y="8" width="140" height="60" fill="#66bb33" stroke="#3f8a1a"/>
+  <text x="710" y="34" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="17" text-anchor="middle">Server</text>
+  <text x="710" y="55" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="17" text-anchor="middle">(API)</text>
+  <line x1="228" y1="68" x2="228" y2="532" stroke="#000" stroke-dasharray="2,3"/>
+  <line x1="710" y1="68" x2="710" y2="532" stroke="#000" stroke-dasharray="2,3"/>
+  <rect x="218" y="90" width="20" height="420" fill="#a3b8e0" stroke="#3a5f94"/>
+
+  <!-- Trigger -->
+  <circle cx="34" cy="141" r="5"/>
+  <line x1="34" y1="141" x2="218" y2="141" stroke="#000" marker-end="url(#head)"/>
+  <text x="42" y="131" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="16">Try to create a thing</text>
+
+  <!-- Request -->
+  <text x="250.0" y="138" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">POST /things HTTP/1.1</text>
+  <text x="250.0" y="159" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">Content-Type: application/json</text>
+  <text x="250.0" y="180" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">Authorization: Bearer eyJh...iwi...SflKx</text>
+  <text x="250.0" y="222" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">{"name":"something"}</text>
+  <line x1="238" y1="236" x2="700" y2="236" stroke="#000" marker-end="url(#head)"/>
+
+  <!-- Response -->
+  <rect x="700" y="236" width="20" height="174" fill="#b6dc9a" stroke="#3f8a1a"/>
+  <text x="364.0" y="296" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">HTTP/1.1 201 Created</text>
+  <text x="364.0" y="317" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">Content-Type: application/json</text>
+  <text x="364.0" y="338" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">Location: /things/6acc...</text>
+  <text x="364.0" y="380" font-family="Menlo, Consolas, 'DejaVu Sans Mono', 'Courier New', monospace" font-size="15" xml:space="preserve">{"_id":"6acc...","name":"something"}</text>
+  <line x1="700" y1="394" x2="238" y2="394" stroke="#000" marker-end="url(#head)"/>
+
+  <!-- Server notes -->
+  <text x="734" y="276" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="15">There is an Authorization</text>
+  <text x="734" y="295" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="15">header in the request.</text>
+  <text x="734" y="328" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="15">Verify the JWT within.</text>
+  <text x="734" y="361" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="15">The user is authenticated</text>
+  <text x="734" y="380" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="15">if the token is valid.</text>
+
+  <!-- Outcome -->
+  <circle cx="172" cy="470" r="30" fill="#22dd22" stroke="#000" stroke-width="1.5"/>
+  <circle cx="161" cy="461" r="3.5"/>
+  <circle cx="183" cy="461" r="3.5"/>
+  <path d="M155,476 Q172,494 189,476" fill="none" stroke="#000" stroke-width="2.5"/>
+  <text x="132" y="475" font-family="Helvetica, Arial, 'DejaVu Sans', sans-serif" font-size="16" text-anchor="end">It worked!</text>
+</svg>

@@ -3,7 +3,7 @@
   <head>
     <title>Express Best Practices (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/06f62dec69fe7bdea68469198605329b6e4af72a/subjects/express-best-practices/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/c7b86e62581e370599fb46a8f7bf74e52e9fb240/subjects/express-best-practices/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -93,7 +93,8 @@ centralize your configuration code in a single file, for example `config.js`:
 ```js
 // File: config.js
 export const port = process.env.PORT ?? 3000;
-export const secretKey = process.env.MY_APP_SECRET_KEY ?? 'changeme';
+export const databaseUrl =
+  process.env.DATABASE_URL ?? 'mongodb://127.0.0.1/your-app-name';
 ```
 
 This avoids repetition if you use the same variable in different places, and
@@ -149,7 +150,7 @@ them all when starting your application for local development. Node.js can
 
 ```
 PORT=4000
-MY_APP_SECRET=letmein
+JWT_SECRET=replace-me-with-a-long-random-value
 ```
 
 The starter's `.gitignore` file **already ignores `.env`**: it may contain
