@@ -1146,8 +1146,8 @@ used to require extra tools:
 $> node --watch --env-file=.env script.js
 ```
 
-We will come back to the first two later in the course, when we have something
-worth restarting and something worth configuring.
+We will come back to all three later in the course, when we have something
+worth restarting, configuring and testing.
 
 > Most tutorials you will find still reach for a package to do these things
 > (`nodemon`, `dotenv`). That advice predates these options.

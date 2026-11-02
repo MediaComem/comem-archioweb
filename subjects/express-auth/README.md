@@ -907,6 +907,8 @@ Administrator jdoe created
 - Do **not** write the variables on the command line: your shell history would
   keep the database password (in the URL) and the administrator's password.
 - **Quote** the values: in an unquoted value, `#` starts a comment.
+- `/.env.*` also ignores the `.env.test` file of the [testing guide][testing-guide],
+  which must be committed: add `!/.env.test` on the next line.
 
 ## Keeping the token in the client
 
@@ -1084,6 +1086,7 @@ If the API also allows **any origin** with credentials, e.g.
 [psl]: https://publicsuffix.org/
 [rainbow-table]: https://en.wikipedia.org/wiki/Rainbow_table
 [salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)
+[testing-guide]: https://github.com/MediaComem/comem-archioweb/blob/main/guides/set-up-automated-tests.md#use-a-separate-database-for-tests
 [vite-proxy]: https://vite.dev/config/server-options#server-proxy
 [webkit-cookies]: https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
 [xss]: https://owasp.org/www-community/attacks/xss/
