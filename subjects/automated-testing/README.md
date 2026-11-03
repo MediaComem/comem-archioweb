@@ -21,6 +21,7 @@ Learn about the various kinds of automated tests.
   - [Assertions](#assertions)
   - [An implementation in JavaScript](#an-implementation-in-javascript)
   - [Arrange, Act, Assert](#arrange-act-assert)
+  - [Side effects](#side-effects)
   - [Why write unit tests?](#why-write-unit-tests)
     - [Disadvantages of unit tests](#disadvantages-of-unit-tests)
 - [Integration tests](#integration-tests)
@@ -249,7 +250,8 @@ export function add(a, b) {
 ```
 
 When writing a unit test for a piece of code, you want to identify the
-**inputs** and **outputs** (or side effects) of that code. In this case:
+**inputs** and **outputs** of that code (and its **side effects**, which you will
+see later). In this case:
 
 - There are **two numbers as inputs**, `a` and `b`.
 - There is **one number as output**.
@@ -355,6 +357,32 @@ it('POST /users', async function () {
 > The same structure is called **Given, When, Then** in [Behavior-Driven
 > Development][bdd]. The second example is an API test: more on those later.
 
+### Side effects
+
+`add` only **returns** a value. But a lot of code also **changes something
+outside of itself**. That is a **side effect**, for example:
+
+- Creating, updating or deleting data in a **database**
+- Writing, moving or deleting **files**
+- Sending an **email** or a notification, or calling another API
+- Modifying an object it received as an argument, or a global variable
+
+A test that only checks the output can miss them: the API in the previous
+example could respond with `201 Created` without saving anything. **Make
+assertions on the side effects too**:
+
+```js
+// Assert
+assert.equal(res.status, 201);
+const user = await User.findOne({ name: 'John Doe' }).exec();
+assert.ok(user, 'the user was not saved to the database');
+```
+
+> Also check that **unwanted** side effects did not happen: a refused request
+> must not change the database. When a side effect cannot be checked directly,
+> like sending an email, a **test double** (more on those later) can record it
+> for you.
+
 ### Why write unit tests?
 
 Unit tests allow you to isolate each part of a program and **check that each
@@ -449,9 +477,9 @@ testing a REST API, you will need to make HTTP requests somehow.
 
 But the basic principle is the same as for unit tests:
 
-- Think about the inputs (HTTP request) and outputs (HTTP response, database
-  changes, etc) of an API operation. In other words, define the **expected**
-  result of the operation.
+- Think about the inputs (HTTP request), outputs (HTTP response) and side effects
+  (database changes, etc) of an API operation. In other words, define the
+  **expected** result of the operation.
 - Perform that API operation (make the HTTP request and retrieve the response).
   In other words, get the **actual** result.
 - Make **assertions** to check that the actual result is as expected.

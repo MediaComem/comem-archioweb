@@ -36,6 +36,7 @@ the following tools:
 - [Reproducible tests](#reproducible-tests)
   - [Protect your other databases](#protect-your-other-databases)
 - [Write more detailed assertions](#write-more-detailed-assertions)
+- [Check what was saved in the database](#check-what-was-saved-in-the-database)
 - [Write a second test](#write-a-second-test)
 - [Authenticate](#authenticate)
 - [Test fixtures](#test-fixtures)
@@ -117,7 +118,8 @@ $> npm test
 
 > The `--test` option looks for test files in your project, for example files
 > whose name ends with `.test.js`, and runs them. You do not have to list them.
->
+
+> [!WARNING]
 > Do **not** name your folder `test` (singular): Node.js would run **every**
 > file in it as a test file, including the helper files you will add later.
 
@@ -263,6 +265,7 @@ your application refuses to start without it, and so do your tests:
 JWT_SECRET=not-a-secret-only-used-in-tests
 ```
 
+> [!IMPORTANT]
 > Unlike your `.env` file, **commit** `.env.test` so that your teammates (and
 > your CI, if you set it up) can run the tests. This means that it must
 > **never** contain a real secret: the JWT secret above is only used to sign
@@ -276,6 +279,7 @@ JWT_SECRET=not-a-secret-only-used-in-tests
 > !/.env.test
 > ```
 
+> [!CAUTION]
 > **Variables set in your shell take precedence over `.env.test`.** If you have
 > exported `DATABASE_URL` in your terminal, for example to run a script against
 > your MongoDB Atlas database, your tests will use **that** database. You will
@@ -636,12 +640,83 @@ check important headers, check the response body.
 > with `__v`, a version number added by Mongoose for [optimistic concurrency
 > control](https://en.wikipedia.org/wiki/Optimistic_concurrency_control). If a
 > change ever exposed the hash in your API, this test would fail.
->
-> If you wanted to go further, you could also check that the created user has
-> actually been saved to the database, and that its password was hashed rather
-> than stored as is. There could conceivably be a bug where the API gives you
-> the correct answer even though it saved something slightly different to the
-> database (or did not save it at all).
+
+## Check what was saved in the database
+
+Your test now checks everything your API **responds**, but not what it **did**.
+There could conceivably be a bug where the API gives you the correct answer even
+though it saved something slightly different to the database (or did not save
+it at all). Your test can query the database itself to make sure.
+
+Add these imports at the top of the `tests/users.test.js` file, with the others:
+
+```js
+import bcrypt from 'bcrypt';
+
+import User from '../models/user.js';
+```
+
+Then add the following assertions at the end of your `should create a user`
+test:
+
+```js
+// Check that the user has been saved to the database.
+const user = await User.findById(_id).exec();
+assert.ok(user, 'the user was not saved to the database');
+
+// Check the saved attributes, apart from the password digest.
+const { passwordDigest, ...attributes } = user.toObject({
+  flattenObjectIds: true
+});
+assert.deepEqual(attributes, { _id, name: 'John Doe', __v: 0 });
+
+// Check that the password was hashed, not stored as is.
+assert.notEqual(passwordDigest, '1234');
+assert.ok(
+  await bcrypt.compare('1234', passwordDigest),
+  'the password digest does not match the password'
+);
+```
+
+- `User.findById(_id)` looks for the user with the ID that your API sent back.
+  It gives you `null` if there is none, which makes `assert.ok` fail with the
+  message you passed as its second argument.
+- `user.toObject()` turns the Mongoose document into a plain object with only
+  the attributes that are stored in the database. The `flattenObjectIds` option
+  turns the ID into a string, so that you can compare it with the one from the
+  response. Unlike the response, it contains the password hash and `__v`.
+- You take the password hash out with destructuring, as you did with the ID
+  earlier, and compare **all the other attributes at once** with
+  `assert.deepEqual`.
+- You cannot compare the hash with an exact value: bcrypt adds a random salt, so
+  hashing the same password twice gives two different hashes. Instead, you check
+  that it is not the password itself, and that `bcrypt.compare` accepts the
+  password, like your login route will.
+
+You could have checked each attribute separately with `assert.equal(user.name,
+'John Doe')`. But a single `deepEqual` also fails when the database contains
+**attributes you did not expect**. Say you later add a `role` property to your
+schema with a default value. The test then fails and shows you the new
+property:
+
+```bash
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+      name: 'John Doe',
+  +   role: 'user'
+    }
+```
+
+This reminds you to decide what the right value is when a user is created
+through your API, and to write it down in your test. If you only check the
+attributes you know about, your test keeps passing while your API starts
+saving something that nobody has checked, for example a new user who gets
+`admin` as their role by default.
+
+> Your API already depends on bcrypt to hash passwords, so there is nothing to
+> install.
 
 ## Write a second test
 
@@ -709,9 +784,10 @@ export function generateValidJwt(user) {
 }
 ```
 
-> Note that this code assumes that you have a `config.js` file from which you
-> export a `jwtSecret` variable with which JWTs are signed. Remember to add
-> `JWT_SECRET` to your `.env.test` file (see [above](#use-a-separate-database-for-tests)).
+> [!NOTE]
+> This code assumes that you have a `config.js` file from which you export a
+> `jwtSecret` variable with which JWTs are signed. Remember to add `JWT_SECRET`
+> to your `.env.test` file (see [above](#use-a-separate-database-for-tests)).
 
 But you need a pre-existing user in the database before you can generate a
 token. And the database is currently empty when the test runs since it is
@@ -734,12 +810,8 @@ Because each test is different, **each should set up its own fixtures** so that
 the initial state is exactly as expected.
 
 In the case of `GET /users`, you need some users in the database before you
-attempt to retrieve the list. To create them, you will need the `User` model,
-which you can import by adding this to the top of the test file:
-
-```js
-import User from '../models/user.js';
-```
+attempt to retrieve the list. To create them, you will use the `User` model that
+you imported earlier.
 
 You now need to make sure that some users are created **before the test runs**.
 You can use the `beforeEach` hook. Just make sure to put it in the right place.
@@ -957,6 +1029,7 @@ $> npm test
   calls yet, and lines 9-10 and 19-25 of `middlewares/auth.js` are the
   responses to a missing or invalid token.
 
+> [!NOTE]
 > A file that **no test imports** does not appear in the report at all, so your
 > percentage may look better than it really is.
 
@@ -1042,7 +1115,8 @@ your tests automatically every time someone pushes to your repository, so that
 you know right away when a change breaks something. With [GitHub
 Actions][github-actions], it only takes one file.
 
-> **Warning: this consumes the GitHub Actions minutes of the owner of your
+> [!WARNING]
+> **This consumes the GitHub Actions minutes of the owner of your
 > repository.** Your project's repository is **private**, and GitHub only
 > [includes a limited amount of Actions usage][github-actions-billing] for
 > private repositories: about 2,000 minutes per month on Linux with a free
@@ -1141,6 +1215,15 @@ passed, a red cross if they failed.
   `mongoose.disconnect()` in an `after` hook in **every** test file. As a last
   resort, the [`--test-force-exit`][node-test-force-exit] option forces the
   process to exit once the tests are done.
+
+> [!WARNING]
+> If you use `--test-force-exit`, you are **hiding a problem, not solving it**.
+> Whatever kept your process running (an open connection, a timer, a server
+> that was never closed) is still there: the option only stops waiting for it.
+> If it is an operation that has not finished yet, it is cut off without any
+> error, and you will not notice when the same problem affects your
+> application. Look for the cause first, and only use this option if you
+> cannot find it.
 
 ## Documentation
 
