@@ -3,7 +3,7 @@
   <head>
     <title>Express Authentication (Media Engineering Web-Oriented Architecture)</title>
     <meta charset='utf-8'>
-    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/c7b86e62581e370599fb46a8f7bf74e52e9fb240/subjects/express-auth/README.md&quot;}'>
+    <meta name='config' content='{&quot;basePath&quot;:&quot;../..&quot;,&quot;remark&quot;:{&quot;highlightLines&quot;:true,&quot;highlightSpans&quot;:true,&quot;countIncrementalSlides&quot;:false},&quot;subjectUrl&quot;:&quot;https://github.com/MediaComem/comem-archioweb/tree/87ce40bc697aaa1d510c86207ab1ec89d9e7d8c4/subjects/express-auth/README.md&quot;}'>
   </head>
   <body>
     <textarea id='source'>
@@ -1015,6 +1015,8 @@ Administrator jdoe created
 - Do **not** write the variables on the command line: your shell history would
   keep the database password (in the URL) and the administrator's password.
 - **Quote** the values: in an unquoted value, `#` starts a comment.
+- `/.env.*` also ignores the `.env.test` file of the [testing guide][testing-guide],
+  which must be committed: add `!/.env.test` on the next line.
 
 ---
 class: center, middle
@@ -1217,6 +1219,7 @@ If the API also allows **any origin** with credentials, e.g.
 [psl]: https://publicsuffix.org/
 [rainbow-table]: https://en.wikipedia.org/wiki/Rainbow_table
 [salt]: https://en.wikipedia.org/wiki/Salt_(cryptography)
+[testing-guide]: https://github.com/MediaComem/comem-archioweb/blob/main/guides/set-up-automated-tests.md#use-a-separate-database-for-tests
 [vite-proxy]: https://vite.dev/config/server-options#server-proxy
 [webkit-cookies]: https://webkit.org/blog/10218/full-third-party-cookie-blocking-and-more/
 [xss]: https://owasp.org/www-community/attacks/xss/
